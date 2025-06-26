@@ -208,6 +208,10 @@
   color: var(--white);
 }
 
+.contact .map-section {
+  background-color: #157be9 !important;
+}
+
 @media (max-width: 1024px) {
   .contact-main {
     padding: 0 1rem;
@@ -234,4 +238,4 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-} 
+}
