@@ -1,0 +1,247 @@
+.reviews-section {
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+}
+
+.reviews-section h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #333;
+  font-size: 2.5rem;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.review-card {
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.reviewer-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.reviewer-info h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.service-type {
+  color: #666;
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+}
+
+.rating {
+  margin: 1rem 0;
+}
+
+.star {
+  color: #ffd700;
+  font-size: 1.2rem;
+  margin-right: 0.2rem;
+}
+
+.review-comment {
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .reviews-section {
+    padding: 3rem 1rem;
+  }
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Unified Reviews Section - Adjusted Spacing */
+.reviews-section.unified {
+  margin-top: 3rem;
+  padding: 2rem 2rem 0 2rem;
+  background: #f5f6f7;
+  margin-bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.reviews-row-unified {
+  display: flex;
+  width: 100%;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 1rem;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.slider-left {
+  transform: translateX(0);
+}
+
+.slider-right {
+  transform: translateX(-30px);
+}
+
+.review-card-unified {
+  flex: 1 1 0;
+  background: #fff;
+  margin: 0;
+  padding: 2.5rem 1.5rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  box-shadow: none;
+  border-radius: 1rem;
+  min-width: 0;
+}
+
+.reviewer-photo img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.reviewer-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.review-service {
+  color: #007a65;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.review-rating-paid {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  color: #ffd700;
+  font-size: 1.2rem;
+  margin-right: 0.1rem;
+}
+.star.inactive {
+  color: #e0e0e0;
+}
+
+.amount {
+  color: #4b5563;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.review-comment {
+  color: #555;
+  line-height: 1.6;
+  margin: 0.5rem 0 0 0;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .reviews-row-unified {
+    flex-direction: column;
+    gap: 1rem;
+    transition: none;
+  }
+  .slider-left, .slider-right {
+    transform: none;
+  }
+  .review-card-unified {
+    padding: 2rem 1rem;
+  }
+}
+
+.reviews-slider-outer {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.reviews-slider-inner {
+  display: flex;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+  width: 100%;
+}
+
+.reviews-slide {
+  display: flex;
+  width: 100%;
+  flex-shrink: 0;
+  gap: 1rem;
+  justify-content: stretch;
+}
+
+.reviews-slide .review-card-unified {
+  flex: 1 1 0;
+}
+
+@media (max-width: 900px) {
+  .reviews-slider-inner, .reviews-slide {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .reviews-slider-inner {
+    transition: none;
+  }
+}
+
+.reviews-section.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  box-sizing: border-box;
+  border-top: 4px solid hsl(0, 79%, 72%);
+  border-bottom: 4px solid hsl(0, 79%, 72%);
+  background: #f5f6f7;
+  padding: 3rem 0 2rem 0;
+  margin-top: 3rem;
+  margin-bottom: 0;
+} 
