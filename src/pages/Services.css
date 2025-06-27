@@ -226,7 +226,7 @@
 }
 
 .service-price {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 600;
   color: #10b981;
 }
@@ -254,7 +254,7 @@
 
 .testimonials-section h2 {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   margin-bottom: 3rem;
   color: #1e293b;
 }
@@ -290,14 +290,14 @@
 }
 
 .testimonial-info h4 {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   margin-bottom: 0.25rem;
   color: #1e293b;
 }
 
 .service-type {
   color: #667eea;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   margin-bottom: 0.5rem;
 }
 
@@ -307,7 +307,7 @@
 }
 
 .star {
-  font-size: 1rem;
+  font-size: 0.85rem;
 }
 
 .testimonial-comment {
@@ -325,12 +325,12 @@
 }
 
 .cta-content h2 {
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   margin-bottom: 1rem;
 }
 
 .cta-content p {
-  font-size: 1.25rem;
+  font-size: 1rem;
   margin-bottom: 2rem;
   opacity: 0.9;
 }
@@ -351,6 +351,7 @@
   font-weight: 600;
   border: 2px solid white;
   transition: all 0.3s ease;
+  font-size: 0.95rem;
 }
 
 .btn-outline:hover {

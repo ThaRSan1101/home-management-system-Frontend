@@ -98,7 +98,7 @@
 }
 
 .value-card h3, .team-card h3, .stat-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #1a202c;
   margin-bottom: 1rem;
@@ -118,7 +118,7 @@
   align-items: center;
   justify-content: center;
   color: var(--white);
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   font-weight: 700;
   margin: 0 auto 1.5rem;
 }
@@ -132,7 +132,7 @@
 .member-bio {
   color: #718096;
   line-height: 1.6;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
 }
 
 .about-cta {
@@ -145,13 +145,13 @@
 }
 
 .about-cta h2 {
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 800;
   margin-bottom: 1rem;
 }
 
 .about-cta p {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   margin-bottom: 1.5rem;
 }
 
@@ -166,7 +166,7 @@
   padding: 1rem 2rem;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;

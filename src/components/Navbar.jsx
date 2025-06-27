@@ -42,7 +42,7 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="navbar-brand">
         <Link to="/" onClick={handleLinkClick}>
-          <Logo size="medium" />
+          <Logo size="small" />
         </Link>
       </div>
       

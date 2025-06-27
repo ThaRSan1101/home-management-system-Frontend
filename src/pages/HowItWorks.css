@@ -90,7 +90,7 @@
   margin-bottom: 1rem;
 }
 .how-it-works-header p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #64748b;
 }
 .steps-container {
@@ -124,7 +124,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 .step-icon {
@@ -132,7 +132,7 @@
   margin: 1rem 0;
 }
 .step-card h2 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: #1e293b;
   margin-bottom: 1rem;
 }
@@ -149,7 +149,7 @@
 }
 .features-section h2 {
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.7rem;
   color: #1e293b;
   margin-bottom: 2rem;
 }
@@ -170,11 +170,11 @@
   transform: translateY(-5px);
 }
 .feature-icon {
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   margin-bottom: 1rem;
 }
 .feature-card h3 {
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: #1e293b;
   margin-bottom: 0.5rem;
 }
@@ -192,7 +192,7 @@
   border-radius: 1rem;
 }
 .cta-section h2 {
-  font-size: 2rem;
+  font-size: 1.7rem;
   color: #1e293b;
   margin-bottom: 1rem;
 }
@@ -246,20 +246,20 @@
   margin-bottom: 4rem;
 }
 .booking-process-header h2 {
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   font-weight: 700;
   color: #1a202c;
   margin-bottom: 1rem;
 }
 .booking-process-subheading {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: #718096;
   max-width: 600px;
   margin: 0 auto 0.5rem auto;
   font-weight: 500;
 }
 .booking-process-intro {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: #718096;
   max-width: 600px;
   margin: 0 auto;
@@ -301,13 +301,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 700;
   margin: 0 auto 2rem;
   position: relative;
 }
 .booking-step-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #1a202c;
   margin-bottom: 1rem;
@@ -315,7 +315,7 @@
 .booking-step-card p {
   color: #718096;
   line-height: 1.6;
-  font-size: 1rem;
+  font-size: 0.85rem;
 }
 
 /* =====================
