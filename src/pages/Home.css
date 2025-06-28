@@ -85,26 +85,26 @@
 }
 
 .btn-primary {
-  background: #fff;
-  color: #007a65;
+  background: #007a65 !important;
+  color: #fff !important;
   border: none;
 }
 
 .btn-primary:hover {
-  background: #f8f9fa;
-  color: #005f4b;
+  background: #f8f9fa !important;
+  color: #005f4b !important;
   box-shadow: 0 10px 25px rgba(0, 122, 101, 0.2);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: #fff;
+  background: #fff !important;
+  color: #005f4b !important;
   border: 2px solid #fff;
 }
 
 .btn-secondary:hover {
-  background: #fff;
-  color: #007a65 !important;
+  background: #007a65 !important;
+  color: #fff !important;
   box-shadow: 0 10px 25px rgba(0, 122, 101, 0.2);
 }
 

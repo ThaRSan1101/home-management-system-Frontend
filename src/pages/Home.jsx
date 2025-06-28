@@ -140,7 +140,7 @@ const Home = () => {
           <div className="hero-buttons">
             <Link to="/services" className="btn btn-primary">
               Explore Services
-              <FaArrowRight />
+             
             </Link>
             <Link to="/register" className="btn btn-secondary">
               Join Our Community

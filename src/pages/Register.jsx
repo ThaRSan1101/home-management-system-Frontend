@@ -1,75 +1,131 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaPhone, FaCheckCircle } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaPhone } from 'react-icons/fa';
+import Logo from '../components/Logo';
 import './Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    fullName: '',
     email: '',
     phone: '',
+    address: '',
     password: '',
     confirmPassword: '',
-    userType: 'customer',
-    agreeToTerms: false
+    showPassword: false
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    
+    // Clear error when user starts typing
     if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: ''
-      });
+      setErrors({ ...errors, [name]: '' });
     }
+    
+    // Real-time validation for specific fields
+    if (name === 'email' && value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) {
+        setErrors({ ...errors, [name]: 'Please enter a valid email address (e.g., user@gmail.com)' });
+      }
+    }
+    
+    if (name === 'phone' && value) {
+      const phoneRegex = /^\d{10}$/;
+      if (!phoneRegex.test(value)) {
+        setErrors({ ...errors, [name]: 'Phone number must be exactly 10 digits' });
+      }
+    }
+    
+    if (name === 'password' && value) {
+      const passwordErrors = validatePassword(value);
+      if (passwordErrors.length > 0) {
+        setErrors({ ...errors, [name]: passwordErrors });
+      }
+    }
+    
+    if (name === 'confirmPassword' && value && formData.password) {
+      if (value !== formData.password) {
+        setErrors({ ...errors, [name]: 'Passwords do not match' });
+      }
+    }
+  };
+
+  const validatePassword = (password) => {
+    const errors = [];
+    
+    if (password.length < 8) {
+      errors.push('At least 8 characters long');
+    }
+    
+    if (!/[A-Z]/.test(password)) {
+      errors.push('At least one uppercase letter (A-Z)');
+    }
+    
+    if (!/[a-z]/.test(password)) {
+      errors.push('At least one lowercase letter (a-z)');
+    }
+    
+    if (!/\d/.test(password)) {
+      errors.push('At least one number (0-9)');
+    }
+    
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+      errors.push('At least one special character (!@#$%^&*...)');
+    }
+    
+    return errors;
   };
 
   const validateForm = () => {
     const newErrors = {};
-
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
-    }
-
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
-    }
-
+    
+    // Full Name validation
+    if (!formData.fullName) newErrors.fullName = 'Full Name is required';
+    
+    // Email validation
     if (!formData.email) {
       newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email address (e.g., user@gmail.com)';
+      }
     }
-
+    
+    // Phone validation
     if (!formData.phone) {
-      newErrors.phone = 'Phone number is required';
+      newErrors.phone = 'Phone Number is required';
+    } else {
+      const phoneRegex = /^\d{10}$/;
+      if (!phoneRegex.test(formData.phone)) {
+        newErrors.phone = 'Phone number must be exactly 10 digits';
+      }
     }
-
+    
+    // Address validation
+    if (!formData.address) newErrors.address = 'Address is required';
+    
+    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
+    } else {
+      const passwordErrors = validatePassword(formData.password);
+      if (passwordErrors.length > 0) {
+        newErrors.password = passwordErrors;
+      }
     }
-
+    
+    // Confirm Password validation
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-
-    if (!formData.agreeToTerms) {
-      newErrors.agreeToTerms = 'You must agree to the terms and conditions';
-    }
-
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -77,307 +133,78 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Registration submitted:', formData);
-      setIsSubmitted(true);
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-        userType: 'customer',
-        agreeToTerms: false
-      });
-      setTimeout(() => setIsSubmitted(false), 3000);
+      // handle register
     }
   };
 
-  const userTypes = [
-    {
-      value: 'customer',
-      label: 'Customer',
-      description: 'I need home services',
-      icon: '🏠',
-      benefits: ['Book services easily', 'Track appointments', 'Rate providers']
-    },
-    {
-      value: 'provider',
-      label: 'Service Provider',
-      description: 'I provide home services',
-      icon: '🔧',
-      benefits: ['Manage bookings', 'Set your rates', 'Grow your business']
-    }
-  ];
-
-  const benefits = [
-    {
-      icon: '🔒',
-      title: 'Secure & Private',
-      description: 'Your data is protected with bank-level security'
-    },
-    {
-      icon: '⚡',
-      title: 'Quick Setup',
-      description: 'Get started in minutes with our simple registration'
-    },
-    {
-      icon: '📱',
-      title: 'Mobile Ready',
-      description: 'Access your account from any device, anywhere'
-    },
-    {
-      icon: '🎯',
-      title: 'Personalized',
-      description: 'Get recommendations tailored to your needs'
-    }
-  ];
-
   return (
-    <div className="register">
-      <div className="register-container">
-        <div className="register-content">
-          <div className="register-header">
-            <h1>Create Your Account</h1>
-            <p>Join thousands of users who trust HomeService for their home maintenance needs</p>
-          </div>
-
-          {isSubmitted && (
-            <div className="success-message">
-              <FaCheckCircle />
-              <p>Account created successfully! Welcome to HomeService.</p>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="register-form">
-            <div className="user-type-section">
-              <label className="form-label">I want to register as:</label>
-              <div className="user-type-grid">
-                {userTypes.map((type) => (
-                  <div
-                    key={type.value}
-                    className={`user-type-option ${formData.userType === type.value ? 'active' : ''}`}
-                    onClick={() => handleChange({ target: { name: 'userType', value: type.value } })}
-                  >
-                    <div className="type-icon">{type.icon}</div>
-                    <div className="type-info">
-                      <h3>{type.label}</h3>
-                      <p>{type.description}</p>
-                      <ul className="type-benefits">
-                        {type.benefits.map((benefit, index) => (
-                          <li key={index}>{benefit}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="firstName" className="form-label">
-                  <FaUser />
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className={`form-input ${errors.firstName ? 'error' : ''}`}
-                  placeholder="Enter your first name"
-                />
-                {errors.firstName && <span className="error-message">{errors.firstName}</span>}
-              </div>
-              <div className="form-group">
-                <label htmlFor="lastName" className="form-label">
-                  <FaUser />
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className={`form-input ${errors.lastName ? 'error' : ''}`}
-                  placeholder="Enter your last name"
-                />
-                {errors.lastName && <span className="error-message">{errors.lastName}</span>}
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="email" className="form-label">
-                <FaEnvelope />
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`form-input ${errors.email ? 'error' : ''}`}
-                placeholder="Enter your email address"
-              />
-              {errors.email && <span className="error-message">{errors.email}</span>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="phone" className="form-label">
-                <FaPhone />
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className={`form-input ${errors.phone ? 'error' : ''}`}
-                placeholder="Enter your phone number"
-              />
-              {errors.phone && <span className="error-message">{errors.phone}</span>}
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="password" className="form-label">
-                  <FaLock />
-                  Password
-                </label>
-                <div className="password-input-container">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className={`form-input ${errors.password ? 'error' : ''}`}
-                    placeholder="Create a password"
-                  />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-                </div>
-                {errors.password && <span className="error-message">{errors.password}</span>}
-              </div>
-              <div className="form-group">
-                <label htmlFor="confirmPassword" className="form-label">
-                  <FaLock />
-                  Confirm Password
-                </label>
-                <div className="password-input-container">
-                  <input
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className={`form-input ${errors.confirmPassword ? 'error' : ''}`}
-                    placeholder="Confirm your password"
-                  />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-                </div>
-                {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  name="agreeToTerms"
-                  checked={formData.agreeToTerms}
-                  onChange={handleChange}
-                />
-                <span className="checkmark"></span>
-                I agree to the{' '}
-                <Link to="/terms" className="link">
-                  Terms of Service
-                </Link>{' '}
-                and{' '}
-                <Link to="/privacy" className="link">
-                  Privacy Policy
-                </Link>
-              </label>
-              {errors.agreeToTerms && <span className="error-message">{errors.agreeToTerms}</span>}
-            </div>
-
-            <button type="submit" className="page-register-btn">
-              <FaUser />
-              Create Account
-            </button>
-          </form>
-
-          <div className="divider">
-            <span>or</span>
-          </div>
-
-          <div className="social-register">
-            <button className="social-btn google">
-              <span>🔍</span>
-              Continue with Google
-            </button>
-            <button className="social-btn facebook">
-              <span>📘</span>
-              Continue with Facebook
-            </button>
-          </div>
-
-          <div className="signin-link">
-            <p>
-              Already have an account?{' '}
-              <Link to="/login" className="link">
-                Sign in here
-              </Link>
-            </p>
-          </div>
+    <div className="auth-wrapper">
+      <div className="auth-card register-card">
+        <div className="auth-left">
+          <div className="auth-logo"><Logo size="medium" /></div>
+          <h2>Create Account</h2>
+          <p>To keep connected with us please login with your personal info</p>
+          <Link to="/login" className="auth-alt-btn">Log In</Link>
         </div>
-
-        <div className="benefits-section">
-          <div className="benefits-content">
-            <h2>Why Join HomeService?</h2>
-            <div className="benefits-grid">
-              {benefits.map((benefit, index) => (
-                <div key={index} className="benefit-card">
-                  <div className="benefit-icon">{benefit.icon}</div>
-                  <h3>{benefit.title}</h3>
-                  <p>{benefit.description}</p>
-                </div>
-              ))}
-            </div>
-            <div className="benefits-cta">
-              <p>Join our community today</p>
-              <div className="stats">
-                <div className="stat">
-                  <h3>500+</h3>
-                  <p>Happy Users</p>
-                </div>
-                <div className="stat">
-                  <h3>50+</h3>
-                  <p>Service Providers</p>
-                </div>
-                <div className="stat">
-                  <h3>1000+</h3>
-                  <p>Services Completed</p>
-                </div>
+        <div className="auth-right">
+          <h2>Create Account</h2>
+          <form className="auth-form register-form" onSubmit={handleSubmit}>
+            <div className="auth-field-container">
+              <div className="auth-input-group">
+                <FaUser className="auth-input-icon" />
+                <input type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleChange} className={errors.fullName ? 'error' : ''} />
               </div>
+              {errors.fullName && <span className="auth-error">{errors.fullName}</span>}
             </div>
-          </div>
+            <div className="auth-field-container">
+              <div className="auth-input-group">
+                <FaEnvelope className="auth-input-icon" />
+                <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} className={errors.email ? 'error' : ''} />
+              </div>
+              {errors.email && <span className="auth-error">{errors.email}</span>}
+            </div>
+            <div className="auth-field-container">
+              <div className="auth-input-group">
+                <FaPhone className="auth-input-icon" />
+                <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className={errors.phone ? 'error' : ''} />
+              </div>
+              {errors.phone && <span className="auth-error">{errors.phone}</span>}
+            </div>
+            <div className="auth-field-container">
+              <div className="auth-input-group">
+                <FaUser className="auth-input-icon" />
+                <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} className={errors.address ? 'error' : ''} />
+              </div>
+              {errors.address && <span className="auth-error">{errors.address}</span>}
+            </div>
+            <div className="auth-field-container">
+              <div className="auth-input-group">
+                <FaLock className="auth-input-icon" />
+                <input type={formData.showPassword ? 'text' : 'password'} name="password" placeholder="Password" value={formData.password} onChange={handleChange} className={errors.password ? 'error' : ''} />
+                <button type="button" className="auth-eye" onClick={() => setFormData(f => ({ ...f, showPassword: !f.showPassword }))}>{formData.showPassword ? <FaEyeSlash /> : <FaEye />}</button>
+              </div>
+              {errors.password && (
+                <div className="auth-error-list">
+                  {Array.isArray(errors.password) ? (
+                    errors.password.map((error, index) => (
+                      <span key={index} className="auth-error-item">{error}</span>
+                    ))
+                  ) : (
+                    <span className="auth-error">{errors.password}</span>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="auth-field-container">
+              <div className="auth-input-group">
+                <FaLock className="auth-input-icon" />
+                <input type={formData.showPassword ? 'text' : 'password'} name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} className={errors.confirmPassword ? 'error' : ''} />
+                <button type="button" className="auth-eye" onClick={() => setFormData(f => ({ ...f, showPassword: !f.showPassword }))}>{formData.showPassword ? <FaEyeSlash /> : <FaEye />}</button>
+              </div>
+              {errors.confirmPassword && <span className="auth-error">{errors.confirmPassword}</span>}
+            </div>
+            <button type="submit" className="auth-submit-btn">Register Now</button>
+          </form>
         </div>
       </div>
     </div>
