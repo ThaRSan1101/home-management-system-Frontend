@@ -43,49 +43,22 @@ const Contact = () => {
       color: '#3B82F6'
     },
     {
-      icon: <FaEnvelope />,
-      title: 'Email',
-      details: ['info@homeservice.com', 'support@homeservice.com'],
-      color: '#10B981'
-    },
-    {
       icon: <FaMapMarkerAlt />,
       title: 'Address',
       details: ['123 Service Street', 'City, State 12345'],
       color: '#F59E0B'
     },
     {
+      icon: <FaEnvelope />,
+      title: 'Email',
+      details: ['info@homeservice.com', 'support@homeservice.com'],
+      color: '#10B981'
+    },
+    {
       icon: <FaClock />,
       title: 'Business Hours',
       details: ['Mon-Fri: 8AM-6PM', 'Sat: 9AM-4PM'],
       color: '#8B5CF6'
-    }
-  ];
-
-  const faqs = [
-    {
-      question: 'How do I book a service?',
-      answer: 'You can book a service by browsing our available services, selecting your preferred provider, and choosing a convenient time slot. Our booking process is simple and takes just a few minutes.'
-    },
-    {
-      question: 'What if I need to cancel my appointment?',
-      answer: 'You can cancel your appointment up to 24 hours before the scheduled time without any cancellation fees. Cancellations made within 24 hours may be subject to a small fee.'
-    },
-    {
-      question: 'Are your service providers insured?',
-      answer: 'Yes, all our service providers are fully insured and licensed. We thoroughly vet all professionals before they join our platform to ensure quality and safety.'
-    },
-    {
-      question: 'How do I know if a provider is reliable?',
-      answer: 'All our providers are pre-screened, background-checked, and rated by previous customers. You can read reviews and ratings before booking to make an informed decision.'
-    },
-    {
-      question: 'What payment methods do you accept?',
-      answer: 'We accept all major credit cards, debit cards, and digital payment methods. Payment is processed securely through our platform after service completion.'
-    },
-    {
-      question: 'Do you offer emergency services?',
-      answer: 'Yes, we offer 24/7 emergency services for urgent home repairs. Simply call our emergency hotline and we\'ll connect you with an available provider immediately.'
     }
   ];
 
@@ -216,22 +189,6 @@ const Contact = () => {
               <p>Interactive map will be displayed here</p>
               <p>123 Service Street, City, State 12345</p>
             </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="faq-section">
-          <div className="section-header">
-            <h2>Frequently Asked Questions</h2>
-            <p>Find answers to common questions about our services</p>
-          </div>
-          <div className="faq-grid">
-            {faqs.map((faq, index) => (
-              <div key={index} className="faq-item">
-                <h3>{faq.question}</h3>
-                <p>{faq.answer}</p>
-              </div>
-            ))}
           </div>
         </section>
 
