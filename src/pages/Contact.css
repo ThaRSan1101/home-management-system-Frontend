@@ -291,3 +291,190 @@
     justify-self: auto;
   }
 }
+
+/* --- New Contact Us Split Layout --- */
+.contactus-split-container {
+  display: flex;
+  min-height: 80vh;
+  width: 100%;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  overflow: hidden;
+  margin: 3rem auto;
+  max-width: 1100px;
+}
+
+.contactus-left {
+  background: #c89b41;
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  padding: 3.5rem 2.5rem 2.5rem 2.5rem;
+  color: #fff;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.contactus-header {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 2.5rem;
+  color: #fff;
+}
+
+.contactus-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.contactus-form-group {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.contactus-form input,
+.contactus-form textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  color: #fff;
+  font-size: 1.08rem;
+  padding: 0.7rem 0 0.7rem 0.2rem;
+  margin-bottom: 0.2rem;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+  resize: none;
+}
+.contactus-form input::placeholder,
+.contactus-form textarea::placeholder {
+  color: #f7e7c1;
+  opacity: 1;
+}
+.contactus-form input:focus,
+.contactus-form textarea:focus {
+  border-bottom: 2.5px solid #fff;
+  background: transparent;
+}
+
+.contactus-send-btn {
+  background: #fff;
+  color: #c89b41;
+  border: none;
+  border-radius: 4px;
+  padding: 0.7rem 2.2rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-top: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.contactus-send-btn:hover {
+  background: #c89b41;
+  color: #fff;
+  border: 1.5px solid #fff;
+}
+
+.contactus-success {
+  margin-top: 1rem;
+  color: #fff;
+  background: #007a65;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.contactus-right {
+  background: #fff;
+  flex: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2.5rem 2.5rem 2rem;
+}
+
+.contactus-right-content {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contactus-contactus {
+  color: #c89b41;
+  font-size: 1.2rem;
+  font-family: 'Dancing Script', cursive, sans-serif;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  letter-spacing: 1px;
+}
+
+.contactus-title {
+  font-size: 2.1rem;
+  font-weight: 900;
+  color: #222;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.contactus-info-list {
+  margin-top: 1.2rem;
+  width: 100%;
+}
+.contactus-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+}
+.contactus-info-icon {
+  color: #c89b41;
+  font-size: 1.3rem;
+  margin-top: 0.2rem;
+}
+.contactus-info-label {
+  font-weight: 700;
+  color: #222;
+  margin-right: 0.3rem;
+}
+.contactus-info-value {
+  color: #444;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 900px) {
+  .contactus-split-container {
+    flex-direction: column;
+    max-width: 98vw;
+    min-height: unset;
+  }
+  .contactus-left, .contactus-right {
+    padding: 2rem 1.2rem;
+    min-width: 0;
+  }
+  .contactus-right-content {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .contactus-header {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+  .contactus-title {
+    font-size: 1.2rem;
+  }
+  .contactus-left, .contactus-right {
+    padding: 1.2rem 0.5rem;
+  }
+}
