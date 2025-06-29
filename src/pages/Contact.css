@@ -291,3 +291,159 @@
     justify-self: auto;
   }
 }
+
+/* Contact Us Split Layout */
+.contactus-split-container {
+  display: flex;
+  min-height: 80vh;
+  width: 100%;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  overflow: hidden;
+  margin: 3rem auto;
+  max-width: 1100px;
+}
+
+.contactus-left-panel {
+  background: #c89b41; /* gold */
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 3rem 2.5rem 2rem 2.5rem;
+  min-width: 340px;
+}
+
+.contactus-title {
+  color: #fff;
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  letter-spacing: 2px;
+}
+
+.contactus-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.contactus-form input,
+.contactus-form textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  color: #fff;
+  font-size: 1.08rem;
+  padding: 0.7rem 0.2rem;
+  margin-bottom: 0.2rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+.contactus-form input::placeholder,
+.contactus-form textarea::placeholder {
+  color: #f7e7c1;
+  opacity: 1;
+}
+.contactus-form input:focus,
+.contactus-form textarea:focus {
+  border-bottom: 2px solid #fffbe6;
+}
+.contactus-form button {
+  background: #fff;
+  color: #c89b41;
+  border: none;
+  border-radius: 4px;
+  padding: 0.7rem 2.2rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-top: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  align-self: flex-start;
+}
+.contactus-form button:hover {
+  background: #c89b41;
+  color: #fff;
+  border: 1.5px solid #fff;
+}
+.contactus-success {
+  color: #fff;
+  background: #007a65;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.contactus-right-panel {
+  background: #fff;
+  flex: 1.3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 3rem 2.5rem 2rem 2.5rem;
+  min-width: 340px;
+}
+.contactus-contact-label {
+  color: #c89b41;
+  font-size: 1.3rem;
+  font-family: 'Dancing Script', cursive, sans-serif;
+  margin-bottom: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.contactus-getintouch {
+  color: #222;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 2.2rem;
+  line-height: 1.2;
+}
+.contactus-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.contactus-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  font-size: 1.08rem;
+  color: #222;
+}
+.contactus-info-icon {
+  font-size: 1.5rem;
+  color: #c89b41;
+  margin-top: 0.1rem;
+}
+.contactus-info-text b {
+  color: #c89b41;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .contactus-split-container {
+    flex-direction: column;
+    max-width: 98vw;
+    min-height: unset;
+  }
+  .contactus-left-panel, .contactus-right-panel {
+    min-width: 0;
+    width: 100%;
+    padding: 2rem 1.2rem;
+  }
+  .contactus-title {
+    font-size: 2rem;
+  }
+  .contactus-getintouch {
+    font-size: 1.5rem;
+  }
+}
