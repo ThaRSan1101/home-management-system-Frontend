@@ -61,7 +61,7 @@ const Login = () => {
               <input
                 type="text"
                 name="username"
-                placeholder="Username or Email"
+                placeholder="Email"
                 value={formData.username}
                 onChange={handleChange}
                 className={errors.username ? 'error' : ''}
