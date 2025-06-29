@@ -104,7 +104,7 @@
 
 .btn-secondary:hover {
   background: #007a65 !important;
-  color: #fff !important;
+  color: #007a65 !important;
   box-shadow: 0 10px 25px rgba(0, 122, 101, 0.2);
 }
 
