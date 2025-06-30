@@ -250,7 +250,18 @@
 }
 
 .contact .map-section {
-  background-color: #157be9 !important;
+  background-color: #f7f8fa !important;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 1100px;
+  width: 100%;
+  
+}
+
+.map-section iframe {
+  border-radius: 20px;
+  width: 80%;
+  margin-left: 9.5rem;
 }
 
 @media (max-width: 1024px) {
@@ -301,12 +312,13 @@
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
   overflow: hidden;
-  margin: 3rem auto;
+  margin: 5rem auto;
   max-width: 1100px;
 }
 
 .contactus-left {
-  background: #c89b41;
+  border: 2px solid #007a65;
+  background:#007a65 ;
   flex: 1.1;
   display: flex;
   flex-direction: column;
@@ -353,7 +365,7 @@
 }
 .contactus-form input::placeholder,
 .contactus-form textarea::placeholder {
-  color: #f7e7c1;
+  color: #fff;
   opacity: 1;
 }
 .contactus-form input:focus,
@@ -364,7 +376,7 @@
 
 .contactus-send-btn {
   background: #fff;
-  color: #c89b41;
+  color: #007a65;
   border: none;
   border-radius: 4px;
   padding: 0.7rem 2.2rem;
@@ -376,7 +388,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 .contactus-send-btn:hover {
-  background: #c89b41;
+  background:#007a65 ;
   color: #fff;
   border: 1.5px solid #fff;
 }
@@ -391,6 +403,7 @@
   font-size: 1rem;
   text-align: center;
 }
+
 
 .contactus-right {
   background: #fff;
@@ -410,7 +423,7 @@
 }
 
 .contactus-contactus {
-  color: #c89b41;
+  color: #007a65;
   font-size: 1.2rem;
   font-family: 'Dancing Script', cursive, sans-serif;
   font-weight: 600;
@@ -437,7 +450,7 @@
   margin-bottom: 1.2rem;
 }
 .contactus-info-icon {
-  color: #c89b41;
+  color: #007a65;
   font-size: 1.3rem;
   margin-top: 0.2rem;
 }
