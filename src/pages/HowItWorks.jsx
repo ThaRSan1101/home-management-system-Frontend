@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './HowItWorks.css';
-import howItWorksImg from '../assets/how-it-works.png';
+import cleaningImg from '../assets/still-life-office-cleaning-process.jpg';
 import { MdOutlineVerifiedUser, MdOutlineHandshake, MdOutlineCreditCard, MdOutlineShield, MdOutlineSupportAgent, MdOutlineLock, MdCheckCircle } from 'react-icons/md';
 
 const guarantees = [
@@ -86,29 +86,43 @@ const HowItWorks = () => {
   return (
     <div className="how-it-works-page page-content">
       {/* Phases of our works Timeline Section */}
-      <section className="hiw-timeline-section">
-        <h2 className="hiw-timeline-title">Phases of our works</h2>
-        <div className="hiw-timeline">
-          <div className="hiw-timeline-item left">
-            <div className="hiw-timeline-content">
-              <h3>Choose Service</h3>
-              <p>Browse our wide range of professional services</p>
+      <section className="phases-horizontal-section">
+        <div className="phases-horizontal-grid">
+          <div className="phases-horizontal-left">
+            <h2 className="phases-title">Phases of our works</h2>
+            <div className="phases-timeline">
+              <div className="phases-timeline-item">
+                <div className="phases-timeline-content left">
+                  <h3>Choose Service</h3>
+                  <p>Browse our wide range of professional services</p>
+                </div>
+                <div className="phases-timeline-circle">1</div>
+                <div className="phases-timeline-content right"></div>
+              </div>
+              <div className="phases-timeline-item">
+                <div className="phases-timeline-content left"></div>
+                <div className="phases-timeline-circle">2</div>
+                <div className="phases-timeline-content right">
+                  <h3>Book Appointment</h3>
+                  <p>Select your preferred time and book instantly</p>
+                </div>
+              </div>
+              <div className="phases-timeline-item">
+                <div className="phases-timeline-content left">
+                  <h3>Get Service</h3>
+                  <p>Our experts arrive and complete the job</p>
+                </div>
+                <div className="phases-timeline-circle">3</div>
+                <div className="phases-timeline-content right"></div>
+              </div>
             </div>
-            <div className="hiw-timeline-circle">1</div>
           </div>
-          <div className="hiw-timeline-item right">
-            <div className="hiw-timeline-circle">2</div>
-            <div className="hiw-timeline-content">
-              <h3>Book Appointment</h3>
-              <p>Select your preferred time and book instantly</p>
-            </div>
-          </div>
-          <div className="hiw-timeline-item left">
-            <div className="hiw-timeline-content">
-              <h3>Get Service</h3>
-              <p>Our experts arrive and complete the job</p>
-            </div>
-            <div className="hiw-timeline-circle">3</div>
+          <div className="phases-horizontal-right">
+            <img
+              src={cleaningImg}
+              alt="Office Cleaning Process"
+              className="phases-side-image"
+            />
           </div>
         </div>
       </section>
