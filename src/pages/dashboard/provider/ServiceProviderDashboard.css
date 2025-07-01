@@ -115,11 +115,11 @@
   font-size: 1.1rem;
 }
 
-.main-content {
+/* .main-content {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
-}
+} */
 
 .dashboard-overview {
   max-width: 1200px;

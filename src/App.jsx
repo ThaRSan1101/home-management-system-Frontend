@@ -16,6 +16,14 @@ import CustomerDashboard from './pages/dashboard/customer/CustomerDashboard';
 import ServiceProviderDashboard from './pages/dashboard/provider/ServiceProviderDashboard';
 import AdminDashboard from './pages/dashboard/admin/AdminDashboard';
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 function App() {
   // Example: get user type from localStorage (or context/redux)
   const userType = localStorage.getItem('userType'); // 'customer', 'admin', 'provider'
