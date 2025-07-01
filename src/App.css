@@ -63,6 +63,7 @@ body {
   text-decoration: none;
   color: var(--text-color);
   font-weight: 500;
+  font-size: 0.68rem;
   transition: color 0.3s ease;
 }
 
@@ -77,6 +78,7 @@ body {
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;
+  font-size: 0.68rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -106,12 +108,12 @@ body {
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
 .hero p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 2rem;
 }
 
@@ -139,7 +141,7 @@ body {
 .services h2 {
   text-align: center;
   margin-bottom: 3rem;
-  font-size: 2.5rem;
+  font-size: 2.1rem;
 }
 
 .services-grid {
@@ -189,7 +191,7 @@ body {
 
 .how-it-works h2 {
   margin-bottom: 3rem;
-  font-size: 2.5rem;
+  font-size: 2.1rem;
 }
 
 .steps {
@@ -227,7 +229,7 @@ body {
 .testimonials h2 {
   text-align: center;
   margin-bottom: 3rem;
-  font-size: 2.5rem;
+  font-size: 2.1rem;
 }
 
 .testimonials-grid {
@@ -340,4 +342,23 @@ body {
 
 .page-content {
   margin-top: 5rem;
+}
+
+.services,
+.how-it-works,
+.testimonials,
+.footer-content,
+.steps,
+.testimonials-grid {
+  text-align: left;
+}
+
+.services-grid,
+.steps-grid,
+.reviews-grid,
+.highlights-grid,
+.footer-content,
+.testimonials-grid {
+  margin-left: 0;
+  margin-right: auto;
 }

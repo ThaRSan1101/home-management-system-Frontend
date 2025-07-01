@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import Logo from './Logo';
 import './Footer.css';
 
 const Footer = () => {
@@ -10,7 +11,7 @@ const Footer = () => {
       <div className="footer-new-container">
         <div className="footer-brand">
           <div className="footer-logo">
-            <img src="/images/Logo.png" alt="Home Service Logo" />
+            <Logo size="small" />
             <span>HomeService</span>
           </div>
           <p className="footer-desc">Your trusted partner for professional home services.</p>

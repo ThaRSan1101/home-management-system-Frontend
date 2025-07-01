@@ -1,36 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './HowItWorks.css';
-import howItWorksImg from '../assets/how-it-works.png';
+import cleaningImg from '../assets/still-life-office-cleaning-process.jpg';
+import { MdOutlineVerifiedUser, MdOutlineHandshake, MdOutlineCreditCard, MdOutlineShield, MdOutlineSupportAgent, MdOutlineLock, MdCheckCircle } from 'react-icons/md';
 
 const guarantees = [
   {
-    icon: "🛡️",
+    icon: <MdOutlineVerifiedUser size={48} color="#006551" />,
     title: "Verified Professionals",
     description: "All service providers undergo thorough background checks, identity verification, and professional certification validation before joining our platform."
   },
   {
-    icon: "😊",
+    icon: <MdOutlineHandshake size={48} color="#006551" />,
     title: "Satisfaction Guarantee",
     description: "If you're not completely satisfied with the service, we'll work with you to make it right or provide a refund according to our satisfaction guarantee policy."
   },
   {
-    icon: "💳",
+    icon: <MdOutlineCreditCard size={48} color="#006551" />,
     title: "Secure Payments",
     description: "All transactions are processed through our secure payment system. Your payment is only released to the provider after you approve the completed service."
   },
   {
-    icon: "🏠",
+    icon: <MdOutlineShield size={48} color="#006551" />,
     title: "Insurance Coverage",
     description: "Services booked through our platform are covered by our protection policy, providing peace of mind in the rare case of property damage during service."
   },
   {
-    icon: "📞",
+    icon: <MdOutlineSupportAgent size={48} color="#006551" />,
     title: "24/7 Support",
     description: "Our customer support team is available around the clock to assist with any questions or concerns before, during, or after your service appointment."
   },
   {
-    icon: "🔒",
+    icon: <MdOutlineLock size={48} color="#006551" />,
     title: "Privacy Protection",
     description: "Your personal information and service details are kept secure and private. We never share your data with third parties without your explicit consent."
   },
@@ -78,89 +79,64 @@ const faqs = [
 ];
 
 const HowItWorks = () => {
+  // Accordion state for FAQ
+  const [openFaq, setOpenFaq] = useState(null);
+  const handleFaqClick = idx => setOpenFaq(openFaq === idx ? null : idx);
+
   return (
     <div className="how-it-works-page page-content">
-      {/* Hero Section */}
-      <section className="howitworks-hero">
-        <div className="howitworks-hero-content">
-          <h1>How ServiceHub Works</h1>
-          <p>Booking trusted home services is simple, secure, and reliable with ServiceHub. Here's how it works:</p>
-          <Link to="/services" className="howitworks-hero-btn">Get Started</Link>
-        </div>
-        <div className="howitworks-hero-image">
-          <img src={howItWorksImg} alt="How it works illustration" />
-        </div>
-      </section>
-
-      {/* How It Works Steps - Redesigned */}
-      <section className="hiw-steps-section">
-        <div className="hiw-steps-header">
-          <h2>How ServiceHub Works</h2>
-          <p>Follow these simple steps to get your home services done right:</p>
-        </div>
-        <div className="hiw-steps-grid">
-          <div className="hiw-step-card">
-            <div className="hiw-step-icon">🔍</div>
-            <h3>1. Browse Services</h3>
-            <p>Explore a wide range of trusted home services tailored to your needs. Find exactly what you're looking for in just a few clicks.</p>
+      {/* Phases of our works Timeline Section */}
+      <section className="phases-horizontal-section">
+        <div className="phases-horizontal-grid">
+          <div className="phases-horizontal-left">
+            <h2 className="phases-title">Phases of our works</h2>
+            <div className="phases-timeline">
+              <div className="phases-timeline-item">
+                <div className="phases-timeline-content left">
+                  <h3>Choose Service</h3>
+                  <p>Browse our wide range of professional services</p>
+                </div>
+                <div className="phases-timeline-circle">1</div>
+                <div className="phases-timeline-content right"></div>
+              </div>
+              <div className="phases-timeline-item">
+                <div className="phases-timeline-content left"></div>
+                <div className="phases-timeline-circle">2</div>
+                <div className="phases-timeline-content right">
+                  <h3>Book Appointment</h3>
+                  <p>Select your preferred time and book instantly</p>
+                </div>
+              </div>
+              <div className="phases-timeline-item">
+                <div className="phases-timeline-content left">
+                  <h3>Get Service</h3>
+                  <p>Our experts arrive and complete the job</p>
+                </div>
+                <div className="phases-timeline-circle">3</div>
+                <div className="phases-timeline-content right"></div>
+              </div>
+            </div>
           </div>
-          <div className="hiw-step-card">
-            <div className="hiw-step-icon">👤</div>
-            <h3>2. Choose Your Provider</h3>
-            <p>Review detailed profiles, ratings, and customer feedback to select the best professional for your job.</p>
-          </div>
-          <div className="hiw-step-card">
-            <div className="hiw-step-icon">📅</div>
-            <h3>3. Book Online</h3>
-            <p>Schedule your service at a time that suits you. Our seamless online booking system ensures a hassle-free experience.</p>
-          </div>
-          <div className="hiw-step-card">
-            <div className="hiw-step-icon">🛠️</div>
-            <h3>4. Service Fulfillment</h3>
-            <p>Your chosen professional delivers quality service at your doorstep. We ensure punctuality and professionalism every time.</p>
+          <div className="phases-horizontal-right">
+            <img
+              src={cleaningImg}
+              alt="Office Cleaning Process"
+              className="phases-side-image"
+            />
           </div>
         </div>
       </section>
 
       {/* Trust & Security Guarantees */}
-      <section className="trust-section">
-        <h2>Our Trust & Security Guarantees</h2>
-        <p className="trust-intro">We prioritize your safety and satisfaction with every service booking.</p>
-        <div className="trust-grid">
+      <section className="trust-section trust-cards-section">
+        <h2 className="trust-title">Why choose us?</h2>
+        <p className="trust-intro">We prioritize your safety and satisfaction with every service booking</p>
+        <div className="trust-cards-grid">
           {guarantees.map((g, idx) => (
             <div className="trust-card" key={idx}>
-              <div className="trust-icon">{g.icon}</div>
-              <h3>{g.title}</h3>
-              <p>{g.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="testimonials-section">
-        <h2>What Our Customers Say</h2>
-        <div className="testimonials-grid">
-          {testimonials.map((t, idx) => (
-            <div className="testimonial-card" key={idx}>
-              <p className="testimonial-quote">"{t.quote}"</p>
-              <div className="testimonial-author">
-                <span className="testimonial-name">{t.name}</span>
-                <span className="testimonial-service">{t.service}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <div className="faq-list">
-          {faqs.map((faq, idx) => (
-            <div className="faq-item" key={idx}>
-              <div className="faq-question">{faq.question}</div>
-              <div className="faq-answer">{faq.answer}</div>
+              <div className="trust-card-icon">{g.icon}</div>
+              <h3 className="trust-card-title">{g.title}</h3>
+              <p className="trust-card-desc">{g.description}</p>
             </div>
           ))}
         </div>
@@ -171,15 +147,23 @@ const HowItWorks = () => {
         {/* Add your custom content here */}
       </section>
 
-      {/* CTA Section */}
-      <div className="cta-section">
-        <h2>Ready to Book?</h2>
-        <p>Join thousands of satisfied customers who trust ServiceHub for their home needs.</p>
-        <div className="cta-buttons">
-          <Link to="/services" className="primary-btn">Explore Services</Link>
-          <Link to="/register" className="secondary-btn">Sign Up Now</Link>
+      {/* FAQ Section */}
+      <section className="faq-section new-faq-section">
+        <h2 className="faq-title">Frequently asked questions</h2>
+        <div className="faq-list new-faq-list">
+          {faqs.map((faq, idx) => (
+            <div className="faq-card" key={idx}>
+              <button className="faq-question-row" onClick={() => handleFaqClick(idx)}>
+                <span className="faq-question-text">{faq.question}</span>
+                <span className="faq-plus">{openFaq === idx ? '-' : '+'}</span>
+              </button>
+              {openFaq === idx && (
+                <div className="faq-answer-row">{faq.answer}</div>
+              )}
+            </div>
+          ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 };
