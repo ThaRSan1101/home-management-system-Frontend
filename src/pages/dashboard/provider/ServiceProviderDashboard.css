@@ -1,7 +1,14 @@
-.service-provider-dashboard {
+.provider-dashboard-layout {
   display: flex;
   min-height: 100vh;
   background: #f8fafc;
+}
+
+.provider-dashboard-main {
+  flex: 1;
+  margin-left: 230px;
+  padding: 2.5rem 2rem;
+  min-width: 0;
 }
 
 .sidebar {
@@ -365,5 +372,15 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .provider-dashboard-main {
+    margin-left: 0;
+    padding: 1rem 0.5rem;
+  }
+  .provider-dashboard-layout {
+    flex-direction: column;
   }
 } 
