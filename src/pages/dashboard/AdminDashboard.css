@@ -108,11 +108,11 @@
   font-size: 1.1rem;
 }
 
-.main-content {
+/* .main-content {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
-}
+} */
 
 /* Responsive Design */
 @media (max-width: 768px) {

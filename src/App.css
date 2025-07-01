@@ -24,7 +24,7 @@ body {
 
 /* Main content spacing after navbar */
 .main-content {
-  padding-top: 6rem;
+  /* padding-top: 6rem; */
   background-color: #f5f6f7; 
 }
 
@@ -33,7 +33,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 5%;
+  /* padding: 1rem 5%; */
   background-color: var(--white);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: fixed;
@@ -340,9 +340,9 @@ body {
   }
 }
 
-.page-content {
+/* .page-content {
   margin-top: 5rem;
-}
+} */
 
 .services,
 .how-it-works,
