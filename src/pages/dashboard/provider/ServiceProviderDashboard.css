@@ -1,19 +1,22 @@
-/* Customer Dashboard Styles */
-.customer-dashboard {
+.provider-dashboard-layout {
   display: flex;
   min-height: 100vh;
   background: #f8fafc;
 }
 
-/* Sidebar */
+.provider-dashboard-main {
+  flex: 1;
+  margin-left: 230px;
+  padding: 2.5rem 2rem;
+  min-width: 0;
+}
+
 .sidebar {
   width: 280px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   transition: all 0.3s ease;
-  box-shadow: 2px 0 10px rgba(16, 185, 129, 0.2);
-  display: flex;
-  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar.closed {
@@ -112,7 +115,6 @@
   font-size: 1.1rem;
 }
 
-/* Main Content */
 .main-content {
   flex: 1;
   padding: 2rem;
@@ -153,8 +155,8 @@
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -162,13 +164,13 @@
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .stat-icon {
   font-size: 2rem;
   margin-right: 1rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -184,10 +186,28 @@
 }
 
 .stat-number {
-  margin: 0;
+  margin: 0 0 0.25rem 0;
   font-size: 1.8rem;
   font-weight: 700;
   color: #1e293b;
+}
+
+.stat-change {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.stat-change.positive {
+  color: #10b981;
+}
+
+.stat-change.negative {
+  color: #ef4444;
+}
+
+.stat-change.neutral {
+  color: #64748b;
 }
 
 .dashboard-sections {
@@ -200,8 +220,8 @@
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
 }
 
 .section-card h3 {
@@ -249,26 +269,19 @@
   letter-spacing: 0.5px;
 }
 
-.status.scheduled {
-  background: #dbeafe;
-  color: #2563eb;
+.status.pending {
+  background: #fef3c7;
+  color: #d97706;
 }
 
-.status.completed {
+.status.confirmed {
   background: #d1fae5;
   color: #059669;
 }
 
-.status.cancelled {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.booking-amount {
-  font-weight: 600;
-  color: #1e293b;
-  font-size: 0.9rem;
-  margin: 0.5rem 0 0 0;
+.status.completed {
+  background: #dbeafe;
+  color: #2563eb;
 }
 
 .quick-actions {
@@ -289,7 +302,6 @@
   font-size: 0.9rem;
   font-weight: 500;
   color: #1e293b;
-  text-decoration: none;
 }
 
 .action-btn:hover {
@@ -360,5 +372,15 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .provider-dashboard-main {
+    margin-left: 0;
+    padding: 1rem 0.5rem;
+  }
+  .provider-dashboard-layout {
+    flex-direction: column;
   }
 } 
