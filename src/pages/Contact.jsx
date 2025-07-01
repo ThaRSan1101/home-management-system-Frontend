@@ -24,7 +24,7 @@ const Contact = () => {
   };
 
   return (
-    <React.Fragment>
+    <>
       <div className="contactus-split-container">
         <div className="contactus-left">
           <h1 className="contactus-header">SEND MESSAGE</h1>
@@ -55,7 +55,7 @@ const Contact = () => {
             <div className="contactus-info-list">
               <div className="contactus-info-item">
                 <FaMapMarkerAlt className="contactus-info-icon" />
-                <span className="contactus-info-label">Address :</span>
+                <span className="contactus-info-label">Address:</span>
                 <span className="contactus-info-value">25, Kensington Garden, Colombo 00400</span>
               </div>
               <div className="contactus-info-item">
@@ -74,19 +74,17 @@ const Contact = () => {
       </div>
       <section className="map-section">
         <iframe
-          title="Google Map of Culture Colombo"
+          title="Google Map"
           src="https://maps.google.com/maps?q=25%20Kensington%20Garden%2C%20Colombo%2000400&t=&z=15&ie=UTF8&iwloc=&output=embed"
           width="100%"
-          height="450"
-          frameBorder="0"
-          style={{ border: 0 }}
+          height="400"
+          style={{ border: 0, borderRadius: '20px', display: 'block', marginTop: '2rem' }}
           allowFullScreen=""
-          aria-hidden="false"
-          tabIndex="0"
           loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
         ></iframe>
       </section>
-    </React.Fragment>
+    </>
   );
 };
 
