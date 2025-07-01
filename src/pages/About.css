@@ -320,6 +320,7 @@ h1, h2, h3 {
   border-radius: 50px;
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
+}
 
 .value-card h3, .team-card h3, .stat-card h3 {
   font-size: 1.25rem;
@@ -460,6 +461,7 @@ h1, h2, h3 {
 @keyframes floatY {
   0% { transform: translateY(0); }
   100% { transform: translateY(-18px); }
+}
 
 .member-bio {
   color: #718096;
@@ -567,14 +569,10 @@ h1, h2, h3 {
 .core-values-section h2 {
   font-size: 2rem;
   color: var(--primary-color, #007a65);
-
-.about-cta h2 {
-  font-size: 1.7rem;
   font-weight: 800;
   margin-bottom: 2rem;
   letter-spacing: -1px;
 }
-
 .core-values-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -582,7 +580,6 @@ h1, h2, h3 {
   max-width: 900px;
   margin: 0 auto;
 }
-
 .core-value-card {
   background: rgba(255,255,255,0.97);
   border-radius: 16px;
@@ -613,6 +610,14 @@ h1, h2, h3 {
   .core-values-section {
     padding: 2rem 0.2rem 1rem 0.2rem;
   }
+}
+
+.about-cta h2 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  letter-spacing: -1px;
+}
 
 .about-cta p {
   font-size: 0.95rem;
