@@ -16,50 +16,50 @@ const Services = () => {
     {
       id: 1,
       image: service1,
-      category: 'Maintenance',
-      title: 'Drain cleaning',
-      description: 'Our drain cleaning services include floor drains, downspout drains, storm drains, sewer drains, and more.',
-      icon: '🛁'
+      category: 'Pipes, Leaks & Water Flow',
+      title: 'Plumbing Services',
+      description: 'Fixing leaks, clogs, and water flow issues. Bathroom and kitchen plumbing made simple. Quick response for urgent plumbing problems.',
+      icon: '🛠️'
     },
     {
       id: 2,
       image: service2,
-      category: 'Repair',
-      title: 'Fixing pipes',
-      description: 'Our plumbers are experts in pipe repair, replacement and cleaning.',
-      icon: '🔧'
+      category: 'Woodwork & Furniture',
+      title: 'Carpentry Services',
+      description: 'Expert repairs for doors, windows, and furniture. Custom woodwork made easy and affordable. Fast fixes and installations for all wood-related needs.',
+      icon: '🪚'
     },
     {
       id: 3,
       image: service3,
-      category: 'Repair',
-      title: 'Emergency plumber',
-      description: 'Emergency plumbers at your service 24 hours per day.',
-      icon: '🚨'
+      category: 'Wiring, Lights & Power',
+      title: 'Electrical Services',
+      description: 'Safe installation of lights, fans, and switches. Quick repairs for power issues and wiring. Certified electricians for hassle-free service.',
+      icon: '💡'
     },
     {
       id: 4,
       image: service4,
-      category: 'Installation',
-      title: 'Appliance Installation',
-      description: 'We install dishwashers, washing machines, water heaters, and more with expert care.',
-      icon: '🔌'
+      category: 'Walls & Surfaces',
+      title: 'Painting Services',
+      description: 'Clean, smooth wall painting with lasting results. Choose your colors we handle the rest. Interior or exterior, big or small we paint it all.',
+      icon: '🎨'
     },
     {
       id: 5,
       image: service5,
-      category: 'Inspection',
-      title: 'Leak Detection',
-      description: 'Advanced leak detection services to prevent water damage and save on repairs.',
-      icon: '💧'
+      category: 'Home Appliances',
+      title: 'Electronic Services',
+      description: 'Get your home appliances fixed fast. We service TVs, fridges, ovens, washers & more. Quality repairs with genuine spare parts.',
+      icon: '📺'
     },
     {
       id: 6,
       image: service6,
-      category: 'Maintenance',
-      title: 'Bathroom Renovation',
-      description: 'Transform your bathroom with our complete renovation and upgrade services.',
-      icon: '🛠️'
+      category: 'Home & Kitchen Cleaning',
+      title: 'Cleaning Service',
+      description: 'Deep cleaning for every space in your home. Kitchen, bathroom, and full-house cleaning. Trained staff using safe, effective products.',
+      icon: '🧹'
     }
   ];
 
@@ -129,7 +129,7 @@ const Services = () => {
               <span className="circle gray"></span>
             </div>
             <h1>Our Services</h1>
-            <p>Quality is our guarantee. We offer a wide range of plumbing services to both residential and commercial clients.</p>
+            <p>Your comfort is our priority<br />Book trusted services with just a few clicks</p>
           </div>
           <div className="section-header" style={{display: 'none'}}>
             <h2>Our Services</h2>
@@ -162,42 +162,42 @@ const Services = () => {
                 <div className="subscription-header">Weekly Plan</div>
                 <div className="subscription-price">Vehicle Wash</div>
                 <ul className="subscription-features">
-                  <li>🧼 Weekly Vehicle Wash</li>
+                  <li>✔ Weekly Vehicle Wash</li>
                   <li>✔ Car and bike washing</li>
                   <li>✔ Exterior and tire cleaning</li>
                   <li>✔ Basic interior wipe</li>
                   <li>✔ One service every week</li>
                   <li>✔ Doorstep service</li>
                 </ul>
-                <button className="subscription-btn">Get Started</button>
+                <button className="subscription-btn">Subscribe</button>
               </div>
               {/* Monthly Plan */}
-              <div className="subscription-card subscription-card-featured">
+              <div className="subscription-card">
                 <div className="subscription-header">Monthly Plan</div>
                 <div className="subscription-price">Deep Cleaning</div>
                 <ul className="subscription-features">
-                  <li>🧹 Monthly Deep Cleaning</li>
+                  <li>✔ Monthly Deep Cleaning</li>
                   <li>✔ Home, kitchen, bathroom, office, garden</li>
                   <li>✔ Full deep cleaning and dust removal</li>
                   <li>✔ Disinfection included</li>
                   <li>✔ One visit per month</li>
                   <li>✔ Trusted professionals</li>
                 </ul>
-                <button className="subscription-btn subscription-btn-featured">Get Started</button>
+                <button className="subscription-btn">Subscribe</button>
               </div>
               {/* Yearly Plan */}
               <div className="subscription-card">
                 <div className="subscription-header">Yearly Plan</div>
-                <div className="subscription-price">AC, Plumbing & Electrical Check</div>
+                <div className="subscription-price">Utility Check</div>
                 <ul className="subscription-features">
-                  <li>🔧 Annual Maintenance</li>
+                  <li>✔ Annual Maintenance</li>
                   <li>✔ AC deep cleaning</li>
                   <li>✔ Plumbing check-up</li>
                   <li>✔ Electrical safety inspection</li>
                   <li>✔ One visit per service yearly</li>
                   <li>✔ Preventive maintenance</li>
                 </ul>
-                <button className="subscription-btn">Get Started</button>
+                <button className="subscription-btn">Subscribe</button>
               </div>
             </div>
           </section>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaTools, FaStar, FaCheckCircle, FaArrowRight } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules';
@@ -18,6 +18,8 @@ import service6 from '../assets/service6.jpg';
 import bdImg from '../assets/bd-img.jpg';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const featuredServices = [
     {
       id: 1,
@@ -143,60 +145,56 @@ const Home = () => {
 
   const sliderImages = [cover1, cover2, cover3];
 
-  const serviceCards = [
+  const services = [
     {
       id: 1,
       image: service1,
-      category: 'Maintenance',
-      title: 'Drain cleaning',
-      description: 'Our drain cleaning services include floor drains, downspout drains, storm drains, sewer drains, and more.',
-      link: '/services/drain-cleaning',
-      categoryColor: '#0d7b6c'
+      category: 'Pipes, Leaks & Water Flow',
+      title: 'Plumbing Services',
+      description: 'Leak repairs, pipe installations, or full bathroom fittings — our plumbers handle it all with speed and care.',
+      
     },
     {
       id: 2,
       image: service2,
-      category: 'Repair',
-      title: 'Fixing pipes',
-      description: 'Our plumbers are experts in pipe repair, replacement and cleaning.',
-      link: '/services/pipe-repair',
-      categoryColor: '#007a65'
+      category: 'Woodwork & Furniture',
+      title: 'Carpentry Services',
+      description: 'From custom furniture to quick repairs, our expert carpenters deliver quality craftsmanship and lasting results for your home.',
+      
     },
     {
       id: 3,
       image: service3,
-      category: 'Repair',
-      title: 'Emergency plumber',
-      description: 'Emergency plumbers at your service 24 hours per day.',
-      link: '/services/emergency-plumber',
-      categoryColor: '#007a65'
+      category: 'Wiring, Lights & Power',
+      title: 'Electrical Services',
+      description: 'Safe, professional electrical solutions — whether it’s wiring, lighting, or power issues, our certified electricians are here to help.',
+      
     },
     {
       id: 4,
       image: service4,
-      category: 'Installation',
-      title: 'Water Heater Installation',
-      description: 'Professional installation of energy-efficient water heaters for your home or business.',
-      link: '/services/water-heater-installation',
-      categoryColor: '#0d7b6c'
+      category: 'Walls & Surfaces',
+      title: 'Painting Services',
+      description: 'Refresh your space with clean, professional painting — interior or exterior, we bring color and precision to every job.',
+      
     },
     {
       id: 5,
       image: service5,
-      category: 'Maintenance',
-      title: 'Gutter Cleaning',
-      description: 'Keep your gutters clean and clog-free with our thorough gutter cleaning services.',
-      link: '/services/gutter-cleaning',
-      categoryColor: '#007a65'
+      category: 'Home Appliances',
+      title: 'Electronic Services',
+      description: 'We repair and service home appliances including TVs, fridges, washing machines, and more — quick and dependable.',
+      
     },
     {
       id: 6,
       image: service6,
-      category: 'Repair',
-      title: 'Toilet Repair',
-      description: 'Fast and reliable toilet repair for leaks, clogs, and flushing issues.',
-      link: '/services/toilet-repair',
-      categoryColor: '#0d7b6c'
+      category: 'Home & Kitchen Cleaning',
+      title: 'Cleaning Service',
+      description: 'Deep cleaning for homes, kitchens, bathrooms, and offices — we make every corner shine with hygiene and care.',
+
+
+      
     }
   ];
 
@@ -238,15 +236,18 @@ const Home = () => {
           <h2 className="modern-services-title">What Can We Help You With ?</h2>
         </div>
         <div className="modern-services-grid">
-          {serviceCards.map(card => (
-            <div className="modern-service-card overlap-bottom" key={card.id}>
+          {services.map(service => (
+            <div className="modern-service-card overlap-bottom" key={service.id}>
               <div className="modern-service-img-wrapper">
-                <img src={card.image} alt={card.title} className="modern-service-img" />
+                <img src={service.image} alt={service.title} className="modern-service-img" />
+                <div className="modern-service-badge">
+                  <span>{service.icon}</span>
+                </div>
                 <div className="modern-service-info-overlap-bottom">
-                  <span className="modern-service-category" style={{ color: card.categoryColor }}>{card.category}</span>
-                  <h3 className="modern-service-title">{card.title}</h3>
-                  <p className="modern-service-desc">{card.description}</p>
-                  <Link to={card.link} className="modern-service-link">Explore</Link>
+                  <span className="modern-service-category" style={{ color: '#007a65' }}>{service.category}</span>
+                  <h3 className="modern-service-title">{service.title}</h3>
+                  <p className="modern-service-desc">{service.description}</p>
+                  <Link to="/register" className="modern-service-link">Explore</Link>
                 </div>
               </div>
             </div>
@@ -266,14 +267,19 @@ const Home = () => {
                 <p>Real feedback from satisfied customers</p>
               </div>
               <Swiper
-                slidesPerView={1}
-                spaceBetween={0}
+                slidesPerView={3}
+                spaceBetween={24}
                 loop={true}
                 autoplay={{ delay: 3500, disableOnInteraction: false }}
                 modules={[Autoplay, Navigation]}
                 className="reviews-swiper reviews-centered-swiper"
                 pagination={{ clickable: true }}
                 navigation={true}
+                breakpoints={{
+                  0: { slidesPerView: 1, spaceBetween: 0 },
+                  700: { slidesPerView: 2, spaceBetween: 16 },
+                  1024: { slidesPerView: 3, spaceBetween: 24 }
+                }}
               >
                 {reviews.map((review) => (
                   <SwiperSlide key={review.id}>
@@ -306,7 +312,7 @@ const Home = () => {
         <div className="ready-container">
           <h2 className="ready-title">Ready to Get Started?</h2>
           <p className="ready-subtitle">Join thousands of satisfied customers who trust us with their home services</p>
-          <button className="ready-btn">Get Started </button>
+          <button className="ready-btn" onClick={() => navigate('/register')}>Get Started </button>
         </div>
       </section>
     
