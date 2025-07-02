@@ -1,12 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaTools, FaStar, FaCheckCircle, FaArrowRight } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
+import 'swiper/css/navigation';
 import './Home.css';
+import cover1 from '../assets/cover1.jpg';
+import cover2 from '../assets/cover2.jpg';
+import cover3 from '../assets/cover3.jpg';
+import service1 from '../assets/service1.jpg';
+import service2 from '../assets/service2.jpg';
+import service3 from '../assets/service3.jpg';
+import service4 from '../assets/service4.jpg';
+import service5 from '../assets/service5.jpg';
+import service6 from '../assets/service6.jpg';
+import bdImg from '../assets/bd-img.jpg';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const featuredServices = [
     {
       id: 1,
@@ -130,132 +143,180 @@ const Home = () => {
     }
   ];
 
+  const sliderImages = [cover1, cover2, cover3];
+
+  const services = [
+    {
+      id: 1,
+      image: service1,
+      category: 'Pipes, Leaks & Water Flow',
+      title: 'Plumbing Services',
+      description: 'Leak repairs, pipe installations, or full bathroom fittings — our plumbers handle it all with speed and care.',
+      
+    },
+    {
+      id: 2,
+      image: service2,
+      category: 'Woodwork & Furniture',
+      title: 'Carpentry Services',
+      description: 'From custom furniture to quick repairs, our expert carpenters deliver quality craftsmanship and lasting results for your home.',
+      
+    },
+    {
+      id: 3,
+      image: service3,
+      category: 'Wiring, Lights & Power',
+      title: 'Electrical Services',
+      description: 'Safe, professional electrical solutions — whether it’s wiring, lighting, or power issues, our certified electricians are here to help.',
+      
+    },
+    {
+      id: 4,
+      image: service4,
+      category: 'Walls & Surfaces',
+      title: 'Painting Services',
+      description: 'Refresh your space with clean, professional painting — interior or exterior, we bring color and precision to every job.',
+      
+    },
+    {
+      id: 5,
+      image: service5,
+      category: 'Home Appliances',
+      title: 'Electronic Services',
+      description: 'We repair and service home appliances including TVs, fridges, washing machines, and more — quick and dependable.',
+      
+    },
+    {
+      id: 6,
+      image: service6,
+      category: 'Home & Kitchen Cleaning',
+      title: 'Cleaning Service',
+      description: 'Deep cleaning for homes, kitchens, bathrooms, and offices — we make every corner shine with hygiene and care.',
+
+
+      
+    }
+  ];
+
   return (
     <div className="home page-content">
-      {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-content">
-          <h1>Professional Home Services at Your Fingertips</h1>
-          <p className="hero-subheading">Connect with trusted professionals for all your home maintenance and repair needs. Quality service, guaranteed satisfaction.</p>
-          <div className="hero-buttons">
-            <Link to="/services" className="btn btn-primary">
-              Explore Services
-              <FaArrowRight />
-            </Link>
-            <Link to="/register" className="btn btn-secondary">
-              Join Our Community
-            </Link>
-          </div>
-        </div>
+      {/* Hero Slider Section */}
+      <section className="hero-slider-section">
+        <Swiper
+          modules={[Autoplay]}
+          autoplay={{ delay: 3500, disableOnInteraction: false }}
+          loop={true}
+          className="hero-swiper"
+        >
+          {sliderImages.map((img, idx) => (
+            <SwiperSlide key={idx}>
+              <div className="hero-slide" style={{ backgroundImage: `url(${img})` }}>
+                <div className="hero-slide-overlay">
+                  <div className="hero-slide-content">
+                    <h1>Professional Home Services at Your Fingertips</h1>
+                    <p className="hero-subheading">
+                      Connect with trusted professionals for all your home maintenance and repair needs. Quality service, guaranteed satisfaction.
+                    </p>
+                    <div className="hero-buttons">
+                      <Link to="/services" className="btn btn-primary">Explore Services</Link>
+                      <Link to="/register" className="btn btn-secondary">Join Community</Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </section>
 
       {/* Featured Services */}
-      <section className="featured-services">
-        <div className="container">
-          <div className="section-header">
-            <h2>Our Services</h2>
-            <p>Professional solutions for every home maintenance and improvement need</p>
-          </div>
-          <div className="services-grid">
-            {featuredServices.map(service => (
-              <div key={service.id} className="service-card" style={{ borderTopColor: service.color }}>
-                <div className="service-icon" style={{ backgroundColor: service.color }}>
+      <section className="modern-services-section">
+        <div className="modern-services-header">
+          <span className="modern-services-label">Our Services</span>
+          <h2 className="modern-services-title">What Can We Help You With ?</h2>
+        </div>
+        <div className="modern-services-grid">
+          {services.map(service => (
+            <div className="modern-service-card overlap-bottom" key={service.id}>
+              <div className="modern-service-img-wrapper">
+                <img src={service.image} alt={service.title} className="modern-service-img" />
+                <div className="modern-service-badge">
                   <span>{service.icon}</span>
                 </div>
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-                <Link to="/services" className="service-link">
-                  Learn More <FaArrowRight />
-                </Link>
+                <div className="modern-service-info-overlap-bottom">
+                  <span className="modern-service-category" style={{ color: '#007a65' }}>{service.category}</span>
+                  <h3 className="modern-service-title">{service.title}</h3>
+                  <p className="modern-service-desc">{service.description}</p>
+                  <Link to="/register" className="modern-service-link">Explore</Link>
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="how-it-works">
-        <div className="container">
-          <div className="section-header">
-            <h2>How It Works</h2>
-            <p>Get professional help in three simple steps</p>
-          </div>
-          <div className="steps-grid">
-            {howItWorks.map((step) => (
-              <div key={step.step} className="step-card">
-                <div className="step-number">{step.step}</div>
-                <div className="step-icon">{step.icon}</div>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     
 
       {/* Testimonials */}
-      <section className="reviews">
-        <div className="container">
-          <div className="section-header">
-            <h2>What Our Customers Say</h2>
-            <p>Real feedback from satisfied customers</p>
-          </div>
-          <Swiper
-            slidesPerView={3}
-            spaceBetween={32}
-            loop={true}
-            autoplay={{ delay: 3500, disableOnInteraction: false }}
-            modules={[Autoplay]}
-            className="reviews-swiper"
-            breakpoints={{
-              0: { slidesPerView: 1 },
-              600: { slidesPerView: 1 },
-              900: { slidesPerView: 2 },
-              1200: { slidesPerView: 3 }
-            }}
-          >
-            {reviews.map((review) => (
-              <SwiperSlide key={review.id}>
-                <div className="review-card-unified carousel-card-bg">
-                  <div className="review-header">
-                    <div className="review-avatar">{review.avatar}</div>
-                    <div className="reviewer-name">{review.name}</div>
-                    <div className="review-amount">{review.amount}</div>
-                    <div className="review-service">{review.service}</div>
-                  </div>
-                  <div className="review-rating">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <span key={i} className="star">★</span>
-                    ))}
-                    {[...Array(5 - review.rating)].map((_, i) => (
-                      <span key={i} className="star inactive">★</span>
-                    ))}
-                  </div>
-                  <div className="review-text">{review.comment}</div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="cta-section">
-        <div className="container">
-          <div className="cta-content">
-            <h2>Ready to Get Started?</h2>
-            <p>Join thousands of satisfied customers who trust us with their home services</p>
-            <div className="cta-buttons">
-              <Link to="/register" className="btn btn-primary">
-                Get Started Today
-              </Link>
-              <Link to="/contact" className="btn btn-outline">
-                Contact Us
-              </Link>
+      <section className="reviews-bg-section">
+        <div className="reviews-bg" style={{ backgroundImage: `url(${bdImg})` }}>
+          <div className="reviews-bg-overlay">
+            <div className="container">
+              <div className="section-header">
+                <h2>What Our Customers Say</h2>
+                <p>Real feedback from satisfied customers</p>
+              </div>
+              <Swiper
+                slidesPerView={3}
+                spaceBetween={24}
+                loop={true}
+                autoplay={{ delay: 3500, disableOnInteraction: false }}
+                modules={[Autoplay, Navigation]}
+                className="reviews-swiper reviews-centered-swiper"
+                pagination={{ clickable: true }}
+                navigation={true}
+                breakpoints={{
+                  0: { slidesPerView: 1, spaceBetween: 0 },
+                  700: { slidesPerView: 2, spaceBetween: 16 },
+                  1024: { slidesPerView: 3, spaceBetween: 24 }
+                }}
+              >
+                {reviews.map((review) => (
+                  <SwiperSlide key={review.id}>
+                    <div className="review-centered-slide">
+                      <div className="review-centered-text">{review.comment}</div>
+                      <div className="review-centered-details">
+                        <div className="review-centered-avatar">{review.avatar}</div>
+                        <div className="review-centered-name">{review.name}</div>
+                        <div className="review-centered-service">{review.service}</div>
+                        <div className="review-centered-amount">{review.amount}</div>
+                        <div className="review-centered-rating">
+                          {[...Array(review.rating)].map((_, i) => (
+                            <span key={i} className="star">★</span>
+                          ))}
+                          {[...Array(5 - review.rating)].map((_, i) => (
+                            <span key={i} className="star inactive">★</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
           </div>
         </div>
       </section>
+ {/* Ready to Get Started Section */}
+ <section className="ready-section">
+        <div className="ready-container">
+          <h2 className="ready-title">Ready to Get Started?</h2>
+          <p className="ready-subtitle">Join thousands of satisfied customers who trust us with their home services</p>
+          <button className="ready-btn" onClick={() => navigate('/register')}>Get Started </button>
+        </div>
+      </section>
+    
+      
     </div>
   );
 };

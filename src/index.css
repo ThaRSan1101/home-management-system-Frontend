@@ -2,24 +2,27 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-size: 1.125rem;
-  background: #f5f6f7;
+  font-size: 1rem;
+  background: #fff;
 }
 
 #root {
   width: 100vw;
   min-height: 100vh;
   background: #fff;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-  border-radius: 16px;
-  padding: 2rem 1rem;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+  text-align: left;
 }
 
 @media (max-width: 900px) {

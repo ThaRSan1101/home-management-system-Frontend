@@ -325,6 +325,10 @@ h1, h2, h3 {
   border-radius: 50px;
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
+}
+
+.value-card h3, .team-card h3, .stat-card h3 {
+  font-size: 1.25rem;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
@@ -383,6 +387,10 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  color: var(--white);
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin: 0 auto 1.5rem;
 }
 
 .aboutus-cards-container {
@@ -445,6 +453,7 @@ h1, h2, h3 {
   line-height: 1.7;
 }
 
+
 .aboutus-floating-icon {
   position: absolute;
   left: 2.5rem;
@@ -457,6 +466,12 @@ h1, h2, h3 {
 @keyframes floatY {
   0% { transform: translateY(0); }
   100% { transform: translateY(-18px); }
+}
+
+.member-bio {
+  color: #718096;
+  line-height: 1.6;
+  font-size: 0.8rem;
 }
 
 /* Responsive: Stack cards on mobile */
@@ -605,6 +620,18 @@ h1, h2, h3 {
   }
 }
 
+.about-cta h2 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  letter-spacing: -1px;
+}
+
+.about-cta p {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
 .our-story-section, .mission-section, .vision-section {
   background: #e6f4f1 !important;
   border-radius: 18px;
@@ -694,6 +721,9 @@ h1, h2, h3 {
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
   font-weight: 700;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
   cursor: pointer;
   text-decoration: none;
   transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
