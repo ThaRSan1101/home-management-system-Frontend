@@ -7,7 +7,7 @@
   font-family: inherit;
 }
 
-/* .footer-new-container {
+.footer-new-container {
   display: grid;
   grid-template-columns: 2fr 2fr 2fr 1fr;
   gap: 2.5rem;
@@ -15,7 +15,7 @@
   margin: 0 auto;
   padding: 3rem 2rem 2rem 2rem;
   align-items: flex-start;
-} */
+} 
 
 .footer-brand {
   display: flex;
