@@ -247,8 +247,11 @@ h1, h2, h3 {
 /* Why Choose Us Section */
 .why-choose-section {
   padding: 4rem 1rem 2rem 1rem;
-  background: var(--white);
+  background: #e6f4f1 !important;
   text-align: center;
+  border-radius: 18px;
+  box-shadow: none !important;
+  margin-bottom: 2rem;
 }
 .why-choose-section h2 {
   font-size: 2rem;
@@ -263,11 +266,13 @@ h1, h2, h3 {
   gap: 2rem;
   max-width: 1100px;
   margin: 0 auto;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 .feature-card {
-  background: rgba(255,255,255,0.97);
+  background: transparent !important;
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.09);
+  box-shadow: none !important;
   padding: 2rem 1.2rem 1.2rem 1.2rem;
   text-align: center;
   transition: box-shadow 0.3s, transform 0.3s;
@@ -548,8 +553,11 @@ h1, h2, h3 {
 
 .core-values-section {
   padding: 3rem 1rem 2rem 1rem;
-  background: var(--white, #fff);
+  background: #e6f4f1 !important;
   text-align: center;
+  border-radius: 18px;
+  box-shadow: none !important;
+  margin-bottom: 2rem;
 }
 .core-values-section h2 {
   font-size: 2rem;
@@ -566,9 +574,9 @@ h1, h2, h3 {
   margin: 0 auto;
 }
 .core-value-card {
-  background: rgba(255,255,255,0.97);
+  background: transparent !important;
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.09);
+  box-shadow: none !important;
   padding: 2rem 1.2rem 1.2rem 1.2rem;
   text-align: center;
   transition: box-shadow 0.3s, transform 0.3s;
@@ -597,10 +605,18 @@ h1, h2, h3 {
   }
 }
 
-.our-story-section {
+.our-story-section, .mission-section, .vision-section {
+  background: #e6f4f1 !important;
+  border-radius: 18px;
+  box-shadow: none !important;
   padding: 3rem 1rem 2rem 1rem;
-  background: var(--secondary-color, #f8fafc);
-  text-align: center;
+  margin-bottom: 2rem;
+}
+.our-story-card, .mission-vision-text {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0;
+  padding: 0;
 }
 .our-story-card {
   background: #fff;
@@ -767,4 +783,248 @@ h1, h2, h3 {
 
 .about-cta-btn.secondary:hover {
   color: var(--primary-color, #007a65);
+}
+
+/* Vibrant animated gradient background */
+.section-vibrant {
+  background: linear-gradient(120deg, #e6f4f1 0%, #007a65 100%);
+  background-size: 200% 200%;
+  animation: gradientMove 8s ease-in-out infinite;
+  position: relative;
+}
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(255,255,255,0.18);
+  border-radius: 20px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(0,122,101,0.18);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+/* About Hero Title and Desc */
+.about-hero-title {
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-weight: 800;
+  font-size: 2.8rem;
+  color: #007a65;
+  letter-spacing: -1.5px;
+  margin-bottom: 0.7rem;
+}
+.about-hero-desc {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: #1a202c;
+  line-height: 1.7;
+}
+
+/* SVG Section Divider */
+.section-divider-svg {
+  display: block;
+  width: 100vw;
+  min-width: 100%;
+  height: 80px;
+  margin: 0;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+/* Enhance team card for 3D effect */
+.team-card-super.glass-card {
+  will-change: transform;
+  perspective: 800px;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+/* Floating effect for icons or elements */
+@keyframes floatY {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-18px); }
+}
+
+/* Responsive tweaks for high-res/8k */
+@media (min-width: 2000px) {
+  .about-hero-title { font-size: 4.5rem; }
+  .about-hero-desc { font-size: 2.2rem; }
+  .glass-card { padding: 4rem 3rem; }
+}
+
+/* Split layout for About ServiceHub hero */
+.about-hero-split {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem 2rem 2rem;
+  position: relative;
+  z-index: 2;
+}
+.about-hero-content {
+  flex: 1 1 420px;
+  min-width: 320px;
+  max-width: 540px;
+  z-index: 2;
+}
+.about-hero-visual {
+  flex: 1 1 320px;
+  min-width: 220px;
+  max-width: 400px;
+  z-index: 2;
+  animation: floatY 3.5s ease-in-out infinite alternate;
+}
+
+/* Animated gradient text for headline */
+.gradient-text {
+  background: linear-gradient(90deg, #00b894 0%, #007a65 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  animation: gradientMove 6s ease-in-out infinite;
+}
+
+@media (max-width: 900px) {
+  .about-hero-split {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 0.5rem 1rem 0.5rem;
+  }
+  .about-hero-content, .about-hero-visual {
+    max-width: 98vw;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-hero-split {
+    padding: 1rem 0.2rem 0.5rem 0.2rem;
+  }
+}
+
+/* Centered About ServiceHub hero section */
+.about-hero-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 5rem 0 3rem 0;
+  position: relative;
+  z-index: 2;
+}
+.about-hero-centered-content {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 2;
+}
+.about-hero-icon {
+  margin-bottom: 0.5rem;
+  animation: floatY 3.5s ease-in-out infinite alternate;
+}
+.about-hero-desc-card {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  font-size: 1.18rem;
+  color: #1a202c;
+  font-weight: 500;
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .about-hero-centered {
+    padding: 2.5rem 0 1.5rem 0;
+  }
+  .about-hero-centered-content {
+    max-width: 98vw;
+    padding: 0 0.5rem;
+  }
+  .about-hero-desc-card {
+    padding: 1.2rem 0.5rem;
+    font-size: 1.05rem;
+  }
+  .about-hero-title {
+    font-size: 2rem !important;
+  }
+}
+
+/* SVG Section Divider */
+.section-divider-svg path {
+  fill: #e6f4f1 !important;
+}
+
+/* Example: update any other blue backgrounds to light green */
+.about-hero-icon svg rect[fill="#00c6fb"] {
+  fill: #e6f4f1 !important;
+}
+.about-hero-icon svg circle[fill="#005bea"] {
+  fill: #007a65 !important;
+}
+
+/* If there are other green backgrounds, update them similarly */
+
+.section-anim-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.7rem;
+}
+
+.section-anim-icon svg {
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 2px 8px rgba(0,122,101,0.08));
+}
+
+.about-hero.section-vibrant, .team-section-super.section-vibrant {
+  background: #e6f4f1 !important;
+  border-radius: 18px;
+  box-shadow: none !important;
+  padding: 3rem 1rem 2rem 1rem;
+}
+
+.section-title {
+  font-size: 2.7rem;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  font-weight: 800;
+  color: #007a65;
+  letter-spacing: -1.2px;
+  margin-bottom: 1.1rem;
+  text-align: center;
+}
+.section-desc {
+  font-size: 1.35rem;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  color: #1a202c;
+  font-weight: 500;
+  line-height: 1.7;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 700px) {
+  .section-title {
+    font-size: 2rem;
+  }
+  .section-desc {
+    font-size: 1.08rem;
+  }
 } 
