@@ -39,38 +39,13 @@ const features = [
 ];
 
 const team = [
-  { name: "Yoganathan Arultharshan", role: "Frontend Developer", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Abiramy Thirulinganathan", role: "Backend Developer", img: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "Tharshika Pathmanathan", role: "UI/UX Designer", img: "https://randomuser.me/api/portraits/women/65.jpg" },
-  { name: "Maheswaralingam Aberam", role: "Full Stack Developer", img: "https://randomuser.me/api/portraits/men/45.jpg" }
+  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "https://randomuser.me/api/portraits/men/32.jpg" },
+  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "https://randomuser.me/api/portraits/women/44.jpg" },
+  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "https://randomuser.me/api/portraits/women/65.jpg" },
+  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "https://randomuser.me/api/portraits/men/45.jpg" }
 ];
 
-const techStack = [
-  "ReactJS", "PHP", "MySQL", "Framer Motion", "Pure CSS", "Particles.js", "PayHere API"
-];
 
-const coreValues = [
-  {
-    icon: "🤝",
-    title: "Integrity",
-    desc: "We act with honesty and transparency in all our interactions."
-  },
-  {
-    icon: "🌟",
-    title: "Excellence",
-    desc: "We strive for the highest quality in our services and solutions."
-  },
-  {
-    icon: "👥",
-    title: "Collaboration",
-    desc: "We believe teamwork and open communication drive success."
-  },
-  {
-    icon: "💡",
-    title: "Innovation",
-    desc: "We embrace new ideas and technologies to serve you better."
-  }
-];
 
 function AboutUsHero() {
   const features = [
@@ -149,22 +124,6 @@ export default function About() {
               <div className="team-role">{member.role}</div>
             </motion.div>
           ))}
-        </div>
-      </motion.div>
-
-      {/* Join Our Community CTA */}
-      <motion.div
-        className="about-cta-section"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <h2>Join Our Community</h2>
-        <p>Be part of the ServiceHub journey. Connect, book, and experience the future of home services in Sri Lanka.</p>
-        <div className="about-cta-buttons">
-          <a href="/register" className="about-cta-btn">Get Started Today</a>
-          <a href="/contact" className="about-cta-btn secondary">Contact Us</a>
         </div>
       </motion.div>
     </div>

@@ -72,6 +72,7 @@ function App() {
 function AppWithRouter() {
   return (
     <Router>
+      <ScrollToTop />
       <App />
     </Router>
   );
