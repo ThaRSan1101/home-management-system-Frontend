@@ -72,7 +72,7 @@ body {
 }
 
 /* Global login button styles - only for navbar */
-.navbar .login-btn {
+/* .navbar .login-btn {
   background-color: var(--primary-color);
   color: var(--white);
   border: none;
@@ -81,7 +81,7 @@ body {
   font-size: 0.68rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
+} */
 
 .navbar .login-btn:hover {
   background-color: #357abd;

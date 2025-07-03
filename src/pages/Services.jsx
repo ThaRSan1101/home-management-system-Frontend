@@ -4,18 +4,19 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import './Services.css';
-import service1 from '../assets/service1.jpg';
-import service2 from '../assets/service2.jpg';
-import service3 from '../assets/service3.jpg';
-import service4 from '../assets/service4.jpg';
-import service5 from '../assets/service5.jpg';
-import service6 from '../assets/service6.jpg';
+import plumbing from '../assets/plumbing.jpg';
+import carpentry from '../assets/carpentry.jpg';
+import electrical from '../assets/electrical.jpg';
+import painting from '../assets/painting.webp';
+
+import cleaning from '../assets/cleaning.webp';
+import electronic from '../assets/electronic.webp';
 
 const Services = () => {
   const services = [
     {
       id: 1,
-      image: service1,
+      image: plumbing,
       category: 'Pipes, Leaks & Water Flow',
       title: 'Plumbing Services',
       description: 'Fixing leaks, clogs, and water flow issues. Bathroom and kitchen plumbing made simple. Quick response for urgent plumbing problems.',
@@ -23,7 +24,7 @@ const Services = () => {
     },
     {
       id: 2,
-      image: service2,
+      image: carpentry,
       category: 'Woodwork & Furniture',
       title: 'Carpentry Services',
       description: 'Expert repairs for doors, windows, and furniture. Custom woodwork made easy and affordable. Fast fixes and installations for all wood-related needs.',
@@ -31,7 +32,7 @@ const Services = () => {
     },
     {
       id: 3,
-      image: service3,
+      image: electrical,
       category: 'Wiring, Lights & Power',
       title: 'Electrical Services',
       description: 'Safe installation of lights, fans, and switches. Quick repairs for power issues and wiring. Certified electricians for hassle-free service.',
@@ -39,7 +40,7 @@ const Services = () => {
     },
     {
       id: 4,
-      image: service4,
+      image: painting,
       category: 'Walls & Surfaces',
       title: 'Painting Services',
       description: 'Clean, smooth wall painting with lasting results. Choose your colors we handle the rest. Interior or exterior, big or small we paint it all.',
@@ -47,7 +48,7 @@ const Services = () => {
     },
     {
       id: 5,
-      image: service5,
+      image: electronic,
       category: 'Home Appliances',
       title: 'Electronic Services',
       description: 'Get your home appliances fixed fast. We service TVs, fridges, ovens, washers & more. Quality repairs with genuine spare parts.',
@@ -55,7 +56,7 @@ const Services = () => {
     },
     {
       id: 6,
-      image: service6,
+      image: cleaning,
       category: 'Home & Kitchen Cleaning',
       title: 'Cleaning Service',
       description: 'Deep cleaning for every space in your home. Kitchen, bathroom, and full-house cleaning. Trained staff using safe, effective products.',
