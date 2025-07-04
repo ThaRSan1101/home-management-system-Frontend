@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import './Contact.css';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +22,25 @@ const Contact = () => {
     setIsSubmitted(true);
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
     setTimeout(() => setIsSubmitted(false), 3000);
+  };
+
+  // Google Maps settings
+  const mannarPosition = { lat: 8.9806, lng: 79.9042 };
+  const mapContainerStyle = {
+    width: '100%',
+    height: '400px',
+    borderRadius: '20px',
+    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.10)',
+    margin: '0 auto',
+    marginTop: '2rem',
+    cursor: 'pointer',
+  };
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: '',
+  });
+
+  const handleMapClick = () => {
+    window.open('https://www.google.com/maps?q=Mannar', '_blank');
   };
 
   return (
@@ -73,16 +93,38 @@ const Contact = () => {
         </div>
       </div>
       <section className="map-section">
-        <iframe
-          title="Google Map"
-          src="https://maps.google.com/maps?q=25%20Kensington%20Garden%2C%20Colombo%2000400&t=&z=15&ie=UTF8&iwloc=&output=embed"
-          width="100%"
-          height="400"
-          style={{ border: 0, borderRadius: '20px', display: 'block', marginTop: '2rem' }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
+        <div className="map-card" onClick={handleMapClick} title="Open in Google Maps">
+          {isLoaded && (
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              center={mannarPosition}
+              zoom={13}
+              options={{
+                disableDefaultUI: true,
+                clickableIcons: false,
+                gestureHandling: 'none',
+                styles: [
+                  { elementType: 'geometry', stylers: [{ color: '#e6faf5' }] },
+                  { elementType: 'labels.text.fill', stylers: [{ color: '#222b3a' }] },
+                  { elementType: 'labels.text.stroke', stylers: [{ color: '#fff' }] },
+                  { featureType: 'water', stylers: [{ color: '#b2f7ef' }] },
+                  { featureType: 'poi', stylers: [{ visibility: 'off' }] },
+                ],
+              }}
+              onClick={handleMapClick}
+            >
+              <Marker
+                position={mannarPosition}
+                onClick={handleMapClick}
+                icon={{
+                  url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                  scaledSize: { width: 40, height: 40 },
+                }}
+              />
+            </GoogleMap>
+          )}
+          <div className="map-overlay">Click to open Our Location</div>
+        </div>
       </section>
     </>
   );

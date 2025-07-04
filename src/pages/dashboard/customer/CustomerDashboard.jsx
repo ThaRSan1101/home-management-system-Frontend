@@ -6,23 +6,23 @@ import Service from './Service';
 import Activity from './Activity';
 import Subscription from './Subscription';
 import Feedback from './Feedback';
-import Profile from './Profile';
 import HowItWorks from './HowItWorks';
 import About from './About';
 import Contact from './Contact';
 import './CustomerDashboard.css';
+import Topbar from './Topbar';
 
 const CustomerDashboard = () => (
   <div className="customer-dashboard-layout">
     <Sidebar />
     <main className="customer-dashboard-main">
+      <Topbar />
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/service" element={<Service />} />
         <Route path="/activity" element={<Activity />} />
         <Route path="/subscription" element={<Subscription />} />
         <Route path="/feedback" element={<Feedback />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />

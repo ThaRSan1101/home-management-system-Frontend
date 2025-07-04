@@ -250,56 +250,85 @@
 }
 
 .contact .map-section {
-  background-color: #f7f8fa !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f7f8fa !important;
   padding: 0;
   margin: 0 auto;
   max-width: 1100px;
   width: 100%;
-  
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 122, 101, 0.10);
 }
 
-.map-section iframe {
-  border-radius: 20px;
-  width: 80%;
-  margin-left: 9.5rem;
+.map-card {
+  position: relative;
+  width: 80vw;
+  max-width: 900px;
+  min-width: 280px;
+  min-height: 320px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 10px 32px rgba(0, 122, 101, 0.13);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  margin: 2rem auto 2rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@media (max-width: 1024px) {
-  .contact-main {
-    padding: 0 1rem;
-  }
-  .contact-info-grid, .faq-grid {
-    gap: 1.2rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .contact-info-card:nth-child(4) {
-    grid-column: auto;
-    margin-top: 0;
-    justify-self: auto;
+.map-card:hover {
+  box-shadow: 0 18px 48px rgba(0, 122, 101, 0.18);
+  transform: translateY(-4px) scale(1.01);
+}
+
+.map-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 95, 75, 0.85);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.7rem 0;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  letter-spacing: 1px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.map-card:hover .map-overlay {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .map-card {
+    width: 98vw;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 220px;
   }
 }
 
 @media (max-width: 600px) {
-  .contact section {
-    padding: 1.2rem 0.5rem;
-    margin-bottom: 1.2rem;
+  .map-section {
+    padding: 0.5rem 0.1rem;
   }
-  .contact-main {
-    padding: 0 0.2rem;
-    gap: 1.2rem;
+  .map-card {
+    margin: 1rem 0;
+    border-radius: 14px;
   }
-  .contact-info-grid, .faq-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .contact-info-card:nth-child(4) {
-    grid-column: auto;
-    margin-top: 0;
-    justify-self: auto;
+  .map-overlay {
+    font-size: 0.95rem;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
   }
 }
 
