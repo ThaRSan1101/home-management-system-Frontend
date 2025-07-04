@@ -71,13 +71,13 @@ export default function Activity() {
   };
 
   return (
-    <div className="dashboard-activity-super">
-      <div className="activity-tabs-bg">
-        <div className="activity-tabs">
+    <div className="customer-dashboard-activity-super">
+      <div className="customer-activity-tabs-bg">
+        <div className="customer-activity-tabs">
           {STATUS_TABS.map((tab) => (
             <button
               key={tab.key}
-              className={`activity-tab-btn${activeTab === tab.key ? ' active' : ''}`}
+              className={`customer-activity-tab-btn${activeTab === tab.key ? ' active' : ''}`}
               onClick={() => setActiveTab(tab.key)}
             >
               <span className="tab-icon">{tab.icon}</span>
@@ -86,16 +86,16 @@ export default function Activity() {
           ))}
         </div>
       </div>
-      <div className="activity-content">
+      <div className="customer-activity-content">
         {filteredActivities.length === 0 ? (
-          <div className="activity-empty">
+          <div className="customer-activity-empty">
             <span className="empty-icon">🗒️</span>
             <h3>No activities found for this status.</h3>
           </div>
         ) : (
-          <div className="activity-table-container">
-            <div className="activity-table-scroll">
-              <table className="activity-table">
+          <div className="customer-activity-table-container">
+            <div className="customer-activity-table-scroll">
+              <table className="customer-activity-table">
                 <thead>
                   <tr>
                     <th>Service</th>
@@ -112,14 +112,14 @@ export default function Activity() {
                       <td>{activity.date}</td>
                       <td>{activity.time}</td>
                       <td>
-                        <span className={`activity-status-badge ${activity.status}`}>
+                        <span className={`customer-activity-status-badge ${activity.status}`}>
                           {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
                         </span>
                       </td>
                       {activeTab === 'pending' && (
                         <td>
                           <button
-                            className="activity-cancel-btn"
+                            className="customer-activity-cancel-btn"
                             onClick={() => handleCancel(activity.id)}
                           >
                             Cancel

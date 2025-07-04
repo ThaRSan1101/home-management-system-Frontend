@@ -10,28 +10,28 @@ const stats = [
 
 const Dashboard = () => (
   <div className="customer-home">
-    <h2 className="dashboard-title">Welcome back!</h2>
-    <div className="dashboard-stats-grid">
+    <h2 className="customer-dashboard-title">Welcome back!</h2>
+    <div className="customer-dashboard-stats-grid">
       {stats.map((stat) => (
-        <div className="dashboard-stat-card" key={stat.label}>
-          <div className="stat-value">{stat.value}</div>
-          <div className="stat-label">{stat.label}</div>
+        <div className="customer-dashboard-stat-card" key={stat.label}>
+          <div className="customer-stat-value">{stat.value}</div>
+          <div className="customer-stat-label">{stat.label}</div>
         </div>
       ))}
     </div>
-    <div className="dashboard-appointments">
+    <div className="customer-dashboard-appointments">
       <h3>Upcoming Appointments</h3>
-      <div className="appointment-card">
+      <div className="customer-appointment-card">
         <div>
-          <strong>Cleaning Service</strong> <span className="appointment-date">Mon, 10 June, 10:00 AM</span>
+          <strong>Cleaning Service</strong> <span className="customer-appointment-date">Mon, 10 June, 10:00 AM</span>
         </div>
-        <div className="appointment-status confirmed">Confirmed</div>
+        <div className="customer-appointment-status customer-confirmed">Confirmed</div>
       </div>
-      <div className="appointment-card">
+      <div className="customer-appointment-card">
         <div>
-          <strong>Plumbing Repair</strong> <span className="appointment-date">Wed, 12 June, 2:00 PM</span>
+          <strong>Plumbing Repair</strong> <span className="customer-appointment-date">Wed, 12 June, 2:00 PM</span>
         </div>
-        <div className="appointment-status pending">Pending</div>
+        <div className="customer-appointment-status customer-pending">Pending</div>
       </div>
     </div>
   </div>

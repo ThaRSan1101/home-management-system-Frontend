@@ -44,56 +44,56 @@ const DashboardContact = () => {
   };
 
   return (
-    <div className="dashboard-contact-super">
-      <div className="dashboard-contactus-split-container">
-        <div className="dashboard-contactus-left">
-          <h1 className="dashboard-contactus-header">Contact Us</h1>
-          <form className="dashboard-contactus-form" onSubmit={handleSubmit}>
-            <div className="dashboard-contactus-form-group">
+    <div className="customer-dashboard-contact-super">
+      <div className="customer-dashboard-contactus-split-container">
+        <div className="customer-dashboard-contactus-left">
+          <h1 className="customer-dashboard-contactus-header">Contact Us</h1>
+          <form className="customer-dashboard-contactus-form" onSubmit={handleSubmit}>
+            <div className="customer-dashboard-contactus-form-group">
               <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
             </div>
-            <div className="dashboard-contactus-form-group">
+            <div className="customer-dashboard-contactus-form-group">
               <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
             </div>
-            <div className="dashboard-contactus-form-group">
+            <div className="customer-dashboard-contactus-form-group">
               <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} />
             </div>
-            <div className="dashboard-contactus-form-group">
+            <div className="customer-dashboard-contactus-form-group">
               <input type="text" name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} />
             </div>
-            <div className="dashboard-contactus-form-group">
+            <div className="customer-dashboard-contactus-form-group">
               <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} required />
             </div>
-            <button type="submit" className="dashboard-contactus-send-btn">Send Message</button>
-            {isSubmitted && <div className="dashboard-contactus-success">Thank you! Your message has been sent.</div>}
+            <button type="submit" className="customer-dashboard-contactus-send-btn">Send Message</button>
+            {isSubmitted && <div className="customer-dashboard-contactus-success">Thank you! Your message has been sent.</div>}
           </form>
         </div>
-        <div className="dashboard-contactus-right">
-          <div className="dashboard-contactus-right-content">
-            <span className="dashboard-contactus-contactus">Contact Info</span>
-            <h2 className="dashboard-contactus-title">Get in Touch</h2>
-            <div className="dashboard-contactus-info-list">
-              <div className="dashboard-contactus-info-item">
-                <FaMapMarkerAlt className="dashboard-contactus-info-icon" />
-                <span className="dashboard-contactus-info-label">Address:</span>
-                <span className="dashboard-contactus-info-value">25, Kensington Garden, Colombo 00400</span>
+        <div className="customer-dashboard-contactus-right">
+          <div className="customer-dashboard-contactus-right-content">
+            <span className="customer-dashboard-contactus-contactus">Contact Info</span>
+            <h2 className="customer-dashboard-contactus-title">Get in Touch</h2>
+            <div className="customer-dashboard-contactus-info-list">
+              <div className="customer-dashboard-contactus-info-item">
+                <FaMapMarkerAlt className="customer-dashboard-contactus-info-icon" />
+                <span className="customer-dashboard-contactus-info-label">Address:</span>
+                <span className="customer-dashboard-contactus-info-value">25, Kensington Garden, Colombo 00400</span>
               </div>
-              <div className="dashboard-contactus-info-item">
-                <FaPhone className="dashboard-contactus-info-icon" />
-                <span className="dashboard-contactus-info-label">Phone :</span>
-                <span className="dashboard-contactus-info-value">(+94) 77 442 2448</span>
+              <div className="customer-dashboard-contactus-info-item">
+                <FaPhone className="customer-dashboard-contactus-info-icon" />
+                <span className="customer-dashboard-contactus-info-label">Phone :</span>
+                <span className="customer-dashboard-contactus-info-value">(+94) 77 442 2448</span>
               </div>
-              <div className="dashboard-contactus-info-item">
-                <FaEnvelope className="dashboard-contactus-info-icon" />
-                <span className="dashboard-contactus-info-label">Email :</span>
-                <span className="dashboard-contactus-info-value">info@homeservice.com</span>
+              <div className="customer-dashboard-contactus-info-item">
+                <FaEnvelope className="customer-dashboard-contactus-info-icon" />
+                <span className="customer-dashboard-contactus-info-label">Email :</span>
+                <span className="customer-dashboard-contactus-info-value">info@homeservice.com</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <section className="dashboard-map-section">
-        <div className="dashboard-map-card" onClick={handleMapClick} title="Open in Google Maps">
+      <section className="customer-dashboard-map-section">
+        <div className="customer-dashboard-map-card" onClick={handleMapClick} title="Open in Google Maps">
           {isLoaded && (
             <GoogleMap
               mapContainerStyle={mapContainerStyle}
