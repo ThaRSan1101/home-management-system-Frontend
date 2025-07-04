@@ -1,5 +1,5 @@
 import React from 'react';
-import './Home.css';
+import './Dashboard.css';
 
 const stats = [
   { label: 'Upcoming Bookings', value: 3 },
@@ -8,7 +8,7 @@ const stats = [
   { label: 'Total Services Used', value: 7 },
 ];
 
-const Home = () => (
+const Dashboard = () => (
   <div className="customer-home">
     <h2 className="dashboard-title">Welcome back!</h2>
     <div className="dashboard-stats-grid">
@@ -37,4 +37,4 @@ const Home = () => (
   </div>
 );
 
-export default Home; 
+export default Dashboard; 
