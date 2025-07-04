@@ -1,0 +1,295 @@
+/* Layout */
+.provider-services-super {
+  width: 100%;
+  background: #f5f6f7;
+  margin: 0;
+  padding: 2rem 2vw 0 2vw;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Top-level Tabs */
+.provider-activity-top-tabs-bg {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+.provider-activity-top-tabs {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  background: #fff;
+  border-radius: 40px;
+  box-shadow: 0 2px 16px rgba(0, 122, 101, 0.07);
+  padding: 0.4rem 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.provider-activity-top-tab-btn {
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 1.13rem;
+  font-weight: 700;
+  color: #7b8a97;
+  padding: 0.85rem 2.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.22s, background 0.22s, box-shadow 0.22s;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  box-shadow: none;
+  letter-spacing: 0.5px;
+}
+.provider-activity-top-tab-btn.active {
+  color: #fff;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.13);
+  font-weight: 800;
+}
+.provider-activity-top-tab-btn:not(.active):hover {
+  background: #e6faf5;
+  color: #059669;
+}
+
+/* Status Tabs */
+.provider-services-tabs-bg {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+.provider-services-tabs {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  background: #fff;
+  border-radius: 40px;
+  box-shadow: 0 2px 16px rgba(0, 122, 101, 0.07);
+  padding: 0.4rem 0.5rem;
+}
+.provider-services-tab-btn {
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #7b8a97;
+  padding: 0.7rem 2.2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  box-shadow: none;
+}
+.provider-services-tab-btn.active {
+  color: #fff;
+  background: #007a65;
+  box-shadow: 0 2px 12px rgba(0, 122, 101, 0.13);
+  font-weight: 700;
+}
+.provider-services-tab-btn:not(.active):hover {
+  background: #f1f8f6;
+  color: #007a65;
+}
+.tab-icon {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+.tab-label {
+  font-size: 1.08rem;
+}
+
+/* Table & Content */
+.provider-services-content {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+.provider-services-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.provider-services-empty h3 {
+  font-size: 1.2rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+.provider-services-table-container {
+  width: 100%;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 122, 101, 0.10);
+  padding: 1.5rem 1rem;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+.provider-services-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+.provider-services-table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+}
+.provider-services-table th, .provider-services-table td {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  font-size: 1.05rem;
+  border-bottom: 1.5px solid #f1f5f9;
+}
+.provider-services-table th {
+  color: #007a65;
+  font-weight: 700;
+  background: #f8fafc;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.98rem;
+}
+.provider-services-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Status Badges */
+.provider-services-status-badge {
+  font-size: 0.98rem;
+  font-weight: 700;
+  padding: 0.35rem 1.2rem;
+  border-radius: 16px;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  margin-right: 0.7rem;
+  background: #e6faf5;
+  color: #007a65;
+  border: 1.5px solid #b2f7ef;
+  box-shadow: 0 2px 8px rgba(0, 122, 101, 0.07);
+}
+.provider-services-status-badge.processing {
+  background: #e6f0fa;
+  color: #007a65;
+  border-color: #b2f7ef;
+}
+.provider-services-status-badge.complete {
+  background: #e6fbe6;
+  color: #1a7a3d;
+  border-color: #b2f7ef;
+}
+.provider-services-status-badge.cancel {
+  background: #ffeaea;
+  color: #c0392b;
+  border-color: #f7b2b2;
+}
+
+/* Action Buttons */
+.provider-services-accept-btn {
+  background: #059669;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 0.5rem 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 0.7rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+}
+.provider-services-accept-btn:hover {
+  background: #10b981;
+}
+.provider-services-decline-btn {
+  background: #fff;
+  color: #c0392b;
+  border: 1.5px solid #c0392b;
+  border-radius: 22px;
+  padding: 0.5rem 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  box-shadow: 0 2px 8px rgba(192,57,43,0.07);
+}
+.provider-services-decline-btn:hover {
+  background: #c0392b;
+  color: #fff;
+  border: 1.5px solid #c0392b;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .provider-services-super {
+    padding: 1rem 0.5vw 0 0.5vw;
+  }
+  .provider-services-tabs {
+    gap: 0.5rem;
+    padding: 0.3rem 0.2rem;
+  }
+  .provider-services-table-container {
+    padding: 1rem 0.2rem;
+  }
+  .provider-services-table th, .provider-services-table td {
+    padding: 0.7rem 0.5rem;
+    font-size: 0.97rem;
+  }
+  .provider-services-table {
+    min-width: 500px;
+  }
+  .provider-activity-top-tabs {
+    gap: 0.5rem;
+    padding: 0.3rem 0.2rem;
+  }
+  .provider-activity-top-tab-btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .provider-services-super {
+    padding: 0.5rem 0.2vw 0 0.2vw;
+  }
+  .provider-services-tabs {
+    gap: 0.2rem;
+    padding: 0.2rem 0.1rem;
+  }
+  .provider-services-tab-btn {
+    padding: 0.6rem 0.7rem;
+    font-size: 0.97rem;
+  }
+  .provider-services-table-container {
+    padding: 0.5rem 0.1rem;
+    border-radius: 10px;
+  }
+  .provider-services-table th, .provider-services-table td {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.93rem;
+  }
+  .provider-services-table {
+    min-width: 350px;
+  }
+  .provider-activity-top-tabs {
+    gap: 0.2rem;
+    padding: 0.2rem 0.1rem;
+  }
+  .provider-activity-top-tab-btn {
+    padding: 0.6rem 0.7rem;
+    font-size: 0.97rem;
+  }
+} 
