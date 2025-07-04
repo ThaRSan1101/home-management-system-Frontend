@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import Home from './Home';
+import Dashboard from './Dashboard';
 import Service from './Service';
 import Activity from './Activity';
 import Subscription from './Subscription';
@@ -18,7 +18,7 @@ const CustomerDashboard = () => (
     <main className="customer-dashboard-main">
       <Topbar />
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Dashboard />} />
         <Route path="/service" element={<Service />} />
         <Route path="/activity" element={<Activity />} />
         <Route path="/subscription" element={<Subscription />} />
