@@ -12,10 +12,10 @@ const features = [
 ];
 
 const team = [
-  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "https://randomuser.me/api/portraits/women/65.jpg" },
-  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "https://randomuser.me/api/portraits/men/45.jpg" }
+  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "src/assets/tharshan.jpg" },
+  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "src/assets/abiramy.jpg" },
+  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "src/assets/tharshi.jpg" },
+  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "src/assets/abiram.jpg" }
 ];
 
 function AboutUsHero() {

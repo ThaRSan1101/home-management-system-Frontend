@@ -1,13 +1,13 @@
 .customer-about {
   font-size: 1.2rem;
-  color: #005f4b;
+  color: #007a65;
   font-weight: 500;
   padding: 2rem 0;
 }
 
 .customer-about-super {
   width: 100%;
-  background: #f5f6f7;
+  background: transparent;
   margin: 0;
   padding: 2rem 2vw 0 2vw;
   min-height: 100vh;
@@ -30,9 +30,8 @@
 }
 .customer-aboutus-hero-section {
   width: 100%;
-  background: #fff;
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  
+  
   padding: 2.5rem 1.5rem 2rem 1.5rem;
   margin-bottom: 2rem;
   display: flex;
@@ -44,6 +43,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  
 }
 .customer-aboutus-hero-left {
   flex: 1;
@@ -59,6 +59,7 @@
   color: #007a65;
   letter-spacing: 0.5px;
 }
+
 .customer-aboutus-main-title {
   font-size: 2.2rem;
   font-weight: 800;
@@ -96,8 +97,9 @@
   box-sizing: border-box;
   font-size: 1rem;
 }
-.customer-aboutus-feature-icon {
-  color: #00b894;
+
+.dashboard-aboutus-feature-icon {
+  color: #007a65;
   font-size: 2.2rem;
   display: flex;
   align-items: center;
@@ -212,5 +214,40 @@
   }
   .customer-team-grid-super {
     gap: 1rem;
+  }
+} 
+.aboutus-hero-content,
+.dashboard-aboutus-hero-content {
+  background: transparent !important;
+} 
+.aboutus-hero-section,
+.dashboard-aboutus-hero-section {
+  background: transparent !important;
+} 
+.aboutus-features-grid,
+.dashboard-aboutus-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 1rem;
+  justify-items: center;
+}
+@media (max-width: 900px) {
+  .aboutus-features-grid,
+  .dashboard-aboutus-features-grid {
+    grid-template-columns: 1fr 1fr;
+    max-width: 800px;
+  }
+}
+@media (max-width: 600px) {
+  .aboutus-features-grid,
+  .dashboard-aboutus-features-grid {
+    grid-template-columns: 1fr;
+    max-width: 98vw;
+    gap: 1rem;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
   }
 } 

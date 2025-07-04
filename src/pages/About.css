@@ -186,7 +186,7 @@ h1, h2, h3 {
 }
 .team-header h2 {
   font-size: 3.5rem;
-  color: var(--primary-color);
+  color: #007a65 !important;
   font-weight: 800;
   letter-spacing: 2px;
  
@@ -627,52 +627,6 @@ h1, h2, h3 {
   margin-bottom: 1.5rem;
 }
 
-.our-story-section {
-  padding: 3rem 1rem 2rem 1rem;
-  background: var(--secondary-color, #f8fafc);
-  text-align: center;
-}
-.our-story-card {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.09);
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 2.5rem 2rem 2rem 2rem;
-  position: relative;
-  border-left: 6px solid var(--primary-color, #007a65);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.our-story-accent {
-  font-size: 2.5rem;
-  color: var(--primary-color, #007a65);
-  margin-bottom: 0.7rem;
-}
-.our-story-section h2 {
-  font-size: 2rem;
-  color: var(--primary-color, #007a65);
-  font-weight: 800;
-  margin-bottom: 1.2rem;
-  letter-spacing: -1px;
-}
-.our-story-section p {
-  font-size: 1.13rem;
-  color: var(--text-dark, #1a202c);
-  line-height: 1.7;
-  margin: 0;
-}
-@media (max-width: 700px) {
-  .our-story-section {
-    padding: 2rem 0.2rem 1rem 0.2rem;
-  }
-  .our-story-card {
-    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
-    border-left-width: 4px;
-  }
-}
-
 .about-cta-section {
   background: #00806b;
   color: #fff;
@@ -774,7 +728,6 @@ h1, h2, h3 {
 .aboutus-card-left h2,
 .aboutus-section h2,
 .core-values-section h2,
-.our-story-section h2,
 .about-cta-section h2 {
   color: var(--primary-color, #007a65) !important;
 }
@@ -862,7 +815,7 @@ h1, h2, h3 {
   line-height: 1.1;
 }
 .aboutus-main-title {
-  font-size: 6rem;
+  font-size: 5rem;
   line-height: 1;
   font-weight: 800;
   margin-top:-5rem;
@@ -874,6 +827,7 @@ h1, h2, h3 {
   margin-top: -0.5rem;
   margin-right: 0.15em;
   padding-right: 10rem;
+  color: #007a65 !important;
 }
 .text-gradient {
   background: linear-gradient(90deg, #00b894 0%, #007a65 100%);
@@ -948,7 +902,7 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   font-size: 2.2rem;
-  color: #00b894;
+  color: #007a65;
   border: 4px solid #fff;
   transition: transform 0.2s cubic-bezier(.77,0,.18,1);
 }
