@@ -50,7 +50,6 @@ export default function ProviderSubscription() {
                 <th>Plan</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -59,18 +58,6 @@ export default function ProviderSubscription() {
                   <td>{plan.plan}</td>
                   <td>{plan.startDate}</td>
                   <td>{plan.endDate}</td>
-                  <td>
-                    {activeTab === 'subscribed' ? (
-                      <button
-                        className="provider-subscription-unsubscribe-btn"
-                        onClick={() => handleUnsubscribe(plan.id)}
-                      >
-                        Unsubscribe
-                      </button>
-                    ) : (
-                      <span className="provider-subscription-unsubscribed-label">-</span>
-                    )}
-                  </td>
                 </tr>
               ))}
             </tbody>
