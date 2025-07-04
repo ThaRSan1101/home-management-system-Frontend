@@ -13,7 +13,7 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import CustomerDashboard from './pages/dashboard/customer/CustomerDashboard';
-import ServiceProviderDashboard from './pages/dashboard/provider/ServiceProviderDashboard';
+import ProviderDashboard from './pages/dashboard/provider/ProviderDashboard';
 import AdminDashboard from './pages/dashboard/admin/AdminDashboard';
 
 function ScrollToTop() {
@@ -49,7 +49,7 @@ function App() {
 
           {/* Dashboard Routes */}
           <Route path="/customer/*" element={<CustomerDashboard />} />
-          <Route path="/provider/*" element={<ServiceProviderDashboard />} />
+          <Route path="/provider/*" element={<ProviderDashboard />} />
           <Route path="/admin/*" element={<AdminDashboard />} />
           {/* Redirect to correct dashboard after login */}
           <Route
