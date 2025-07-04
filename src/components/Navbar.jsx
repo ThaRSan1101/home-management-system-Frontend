@@ -48,8 +48,9 @@ const Navbar = () => {
       <div className="navbar-inner">
         {/* Logo Left */}
         <div className="navbar-brand">
-          <Link to="/" onClick={handleLinkClick} aria-label="Home">
+          <Link to="/" onClick={handleLinkClick} aria-label="Home" style={{display: 'flex', alignItems: 'center', gap: '0'}}>
             <Logo size="small" />
+            <span className="navbar-title">ServiceHub</span>
           </Link>
         </div>
 
@@ -58,8 +59,8 @@ const Navbar = () => {
           <NavLink to="/" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} end onClick={handleLinkClick}>Home</NavLink>
           <NavLink to="/services" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>Services</NavLink>
           <NavLink to="/how-it-works" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>How It Works</NavLink>
-          <NavLink to="/contact" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>Contact Us</NavLink>
           <NavLink to="/about" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>About Us</NavLink>
+          <NavLink to="/contact" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>Contact Us</NavLink>
         </div>
 
         {/* Login/Register Buttons Right */}

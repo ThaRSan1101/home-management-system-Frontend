@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaTools, FaStar, FaCheckCircle, FaArrowRight } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -19,6 +19,7 @@ import bdImg from '../assets/bd-img.jpg';
 
 const Home = () => {
   const navigate = useNavigate();
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const featuredServices = [
     {
@@ -167,7 +168,7 @@ const Home = () => {
       image: service3,
       category: 'Wiring, Lights & Power',
       title: 'Electrical Services',
-      description: 'Safe, professional electrical solutions — whether it’s wiring, lighting, or power issues, our certified electricians are here to help.',
+      description: 'Safe, professional electrical solutions — whether it\'s wiring, lighting, or power issues, our certified electricians are here to help.',
       
     },
     {
@@ -201,32 +202,33 @@ const Home = () => {
   return (
     <div className="home page-content">
       {/* Hero Slider Section */}
-      <section className="hero-slider-section">
+      <section className="hero-slider-section" style={{ position: 'relative', minHeight: '100vh' }}>
         <Swiper
           modules={[Autoplay]}
           autoplay={{ delay: 3500, disableOnInteraction: false }}
           loop={true}
           className="hero-swiper"
+          onSlideChange={swiper => setActiveIndex(swiper.realIndex)}
+          style={{ minHeight: '100vh' }}
         >
           {sliderImages.map((img, idx) => (
             <SwiperSlide key={idx}>
-              <div className="hero-slide" style={{ backgroundImage: `url(${img})` }}>
-                <div className="hero-slide-overlay">
-                  <div className="hero-slide-content">
-                    <h1>Professional Home Services at Your Fingertips</h1>
-                    <p className="hero-subheading">
-                      Connect with trusted professionals for all your home maintenance and repair needs. Quality service, guaranteed satisfaction.
-                    </p>
-                    <div className="hero-buttons">
-                      <Link to="/services" className="btn btn-primary">Explore Services</Link>
-                      <Link to="/register" className="btn btn-secondary">Join Community</Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div className="hero-slide" style={{ backgroundImage: `url(${img})`, minHeight: '100vh' }}></div>
             </SwiperSlide>
           ))}
         </Swiper>
+        <div className="hero-slide-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center', pointerEvents: 'none' }}>
+          <div className="hero-slide-content" style={{ pointerEvents: 'auto' }}>
+            <h1>Professional Home Services <br />at Your Fingertips</h1>
+            <p className="hero-subheading">
+              Connect with trusted professionals for all your home maintenance and repair needs. Quality service, guaranteed satisfaction.
+            </p>
+            <div className="hero-buttons">
+              <Link to="/services" className="btn btn-primary">Explore Services</Link>
+              <Link to="/register" className="btn btn-secondary">Join Community</Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Featured Services */}
