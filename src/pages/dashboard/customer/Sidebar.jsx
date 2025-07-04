@@ -25,23 +25,23 @@ const Sidebar = () => {
 
   return (
     <aside className="customer-sidebar">
-      <div className="sidebar-logo-container">
-        <img src={logo} alt="Logo" className="sidebar-logo-img" />
+      <div className="customer-sidebar-logo-container">
+        <img src="/images/logo%20new.png" alt="Logo" className="customer-sidebar-logo-img" />
       </div>
-      <nav className="sidebar-nav">
+      <nav className="customer-sidebar-nav">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              'sidebar-link' + (isActive ? ' active' : '')
+              'customer-sidebar-link' + (isActive ? ' active' : '')
             }
           >
             {item.label}
           </NavLink>
         ))}
       </nav>
-      <button className="sidebar-logout-btn-bottom" onClick={handleLogout}>
+      <button className="customer-sidebar-logout-btn-bottom" onClick={handleLogout}>
         <FaSignOutAlt style={{ marginRight: 8 }} /> Logout
       </button>
     </aside>

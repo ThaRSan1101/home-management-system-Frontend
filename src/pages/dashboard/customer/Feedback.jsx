@@ -73,13 +73,13 @@ const DashboardFeedback = () => {
   };
 
   return (
-    <div className="dashboard-feedback-super">
-      <div className="dashboard-feedback-header">
+    <div className="customer-dashboard-feedback-super">
+      <div className="customer-dashboard-feedback-header">
         <h1>My Feedback</h1>
         <p>Review and manage your service feedback</p>
       </div>
 
-      <div className="dashboard-feedback-tabs">
+      <div className="customer-dashboard-feedback-tabs">
         <button 
           className={`tab-btn ${activeTab === 'all' ? 'active' : ''}`}
           onClick={() => setActiveTab('all')}
@@ -94,9 +94,9 @@ const DashboardFeedback = () => {
         </button>
       </div>
 
-      <div className="dashboard-feedback-table-container">
-        <div className="dashboard-feedback-table">
-          <div className="dashboard-feedback-table-header">
+      <div className="customer-dashboard-feedback-table-container">
+        <div className="customer-dashboard-feedback-table">
+          <div className="customer-dashboard-feedback-table-header">
             <div className="header-cell">Service</div>
             <div className="header-cell">Provider</div>
             <div className="header-cell">Rating</div>
@@ -105,9 +105,9 @@ const DashboardFeedback = () => {
             <div className="header-cell">Status</div>
           </div>
           
-          <div className="dashboard-feedback-table-body">
+          <div className="customer-dashboard-feedback-table-body">
             {filteredFeedback.map((feedback) => (
-              <div key={feedback.id} className="dashboard-feedback-table-row">
+              <div key={feedback.id} className="customer-dashboard-feedback-table-row">
                 <div className="table-cell service-cell">
                   <div className="service-info">
                     <span className="service-name">{feedback.service}</span>
@@ -158,7 +158,7 @@ const DashboardFeedback = () => {
       </div>
 
       {filteredFeedback.length === 0 && (
-        <div className="dashboard-feedback-empty">
+        <div className="customer-dashboard-feedback-empty">
           <div className="empty-icon">📝</div>
           <h3>No feedback found</h3>
           <p>You haven't submitted any feedback yet.</p>

@@ -5,7 +5,7 @@
   padding: 2rem 0;
 }
 
-.dashboard-activity-super {
+.customer-activity-super {
   width: 100%;
   background: #f5f6f7;
   margin: 0;
@@ -14,7 +14,7 @@
   box-sizing: border-box;
 }
 
-.activity-tabs-bg {
+.customer-activity-tabs-bg {
   background: transparent;
   padding: 0;
   margin-bottom: 2.5rem;
@@ -22,7 +22,7 @@
   justify-content: center;
 }
 
-.activity-tabs {
+.customer-activity-tabs {
   display: flex;
   gap: 1.2rem;
   align-items: center;
@@ -32,7 +32,7 @@
   padding: 0.4rem 0.5rem;
 }
 
-.activity-tab-btn {
+.customer-activity-tab-btn {
   background: none;
   border: none;
   outline: none;
@@ -50,14 +50,14 @@
   box-shadow: none;
 }
 
-.activity-tab-btn.active {
+.customer-activity-tab-btn.active {
   color: #fff;
   background: #007a65;
   box-shadow: 0 2px 12px rgba(0, 122, 101, 0.13);
   font-weight: 700;
 }
 
-.activity-tab-btn:not(.active):hover {
+.customer-activity-tab-btn:not(.active):hover {
   background: #f1f8f6;
   color: #007a65;
 }
@@ -72,7 +72,7 @@
   font-size: 1.08rem;
 }
 
-.activity-content {
+.customer-activity-content {
   width: 100%;
   margin: 0 auto;
   max-width: 1200px;
@@ -171,7 +171,7 @@
   color: #222b3a;
   font-weight: 500;
 }
-.activity-empty {
+.customer-activity-empty {
   text-align: center;
   padding: 4rem 2rem;
   background: #fff;
@@ -182,40 +182,40 @@
   font-size: 2.5rem;
   margin-bottom: 1rem;
 }
-.activity-empty h3 {
+.customer-activity-empty h3 {
   font-size: 1.2rem;
   color: #1e293b;
   margin-bottom: 0.5rem;
 }
 @media (max-width: 900px) {
-  .dashboard-activity-super {
+  .customer-activity-super {
     padding: 1rem 0.5vw 0 0.5vw;
   }
   .activity-list {
     grid-template-columns: 1fr;
     gap: 1.2rem;
   }
-  .activity-tabs {
+  .customer-activity-tabs {
     gap: 0.5rem;
     padding: 0.3rem 0.2rem;
   }
-  .activity-tab-btn {
+  .customer-activity-tab-btn {
     padding: 0.7rem 1.2rem;
     font-size: 1rem;
   }
 }
 @media (max-width: 600px) {
-  .dashboard-activity-super {
+  .customer-activity-super {
     padding: 0.5rem 0.2vw 0 0.2vw;
   }
-  .activity-tabs {
+  .customer-activity-tabs {
     gap: 0.2rem;
     padding: 0.2rem 0.1rem;
   }
   .activity-card {
     padding: 1rem 0.5rem;
   }
-  .activity-tab-btn {
+  .customer-activity-tab-btn {
     padding: 0.6rem 0.7rem;
     font-size: 0.97rem;
   }
@@ -228,7 +228,7 @@
   }
 }
 
-.activity-table-container {
+.customer-activity-table-container {
   width: 100%;
   background: #fff;
   border-radius: 18px;
@@ -237,24 +237,24 @@
   margin: 0 auto;
   overflow-x: auto;
 }
-.activity-table-scroll {
+.customer-activity-table-scroll {
   width: 100%;
   overflow-x: auto;
 }
-.activity-table {
+.customer-activity-table {
   width: 100%;
   min-width: 800px;
   border-collapse: separate;
   border-spacing: 0;
   background: #fff;
 }
-.activity-table th, .activity-table td {
+.customer-activity-table th, .customer-activity-table td {
   padding: 1rem 1.2rem;
   text-align: left;
   font-size: 1.05rem;
   border-bottom: 1.5px solid #f1f5f9;
 }
-.activity-table th {
+.customer-activity-table th {
   color: #007a65;
   font-weight: 700;
   background: #f8fafc;
@@ -262,10 +262,10 @@
   letter-spacing: 0.5px;
   font-size: 0.98rem;
 }
-.activity-table tr:last-child td {
+.customer-activity-table tr:last-child td {
   border-bottom: none;
 }
-.activity-status-badge {
+.customer-activity-status-badge {
   font-size: 0.98rem;
   font-weight: 700;
   padding: 0.35rem 1.2rem;
@@ -278,65 +278,61 @@
   box-shadow: 0 2px 8px rgba(0, 122, 101, 0.07);
   display: inline-block;
 }
-.activity-status-badge.pending {
+.customer-activity-status-badge.pending {
   background: #fffbe6;
   color: #bfa100;
   border-color: #f7e7a3;
 }
-.activity-status-badge.processing {
+.customer-activity-status-badge.processing {
   background: #e6f0fa;
   color: #007a65;
   border-color: #b2f7ef;
 }
-.activity-status-badge.complete {
+.customer-activity-status-badge.complete {
   background: #e6fbe6;
   color: #1a7a3d;
   border-color: #b2f7ef;
 }
-.activity-status-badge.cancel {
+.customer-activity-status-badge.cancel {
   background: #ffeaea;
   color: #c0392b;
   border-color: #f7b2b2;
 }
-.activity-cancel-btn {
-  background: #fff;
-  color: #c0392b;
-  border: 1.5px solid #c0392b;
-  border-radius: 22px;
-  padding: 0.5rem 1.3rem;
-  font-size: 1rem;
+.customer-activity-cancel-btn {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border 0.2s;
-  box-shadow: 0 2px 8px rgba(192,57,43,0.07);
+  transition: background 0.2s;
 }
-.activity-cancel-btn:hover {
-  background: #c0392b;
-  color: #fff;
-  border: 1.5px solid #c0392b;
+.customer-activity-cancel-btn:hover {
+  background: #b71c1c;
 }
 @media (max-width: 900px) {
-  .activity-table-container {
+  .customer-activity-table-container {
     padding: 1rem 0.2rem;
   }
-  .activity-table th, .activity-table td {
+  .customer-activity-table th, .customer-activity-table td {
     padding: 0.7rem 0.5rem;
     font-size: 0.97rem;
   }
-  .activity-table {
+  .customer-activity-table {
     min-width: 600px;
   }
 }
 @media (max-width: 600px) {
-  .activity-table-container {
+  .customer-activity-table-container {
     padding: 0.5rem 0.1rem;
     border-radius: 10px;
   }
-  .activity-table th, .activity-table td {
+  .customer-activity-table th, .customer-activity-table td {
     padding: 0.5rem 0.3rem;
     font-size: 0.93rem;
   }
-  .activity-table {
+  .customer-activity-table {
     min-width: 480px;
   }
 } 
