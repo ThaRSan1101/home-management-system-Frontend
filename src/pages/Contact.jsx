@@ -36,7 +36,7 @@ const Contact = () => {
     cursor: 'pointer',
   };
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyD-au1OqAoBlNmkvdJFIArmLAOezqEzcyk',
+    googleMapsApiKey: '',
   });
 
   const handleMapClick = () => {
@@ -117,7 +117,6 @@ const Contact = () => {
                 position={mannarPosition}
                 onClick={handleMapClick}
                 icon={{
-                  // NOTE: This uses the default Google marker icon. Google recommends migrating to AdvancedMarkerElement in the future.
                   url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
                   scaledSize: { width: 40, height: 40 },
                 }}
