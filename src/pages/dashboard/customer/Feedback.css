@@ -3,4 +3,363 @@
   color: #8B5CF6;
   font-weight: 500;
   padding: 2rem 0;
+}
+
+.dashboard-feedback-super {
+  width: 100%;
+  background: #f5f6f7;
+  margin: 0;
+  padding: 2rem 2vw 0 2vw;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.dashboard-feedback-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.dashboard-feedback-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #007a65;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.dashboard-feedback-header p {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.dashboard-feedback-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tab-btn {
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  color: #64748b;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  border-color: #007a65;
+  color: #007a65;
+}
+
+.tab-btn.active {
+  background: #007a65;
+  border-color: #007a65;
+  color: #fff;
+}
+
+.dashboard-feedback-table-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-bottom: 2rem;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.dashboard-feedback-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.dashboard-feedback-table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 1rem 0;
+}
+
+.header-cell {
+  padding: 1rem 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-feedback-table-body {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.dashboard-feedback-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.2s ease;
+}
+
+.dashboard-feedback-table-row:hover {
+  background-color: #f8fafc;
+}
+
+.table-cell {
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.service-cell .service-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.provider-cell .provider-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.provider-icon {
+  color: #007a65;
+  font-size: 0.9rem;
+}
+
+.rating-cell .rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.star {
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.star.filled {
+  color: #fbbf24;
+}
+
+.star.empty {
+  color: #e2e8f0;
+}
+
+.rating-text {
+  margin-left: 0.5rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.comment-cell .comment-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.comment-content p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.customer-name {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.customer-icon {
+  font-size: 0.8rem;
+  color: #007a65;
+}
+
+.date-cell .date-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64748b;
+}
+
+.date-icon {
+  color: #007a65;
+  font-size: 0.9rem;
+}
+
+.status-cell .status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-badge.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-icon {
+  font-size: 0.8rem;
+}
+
+.dashboard-feedback-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-feedback-empty h3 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-feedback-empty p {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-feedback-super {
+    padding: 1.5rem 1vw 0 1vw;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-feedback-super {
+    padding: 1rem 0.5vw 0 0.5vw;
+  }
+  
+  .dashboard-feedback-table-header,
+  .dashboard-feedback-table-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .header-cell {
+    display: none;
+  }
+  
+  .table-cell {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .dashboard-feedback-table-row {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .service-cell::before {
+    content: "Service: ";
+    font-weight: 600;
+    color: #007a65;
+  }
+  
+  .provider-cell::before {
+    content: "Provider: ";
+    font-weight: 600;
+    color: #007a65;
+  }
+  
+  .rating-cell::before {
+    content: "Rating: ";
+    font-weight: 600;
+    color: #007a65;
+  }
+  
+  .comment-cell::before {
+    content: "Comment: ";
+    font-weight: 600;
+    color: #007a65;
+  }
+  
+  .date-cell::before {
+    content: "Date: ";
+    font-weight: 600;
+    color: #007a65;
+  }
+  
+  .status-cell::before {
+    content: "Status: ";
+    font-weight: 600;
+    color: #007a65;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-feedback-super {
+    padding: 0.5rem 0.2vw 0 0.2vw;
+  }
+  
+  .dashboard-feedback-header {
+    padding: 1.5rem 1rem;
+  }
+  
+  .dashboard-feedback-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .dashboard-feedback-tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .tab-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-feedback-table {
+    min-width: 0;
+  }
 } 
