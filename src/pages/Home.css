@@ -87,7 +87,7 @@
 .btn-primary {
   background: #007a65 !important;
   color: #fff !important;
-  border: none;
+  border: 2px solid #005f4b;
 }
 
 .btn-primary:hover {
@@ -104,7 +104,7 @@
 
 .btn-secondary:hover {
   background: #007a65 !important;
-  color: #007a65 !important;
+  color: #f8f9fa  !important;
   box-shadow: 0 10px 25px rgba(0, 122, 101, 0.2);
 }
 

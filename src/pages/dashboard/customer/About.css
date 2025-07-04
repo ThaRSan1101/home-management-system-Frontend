@@ -5,7 +5,7 @@
   padding: 2rem 0;
 }
 
-.dashboard-about-super {
+.customer-about-super {
   width: 100%;
   background: transparent;
   margin: 0;
@@ -14,21 +14,21 @@
   box-sizing: border-box;
 }
 @media (max-width: 1200px) {
-  .dashboard-about-super {
+  .customer-about-super {
     padding: 1.5rem 1vw 0 1vw;
   }
 }
 @media (max-width: 900px) {
-  .dashboard-about-super {
+  .customer-about-super {
     padding: 1rem 0.5vw 0 0.5vw;
   }
 }
 @media (max-width: 600px) {
-  .dashboard-about-super {
+  .customer-about-super {
     padding: 0.5rem 0.2vw 0 0.2vw;
   }
 }
-.dashboard-aboutus-hero-section {
+.customer-aboutus-hero-section {
   width: 100%;
   
   
@@ -38,43 +38,44 @@
   align-items: center;
   justify-content: center;
 }
-.dashboard-aboutus-hero-content {
+.customer-aboutus-hero-content {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   
 }
-.dashboard-aboutus-hero-left {
+.customer-aboutus-hero-left {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
 }
-.dashboard-aboutus-hero-heading {
+.customer-aboutus-hero-heading {
   font-size: 2.2rem;
   font-weight: 800;
   margin-bottom: 1.1rem;
   color: #007a65;
   letter-spacing: 0.5px;
 }
-.dashboard-aboutus-main-title {
-  font-size: 4rem;
+
+.customer-aboutus-main-title {
+  font-size: 2.2rem;
   font-weight: 800;
 }
-.dashboard-aboutus-sub-title {
+.customer-aboutus-sub-title {
   font-size: 1.3rem;
   font-weight: 700;
   margin-top: 0.2rem;
 }
-.dashboard-aboutus-hero-desc {
+.customer-aboutus-hero-desc {
   font-size: 1.08rem;
   color: #555;
   margin-bottom: 2.2rem;
   line-height: 1.7;
 }
-.dashboard-aboutus-features-grid {
+.customer-aboutus-features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.2rem;
@@ -83,7 +84,7 @@
   padding-bottom: 1rem;
   justify-items: center;
 }
-.dashboard-aboutus-feature-card {
+.customer-aboutus-feature-card {
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
@@ -96,6 +97,7 @@
   box-sizing: border-box;
   font-size: 1rem;
 }
+
 .dashboard-aboutus-feature-icon {
   color: #007a65;
   font-size: 2.2rem;
@@ -104,13 +106,13 @@
   justify-content: center;
   margin-right: 1.2rem;
 }
-.dashboard-aboutus-feature-title {
+.customer-aboutus-feature-title {
   font-size: 1.1rem;
   font-weight: 700;
   color: #1a202c;
   margin-bottom: 0.2rem;
 }
-.dashboard-aboutus-feature-desc {
+.customer-aboutus-feature-desc {
   color: #64748b;
   font-size: 1rem;
 }
@@ -120,27 +122,27 @@
   background: url('data:image/svg+xml;utf8,<svg width="100%25" height="40" viewBox="0 0 1440 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 0C360 40 1080 0 1440 40V40H0V0Z" fill="%23007a65" fill-opacity="0.07"/></svg>') no-repeat center/cover;
   margin: -2rem 0 2rem 0;
 }
-.dashboard-team-section-super {
+.customer-team-section-super {
   padding: 2.5rem 0 2rem 0;
 }
-.dashboard-team-header {
+.customer-team-header {
   text-align: center;
   margin-bottom: 2.2rem;
 }
-.dashboard-team-header h2 {
+.customer-team-header h2 {
   font-size: 2.1rem;
   color: #007a65;
   font-weight: 800;
   letter-spacing: -1px;
 }
-.dashboard-team-grid-super {
+.customer-team-grid-super {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
   max-width: 900px;
   margin: 0 auto;
 }
-.dashboard-team-card-super {
+.customer-team-card-super {
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.09);
@@ -151,7 +153,7 @@
   cursor: pointer;
   overflow: hidden;
 }
-.dashboard-team-avatar {
+.customer-team-avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -161,56 +163,56 @@
   box-shadow: 0 2px 12px rgba(0,184,148,0.10);
   display: block;
 }
-.dashboard-team-card-super h3 {
+.customer-team-card-super h3 {
   font-size: 1.15rem;
   font-weight: 700;
   color: #1a202c;
   margin-bottom: 0.3rem;
 }
-.dashboard-team-role {
+.customer-team-role {
   color: #007a65;
   font-weight: 600;
   margin-bottom: 0.7rem;
 }
 @media (max-width: 1200px) {
-  .dashboard-about-super {
+  .customer-about-super {
     max-width: 95vw;
     padding: 1.5rem 1rem 0 1rem;
   }
 }
 @media (max-width: 900px) {
-  .dashboard-about-super {
+  .customer-about-super {
     margin-left: 0;
     padding: 1.2rem 0.2rem 0 0.2rem;
   }
-  .dashboard-aboutus-hero-section {
+  .customer-aboutus-hero-section {
     flex-direction: column;
     padding: 2.5rem 0.5rem 1.5rem 0.5rem;
   }
-  .dashboard-aboutus-hero-content {
+  .customer-aboutus-hero-content {
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
-  .dashboard-aboutus-features-grid {
+  .customer-aboutus-features-grid {
     grid-template-columns: 1fr 1fr;
     max-width: 800px;
   }
 }
 @media (max-width: 600px) {
-  .dashboard-about-super {
+  .customer-about-super {
     padding: 0.7rem 0.1rem 0 0.1rem;
   }
-  .dashboard-aboutus-hero-section {
+  .customer-aboutus-hero-section {
     padding: 1.2rem 0.2rem 0.5rem 0.2rem;
   }
-  .dashboard-aboutus-feature-card {
+  .customer-aboutus-feature-card {
     padding: 0.8rem 0.5rem;
   }
-  .dashboard-team-card-super {
+  .customer-team-card-super {
     padding: 1.2rem 0.5rem;
   }
-  .dashboard-team-grid-super {
+  .customer-team-grid-super {
     gap: 1rem;
   }
 } 

@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaSignOutAlt } from 'react-icons/fa';
 import './ProviderSidebar.css';
-import logo from '../../../assets/Logo.png';
 
 const navItems = [
   { label: 'Dashboard', path: '/provider/dashboard' },
@@ -21,7 +20,9 @@ const ProviderSidebar = () => {
   return (
     <aside className="provider-sidebar">
       <div className="sidebar-logo-container">
-        <img src={logo} alt="Logo" className="sidebar-logo-img" />
+        <div className="sidebar-logo-round">
+          <img src="/images/logo%20new.png" alt="Logo" className="sidebar-logo-img" />
+        </div>
       </div>
       <nav className="sidebar-nav">
         {navItems.map((item) => (
