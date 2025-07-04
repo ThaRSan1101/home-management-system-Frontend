@@ -28,6 +28,14 @@ export default function ProviderActivity() {
   const [activeTab, setActiveTab] = useState('new');
   const [activities, setActivities] = useState(initialActivities);
 
+  // Modal state
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [modalActivity, setModalActivity] = useState(null);
+  const [cancelReason, setCancelReason] = useState('');
+  const [completeCharge, setCompleteCharge] = useState('');
+  const [completeServiceName, setCompleteServiceName] = useState('');
+
   const filteredActivities = activities.filter((activity) => activity.status === activeTab);
 
   const handleAccept = (id) => {
@@ -38,6 +46,43 @@ export default function ProviderActivity() {
 
   const handleDecline = (id) => {
     setActivities((prev) => prev.filter((a) => a.id !== id));
+  };
+
+  // Cancel/Complete actions for processing
+  const openCancelModal = (activity) => {
+    setModalActivity(activity);
+    setCancelReason('');
+    setShowCancelModal(true);
+  };
+  const openCompleteModal = (activity) => {
+    setModalActivity(activity);
+    setCompleteCharge('');
+    setCompleteServiceName(activity.service);
+    setShowCompleteModal(true);
+  };
+  const handleCancelSubmit = (e) => {
+    e.preventDefault();
+    setActivities((prev) =>
+      prev.map((a) =>
+        a.id === modalActivity.id
+          ? { ...a, status: 'cancel', cancelReason }
+          : a
+      )
+    );
+    setShowCancelModal(false);
+    setModalActivity(null);
+  };
+  const handleCompleteSubmit = (e) => {
+    e.preventDefault();
+    setActivities((prev) =>
+      prev.map((a) =>
+        a.id === modalActivity.id
+          ? { ...a, status: 'complete', charge: completeCharge, completedService: completeServiceName }
+          : a
+      )
+    );
+    setShowCompleteModal(false);
+    setModalActivity(null);
   };
 
   return (
@@ -88,6 +133,9 @@ export default function ProviderActivity() {
                         <th>Time</th>
                         <th>Status</th>
                         {activeTab === 'new' && <th>Action</th>}
+                        {activeTab === 'processing' && <th>Action</th>}
+                        {activeTab === 'cancel' && <th>Reason</th>}
+                        {activeTab === 'complete' && <th>Charge</th>}
                       </tr>
                     </thead>
                     <tbody>
@@ -117,6 +165,28 @@ export default function ProviderActivity() {
                               </button>
                             </td>
                           )}
+                          {activeTab === 'processing' && (
+                            <td>
+                              <button
+                                className="provider-services-cancel-btn"
+                                onClick={() => openCancelModal(activity)}
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                className="provider-services-complete-btn"
+                                onClick={() => openCompleteModal(activity)}
+                              >
+                                Complete
+                              </button>
+                            </td>
+                          )}
+                          {activeTab === 'cancel' && (
+                            <td>{activity.cancelReason || '-'}</td>
+                          )}
+                          {activeTab === 'complete' && (
+                            <td>{activity.charge ? `LKR ${activity.charge}` : '-'}</td>
+                          )}
                         </tr>
                       ))}
                     </tbody>
@@ -124,10 +194,78 @@ export default function ProviderActivity() {
                 </div>
               </div>
             )}
+            {/* Cancel Modal */}
+            {showCancelModal && (
+              <div className="provider-modal-overlay">
+                <div className="provider-modal playful-modal">
+                  <div className="provider-modal-icon-circle cancel">
+                    <FaTimesCircle size={44} />
+                  </div>
+                  <button type="button" className="provider-modal-close-btn" onClick={() => setShowCancelModal(false)}>&times;</button>
+                  <h3>Cancel Service</h3>
+                  <form onSubmit={handleCancelSubmit}>
+                    <label>
+                      Reason for cancellation:
+                      <textarea
+                        value={cancelReason}
+                        onChange={(e) => setCancelReason(e.target.value)}
+                        required
+                        placeholder="Enter reason..."
+                        className="provider-modal-textarea playful-input"
+                      />
+                    </label>
+                    <div className="provider-modal-actions">
+                      <button type="button" onClick={() => setShowCancelModal(false)} className="provider-modal-cancel-btn playful-btn">Close</button>
+                      <button type="submit" className="provider-modal-submit-btn playful-btn">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+            {/* Complete Modal */}
+            {showCompleteModal && (
+              <div className="provider-modal-overlay">
+                <div className="provider-modal playful-modal">
+                  <div className="provider-modal-icon-circle complete">
+                    <FaCheckCircle size={44} />
+                  </div>
+                  <button type="button" className="provider-modal-close-btn" onClick={() => setShowCompleteModal(false)}>&times;</button>
+                  <h3>Complete Service</h3>
+                  <form onSubmit={handleCompleteSubmit}>
+                    <label>
+                      Service Name:
+                      <input
+                        type="text"
+                        value={completeServiceName}
+                        onChange={(e) => setCompleteServiceName(e.target.value)}
+                        required
+                        className="provider-modal-input playful-input"
+                      />
+                    </label>
+                    <label>
+                      Service Charge (LKR):
+                      <input
+                        type="number"
+                        min="0"
+                        value={completeCharge}
+                        onChange={(e) => setCompleteCharge(e.target.value)}
+                        required
+                        placeholder="Enter charge..."
+                        className="provider-modal-input playful-input"
+                      />
+                    </label>
+                    <div className="provider-modal-actions">
+                      <button type="button" onClick={() => setShowCompleteModal(false)} className="provider-modal-cancel-btn playful-btn">Close</button>
+                      <button type="submit" className="provider-modal-submit-btn playful-btn">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
         </>
       ) : (
-        <Subscription embedded />
+        <Subscription embedded hideUnsubscribe />
       )}
     </div>
   );

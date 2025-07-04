@@ -219,7 +219,6 @@ export default function Subscription() {
                 <th>Plan</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -228,23 +227,6 @@ export default function Subscription() {
                   <td>{plan.plan}</td>
                   <td>{plan.startDate}</td>
                   <td>{plan.endDate}</td>
-                  <td>
-                    {activeTab === 'subscribed' ? (
-                      <button
-                        className="customer-subscription-unsubscribe-btn"
-                        onClick={() => setPlans((prev) => prev.map((p) => p.id === plan.id ? { ...p, status: 'unsubscribed', startDate: '-', endDate: '-' } : p))}
-                      >
-                        Unsubscribe
-                      </button>
-                    ) : (
-                      <button
-                        className="customer-subscription-btn"
-                        onClick={() => openBooking(plan)}
-                      >
-                        Book Now
-                      </button>
-                    )}
-                  </td>
                 </tr>
               ))}
             </tbody>
