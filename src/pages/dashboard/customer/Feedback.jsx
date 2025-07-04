@@ -72,6 +72,14 @@ const DashboardFeedback = () => {
     ));
   };
 
+  // When feedback is submitted, increment feedback count in localStorage
+  const handleFeedbackSubmit = (/* your params */) => {
+    // ... your feedback submit logic ...
+    const feedback = Number(localStorage.getItem('customer_feedback') || 0) + 1;
+    localStorage.setItem('customer_feedback', feedback);
+    // ... rest of your logic ...
+  };
+
   return (
     <div className="customer-dashboard-feedback-super">
       <div className="customer-dashboard-feedback-header">
@@ -79,26 +87,11 @@ const DashboardFeedback = () => {
         <p>Review and manage your service feedback</p>
       </div>
 
-      <div className="customer-dashboard-feedback-tabs">
-        <button 
-          className={`tab-btn ${activeTab === 'all' ? 'active' : ''}`}
-          onClick={() => setActiveTab('all')}
-        >
-          All Feedback ({feedbackData.length})
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'completed' ? 'active' : ''}`}
-          onClick={() => setActiveTab('completed')}
-        >
-          Completed ({feedbackData.filter(f => f.status === 'completed').length})
-        </button>
-      </div>
-
       <div className="customer-dashboard-feedback-table-container">
         <div className="customer-dashboard-feedback-table">
           <div className="customer-dashboard-feedback-table-header">
             <div className="header-cell">Service</div>
-            <div className="header-cell">Provider</div>
+            <div className="header-cell">Provider Name</div>
             <div className="header-cell">Rating</div>
             <div className="header-cell">Comment</div>
             <div className="header-cell">Date</div>
@@ -116,7 +109,6 @@ const DashboardFeedback = () => {
                 
                 <div className="table-cell provider-cell">
                   <div className="provider-info">
-                    <FaUser className="provider-icon" />
                     <span>{feedback.provider}</span>
                   </div>
                 </div>
@@ -131,10 +123,6 @@ const DashboardFeedback = () => {
                 <div className="table-cell comment-cell">
                   <div className="comment-content">
                     <p>{feedback.comment}</p>
-                    <div className="customer-name">
-                      <FaUser className="customer-icon" />
-                      {feedback.customerName}
-                    </div>
                   </div>
                 </div>
                 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import service1 from '../../../assets/service1.jpg';
 import service2 from '../../../assets/service2.jpg';
 import service3 from '../../../assets/service3.jpg';
@@ -93,6 +93,43 @@ const Service = () => {
   // Helper for today date in yyyy-mm-dd
   const todayStr = new Date().toISOString().split('T')[0];
 
+  // Booking state machine
+  const [bookings, setBookings] = useState(() => {
+    const saved = localStorage.getItem('customer_service_bookings');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Save bookings to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('customer_service_bookings', JSON.stringify(bookings));
+  }, [bookings]);
+
+  // Add booking on success
+  const addBooking = (service, form) => {
+    setBookings(prev => [
+      ...prev,
+      {
+        id: Date.now(),
+        service: service.title,
+        date: form.date,
+        time: form.time,
+        status: 'Pending',
+        details: { ...form },
+      },
+    ]);
+  };
+
+  // Booking actions
+  const cancelBooking = (id) => {
+    setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'Cancelled' } : b));
+  };
+  const acceptBooking = (id) => {
+    setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'Processing' } : b));
+  };
+  const completeBooking = (id) => {
+    setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'Complete' } : b));
+  };
+
   // Handlers
   const openBooking = (type, service) => {
     setBookingType(type);
@@ -146,6 +183,19 @@ const Service = () => {
     if (val.length > 2) val = val.slice(0,2) + '/' + val.slice(2);
     setPayment(p => ({ ...p, expiry: val }));
   };
+
+  // Track last modalStep to detect transition to 'success'
+  const [lastModalStep, setLastModalStep] = useState(null);
+  useEffect(() => {
+    if (lastModalStep !== 'success' && modalStep === 'success' && bookingType === 'service') {
+      const bookingsCount = Number(localStorage.getItem('customer_bookings') || 0) + 1;
+      const services = Number(localStorage.getItem('customer_services') || 0) + 1;
+      localStorage.setItem('customer_bookings', bookingsCount);
+      localStorage.setItem('customer_services', services);
+      addBooking(selectedService, form);
+    }
+    setLastModalStep(modalStep);
+  }, [modalStep, lastModalStep, bookingType, selectedService, form]);
 
   // Modal content for each step
   const renderModal = () => {
@@ -257,6 +307,7 @@ const Service = () => {
           </div>
         ))}
       </div>
+
       <section className="customer-subscription-section">
         <h2 className="customer-subscription-title">Subscription Plans</h2>
         <div className="customer-subscription-grid">
@@ -269,7 +320,7 @@ const Service = () => {
                   <li key={i}>✔ {feature}</li>
                 ))}
               </ul>
-              <button className="customer-subscription-btn" onClick={()=>openBooking('subscription', plan)}>Book Now</button>
+              <button className="customer-subscription-btn" onClick={()=>openBooking('subscription', plan)}>Subscribe</button>
             </div>
           ))}
         </div>
