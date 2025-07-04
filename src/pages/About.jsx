@@ -100,32 +100,32 @@ export default function About() {
         {/* Meet the Team */}
         <motion.div
           className="team-section-super"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="team-header">
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="team-header">
             <h2>Meet   the   team</h2>
-          </div>
-          <div className="team-grid-super">
-            {team.map((member, i) => (
-              <motion.div
-                className="team-card-super"
-                key={member.name}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
-                viewport={{ once: true }}
-              >
-                <img className="team-avatar" src={member.img} alt={member.name} />
-                <h3>{member.name}</h3>
-                <div className="team-role">{member.role}</div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+        </div>
+        <div className="team-grid-super">
+          {team.map((member, i) => (
+            <motion.div
+              className="team-card-super"
+              key={member.name}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
+              viewport={{ once: true }}
+            >
+              <img className="team-avatar" src={member.img} alt={member.name} />
+              <h3>{member.name}</h3>
+              <div className="team-role">{member.role}</div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+        </div>
     </div>
   );
 } 

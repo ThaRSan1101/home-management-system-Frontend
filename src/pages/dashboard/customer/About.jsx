@@ -12,10 +12,10 @@ const features = [
 ];
 
 const team = [
-  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "https://randomuser.me/api/portraits/women/65.jpg" },
-  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "https://randomuser.me/api/portraits/men/45.jpg" }
+  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "src/assets/tharshan.jpg" },
+  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "src/assets/abiramy.jpg" },
+  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "src/assets/tharshi.jpg" },
+  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "src/assets/abiram.jpg" }
 ];
 
 function AboutUsHero() {
@@ -33,8 +33,10 @@ function AboutUsHero() {
           <div className="aboutus-features-grid dashboard-aboutus-features-grid">
             {features.map((f, i) => (
               <div className="aboutus-feature-card dashboard-aboutus-feature-card card-hover shadow-soft" key={f.title}>
-                <div className="aboutus-feature-icon dashboard-aboutus-feature-icon">{f.icon}</div>
-                <div className="aboutus-feature-text dashboard-aboutus-feature-text">
+                <div className="aboutus-feature-badge-wrapper dashboard-aboutus-feature-badge-wrapper">
+                  <div className="aboutus-feature-badge dashboard-aboutus-feature-badge">{f.icon}</div>
+                </div>
+                <div className="aboutus-feature-content-centered dashboard-aboutus-feature-content-centered">
                   <div className="aboutus-feature-title dashboard-aboutus-feature-title">{f.title}</div>
                   <div className="aboutus-feature-desc dashboard-aboutus-feature-desc">{f.desc}</div>
                 </div>
@@ -51,7 +53,6 @@ export default function About() {
   return (
     <div className="dashboard-about-super">
       <AboutUsHero />
-      <div className="section-divider"></div>
       <div className="team-section-super dashboard-team-section-super">
         <div className="team-header dashboard-team-header">
           <h2>Meet the Team</h2>
