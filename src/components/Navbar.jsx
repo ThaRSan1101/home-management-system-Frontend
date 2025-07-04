@@ -59,8 +59,8 @@ const Navbar = () => {
           <NavLink to="/" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} end onClick={handleLinkClick}>Home</NavLink>
           <NavLink to="/services" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>Services</NavLink>
           <NavLink to="/how-it-works" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>How It Works</NavLink>
-          <NavLink to="/about" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>About Us</NavLink>
           <NavLink to="/contact" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>Contact Us</NavLink>
+          <NavLink to="/about" className={({ isActive }) => 'nav-link' + (isActive ? ' active' : '')} onClick={handleLinkClick}>About Us</NavLink>
         </div>
 
         {/* Login/Register Buttons Right */}
