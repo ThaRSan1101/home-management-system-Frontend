@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '../../../components/Modal';
 import visaImg from '../../../assets/visa.png';
 import mcImg from '../../../assets/master.png';
@@ -176,6 +176,12 @@ export default function Subscription() {
       );
     }
     if (modalStep === 'success') {
+      useEffect(() => {
+        const subs = Number(localStorage.getItem('customer_subscriptions') || 0) + 1;
+        const services = Number(localStorage.getItem('customer_services') || 0) + 1;
+        localStorage.setItem('customer_subscriptions', subs);
+        localStorage.setItem('customer_services', services);
+      }, [modalStep]);
       return (
         <div className="customer-booking-modal-success">
           <h2>Your booking is successful</h2>
