@@ -202,7 +202,7 @@
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  /*transition: background 0.3s, box-shadow 0.3s, border 0.3s, backdrop-filter 0.3s;*/
+  transition: background 0.3s, box-shadow 0.3s, border 0.3s, backdrop-filter 0.3s;
 }
 
 /* Navbar links and font color for scrolled (non-home) */
