@@ -39,10 +39,10 @@ const features = [
 ];
 
 const team = [
-  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "https://randomuser.me/api/portraits/women/65.jpg" },
-  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "https://randomuser.me/api/portraits/men/45.jpg" }
+  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "src/assets/tharshan.jpg" },
+  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "src/assets/abiramy.jpg" },
+  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "src/assets/tharshi.jpg" },
+  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "src/assets/abiram.jpg" }
 ];
 
 
@@ -71,8 +71,10 @@ function AboutUsHero() {
           <div className="aboutus-features-grid">
             {features.map((f, i) => (
               <div className="aboutus-feature-card card-hover shadow-soft animate-slide-up" key={f.title} style={{ animationDelay: `${i * 0.07 + 0.1}s` }}>
-                <div className="aboutus-feature-icon">{f.icon}</div>
-                <div className="aboutus-feature-text">
+                <div className="aboutus-feature-badge-wrapper">
+                  <div className="aboutus-feature-badge">{f.icon}</div>
+                </div>
+                <div className="aboutus-feature-content-centered">
                   <div className="aboutus-feature-title">{f.title}</div>
                   <div className="aboutus-feature-desc">{f.desc}</div>
                 </div>
@@ -93,39 +95,37 @@ export default function About() {
 
   return (
     <div className="about-super">
-      <AboutUsHero />
-      {/* Hero Section with Particles removed */}
-
-      <div className="section-divider"></div>
-
-      {/* Meet the Team */}
-      <motion.div
-        className="team-section-super"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <div className="team-header">
-          <h2>Meet the Team</h2>
-        </div>
-        <div className="team-grid-super">
-          {team.map((member, i) => (
-            <motion.div
-              className="team-card-super"
-              key={member.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-              viewport={{ once: true }}
-            >
-              <img className="team-avatar" src={member.img} alt={member.name} />
-              <h3>{member.name}</h3>
-              <div className="team-role">{member.role}</div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+      <div className="about-hero-team-wrapper">
+        <AboutUsHero />
+        {/* Meet the Team */}
+        <motion.div
+          className="team-section-super"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <div className="team-header">
+            <h2>Meet   the   team</h2>
+          </div>
+          <div className="team-grid-super">
+            {team.map((member, i) => (
+              <motion.div
+                className="team-card-super"
+                key={member.name}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: i * 0.15 }}
+                viewport={{ once: true }}
+              >
+                <img className="team-avatar" src={member.img} alt={member.name} />
+                <h3>{member.name}</h3>
+                <div className="team-role">{member.role}</div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 } 
