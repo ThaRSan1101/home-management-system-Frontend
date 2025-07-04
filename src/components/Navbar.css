@@ -1,4 +1,4 @@
-/* Modern Navbar Styles */
+Modern Navbar Styles
 .navbar {
   background: #fff;
   border-bottom: 1.5px solid #e5e7eb;
@@ -285,6 +285,23 @@
   align-items: center;
   gap: 1rem;
   margin-left: 1.5rem;
+}
+
+ .navbar .login-btn {
+  color: #007a65;
+  background: transparent;
+  border: 2px solid #007a65;
+  padding: 0.5rem 1.3rem;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 1.08rem;
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+} 
+.login-btn:hover,
+.login-btn.active {
+  background: #007a65;
+  color: #fff;
 }
 
 .register-btn {

@@ -1,4 +1,71 @@
-import React from 'react';
+import React from "react";
+import { FaUserShield, FaClock, FaCheckCircle, FaHeadset, FaLock, FaStar } from 'react-icons/fa';
 import './About.css';
-const About = () => <div className="customer-about">About Us page coming soon.</div>;
-export default About; 
+
+const features = [
+  { icon: <FaUserShield />, title: 'Trusted Professionals', desc: 'All providers are background-checked and verified.' },
+  { icon: <FaClock />, title: 'Quick Booking', desc: 'Book services instantly with real-time availability.' },
+  { icon: <FaCheckCircle />, title: 'Quality Assured', desc: 'Every job is monitored for top quality.' },
+  { icon: <FaHeadset />, title: '24/7 Support', desc: 'Get help anytime with our support team.' },
+  { icon: <FaLock />, title: 'Secure Platform', desc: 'Your data and payments are always protected.' },
+  { icon: <FaStar />, title: 'Top Rated', desc: 'Highly rated by thousands of happy users.' },
+];
+
+const team = [
+  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "https://randomuser.me/api/portraits/men/32.jpg" },
+  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "https://randomuser.me/api/portraits/women/44.jpg" },
+  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "https://randomuser.me/api/portraits/women/65.jpg" },
+  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "https://randomuser.me/api/portraits/men/45.jpg" }
+];
+
+function AboutUsHero() {
+  return (
+    <section className="aboutus-hero-section dashboard-aboutus-hero-section">
+      <div className="aboutus-hero-content dashboard-aboutus-hero-content">
+        <div className="aboutus-hero-left dashboard-aboutus-hero-left">
+          <h2 className="aboutus-hero-heading dashboard-aboutus-hero-heading">
+            <span className="aboutus-main-title dashboard-aboutus-main-title">About Us</span><br />
+            <span className="aboutus-sub-title text-gradient dashboard-aboutus-sub-title">ServiceHub</span>
+          </h2>
+          <p className="aboutus-hero-desc dashboard-aboutus-hero-desc">
+            ServiceHub is a trusted digital platform that connects customers with verified service professionals for all their home needs, including cleaning, repairs, electrical work, and more. Designed for convenience and reliability, ServiceHub allows customers to easily book services, track appointments, and receive bills online, while ensuring that every provider is manually approved by the admin for quality and safety.
+          </p>
+          <div className="aboutus-features-grid dashboard-aboutus-features-grid">
+            {features.map((f, i) => (
+              <div className="aboutus-feature-card dashboard-aboutus-feature-card card-hover shadow-soft" key={f.title}>
+                <div className="aboutus-feature-icon dashboard-aboutus-feature-icon">{f.icon}</div>
+                <div className="aboutus-feature-text dashboard-aboutus-feature-text">
+                  <div className="aboutus-feature-title dashboard-aboutus-feature-title">{f.title}</div>
+                  <div className="aboutus-feature-desc dashboard-aboutus-feature-desc">{f.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function About() {
+  return (
+    <div className="dashboard-about-super">
+      <AboutUsHero />
+      <div className="section-divider"></div>
+      <div className="team-section-super dashboard-team-section-super">
+        <div className="team-header dashboard-team-header">
+          <h2>Meet the Team</h2>
+        </div>
+        <div className="team-grid-super dashboard-team-grid-super">
+          {team.map((member, i) => (
+            <div className="team-card-super dashboard-team-card-super" key={member.name}>
+              <img className="team-avatar dashboard-team-avatar" src={member.img} alt={member.name} />
+              <h3>{member.name}</h3>
+              <div className="team-role dashboard-team-role">{member.role}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+} 

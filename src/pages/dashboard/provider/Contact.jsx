@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import './Contact.css';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
-const Contact = () => {
+const ProviderContact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,11 +28,11 @@ const Contact = () => {
   const mannarPosition = { lat: 8.9806, lng: 79.9042 };
   const mapContainerStyle = {
     width: '100%',
-    height: '400px',
-    borderRadius: '20px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.10)',
+    height: '320px',
+    borderRadius: '18px',
+    boxShadow: '0 6px 18px rgba(0, 0, 0, 0.08)',
     margin: '0 auto',
-    marginTop: '2rem',
+    marginTop: '1.5rem',
     cursor: 'pointer',
   };
   const { isLoaded } = useJsApiLoader({
@@ -44,56 +44,56 @@ const Contact = () => {
   };
 
   return (
-    <>
-      <div className="contactus-split-container">
-        <div className="contactus-left">
-          <h1 className="contactus-header">SEND MESSAGE</h1>
-          <form className="contactus-form" onSubmit={handleSubmit}>
-            <div className="contactus-form-group">
+    <div className="provider-contact-super">
+      <div className="provider-contactus-split-container">
+        <div className="provider-contactus-left">
+          <h1 className="provider-contactus-header">Contact Us</h1>
+          <form className="provider-contactus-form" onSubmit={handleSubmit}>
+            <div className="provider-contactus-form-group">
               <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
             </div>
-            <div className="contactus-form-group">
+            <div className="provider-contactus-form-group">
               <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
             </div>
-            <div className="contactus-form-group">
+            <div className="provider-contactus-form-group">
               <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} />
             </div>
-            <div className="contactus-form-group">
+            <div className="provider-contactus-form-group">
               <input type="text" name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} />
             </div>
-            <div className="contactus-form-group">
+            <div className="provider-contactus-form-group">
               <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} required />
             </div>
-            <button type="submit" className="contactus-send-btn">Send Message</button>
-            {isSubmitted && <div className="contactus-success">Thank you! Your message has been sent.</div>}
+            <button type="submit" className="provider-contactus-send-btn">Send Message</button>
+            {isSubmitted && <div className="provider-contactus-success">Thank you! Your message has been sent.</div>}
           </form>
         </div>
-        <div className="contactus-right">
-          <div className="contactus-right-content">
-            <span className="contactus-contactus">contact us</span>
-            <h2 className="contactus-title">PLEASE GET IN TOUCH</h2>
-            <div className="contactus-info-list">
-              <div className="contactus-info-item">
-                <FaMapMarkerAlt className="contactus-info-icon" />
-                <span className="contactus-info-label">Address:</span>
-                <span className="contactus-info-value">25, Kensington Garden, Colombo 00400</span>
+        <div className="provider-contactus-right">
+          <div className="provider-contactus-right-content">
+            <span className="provider-contactus-contactus">Contact Info</span>
+            <h2 className="provider-contactus-title">Get in Touch</h2>
+            <div className="provider-contactus-info-list">
+              <div className="provider-contactus-info-item">
+                <FaMapMarkerAlt className="provider-contactus-info-icon" />
+                <span className="provider-contactus-info-label">Address:</span>
+                <span className="provider-contactus-info-value">25, Kensington Garden, Colombo 00400</span>
               </div>
-              <div className="contactus-info-item">
-                <FaPhone className="contactus-info-icon" />
-                <span className="contactus-info-label">Phone :</span>
-                <span className="contactus-info-value">(+94) 77 442 2448</span>
+              <div className="provider-contactus-info-item">
+                <FaPhone className="provider-contactus-info-icon" />
+                <span className="provider-contactus-info-label">Phone :</span>
+                <span className="provider-contactus-info-value">(+94) 77 442 2448</span>
               </div>
-              <div className="contactus-info-item">
-                <FaEnvelope className="contactus-info-icon" />
-                <span className="contactus-info-label">Email :</span>
-                <span className="contactus-info-value">info@homeservice.com</span>
+              <div className="provider-contactus-info-item">
+                <FaEnvelope className="provider-contactus-info-icon" />
+                <span className="provider-contactus-info-label">Email :</span>
+                <span className="provider-contactus-info-value">info@homeservice.com</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <section className="map-section">
-        <div className="map-card" onClick={handleMapClick} title="Open in Google Maps">
+      <section className="provider-contact-map-section">
+        <div className="provider-contact-map-card" onClick={handleMapClick} title="Open in Google Maps">
           {isLoaded && (
             <GoogleMap
               mapContainerStyle={mapContainerStyle}
@@ -123,11 +123,11 @@ const Contact = () => {
               />
             </GoogleMap>
           )}
-          <div className="map-overlay">Click to open Our Location</div>
+          <div className="provider-contact-map-overlay">Click to open Our Location</div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
-export default Contact; 
+export default ProviderContact; 
