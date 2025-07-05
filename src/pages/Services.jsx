@@ -170,7 +170,7 @@ const Services = () => {
                   <li>✔ One service every week</li>
                   <li>✔ Doorstep service</li>
                 </ul>
-                <button className="subscription-btn">Subscribe</button>
+                <Link to="/register" className="subscription-btn">Subscribe</Link>
               </div>
               {/* Monthly Plan */}
               <div className="subscription-card">
@@ -184,7 +184,7 @@ const Services = () => {
                   <li>✔ One visit per month</li>
                   <li>✔ Trusted professionals</li>
                 </ul>
-                <button className="subscription-btn">Subscribe</button>
+                <Link to="/register" className="subscription-btn">Subscribe</Link>
               </div>
               {/* Yearly Plan */}
               <div className="subscription-card">
@@ -198,7 +198,7 @@ const Services = () => {
                   <li>✔ One visit per service yearly</li>
                   <li>✔ Preventive maintenance</li>
                 </ul>
-                <button className="subscription-btn">Subscribe</button>
+                <Link to="/register" className="subscription-btn">Subscribe</Link>
               </div>
             </div>
           </section>

@@ -751,6 +751,7 @@ body, .services-page-main {
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border 0.2s;
   margin-top: auto;
+  text-decoration: none;
 }
 .subscription-btn:hover, .subscription-btn-featured:hover {
   background: #007a65;
