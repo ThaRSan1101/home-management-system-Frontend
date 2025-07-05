@@ -12,31 +12,31 @@ const features = [
 ];
 
 const team = [
-  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "https://randomuser.me/api/portraits/women/65.jpg" },
-  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "https://randomuser.me/api/portraits/men/45.jpg" }
+  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "src/assets/tharshan.jpg" },
+  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "src/assets/abiramy.jpg" },
+  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "src/assets/tharshi.jpg" },
+  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "src/assets/abiram.jpg" }
 ];
 
 function AboutUsHero() {
   return (
-    <section className="aboutus-hero-section dashboard-aboutus-hero-section">
-      <div className="aboutus-hero-content dashboard-aboutus-hero-content">
-        <div className="aboutus-hero-left dashboard-aboutus-hero-left">
-          <h2 className="aboutus-hero-heading dashboard-aboutus-hero-heading">
-            <span className="aboutus-main-title dashboard-aboutus-main-title">About Us</span><br />
-            <span className="aboutus-sub-title text-gradient dashboard-aboutus-sub-title">ServiceHub</span>
+    <section className="customer-aboutus-hero-section customer-aboutus-hero-section">
+      <div className="customer-aboutus-hero-content customer-aboutus-hero-content">
+        <div className="customer-aboutus-hero-left customer-aboutus-hero-left">
+          <h2 className="customer-aboutus-hero-heading customer-aboutus-hero-heading">
+            <span className="customer-aboutus-main-title customer-aboutus-main-title">About Us</span><br />
+            <span className="customer-aboutus-sub-title text-gradient customer-aboutus-sub-title">ServiceHub</span>
           </h2>
-          <p className="aboutus-hero-desc dashboard-aboutus-hero-desc">
+          <p className="customer-aboutus-hero-desc customer-aboutus-hero-desc">
             ServiceHub is a trusted digital platform that connects customers with verified service professionals for all their home needs, including cleaning, repairs, electrical work, and more. Designed for convenience and reliability, ServiceHub allows customers to easily book services, track appointments, and receive bills online, while ensuring that every provider is manually approved by the admin for quality and safety.
           </p>
-          <div className="aboutus-features-grid dashboard-aboutus-features-grid">
+          <div className="customer-aboutus-features-grid customer-aboutus-features-grid">
             {features.map((f, i) => (
-              <div className="aboutus-feature-card dashboard-aboutus-feature-card card-hover shadow-soft" key={f.title}>
-                <div className="aboutus-feature-icon dashboard-aboutus-feature-icon">{f.icon}</div>
-                <div className="aboutus-feature-text dashboard-aboutus-feature-text">
-                  <div className="aboutus-feature-title dashboard-aboutus-feature-title">{f.title}</div>
-                  <div className="aboutus-feature-desc dashboard-aboutus-feature-desc">{f.desc}</div>
+              <div className="customer-aboutus-feature-card customer-aboutus-feature-card card-hover shadow-soft" key={f.title}>
+                <div className="customer-aboutus-feature-icon customer-aboutus-feature-icon">{f.icon}</div>
+                <div className="customer-aboutus-feature-text customer-aboutus-feature-text">
+                  <div className="customer-aboutus-feature-title customer-aboutus-feature-title">{f.title}</div>
+                  <div className="customer-aboutus-feature-desc customer-aboutus-feature-desc">{f.desc}</div>
                 </div>
               </div>
             ))}
@@ -49,19 +49,19 @@ function AboutUsHero() {
 
 export default function About() {
   return (
-    <div className="dashboard-about-super">
+    <div className="customer-about-super">
       <AboutUsHero />
       <div className="section-divider"></div>
-      <div className="team-section-super dashboard-team-section-super">
-        <div className="team-header dashboard-team-header">
+      <div className="team-section-super customer-team-section-super">
+        <div className="team-header customer-team-header">
           <h2>Meet the Team</h2>
         </div>
-        <div className="team-grid-super dashboard-team-grid-super">
+        <div className="team-grid-super customer-team-grid-super">
           {team.map((member, i) => (
-            <div className="team-card-super dashboard-team-card-super" key={member.name}>
-              <img className="team-avatar dashboard-team-avatar" src={member.img} alt={member.name} />
+            <div className="team-card-super customer-team-card-super" key={member.name}>
+              <img className="team-avatar customer-team-avatar" src={member.img} alt={member.name} />
               <h3>{member.name}</h3>
-              <div className="team-role dashboard-team-role">{member.role}</div>
+              <div className="team-role customer-team-role">{member.role}</div>
             </div>
           ))}
         </div>

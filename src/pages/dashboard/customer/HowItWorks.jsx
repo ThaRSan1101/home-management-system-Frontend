@@ -64,81 +64,83 @@ const HowItWorks = () => {
   const handleFaqClick = idx => setOpenFaq(openFaq === idx ? null : idx);
 
   return (
-    <div className="customer-howitworks-page">
-      {/* Phases Timeline Section */}
-      <section className="phases-horizontal-section">
-        <div className="phases-horizontal-grid">
-          <div className="phases-horizontal-left">
-            <h2 className="phases-title">How It Works</h2>
-            <div className="phases-timeline">
-              <div className="phases-timeline-item">
-                <div className="phases-timeline-content left">
-                  <h3>Choose Service</h3>
-                  <p>Browse and select from our wide range of professional services.</p>
+    <div className="customer-howitworks-outer">
+      <div className="customer-howitworks-page">
+        {/* Phases Timeline Section */}
+        <section className="customer-phases-horizontal-section">
+          <div className="customer-phases-horizontal-grid">
+            <div className="customer-phases-horizontal-left">
+              <h2 className="customer-phases-title">How It Works</h2>
+              <div className="customer-phases-timeline">
+                <div className="customer-phases-timeline-item">
+                  <div className="customer-phases-timeline-content left">
+                    <h3>Choose Service</h3>
+                    <p>Browse and select from our wide range of professional services.</p>
+                  </div>
+                  <div className="customer-phases-timeline-circle">1</div>
+                  <div className="customer-phases-timeline-content right"></div>
                 </div>
-                <div className="phases-timeline-circle">1</div>
-                <div className="phases-timeline-content right"></div>
-              </div>
-              <div className="phases-timeline-item">
-                <div className="phases-timeline-content left"></div>
-                <div className="phases-timeline-circle">2</div>
-                <div className="phases-timeline-content right">
-                  <h3>Book Appointment</h3>
-                  <p>Select your preferred time and book instantly.</p>
+                <div className="customer-phases-timeline-item">
+                  <div className="customer-phases-timeline-content left"></div>
+                  <div className="customer-phases-timeline-circle">2</div>
+                  <div className="customer-phases-timeline-content right">
+                    <h3>Book Appointment</h3>
+                    <p>Select your preferred time and book instantly.</p>
+                  </div>
+                </div>
+                <div className="customer-phases-timeline-item">
+                  <div className="customer-phases-timeline-content left">
+                    <h3>Get Service</h3>
+                    <p>Our experts arrive and complete the job efficiently.</p>
+                  </div>
+                  <div className="customer-phases-timeline-circle">3</div>
+                  <div className="customer-phases-timeline-content right"></div>
                 </div>
               </div>
-              <div className="phases-timeline-item">
-                <div className="phases-timeline-content left">
-                  <h3>Get Service</h3>
-                  <p>Our experts arrive and complete the job efficiently.</p>
-                </div>
-                <div className="phases-timeline-circle">3</div>
-                <div className="phases-timeline-content right"></div>
-              </div>
+            </div>
+            <div className="customer-phases-horizontal-right">
+              <img
+                src={cleaningImg}
+                alt="Office Cleaning Process"
+                className="customer-phases-side-image"
+              />
             </div>
           </div>
-          <div className="phases-horizontal-right">
-            <img
-              src={cleaningImg}
-              alt="Office Cleaning Process"
-              className="phases-side-image"
-            />
+        </section>
+
+        {/* Trust & Security Guarantees */}
+        <section className="customer-trust-section customer-trust-cards-section">
+          <h2 className="customer-trust-title">Why choose us?</h2>
+          <p className="customer-trust-intro">We prioritize your safety and satisfaction with every service booking</p>
+          <div className="customer-trust-cards-grid">
+            {guarantees.map((g, idx) => (
+              <div className="customer-trust-card" key={idx}>
+                <div className="customer-trust-card-icon">{g.icon}</div>
+                <h3 className="customer-trust-card-title">{g.title}</h3>
+                <p className="customer-trust-card-desc">{g.description}</p>
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Trust & Security Guarantees */}
-      <section className="trust-section trust-cards-section">
-        <h2 className="trust-title">Why choose us?</h2>
-        <p className="trust-intro">We prioritize your safety and satisfaction with every service booking</p>
-        <div className="trust-cards-grid">
-          {guarantees.map((g, idx) => (
-            <div className="trust-card" key={idx}>
-              <div className="trust-card-icon">{g.icon}</div>
-              <h3 className="trust-card-title">{g.title}</h3>
-              <p className="trust-card-desc">{g.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="faq-section new-faq-section">
-        <h2 className="faq-title">Frequently asked questions</h2>
-        <div className="faq-list new-faq-list">
-          {faqs.map((faq, idx) => (
-            <div className="faq-card" key={idx}>
-              <button className="faq-question-row" onClick={() => handleFaqClick(idx)}>
-                <span className="faq-question-text">{faq.question}</span>
-                <span className="faq-plus">{openFaq === idx ? '-' : '+'}</span>
-              </button>
-              {openFaq === idx && (
-                <div className="faq-answer-row">{faq.answer}</div>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
+        {/* FAQ Section */}
+        <section className="customer-faq-section customer-new-faq-section">
+          <h2 className="customer-faq-title">Frequently asked questions</h2>
+          <div className="customer-faq-list customer-new-faq-list">
+            {faqs.map((faq, idx) => (
+              <div className="customer-faq-card" key={idx}>
+                <button className="customer-faq-question-row" onClick={() => handleFaqClick(idx)}>
+                  <span className="customer-faq-question-text">{faq.question}</span>
+                  <span className="customer-faq-plus">{openFaq === idx ? '-' : '+'}</span>
+                </button>
+                {openFaq === idx && (
+                  <div className="customer-faq-answer-row">{faq.answer}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 };

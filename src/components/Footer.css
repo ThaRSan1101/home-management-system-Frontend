@@ -10,7 +10,7 @@
 .footer-new-container {
   display: grid;
   grid-template-columns: 2fr 2fr 2fr 1fr;
-  gap: 2.5rem;
+  gap: 5.5rem;
   max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem 2rem 2rem;
@@ -33,11 +33,11 @@
   margin-bottom: 0.7rem;
 }
 .footer-logo img, .footer-logo .logo-border {
-  height: 40px;
-  width: 40px;
+  height: 70px;
+  width: 70px;
   border-radius: 50%;
   object-fit: cover;
-  background: #fff;
+  /*background: #fff; */
   border: none;
   box-shadow: none;
   padding: 0;
@@ -126,6 +126,15 @@
   font-size: 0.95rem;
   padding: 1.2rem 0 1rem 0;
   margin-top: 1.5rem;
+}
+
+.footer-logo-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  filter: brightness(0) saturate(100%) invert(34%) sepia(99%) saturate(749%) hue-rotate(127deg) brightness(97%) contrast(101%);
 }
 
 @media (max-width: 900px) {

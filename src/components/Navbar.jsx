@@ -48,8 +48,9 @@ const Navbar = () => {
       <div className="navbar-inner">
         {/* Logo Left */}
         <div className="navbar-brand">
-          <Link to="/" onClick={handleLinkClick} aria-label="Home">
+          <Link to="/" onClick={handleLinkClick} aria-label="Home" style={{display: 'flex', alignItems: 'center', gap: '0'}}>
             <Logo size="small" />
+            <span className="navbar-title">ServiceHub</span>
           </Link>
         </div>
 

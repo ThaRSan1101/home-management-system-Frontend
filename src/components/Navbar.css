@@ -13,11 +13,12 @@ Modern Navbar Styles
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1280px;
-  margin: 0 auto;
+  /* max-width: 1280px; */
+  margin:auto;
   width: 100%;
-  padding: 0.5rem 2.5rem;
+  /* padding: 0.5rem 2.5rem; */
   min-height: 70px;
+  padding: 0 2rem 0 2rem;
 }
 
 /* Brand/Logo Section */
@@ -31,7 +32,7 @@ Modern Navbar Styles
   text-decoration: none;
   display: flex;
   align-items: center;
-  transition: transform 0.3s ease;
+  /* transition: transform 0.3s ease; */
 }
 
 .navbar-brand a:hover {
@@ -201,7 +202,7 @@ Modern Navbar Styles
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: background 0.3s, box-shadow 0.3s, border 0.3s, backdrop-filter 0.3s;
+ /* transition: background 0.3s, box-shadow 0.3s, border 0.3s, backdrop-filter 0.3s;*/
 }
 
 /* Navbar links and font color for scrolled (non-home) */
@@ -224,14 +225,17 @@ Modern Navbar Styles
 /* Auth buttons for scrolled (non-home) */
 .navbar.scrolled .navbar-auth .login-btn {
   color: #fff;
-  background: transparent;
+  background: #007a65;
   border: 2px solid #007a65;
 }
 .navbar.scrolled .navbar-auth .login-btn:hover,
 .navbar.scrolled .navbar-auth .login-btn.active {
-  background: #007a65;
+ /* background: #007a65;
   color: #fff;
-  border-color: #007a65;
+  border-color: #007a65;*/
+  background: #005f4b;
+  border-color: #005f4b;
+  color: #fff;
 }
 
 .navbar.scrolled .navbar-auth .register-btn {
@@ -272,7 +276,7 @@ Modern Navbar Styles
   background: transparent !important;
   border-bottom: none !important;
   box-shadow: none !important;
-  transition: background 0.3s, box-shadow 0.3s, border 0.3s;
+  /*transition: background 0.3s, box-shadow 0.3s, border 0.3s;*/
 }
 
 .navbar-auth {
@@ -283,45 +287,25 @@ Modern Navbar Styles
   margin-left: 1.5rem;
 }
 
- .navbar .login-btn {
-  color: #007a65;
-  background: transparent;
+.register-btn, .login-btn {
+  background: #007a65;
+  color: #fff;
   border: 2px solid #007a65;
   padding: 0.5rem 1.3rem;
   border-radius: 24px;
   font-weight: 600;
-  font-size: 1.08rem;
-  transition: background 0.2s, color 0.2s;
-  text-decoration: none;
-} 
-.login-btn:hover,
-.login-btn.active {
-  background: #007a65;
-  color: #fff;
-}
-
-.register-btn {
-  background: #007a65;
-  color: #fff;
-  border: 2px solid #007a65;
-  padding: 0.45rem 1.1rem;
-  border-radius: 24px;
-  font-weight: 600;
-  font-size: 0.98rem;
+  font-size: 1.05rem;
   transition: background 0.2s, color 0.2s;
   text-decoration: none;
 }
-.login-btn{
+/*.register-btn {
   background: #007a65;
   color: #fff;
-  border: 2px solid #007a65;
-  padding: 0.45rem 1.1rem;
-  border-radius: 24px;
-  font-weight: 600;
-  font-size: 0.98rem;
-  transition: background 0.2s, color 0.2s;
-  text-decoration: none;
 }
+.login-btn {
+  background: transparent;
+  color: #007a65;
+}*/
 .login-btn:hover, .login-btn.active,
 .register-btn:hover, .register-btn.active {
   background: #005f4b;
@@ -369,4 +353,14 @@ Modern Navbar Styles
   background: #007a65;
   color: #fff;
   border-color: #007a65;
+}
+
+.navbar-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #007a65;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* margin-left: 0.3rem;*/
+  user-select: none;
 } 

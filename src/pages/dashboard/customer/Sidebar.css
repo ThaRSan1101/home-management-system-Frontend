@@ -12,27 +12,28 @@
   z-index: 100;
   box-shadow: 2px 0 10px rgba(16, 185, 129, 0.10);
 }
-.sidebar-logo-container {
+.customer-sidebar-logo-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 0 1.2rem 0;
+  padding: 1.2rem 0 1.2rem 0;
 }
-.sidebar-logo-img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+.customer-sidebar-logo-img {
+  height: 32px;
+  width: auto;
+  border-radius: 50%;
   background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  padding: 6px;
+  display: block;
 }
-.sidebar-nav {
+.customer-sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
   padding: 0 0.5rem;
 }
-.sidebar-link {
+.customer-sidebar-link {
   color: #fff;
   text-decoration: none;
   padding: 0.9rem 1.5rem;
@@ -42,7 +43,7 @@
   transition: background 0.18s, color 0.18s;
   margin-bottom: 0.1rem;
 }
-.sidebar-link:hover, .sidebar-link.active {
+.customer-sidebar-link:hover, .customer-sidebar-link.active {
   background: rgba(255,255,255,0.13);
   color: #fff;
 }
@@ -55,24 +56,45 @@
     flex-direction: row;
     box-shadow: none;
     padding: 0.5rem 0;
+    align-items: center;
   }
-  .sidebar-logo-container {
-    display: none;
+  .customer-sidebar-logo-container {
+    padding: 0.5rem 0 0.5rem 0;
   }
-  .sidebar-nav {
+  .customer-sidebar-logo-img {
+    height: 24px;
+    padding: 4px;
+  }
+  .customer-sidebar-nav {
     flex-direction: row;
     gap: 0.5rem;
     padding: 0 0.5rem;
     width: 100%;
     justify-content: center;
   }
-  .sidebar-link {
+  .customer-sidebar-link {
     padding: 0.7rem 1rem;
     font-size: 1rem;
     border-radius: 6px;
   }
+  .customer-sidebar-logout-btn-bottom {
+    position: static;
+    margin: 0 0.5rem 0 0.5rem;
+    width: auto;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    background: #fff;
+    color: #059669;
+  display: flex;
+  align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+    transition: background 0.18s, color 0.18s;
+    order: 99;
+  }
 }
-.sidebar-logout-btn-bottom {
+.customer-sidebar-logout-btn-bottom {
   margin-top: auto;
   margin-bottom: 2rem;
   margin-left: 1.5rem;
@@ -92,7 +114,7 @@
   box-shadow: 0 2px 8px rgba(16,185,129,0.08);
   transition: background 0.18s, color 0.18s;
 }
-.sidebar-logout-btn-bottom:hover {
+.customer-sidebar-logout-btn-bottom:hover {
   background: #f3f4f6;
   color: #007a65;
 }

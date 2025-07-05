@@ -659,6 +659,7 @@ body, .services-page-main {
 }
 
 .subscription-section {
+  margin-top: 20px;
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
@@ -740,7 +741,7 @@ body, .services-page-main {
   gap: 0.5rem;
 }
 .subscription-btn {
-  background: #1a202c;
+  background: rgba(26, 32, 44, 0.89);
   color: #fff;
   border: 2px solid #1a202c;
   border-radius: 30px;

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import './Contact.css';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
-const DashboardContact = () => {
+const ProviderContact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -44,56 +44,56 @@ const DashboardContact = () => {
   };
 
   return (
-    <div className="customer-dashboard-contact-super">
-      <div className="customer-dashboard-contactus-split-container">
-        <div className="customer-dashboard-contactus-left">
-          <h1 className="customer-dashboard-contactus-header">Contact Us</h1>
-          <form className="customer-dashboard-contactus-form" onSubmit={handleSubmit}>
-            <div className="customer-dashboard-contactus-form-group">
+    <div className="provider-contact-super">
+      <div className="provider-contactus-split-container">
+        <div className="provider-contactus-left">
+          <h1 className="provider-contactus-header">Contact Us</h1>
+          <form className="provider-contactus-form" onSubmit={handleSubmit}>
+            <div className="provider-contactus-form-group">
               <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
             </div>
-            <div className="customer-dashboard-contactus-form-group">
+            <div className="provider-contactus-form-group">
               <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
             </div>
-            <div className="customer-dashboard-contactus-form-group">
+            <div className="provider-contactus-form-group">
               <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} />
             </div>
-            <div className="customer-dashboard-contactus-form-group">
+            <div className="provider-contactus-form-group">
               <input type="text" name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} />
             </div>
-            <div className="customer-dashboard-contactus-form-group">
+            <div className="provider-contactus-form-group">
               <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} required />
             </div>
-            <button type="submit" className="customer-dashboard-contactus-send-btn">Send Message</button>
-            {isSubmitted && <div className="customer-dashboard-contactus-success">Thank you! Your message has been sent.</div>}
+            <button type="submit" className="provider-contactus-send-btn">Send Message</button>
+            {isSubmitted && <div className="provider-contactus-success">Thank you! Your message has been sent.</div>}
           </form>
         </div>
-        <div className="customer-dashboard-contactus-right">
-          <div className="customer-dashboard-contactus-right-content">
-            <span className="customer-dashboard-contactus-contactus">Contact Info</span>
-            <h2 className="customer-dashboard-contactus-title">Get in Touch</h2>
-            <div className="customer-dashboard-contactus-info-list">
-              <div className="customer-dashboard-contactus-info-item">
-                <FaMapMarkerAlt className="customer-dashboard-contactus-info-icon" />
-                <span className="customer-dashboard-contactus-info-label">Address:</span>
-                <span className="customer-dashboard-contactus-info-value">25, Kensington Garden, Colombo 00400</span>
+        <div className="provider-contactus-right">
+          <div className="provider-contactus-right-content">
+            <span className="provider-contactus-contactus">Contact Info</span>
+            <h2 className="provider-contactus-title">Get in Touch</h2>
+            <div className="provider-contactus-info-list">
+              <div className="provider-contactus-info-item">
+                <FaMapMarkerAlt className="provider-contactus-info-icon" />
+                <span className="provider-contactus-info-label">Address:</span>
+                <span className="provider-contactus-info-value">25, Kensington Garden, Colombo 00400</span>
               </div>
-              <div className="customer-dashboard-contactus-info-item">
-                <FaPhone className="customer-dashboard-contactus-info-icon" />
-                <span className="customer-dashboard-contactus-info-label">Phone :</span>
-                <span className="customer-dashboard-contactus-info-value">(+94) 77 442 2448</span>
+              <div className="provider-contactus-info-item">
+                <FaPhone className="provider-contactus-info-icon" />
+                <span className="provider-contactus-info-label">Phone :</span>
+                <span className="provider-contactus-info-value">(+94) 77 442 2448</span>
               </div>
-              <div className="customer-dashboard-contactus-info-item">
-                <FaEnvelope className="customer-dashboard-contactus-info-icon" />
-                <span className="customer-dashboard-contactus-info-label">Email :</span>
-                <span className="customer-dashboard-contactus-info-value">info@homeservice.com</span>
+              <div className="provider-contactus-info-item">
+                <FaEnvelope className="provider-contactus-info-icon" />
+                <span className="provider-contactus-info-label">Email :</span>
+                <span className="provider-contactus-info-value">info@homeservice.com</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <section className="customer-dashboard-map-section">
-        <div className="customer-dashboard-map-card" onClick={handleMapClick} title="Open in Google Maps">
+      <section className="provider-contact-map-section">
+        <div className="provider-contact-map-card" onClick={handleMapClick} title="Open in Google Maps">
           {isLoaded && (
             <GoogleMap
               mapContainerStyle={mapContainerStyle}
@@ -123,11 +123,11 @@ const DashboardContact = () => {
               />
             </GoogleMap>
           )}
-          <div className="dashboard-map-overlay">Click to open Our Location</div>
+          <div className="provider-contact-map-overlay">Click to open Our Location</div>
         </div>
       </section>
     </div>
   );
 };
 
-export default DashboardContact; 
+export default ProviderContact; 
