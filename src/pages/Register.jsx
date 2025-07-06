@@ -14,6 +14,7 @@ const Register = () => {
     confirmPassword: '',
     showPassword: false
   });
+
   const [errors, setErrors] = useState({});
   const [otpSent, setOtpSent] = useState(false);
   const [generatedOtp, setGeneratedOtp] = useState('');
@@ -21,143 +22,125 @@ const Register = () => {
   const [otpError, setOtpError] = useState('');
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
-    // Clear error when user starts typing
+
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
-    
-    // Real-time validation for specific fields
-    if (name === 'email' && value) {
+
+    if (name === 'email') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value)) {
-        setErrors({ ...errors, [name]: 'Please enter a valid email address (e.g., user@gmail.com)' });
+        setErrors({ ...errors, [name]: 'Enter a valid email' });
       }
     }
-    
-    if (name === 'phone' && value) {
+
+    if (name === 'phone') {
       const phoneRegex = /^\d{10}$/;
       if (!phoneRegex.test(value)) {
-        setErrors({ ...errors, [name]: 'Phone number must be exactly 10 digits' });
+        setErrors({ ...errors, [name]: 'Phone must be 10 digits' });
       }
     }
-    
-    if (name === 'password' && value) {
-      const passwordErrors = validatePassword(value);
-      if (passwordErrors.length > 0) {
-        setErrors({ ...errors, [name]: passwordErrors });
+
+    if (name === 'password') {
+      const pwdErrors = validatePassword(value);
+      if (pwdErrors.length > 0) {
+        setErrors({ ...errors, [name]: pwdErrors });
       }
     }
-    
-    if (name === 'confirmPassword' && value && formData.password) {
+
+    if (name === 'confirmPassword') {
       if (value !== formData.password) {
         setErrors({ ...errors, [name]: 'Passwords do not match' });
       }
     }
   };
 
+  // Password validation rules
   const validatePassword = (password) => {
-    const errors = [];
-    
-    if (password.length < 8) {
-      errors.push('At least 8 characters long');
-    }
-    
-    if (!/[A-Z]/.test(password)) {
-      errors.push('At least one uppercase letter (A-Z)');
-    }
-    
-    if (!/[a-z]/.test(password)) {
-      errors.push('At least one lowercase letter (a-z)');
-    }
-    
-    if (!/\d/.test(password)) {
-      errors.push('At least one number (0-9)');
-    }
-    
-    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
-      errors.push('At least one special character (!@#$%^&*...)');
-    }
-    
-    return errors;
+    const err = [];
+    if (password.length < 8) err.push('Min 8 characters');
+    if (!/[A-Z]/.test(password)) err.push('At least one uppercase');
+    if (!/[a-z]/.test(password)) err.push('At least one lowercase');
+    if (!/\d/.test(password)) err.push('At least one number');
+    if (!/[!@#$%^&*]/.test(password)) err.push('At least one special char');
+    return err;
   };
 
+  // Final form validation
   const validateForm = () => {
     const newErrors = {};
-    
-    // Full Name validation
-    if (!formData.fullName) newErrors.fullName = 'Full Name is required';
-    
-    // Email validation
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) {
-        newErrors.email = 'Please enter a valid email address (e.g., user@gmail.com)';
-      }
-    }
-    
-    // Phone validation
-    if (!formData.phone) {
-      newErrors.phone = 'Phone Number is required';
-    } else {
-      const phoneRegex = /^\d{10}$/;
-      if (!phoneRegex.test(formData.phone)) {
-        newErrors.phone = 'Phone number must be exactly 10 digits';
-      }
-    }
-    
-    // Address validation
-    if (!formData.address) newErrors.address = 'Address is required';
-    
-    // Password validation
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else {
-      const passwordErrors = validatePassword(formData.password);
-      if (passwordErrors.length > 0) {
-        newErrors.password = passwordErrors;
-      }
-    }
-    
-    // Confirm Password validation
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
+    if (!formData.fullName) newErrors.fullName = 'Full name is required';
+    if (!formData.email) newErrors.email = 'Email required';
+    if (!formData.phone) newErrors.phone = 'Phone required';
+    if (!formData.address) newErrors.address = 'Address required';
+    if (!formData.password) newErrors.password = 'Password required';
+    if (!formData.confirmPassword) newErrors.confirmPassword = 'Confirm password';
+    if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = 'Passwords do not match';
-    }
-    
+
+    const pwdErr = validatePassword(formData.password);
+    if (pwdErr.length > 0) newErrors.password = pwdErr;
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  // 🔗 Step 1: Send Data to Backend (register.php)
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Simulate sending OTP
-      const otp = Math.floor(1000 + Math.random() * 9000).toString();
-      setGeneratedOtp(otp);
-      setOtpSent(true);
-      setOtpInput('');
-      setOtpError('');
-      setRegistrationSuccess(false);
-      // In a real app, send the OTP to the user's email here
-      alert(`Simulated OTP sent to email: ${formData.email}\nOTP: ${otp}`); // For demo only
+    if (!validateForm()) return;
+
+    try {
+      const response = await fetch('http://localhost/project-root/backend/register.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      if (result.status === 'success') {
+        setOtpSent(true);
+        alert('OTP has been sent to your email');
+      } else {
+        alert(result.message || 'Failed to send OTP');
+      }
+    } catch (err) {
+      alert('Error sending request to server');
+      console.error(err);
     }
   };
 
-  const handleOtpSubmit = (e) => {
+  // 🔗 Step 2: Verify OTP with Backend (verify_otp.php)
+  const handleOtpSubmit = async (e) => {
     e.preventDefault();
-    if (otpInput === generatedOtp) {
-      setRegistrationSuccess(true);
-      setOtpError('');
-    } else {
-      setOtpError('Invalid OTP. Please try again.');
-      setRegistrationSuccess(false);
+    if (otpInput.trim().length !== 6) {
+      setOtpError('Enter the 6-digit OTP');
+      return;
+    }
+
+    const payload = { ...formData, otp: otpInput };
+
+    try {
+      const response = await fetch('http://localhost/project-root/backend/verify_otp.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+      if (result.status === 'success') {
+        setRegistrationSuccess(true);
+        setOtpError('');
+      } else {
+        setOtpError(result.message || 'Invalid OTP');
+      }
+    } catch (err) {
+      setOtpError('Server error');
+      console.error(err);
     }
   };
 
@@ -167,41 +150,21 @@ const Register = () => {
         <div className="auth-left">
           <div className="auth-logo"><Logo size="medium" /></div>
           <h2>Create Account</h2>
-          <p>To keep connected with us please login with your personal info</p>
+          <p>To keep connected with us, please log in with your personal info</p>
           <Link to="/login" className="auth-alt-btn">Log In</Link>
         </div>
+
         <div className="auth-right">
           <h2>Create Account</h2>
+
           {!otpSent && !registrationSuccess && (
             <form className="auth-form register-form" onSubmit={handleSubmit}>
-              <div className="auth-field-container">
-                <div className="auth-input-group">
-                  <FaUser className="auth-input-icon" />
-                  <input type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleChange} className={errors.fullName ? 'error' : ''} />
-                </div>
-                {errors.fullName && <span className="auth-error">{errors.fullName}</span>}
-              </div>
-              <div className="auth-field-container">
-                <div className="auth-input-group">
-                  <FaEnvelope className="auth-input-icon" />
-                  <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} className={errors.email ? 'error' : ''} />
-                </div>
-                {errors.email && <span className="auth-error">{errors.email}</span>}
-              </div>
-              <div className="auth-field-container">
-                <div className="auth-input-group">
-                  <FaPhone className="auth-input-icon" />
-                  <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} className={errors.phone ? 'error' : ''} />
-                </div>
-                {errors.phone && <span className="auth-error">{errors.phone}</span>}
-              </div>
-              <div className="auth-field-container">
-                <div className="auth-input-group">
-                  <FaUser className="auth-input-icon" />
-                  <input type="text" name="address" placeholder="City and District" value={formData.address} onChange={handleChange} className={errors.address ? 'error' : ''} />
-                </div>
-                {errors.address && <span className="auth-error">{errors.address}</span>}
-              </div>
+              <InputField icon={<FaUser />} type="text" name="fullName" placeholder="Full Name" value={formData.fullName} onChange={handleChange} error={errors.fullName} />
+              <InputField icon={<FaEnvelope />} type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} error={errors.email} />
+              <InputField icon={<FaPhone />} type="tel" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} error={errors.phone} />
+              <InputField icon={<FaUser />} type="text" name="address" placeholder="City & District" value={formData.address} onChange={handleChange} error={errors.address} />
+
+              {/* Password Field */}
               <div className="auth-field-container">
                 <div className="auth-input-group">
                   <FaLock className="auth-input-icon" />
@@ -210,16 +173,12 @@ const Register = () => {
                 </div>
                 {errors.password && (
                   <div className="auth-error-list">
-                    {Array.isArray(errors.password) ? (
-                      errors.password.map((error, index) => (
-                        <span key={index} className="auth-error-item">{error}</span>
-                      ))
-                    ) : (
-                      <span className="auth-error">{errors.password}</span>
-                    )}
+                    {Array.isArray(errors.password) ? errors.password.map((e, i) => <span key={i} className="auth-error-item">{e}</span>) : <span className="auth-error">{errors.password}</span>}
                   </div>
                 )}
               </div>
+
+              {/* Confirm Password */}
               <div className="auth-field-container">
                 <div className="auth-input-group">
                   <FaLock className="auth-input-icon" />
@@ -228,32 +187,27 @@ const Register = () => {
                 </div>
                 {errors.confirmPassword && <span className="auth-error">{errors.confirmPassword}</span>}
               </div>
+
               <button type="submit" className="auth-submit-btn">Register Now</button>
             </form>
           )}
+
+          {/* OTP Form */}
           {otpSent && !registrationSuccess && (
-            <form className="otp-form" onSubmit={handleOtpSubmit} style={{ width: '100%', maxWidth: 340, margin: '0 auto', marginTop: 24 }}>
+            <form className="otp-form" onSubmit={handleOtpSubmit}>
               <div className="auth-field-container">
-                <label htmlFor="otp" style={{ fontWeight: 600, marginBottom: 8 }}>Enter the OTP sent to your email</label>
-                <input
-                  type="text"
-                  id="otp"
-                  name="otp"
-                  value={otpInput}
-                  onChange={e => setOtpInput(e.target.value)}
-                  maxLength={4}
-                  className={otpError ? 'error' : ''}
-                  style={{ fontSize: '1.2rem', padding: '0.7rem', borderRadius: 8, border: '1px solid #ccc', width: '100%' }}
-                  autoComplete="one-time-code"
-                />
+                <label htmlFor="otp">Enter OTP sent to email</label>
+                <input type="text" name="otp" value={otpInput} onChange={(e) => setOtpInput(e.target.value)} maxLength={6} className={otpError ? 'error' : ''} />
                 {otpError && <span className="auth-error">{otpError}</span>}
               </div>
               <button type="submit" className="auth-submit-btn">Verify OTP</button>
             </form>
           )}
+
+          {/* Success Message */}
           {registrationSuccess && (
-            <div className="registration-success" style={{ color: '#007a65', fontWeight: 700, fontSize: '1.3rem', marginTop: 32, textAlign: 'center' }}>
-              Registration Successful!
+            <div className="registration-success">
+              🎉 Registration Successful!
             </div>
           )}
         </div>
@@ -262,4 +216,17 @@ const Register = () => {
   );
 };
 
-export default Register; 
+// 🔄 Reusable input field component
+const InputField = ({ icon, ...props }) => {
+  return (
+    <div className="auth-field-container">
+      <div className="auth-input-group">
+        {icon}
+        <input {...props} />
+      </div>
+      {props.error && <span className="auth-error">{props.error}</span>}
+    </div>
+  );
+};
+
+export default Register;

@@ -243,4 +243,36 @@
 
 .register-card {
   max-width: 1300px;
+}
+
+/* OTP input styling */
+.otp-form input[name="otp"] {
+  width: 220px;
+  font-size: 1.5rem;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  letter-spacing: 0.4rem;
+  border: 2px solid #007a65;
+  border-radius: 8px;
+  margin: 0.5rem auto 1rem auto;
+  display: block;
+  background: #f8fafc;
+  transition: border 0.2s;
+}
+.otp-form input[name="otp"]:focus {
+  outline: none;
+  border-color: #005f4b;
+  background: #fff;
+}
+
+.otp-form label[for="otp"] {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+  text-align: center;
+}
+
+.otp-form .auth-field-container {
+  align-items: center;
 } 
