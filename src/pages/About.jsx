@@ -1,194 +1,131 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaUsers, FaHandshake, FaStar, FaAward, FaHeart, FaShieldAlt, FaLightbulb, FaGlobe } from 'react-icons/fa';
-import './About.css';
+import React from "react";
+import { motion } from "framer-motion";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import "./About.css";
+import { FaUserShield, FaClock, FaCheckCircle, FaHeadset, FaLock, FaStar } from 'react-icons/fa';
 
-const About = () => {
-  const stats = [
-    {
-      number: '500+',
-      label: 'Happy Customers',
-      icon: <FaUsers />
-    },
-    {
-      number: '50+',
-      label: 'Expert Providers',
-      icon: <FaHandshake />
-    },
-    {
-      number: '1000+',
-      label: 'Services Completed',
-      icon: <FaStar />
-    },
-    {
-      number: '24/7',
-      label: 'Support Available',
-      icon: <FaAward />
-    }
-  ];
+const features = [
+  {
+    icon: "🛡️",
+    title: "Verified Professionals",
+    desc: "All service providers are background-checked and verified for your safety."
+  },
+  {
+    icon: "⏱️",
+    title: "Real-time Booking",
+    desc: "Book and manage appointments instantly with live availability."
+  },
+  {
+    icon: "💳",
+    title: "Secure Online Payments",
+    desc: "Pay safely online with PayHere integration and SSL security."
+  },
+  {
+    icon: "🛠️",
+    title: "Admin-monitored Assignments",
+    desc: "Every job is tracked and managed by our admin team for quality."
+  },
+  {
+    icon: "📱",
+    title: "User-friendly Interface",
+    desc: "Simple, intuitive design for all users, on any device."
+  },
+  {
+    icon: "🕑",
+    title: "24/7 Support",
+    desc: "Get help anytime with our round-the-clock support team."
+  }
+];
 
-  const values = [
-    {
-      icon: <FaHeart />,
-      title: 'Customer First',
-      description: 'We prioritize customer satisfaction above everything else, ensuring every interaction exceeds expectations.'
-    },
-    {
-      icon: <FaShieldAlt />,
-      title: 'Trust & Reliability',
-      description: 'Building lasting relationships through consistent, dependable service delivery and transparent communication.'
-    },
-    {
-      icon: <FaLightbulb />,
-      title: 'Innovation',
-      description: 'Continuously improving our platform and services to provide the best possible experience for our users.'
-    },
-    {
-      icon: <FaGlobe />,
-      title: 'Community Impact',
-      description: 'Supporting local businesses and creating opportunities for skilled professionals in our community.'
-    }
-  ];
+const team = [
+  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "src/assets/tharshan.jpg" },
+  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "src/assets/abiramy.jpg" },
+  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "src/assets/tharshi.jpg" },
+  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "src/assets/abiram.jpg" }
+];
 
-  const team = [
-    {
-      name: 'Sarah Johnson',
-      role: 'CEO & Founder',
-      bio: 'Passionate about connecting people with quality home services.',
-      avatar: '👩‍💼'
-    },
-    {
-      name: 'Michael Chen',
-      role: 'CTO',
-      bio: 'Technology expert focused on building scalable solutions.',
-      avatar: '👨‍💻'
-    },
-    {
-      name: 'Emily Davis',
-      role: 'Head of Operations',
-      bio: 'Ensuring smooth operations and exceptional customer service.',
-      avatar: '👩‍🔧'
-    },
-    {
-      name: 'David Wilson',
-      role: 'Head of Marketing',
-      bio: 'Creating meaningful connections with our community.',
-      avatar: '👨‍💼'
-    }
+
+
+function AboutUsHero() {
+  const features = [
+    { icon: <FaUserShield />, title: 'Trusted Professionals', desc: 'All providers are background-checked and verified.' },
+    { icon: <FaClock />, title: 'Quick Booking', desc: 'Book services instantly with real-time availability.' },
+    { icon: <FaCheckCircle />, title: 'Quality Assured', desc: 'Every job is monitored for top quality.' },
+    { icon: <FaHeadset />, title: '24/7 Support', desc: 'Get help anytime with our support team.' },
+    { icon: <FaLock />, title: 'Secure Platform', desc: 'Your data and payments are always protected.' },
+    { icon: <FaStar />, title: 'Top Rated', desc: 'Highly rated by thousands of happy users.' },
   ];
+  return (
+    <section className="aboutus-hero-section">
+      <div className="aboutus-hero-bg"></div>
+      <div className="aboutus-hero-content">
+        <div className="aboutus-hero-left animate-fade-in-up">
+          <h2 className="aboutus-hero-heading">
+            <span className="aboutus-main-title">About Us</span><br />
+            <span className="aboutus-sub-title text-gradient">ServiceHub</span>
+          </h2>
+          <p className="aboutus-hero-desc">
+          ServiceHub is a trusted digital platform that connects customers with verified service professionals for all their home needs, including cleaning, repairs, electrical work, and more. Designed for convenience and reliability, ServiceHub allows customers to easily book services, track appointments, and receive bills online, while ensuring that every provider is manually approved by the admin for quality and safety.
+          </p>
+          <div className="aboutus-features-grid">
+            {features.map((f, i) => (
+              <div className="aboutus-feature-card card-hover shadow-soft animate-slide-up" key={f.title} style={{ animationDelay: `${i * 0.07 + 0.1}s` }}>
+                <div className="aboutus-feature-badge-wrapper">
+                  <div className="aboutus-feature-badge">{f.icon}</div>
+                </div>
+                <div className="aboutus-feature-content-centered">
+                  <div className="aboutus-feature-title">{f.title}</div>
+                  <div className="aboutus-feature-desc">{f.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function About() {
+  // For Particles.js
+  const particlesInit = async (main) => {
+    await loadFull(main);
+  };
 
   return (
-    <div className="about page-content">
-      <div className="about-main">
-        {/* Hero Section */}
-        <section className="about-hero">
-          <div className="hero-content">
-            <h1>Welcome to HomeService</h1>
-            <p style={{fontWeight: '600', fontSize: '1.35rem', color: '#111', textShadow: '0 2px 8px rgba(255,255,255,0.18)'}}>Your trusted platform for connecting with skilled, verified home service professionals. Experience hassle-free, reliable, and top-quality home maintenance—every time.</p>
-          </div>
-        </section>
-
-        {/* Mission Section */}
-        <section className="mission-section">
-          <div className="mission-content">
-            <div className="mission-text">
-              <h2>Our Mission</h2>
-              <p>To revolutionize the home services industry by creating a trusted platform that connects homeowners with skilled, verified professionals. We believe everyone deserves access to reliable, high-quality home maintenance services.</p>
-              <p>Through our innovative platform, we're building a community where quality service meets convenience, making home maintenance accessible to everyone.</p>
-            </div>
-            <div className="mission-image">
-              <div className="mission-stats">
-                <div className="stat-item">
-                  <h3>4+</h3>
-                  <p>Years of Excellence</p>
-                </div>
-                <div className="stat-item">
-                  <h3>98%</h3>
-                  <p>Customer Satisfaction</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section className="stats-section">
-          <div className="stats-grid">
-            {stats.map((stat, index) => (
-              <div key={index} className="stat-card">
-                <div className="stat-icon">{stat.icon}</div>
-                <h3>{stat.number}</h3>
-                <p>{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Values Section */}
-        <section className="values-section">
-          <div className="section-header">
-            <h2>Our Core Values</h2>
-            <p>The principles that guide everything we do</p>
-          </div>
-          <div className="values-grid">
-            {values.map((value, index) => (
-              <div key={index} className="value-card">
-                <div className="value-icon">{value.icon}</div>
-                <h3>{value.title}</h3>
-                <p>{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Team Section */}
-        <section className="team-section">
-          <div className="section-header">
-            <h2>Meet Our Team</h2>
-            <p>The passionate people behind HomeService</p>
-          </div>
-          <div className="team-grid">
-            {team.map((member, index) => (
-              <div key={index} className="team-card">
-                <div className="member-avatar">{member.avatar}</div>
-                <h3>{member.name}</h3>
-                <p className="member-role">{member.role}</p>
-                <p className="member-bio">{member.bio}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Story Section */}
-        <section className="story-section">
-          <div className="story-content">
-            <h2>Our Story</h2>
-            <div className="story-text">
-              <p>HomeService was born from a simple frustration: finding reliable home service providers was too difficult. Our founder, Sarah Johnson, experienced this firsthand when she needed emergency plumbing repairs and spent hours calling different companies, only to be disappointed by poor service and hidden fees.</p>
-              <p>That experience sparked the idea for HomeService - a platform that would connect homeowners with pre-vetted, professional service providers. We started small, with just a few local providers in our hometown, but the response was overwhelming.</p>
-              <p>Today, we've grown into a trusted platform serving thousands of customers across the region. Our commitment to quality, transparency, and customer satisfaction remains at the heart of everything we do.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="about-cta">
-          <div className="cta-content">
-            <h2>Join Our Community</h2>
-            <p>Whether you're looking for reliable home services or want to offer your professional skills, we'd love to have you as part of our growing community.</p>
-            <div className="cta-buttons">
-              <Link to="/register" className="btn btn-primary">
-                Get Started Today
-              </Link>
-              <Link to="/contact" className="btn btn-outline">
-                Contact Us
-              </Link>
-            </div>
-          </div>
-        </section>
-      </div>
+    <div className="about-super">
+      <div className="about-hero-team-wrapper">
+        <AboutUsHero />
+        {/* Meet the Team */}
+        <motion.div
+          className="team-section-super"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="team-header">
+            <h2>Meet   the   team</h2>
+        </div>
+        <div className="team-grid-super">
+          {team.map((member, i) => (
+            <motion.div
+              className="team-card-super"
+              key={member.name}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
+              viewport={{ once: true }}
+            >
+              <img className="team-avatar" src={member.img} alt={member.name} />
+              <h3>{member.name}</h3>
+              <div className="team-role">{member.role}</div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+        </div>
     </div>
   );
-};
-
-export default About; 
+} 

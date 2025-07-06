@@ -1,0 +1,20 @@
+.customer-dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+.customer-dashboard-main {
+  flex: 1;
+  margin-left: 230px;
+  padding: 2.5rem 2rem;
+  min-width: 0;
+}
+@media (max-width: 900px) {
+  .customer-dashboard-main {
+    margin-left: 0;
+    padding: 1rem 0.5rem;
+  }
+  .customer-dashboard-layout {
+    flex-direction: column;
+  }
+} 

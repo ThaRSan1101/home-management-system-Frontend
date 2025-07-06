@@ -1,233 +1,272 @@
 import React, { useState } from 'react';
 import './Services.css';
+import Subscription from './Subscription';
+import { FaInbox, FaSpinner, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
-const Services = () => {
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      name: 'Plumbing Repair',
-      description: 'Professional plumbing repair services for your home',
-      basePrice: 50,
-      duration: '2 hours',
-      category: 'Plumbing',
-      status: 'active',
-      totalBookings: 25,
-      rating: 4.8
-    },
-    {
-      id: 2,
-      name: 'House Cleaning',
-      description: 'Thorough cleaning services for your entire home',
-      basePrice: 80,
-      duration: '3 hours',
-      category: 'Cleaning',
-      status: 'active',
-      totalBookings: 42,
-      rating: 4.9
-    },
-    {
-      id: 3,
-      name: 'Electrical Installation',
-      description: 'Safe and professional electrical installation services',
-      basePrice: 75,
-      duration: '4 hours',
-      category: 'Electrical',
-      status: 'inactive',
-      totalBookings: 15,
-      rating: 4.7
-    }
-  ]);
+const TOP_TABS = [
+  { key: 'services', label: 'Services' },
+  { key: 'subscription', label: 'Subscription' },
+];
 
-  const [isAddingService, setIsAddingService] = useState(false);
-  const [newService, setNewService] = useState({
-    name: '',
-    description: '',
-    basePrice: '',
-    duration: '',
-    category: '',
-    status: 'active'
-  });
+const STATUS_TABS = [
+  { key: 'new', label: 'New Requests', icon: <FaInbox /> },
+  { key: 'processing', label: 'Processing', icon: <FaSpinner /> },
+  { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
+  { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
+];
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewService(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+const initialActivities = [
+  { id: 10, service: 'Window Cleaning', date: '2024-07-01', time: '9:00 AM', status: 'new' },
+  { id: 2, service: 'Plumbing', date: '2024-05-28', time: '2:00 PM', status: 'processing' },
+  { id: 3, service: 'Electrical Repair', date: '2024-05-20', time: '11:30 AM', status: 'complete' },
+  { id: 4, service: 'Carpet Cleaning', date: '2024-05-15', time: '9:00 AM', status: 'cancel' },
+  { id: 6, service: 'AC Service', date: '2024-05-30', time: '4:00 PM', status: 'processing' },
+];
 
-  const handleAddService = () => {
-    if (newService.name && newService.description && newService.basePrice && newService.duration && newService.category) {
-      const service = {
-        id: services.length + 1,
-        ...newService,
-        totalBookings: 0,
-        rating: 0
-      };
-      setServices(prev => [...prev, service]);
-      setNewService({
-        name: '',
-        description: '',
-        basePrice: '',
-        duration: '',
-        category: '',
-        status: 'active'
-      });
-      setIsAddingService(false);
-    }
-  };
+export default function ProviderActivity() {
+  const [topTab, setTopTab] = useState('services');
+  const [activeTab, setActiveTab] = useState('new');
+  const [activities, setActivities] = useState(initialActivities);
 
-  const handleStatusChange = (serviceId, newStatus) => {
-    setServices(prev =>
-      prev.map(service =>
-        service.id === serviceId
-          ? { ...service, status: newStatus }
-          : service
-      )
+  // Modal state
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [modalActivity, setModalActivity] = useState(null);
+  const [cancelReason, setCancelReason] = useState('');
+  const [completeCharge, setCompleteCharge] = useState('');
+  const [completeServiceName, setCompleteServiceName] = useState('');
+
+  const filteredActivities = activities.filter((activity) => activity.status === activeTab);
+
+  const handleAccept = (id) => {
+    setActivities((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, status: 'processing' } : a))
     );
   };
 
-  const handleDeleteService = (serviceId) => {
-    setServices(prev => prev.filter(service => service.id !== serviceId));
+  const handleDecline = (id) => {
+    setActivities((prev) => prev.filter((a) => a.id !== id));
   };
 
-  const categories = ['Plumbing', 'Cleaning', 'Electrical', 'Painting', 'Carpentry', 'Gardening'];
+  // Cancel/Complete actions for processing
+  const openCancelModal = (activity) => {
+    setModalActivity(activity);
+    setCancelReason('');
+    setShowCancelModal(true);
+  };
+  const openCompleteModal = (activity) => {
+    setModalActivity(activity);
+    setCompleteCharge('');
+    setCompleteServiceName(activity.service);
+    setShowCompleteModal(true);
+  };
+  const handleCancelSubmit = (e) => {
+    e.preventDefault();
+    setActivities((prev) =>
+      prev.map((a) =>
+        a.id === modalActivity.id
+          ? { ...a, status: 'cancel', cancelReason }
+          : a
+      )
+    );
+    setShowCancelModal(false);
+    setModalActivity(null);
+  };
+  const handleCompleteSubmit = (e) => {
+    e.preventDefault();
+    setActivities((prev) =>
+      prev.map((a) =>
+        a.id === modalActivity.id
+          ? { ...a, status: 'complete', charge: completeCharge, completedService: completeServiceName }
+          : a
+      )
+    );
+    setShowCompleteModal(false);
+    setModalActivity(null);
+  };
 
   return (
-    <div className="services-page">
-      <div className="services-header">
-        <h1>My Services</h1>
-        <button 
-          className="add-service-btn"
-          onClick={() => setIsAddingService(true)}
-        >
-          Add New Service
-        </button>
-      </div>
-
-      {isAddingService && (
-        <div className="add-service-form">
-          <h2>Add New Service</h2>
-          <div className="form-group">
-            <label>Service Name</label>
-            <input
-              type="text"
-              name="name"
-              value={newService.name}
-              onChange={handleInputChange}
-              placeholder="Enter service name"
-            />
-          </div>
-          <div className="form-group">
-            <label>Description</label>
-            <textarea
-              name="description"
-              value={newService.description}
-              onChange={handleInputChange}
-              placeholder="Enter service description"
-            />
-          </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Base Price ($)</label>
-              <input
-                type="number"
-                name="basePrice"
-                value={newService.basePrice}
-                onChange={handleInputChange}
-                placeholder="Enter base price"
-              />
-            </div>
-            <div className="form-group">
-              <label>Duration</label>
-              <input
-                type="text"
-                name="duration"
-                value={newService.duration}
-                onChange={handleInputChange}
-                placeholder="e.g., 2 hours"
-              />
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Category</label>
-            <select
-              name="category"
-              value={newService.category}
-              onChange={handleInputChange}
+    <div className="provider-activity-super">
+      <div className="provider-activity-top-tabs-bg">
+        <div className="provider-activity-top-tabs">
+          {TOP_TABS.map((tab) => (
+            <button
+              key={tab.key}
+              className={`provider-activity-top-tab-btn${topTab === tab.key ? ' active' : ''}`}
+              onClick={() => setTopTab(tab.key)}
             >
-              <option value="">Select a category</option>
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
-          </div>
-          <div className="form-actions">
-            <button className="save-btn" onClick={handleAddService}>
-              Add Service
+              {tab.label}
             </button>
-            <button className="cancel-btn" onClick={() => setIsAddingService(false)}>
-              Cancel
-            </button>
-          </div>
+          ))}
         </div>
-      )}
-
-      <div className="services-grid">
-        {services.map(service => (
-          <div key={service.id} className="service-card">
-            <div className="service-header">
-              <h3>{service.name}</h3>
-              <span className={`status-badge ${service.status}`}>
-                {service.status}
-              </span>
-            </div>
-            <p className="service-description">{service.description}</p>
-            <div className="service-details">
-              <div className="detail-item">
-                <span className="label">Base Price:</span>
-                <span className="value">${service.basePrice}</span>
-              </div>
-              <div className="detail-item">
-                <span className="label">Duration:</span>
-                <span className="value">{service.duration}</span>
-              </div>
-              <div className="detail-item">
-                <span className="label">Category:</span>
-                <span className="value">{service.category}</span>
-              </div>
-              <div className="detail-item">
-                <span className="label">Total Bookings:</span>
-                <span className="value">{service.totalBookings}</span>
-              </div>
-              <div className="detail-item">
-                <span className="label">Rating:</span>
-                <span className="value">
-                  {service.rating ? `${service.rating} ★` : 'No ratings yet'}
-                </span>
-              </div>
-            </div>
-            <div className="service-actions">
-              <select
-                className="status-select"
-                value={service.status}
-                onChange={(e) => handleStatusChange(service.id, e.target.value)}
-              >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
-              <button 
-                className="delete-btn"
-                onClick={() => handleDeleteService(service.id)}
-              >
-                Delete
-              </button>
+      </div>
+      {topTab === 'services' ? (
+        <>
+          <div className="provider-services-tabs-bg">
+            <div className="provider-services-tabs">
+              {STATUS_TABS.map((tab) => (
+                <button
+                  key={tab.key}
+                  className={`provider-services-tab-btn${activeTab === tab.key ? ' active' : ''}`}
+                  onClick={() => setActiveTab(tab.key)}
+                >
+                  <span className="tab-icon">{tab.icon}</span>
+                  <span className="tab-label">{tab.label}</span>
+                </button>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
+          <div className="provider-services-content">
+            {filteredActivities.length === 0 ? (
+              <div className="provider-services-empty">
+                <span className="empty-icon">🗒️</span>
+                <h3>No activities found for this status.</h3>
+              </div>
+            ) : (
+              <div className="provider-services-table-container">
+                <div className="provider-services-table-scroll">
+                  <table className="provider-services-table">
+                    <thead>
+                      <tr>
+                        <th>Service</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        {activeTab === 'new' && <th>Action</th>}
+                        {activeTab === 'processing' && <th>Action</th>}
+                        {activeTab === 'cancel' && <th>Reason</th>}
+                        {activeTab === 'complete' && <th>Charge</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredActivities.map((activity) => (
+                        <tr key={activity.id}>
+                          <td>{activity.service}</td>
+                          <td>{activity.date}</td>
+                          <td>{activity.time}</td>
+                          <td>
+                            <span className={`provider-services-status-badge ${activity.status}`}>
+                              {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
+                            </span>
+                          </td>
+                          {activeTab === 'new' && (
+                            <td>
+                              <button
+                                className="provider-services-accept-btn"
+                                onClick={() => handleAccept(activity.id)}
+                              >
+                                Accept
+                              </button>
+                              <button
+                                className="provider-services-decline-btn"
+                                onClick={() => handleDecline(activity.id)}
+                              >
+                                Decline
+                              </button>
+                            </td>
+                          )}
+                          {activeTab === 'processing' && (
+                            <td>
+                              <button
+                                className="provider-services-cancel-btn"
+                                onClick={() => openCancelModal(activity)}
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                className="provider-services-complete-btn"
+                                onClick={() => openCompleteModal(activity)}
+                              >
+                                Complete
+                              </button>
+                            </td>
+                          )}
+                          {activeTab === 'cancel' && (
+                            <td>{activity.cancelReason || '-'}</td>
+                          )}
+                          {activeTab === 'complete' && (
+                            <td>{activity.charge ? `LKR ${activity.charge}` : '-'}</td>
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+            {/* Cancel Modal */}
+            {showCancelModal && (
+              <div className="provider-modal-overlay">
+                <div className="provider-modal playful-modal">
+                  <div className="provider-modal-icon-circle cancel">
+                    <FaTimesCircle size={44} />
+                  </div>
+                  <button type="button" className="provider-modal-close-btn" onClick={() => setShowCancelModal(false)}>&times;</button>
+                  <h3>Cancel Service</h3>
+                  <form onSubmit={handleCancelSubmit}>
+                    <label>
+                      Reason for cancellation:
+                      <textarea
+                        value={cancelReason}
+                        onChange={(e) => setCancelReason(e.target.value)}
+                        required
+                        placeholder="Enter reason..."
+                        className="provider-modal-textarea playful-input"
+                      />
+                    </label>
+                    <div className="provider-modal-actions">
+                      <button type="button" onClick={() => setShowCancelModal(false)} className="provider-modal-cancel-btn playful-btn">Close</button>
+                      <button type="submit" className="provider-modal-submit-btn playful-btn">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+            {/* Complete Modal */}
+            {showCompleteModal && (
+              <div className="provider-modal-overlay">
+                <div className="provider-modal playful-modal">
+                  <div className="provider-modal-icon-circle complete">
+                    <FaCheckCircle size={44} />
+                  </div>
+                  <button type="button" className="provider-modal-close-btn" onClick={() => setShowCompleteModal(false)}>&times;</button>
+                  <h3>Complete Service</h3>
+                  <form onSubmit={handleCompleteSubmit}>
+                    <label>
+                      Service Name:
+                      <input
+                        type="text"
+                        value={completeServiceName}
+                        onChange={(e) => setCompleteServiceName(e.target.value)}
+                        required
+                        className="provider-modal-input playful-input"
+                      />
+                    </label>
+                    <label>
+                      Service Charge (LKR):
+                      <input
+                        type="number"
+                        min="0"
+                        value={completeCharge}
+                        onChange={(e) => setCompleteCharge(e.target.value)}
+                        required
+                        placeholder="Enter charge..."
+                        className="provider-modal-input playful-input"
+                      />
+                    </label>
+                    <div className="provider-modal-actions">
+                      <button type="button" onClick={() => setShowCompleteModal(false)} className="provider-modal-cancel-btn playful-btn">Close</button>
+                      <button type="submit" className="provider-modal-submit-btn playful-btn">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      ) : (
+        <Subscription embedded hideUnsubscribe />
+      )}
     </div>
   );
-};
-
-export default Services; 
+} 

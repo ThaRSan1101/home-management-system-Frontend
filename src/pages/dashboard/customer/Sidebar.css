@@ -1,0 +1,124 @@
+.customer-sidebar {
+  width: 230px;
+  min-width: 200px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  box-shadow: 2px 0 10px rgba(16, 185, 129, 0.10);
+}
+.customer-sidebar-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 0 1.2rem 0;
+}
+.customer-sidebar-logo-img {
+  height: 32px;
+  width: auto;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  padding: 6px;
+  display: block;
+}
+.customer-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0 0.5rem;
+}
+.customer-sidebar-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.9rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  transition: background 0.18s, color 0.18s;
+  margin-bottom: 0.1rem;
+}
+.customer-sidebar-link:hover, .customer-sidebar-link.active {
+  background: rgba(255,255,255,0.13);
+  color: #fff;
+}
+@media (max-width: 900px) {
+  .customer-sidebar {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    flex-direction: row;
+    box-shadow: none;
+    padding: 0.5rem 0;
+    align-items: center;
+  }
+  .customer-sidebar-logo-container {
+    padding: 0.5rem 0 0.5rem 0;
+  }
+  .customer-sidebar-logo-img {
+    height: 24px;
+    padding: 4px;
+  }
+  .customer-sidebar-nav {
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    width: 100%;
+    justify-content: center;
+  }
+  .customer-sidebar-link {
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+  }
+  .customer-sidebar-logout-btn-bottom {
+    position: static;
+    margin: 0 0.5rem 0 0.5rem;
+    width: auto;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    background: #fff;
+    color: #059669;
+  display: flex;
+  align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+    transition: background 0.18s, color 0.18s;
+    order: 99;
+  }
+}
+.customer-sidebar-logout-btn-bottom {
+  margin-top: auto;
+  margin-bottom: 2rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  width: calc(100% - 3rem);
+  background: #fff;
+  color: #059669;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  padding: 0.8rem 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+  transition: background 0.18s, color 0.18s;
+}
+.customer-sidebar-logout-btn-bottom:hover {
+  background: #f3f4f6;
+  color: #007a65;
+}
+/* Remove old profile styles if not needed */
+.sidebar-profile, .sidebar-avatar, .sidebar-dropdown, .sidebar-logout-btn {
+  display: none !important;
+} 

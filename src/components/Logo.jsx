@@ -5,7 +5,7 @@ const Logo = ({ size = 'medium' }) => {
   return (
     <div className={`logo ${size}`}>
       <div className="logo-border">
-        <img src="/images/Logo.png" alt="Home Service Logo" className="logo-image" />
+        <img src="/images/logo new.png" alt="Home Service Logo" className="logo-image" />
       </div>
     </div>
   );
