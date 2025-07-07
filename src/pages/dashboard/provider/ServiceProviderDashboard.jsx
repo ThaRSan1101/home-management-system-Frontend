@@ -162,135 +162,136 @@ const newRequests = [
         <div className="provider-dashboard-stat-card" key={stat.label}>
           <div className="provider-stat-value">{stat.value}</div>
           <div className="provider-stat-label">{stat.label}</div>
-        </div>
-        <div className="provider-dashboard-time">
-          <div className="time-display">
-            <span className="time">{currentTime.toLocaleTimeString()}</span>
-            <span className="date">{currentTime.toLocaleDateString()}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Statistics Grid */}
-      <div className="provider-dashboard-stats-grid">
-        {stats.map((stat, index) => (
-          <div className="provider-dashboard-stat-card" key={index}>
-            <div className="stat-icon" style={{ color: stat.color }}>
-              {stat.icon}
-            </div>
-            <div className="stat-content">
-              <div className="provider-stat-value">{stat.value}</div>
-              <div className="provider-stat-label">{stat.label}</div>
-              <div className={`stat-change ${stat.changeType}`}>
-                {stat.change} from last {selectedPeriod}
-              </div>
+          <div className="provider-dashboard-time">
+            <div className="time-display">
+              <span className="time">{currentTime.toLocaleTimeString()}</span>
+              <span className="date">{currentTime.toLocaleDateString()}</span>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
+    </div>
 
-      {/* Main Content Grid */}
-      <div className="provider-dashboard-content-grid">
-        {/* New Requests Section */}
-        <div className="provider-dashboard-section new-requests-section">
-          <div className="section-header">
-            <h3>New Service Requests</h3>
-            <span className="request-count">{newRequests.length} new</span>
+    {/* Statistics Grid */}
+    <div className="provider-dashboard-stats-grid">
+      {stats.map((stat, index) => (
+        <div className="provider-dashboard-stat-card" key={index}>
+          <div className="stat-icon" style={{ color: stat.color }}>
+            {stat.icon}
           </div>
-          <div className="requests-container">
-            {newRequests.length === 0 ? (
-              <div className="provider-dashboard-no-requests">
-                <FaInbox className="empty-icon" />
-                <p>No new requests at the moment.</p>
-              </div>
-            ) : (
-              newRequests.map((req) => (
-                <div className="provider-dashboard-request-card" key={req.id}>
-                  <div className="request-header">
-                    <div className="request-service">
-                      <FaTools className="service-icon" />
-                      <strong>{req.service}</strong>
-                    </div>
-                  </div>
-                  <div className="request-customer">
-                    <span className="customer-name">{req.customer}</span>
-                  </div>
-                  <div className="request-details">
-                    <div className="detail-item">
-                      <FaCalendarAlt className="detail-icon" />
-                      <span>{req.date}</span>
-                    </div>
-                    <div className="detail-item">
-                      <FaMapMarkerAlt className="detail-icon" />
-                      <span>{req.location}</span>
-                    </div>
-                    <div className="detail-item">
-                      <FaPhone className="detail-icon" />
-                      <span>{req.phone}</span>
-                    </div>
-                  </div>
-                  <div className="request-actions">
-                    <button 
-                      className="action-btn accept-btn"
-                      onClick={() => handleAcceptRequest(req.id)}
-                    >
-                      Accept
-                    </button>
-                    <button 
-                      className="action-btn decline-btn"
-                      onClick={() => handleDeclineRequest(req.id)}
-                    >
-                      Decline
-                    </button>
-                    <button 
-                      className="action-btn details-btn"
-                      onClick={() => handleViewDetails(req.id)}
-                    >
-                      Details
-                    </button>
-                  </div>
-                </div>
-              ))
-            )}
+          <div className="stat-content">
+            <div className="provider-stat-value">{stat.value}</div>
+            <div className="provider-stat-label">{stat.label}</div>
+            <div className={`stat-change ${stat.changeType}`}>
+              {stat.change} from last {selectedPeriod}
+            </div>
           </div>
         </div>
+      ))}
+    </div>
 
-        {/* Recent Bookings Section */}
-        <div className="provider-dashboard-section recent-bookings-section">
-          <div className="section-header">
-            <h3>Recent Bookings</h3>
-            <button className="view-all-btn">View All</button>
-          </div>
-          <div className="bookings-container">
-            {recentBookings.map((booking) => (
-              <div className="provider-booking-card" key={booking.id}>
-                <div className="booking-header">
-                  <div className="booking-service">
-                    <strong>{booking.service}</strong>
+    {/* Main Content Grid */}
+    <div className="provider-dashboard-content-grid">
+      {/* New Requests Section */}
+      <div className="provider-dashboard-section new-requests-section">
+        <div className="section-header">
+          <h3>New Service Requests</h3>
+          <span className="request-count">{newRequests.length} new</span>
+        </div>
+        <div className="requests-container">
+          {newRequests.length === 0 ? (
+            <div className="provider-dashboard-no-requests">
+              <FaInbox className="empty-icon" />
+              <p>No new requests at the moment.</p>
+            </div>
+          ) : (
+            newRequests.map((req) => (
+              <div className="provider-dashboard-request-card" key={req.id}>
+                <div className="request-header">
+                  <div className="request-service">
+                    <FaTools className="service-icon" />
+                    <strong>{req.service}</strong>
                   </div>
-                  <span className={`provider-booking-status ${booking.status}`}>
-                    {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                  </span>
                 </div>
-                <div className="booking-customer">{booking.customer}</div>
-                <div className="booking-details">
+                <div className="request-customer">
+                  <span className="customer-name">{req.customer}</span>
+                </div>
+                <div className="request-details">
                   <div className="detail-item">
                     <FaCalendarAlt className="detail-icon" />
-                    <span>{booking.date}</span>
+                    <span>{req.date}</span>
                   </div>
                   <div className="detail-item">
                     <FaMapMarkerAlt className="detail-icon" />
-                    <span>{booking.location}</span>
+                    <span>{req.location}</span>
+                  </div>
+                  <div className="detail-item">
+                    <FaPhone className="detail-icon" />
+                    <span>{req.phone}</span>
                   </div>
                 </div>
-                <div className="booking-amount">{booking.amount}</div>
+                <div className="request-actions">
+                  <button 
+                    className="action-btn accept-btn"
+                    onClick={() => handleAcceptRequest(req.id)}
+                  >
+                    Accept
+                  </button>
+                  <button 
+                    className="action-btn decline-btn"
+                    onClick={() => handleDeclineRequest(req.id)}
+                  >
+                    Decline
+                  </button>
+                  <button 
+                    className="action-btn details-btn"
+                    onClick={() => handleViewDetails(req.id)}
+                  >
+                    Details
+                  </button>
+                </div>
               </div>
-            ))}
-          </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Recent Bookings Section */}
+      <div className="provider-dashboard-section recent-bookings-section">
+        <div className="section-header">
+          <h3>Recent Bookings</h3>
+          <button className="view-all-btn">View All</button>
+        </div>
+        <div className="bookings-container">
+          {recentBookings.map((booking) => (
+            <div className="provider-booking-card" key={booking.id}>
+              <div className="booking-header">
+                <div className="booking-service">
+                  <strong>{booking.service}</strong>
+                </div>
+                <span className={`provider-booking-status ${booking.status}`}>
+                  {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                </span>
+              </div>
+              <div className="booking-customer">{booking.customer}</div>
+              <div className="booking-details">
+                <div className="detail-item">
+                  <FaCalendarAlt className="detail-icon" />
+                  <span>{booking.date}</span>
+                </div>
+                <div className="detail-item">
+                  <FaMapMarkerAlt className="detail-icon" />
+                  <span>{booking.location}</span>
+                </div>
+              </div>
+              <div className="booking-amount">{booking.amount}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default ServiceProviderDashboard; 
