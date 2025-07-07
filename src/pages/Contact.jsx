@@ -47,7 +47,7 @@ const Contact = () => {
     <>
       <div className="contactus-split-container">
         <div className="contactus-left">
-          <h1 className="contactus-header">SEND MESSAGE</h1>
+          <h1 className="contactus-header">Contact Us</h1>
           <form className="contactus-form" onSubmit={handleSubmit}>
             <div className="contactus-form-group">
               <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />

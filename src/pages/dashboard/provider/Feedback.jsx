@@ -1,6 +1,7 @@
 import React from 'react';
 import './Feedback.css';
-import { FaStar, FaUser, FaCalendarAlt } from 'react-icons/fa';
+import { FaStar, FaUser, FaCalendarAlt, FaClipboardList } from 'react-icons/fa';
+import Footer from '../../../components/Footer';
 
 const feedbackData = [
   {
@@ -39,54 +40,43 @@ const feedbackData = [
 
 const renderStars = (rating) => {
   return [...Array(5)].map((_, index) => (
-    <FaStar key={index} className={`provider-feedback-star ${index < rating ? 'filled' : 'empty'}`} />
+    <FaStar key={index} className={`feedback-star ${index < rating ? 'filled' : 'empty'}`} />
   ));
 };
 
 export default function ProviderFeedback() {
   return (
-    <div className="provider-feedback-super">
-      <div className="provider-feedback-header">
+    <div className="feedback-page">
+      <div className="feedback-header">
         <h1>Customer Reviews</h1>
         <p>See what your customers are saying about your services</p>
       </div>
-      <div className="provider-feedback-table-container">
-        <div className="provider-feedback-table">
-          <div className="provider-feedback-table-header">
-            <div className="provider-feedback-header-cell">Customer</div>
-            <div className="provider-feedback-header-cell">Service</div>
-            <div className="provider-feedback-header-cell">Rating</div>
-            <div className="provider-feedback-header-cell">Comment</div>
-            <div className="provider-feedback-header-cell">Date</div>
-          </div>
-          <div className="provider-feedback-table-body">
-            {feedbackData.map((feedback) => (
-              <div key={feedback.id} className="provider-feedback-table-row">
-                <div className="provider-feedback-table-cell provider-feedback-customer-cell">
-                  <FaUser className="provider-feedback-customer-icon" />
-                  <span>{feedback.customerName}</span>
-                </div>
-                <div className="provider-feedback-table-cell provider-feedback-service-cell">
-                  <span>{feedback.service}</span>
-                </div>
-                <div className="provider-feedback-table-cell provider-feedback-rating-cell">
-                  <div className="provider-feedback-rating-stars">
-                    {renderStars(feedback.rating)}
-                    <span className="provider-feedback-rating-text">{feedback.rating}/5</span>
-                  </div>
-                </div>
-                <div className="provider-feedback-table-cell provider-feedback-comment-cell">
-                  <p>{feedback.comment}</p>
-                </div>
-                <div className="provider-feedback-table-cell provider-feedback-date-cell">
-                  <FaCalendarAlt className="provider-feedback-date-icon" />
-                  <span>{new Date(feedback.date).toLocaleDateString()}</span>
-                </div>
+      <div className="feedback-grid">
+        {feedbackData.map((feedback) => (
+          <div key={feedback.id} className="feedback-card">
+            <div className="feedback-card-header">
+              <div className="feedback-avatar"><FaUser /></div>
+              <div className="feedback-customer-name">{feedback.customerName}</div>
+            </div>
+            <div className="feedback-card-body">
+              <div className="feedback-service">
+                <FaClipboardList className="feedback-service-icon" />
+                <span>{feedback.service}</span>
               </div>
-            ))}
+              <div className="feedback-rating">
+                {renderStars(feedback.rating)}
+                <span className="feedback-rating-text">{feedback.rating}/5</span>
+              </div>
+              <div className="feedback-comment">{feedback.comment}</div>
+            </div>
+            <div className="feedback-card-footer">
+              <FaCalendarAlt className="feedback-date-icon" />
+              <span>{new Date(feedback.date).toLocaleDateString()}</span>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
+      <Footer />
     </div>
   );
 } 

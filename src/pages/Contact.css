@@ -495,14 +495,10 @@
   padding: 0.7rem 1.2rem;
 }
 .contactus-info-icon {
-  color: #005f4b;
-  background: #e6faf5;
-  border-radius: 50%;
-  font-size: 3rem;
-  padding: 0.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #222 !important;
+  z-index: 2;
+  padding: 0.5rem;
+  background: none !important;
 }
 .contactus-info-label {
   font-weight: 700;
@@ -512,6 +508,13 @@
 .contactus-info-value {
   color: #444;
   font-size: 1.05rem;
+}
+
+.contactus-form svg, .input-group svg {
+  color: #222 !important;
+  z-index: 2;
+  padding: 0.5rem;
+  background: none !important;
 }
 
 /* Animations */
