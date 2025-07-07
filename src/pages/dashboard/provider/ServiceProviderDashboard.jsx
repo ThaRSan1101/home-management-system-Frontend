@@ -15,7 +15,6 @@ const newRequests = [
 
 const ServiceProviderDashboard = () => (
   <div className="provider-dashboard-home">
-    <h2 className="provider-dashboard-title">Welcome, Provider!</h2>
     <div className="provider-dashboard-new-requests">
       <h3>New Requests</h3>
       {newRequests.length === 0 ? (

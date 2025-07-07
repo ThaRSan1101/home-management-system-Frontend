@@ -1,17 +1,18 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { FaSignOutAlt } from 'react-icons/fa';
 import './ProviderSidebar.css';
 
 const navItems = [
-  { label: 'Dashboard', path: '/provider/dashboard' },
-  { label: 'Activity', path: '/provider/activity/services' },
-  { label: 'Feedback', path: '/provider/feedback' },
-  { label: 'Contact Us', path: '/provider/contact' },
+  { label: 'Dashboard', path: 'dashboard' },
+  { label: 'Activity', path: 'activity/services' },
+  { label: 'Feedback', path: 'feedback' },
+  { label: 'Contact Us', path: 'contact' },
 ];
 
 const ProviderSidebar = () => {
   const navigate = useNavigate();
+  const { userId } = useParams();
   const handleLogout = () => {
     localStorage.removeItem('userType');
     navigate('/login');
@@ -28,7 +29,7 @@ const ProviderSidebar = () => {
         {navItems.map((item) => (
           <NavLink
             key={item.path}
-            to={item.path}
+            to={`/provider/dashboard/${userId}/${item.path}`}
             className={({ isActive }) =>
               'sidebar-link' + (isActive ? ' active' : '')
             }
