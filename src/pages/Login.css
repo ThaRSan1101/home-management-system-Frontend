@@ -177,4 +177,115 @@
   .auth-card {
     border-radius: 10px;
   }
+}
+
+.forgot-password-link {
+  background: #007a65;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 30px;
+  padding: 0.5rem 1.3rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.forgot-password-link:hover {
+  background: #005f4b;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,122,101,0.08);
+}
+
+.forgot-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.forgot-modal-content {
+  background: #fff;
+  padding: 2rem 2.5rem 1.5rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  min-width: 320px;
+  max-width: 95vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.forgot-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.forgot-close:hover {
+  color: #ef4444;
+}
+.forgot-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  width: 100%;
+  align-items: center;
+}
+.forgot-form h3 {
+  color: #007a65;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.forgot-form input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+  background: #f8fafc;
+  transition: border 0.2s;
+}
+.forgot-form input:focus {
+  outline: none;
+  border-color: #007a65;
+  background: #fff;
+}
+.forgot-form button[type="submit"] {
+  background: #007a65;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 0.7rem 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: 0.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+.forgot-form button[type="submit"]:hover {
+  background: #005f4b;
+}
+.auth-success {
+  color: #22c55e;
+  font-size: 0.95rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  text-align: center;
 } 

@@ -8,11 +8,12 @@ const navItems = [
   { label: 'Activity', path: '/provider/activity/services', icon: <FaClipboardList /> },
   { label: 'Feedback', path: '/provider/feedback', icon: <FaComments /> },
   { label: 'Contact Us', path: '/provider/contact', icon: <FaEnvelope /> },
+
 ];
 
 const ProviderSidebar = () => {
   const navigate = useNavigate();
-  
+
   const handleLogout = () => {
     localStorage.removeItem('userType');
     navigate('/login');
@@ -34,7 +35,7 @@ const ProviderSidebar = () => {
         {navItems.map((item) => (
           <NavLink
             key={item.path}
-            to={item.path}
+            to={`/provider/dashboard/${userId}/${item.path}`}
             className={({ isActive }) =>
               'sidebar-link' + (isActive ? ' active' : '')
             }

@@ -1,22 +1,23 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { FaSignOutAlt } from 'react-icons/fa';
 import './Sidebar.css';
 import logo from '../../../assets/Logo.png';
 
 const navItems = [
-  { label: 'Dashboard', path: '/customer/home' },
-  { label: 'Service', path: '/customer/service' },
-  { label: 'Activity', path: '/customer/activity' },
-  { label: 'Subscription', path: '/customer/subscription' },
-  { label: 'Feedback', path: '/customer/feedback' },
-  { label: 'How It Works', path: '/customer/how-it-works' },
-  { label: 'About Us', path: '/customer/about' },
-  { label: 'Contact Us', path: '/customer/contact' },
+  { label: 'Dashboard', path: 'home' },
+  { label: 'Service', path: 'service' },
+  { label: 'Activity', path: 'activity' },
+  { label: 'Subscription', path: 'subscription' },
+  { label: 'Feedback', path: 'feedback' },
+  { label: 'How It Works', path: 'how-it-works' },
+  { label: 'About Us', path: 'about' },
+  { label: 'Contact Us', path: 'contact' },
 ];
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const { userId } = useParams();
   const handleLogout = () => {
     localStorage.removeItem('userType');
     // Remove any other auth tokens if needed
@@ -32,7 +33,7 @@ const Sidebar = () => {
         {navItems.map((item) => (
           <NavLink
             key={item.path}
-            to={item.path}
+            to={`/customer/dashboard/${userId}/${item.path}`}
             className={({ isActive }) =>
               'customer-sidebar-link' + (isActive ? ' active' : '')
             }

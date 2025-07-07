@@ -6,7 +6,7 @@ import { Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './Home.css';
-import cover1 from '../assets/cover1.jpg';
+import coverrrr from '../assets/coverrrr.jpg';
 import cover2 from '../assets/cover2.jpg';
 import cover3 from '../assets/cover3.jpg';
 import service1 from '../assets/service1.jpg';
@@ -144,55 +144,55 @@ const Home = () => {
     }
   ];
 
-  const sliderImages = [cover1, cover2, cover3];
+  const sliderImages = [coverrrr, cover2, cover3];
 
   const services = [
     {
       id: 1,
-      image: service1,
+      image: service4,
       category: 'Pipes, Leaks & Water Flow',
       title: 'Plumbing Services',
-      description: 'Leak repairs, pipe installations, or full bathroom fittings — our plumbers handle it all with speed and care.',
+      description: 'Fix leaks, clogged drains, and bathroom fittings with our plumbing experts.',
       
     },
     {
       id: 2,
-      image: service2,
+      image: service5,
       category: 'Woodwork & Furniture',
       title: 'Carpentry Services',
-      description: 'From custom furniture to quick repairs, our expert carpenters deliver quality craftsmanship and lasting results for your home.',
+      description: 'We fix and build furniture, doors, shelves, and more with expert woodwork.',
       
     },
     {
       id: 3,
-      image: service3,
+      image: service2,
       category: 'Wiring, Lights & Power',
       title: 'Electrical Services',
-      description: 'Safe, professional electrical solutions — whether it\'s wiring, lighting, or power issues, our certified electricians are here to help.',
+      description: 'Get safe and quick help for wiring, lights, switches, and power issues.',
       
     },
     {
       id: 4,
-      image: service4,
+      image: service3,
       category: 'Walls & Surfaces',
       title: 'Painting Services',
-      description: 'Refresh your space with clean, professional painting — interior or exterior, we bring color and precision to every job.',
+      description: 'We provide clean and smooth painting for walls, rooms, or your whole home.',
       
     },
     {
       id: 5,
-      image: service5,
+      image: service6,
       category: 'Home Appliances',
       title: 'Electronic Services',
-      description: 'We repair and service home appliances including TVs, fridges, washing machines, and more — quick and dependable.',
+      description: 'We repair TVs, fridges, washing machines, and other home appliances.',
       
     },
     {
       id: 6,
-      image: service6,
+      image: service1,
       category: 'Home & Kitchen Cleaning',
       title: 'Cleaning Service',
-      description: 'Deep cleaning for homes, kitchens, bathrooms, and offices — we make every corner shine with hygiene and care.',
+      description: 'Deep cleaning for homes, kitchens, bathrooms, and offices to keep things fresh and hygienic.',
 
 
       
@@ -242,14 +242,11 @@ const Home = () => {
             <div className="modern-service-card overlap-bottom" key={service.id}>
               <div className="modern-service-img-wrapper">
                 <img src={service.image} alt={service.title} className="modern-service-img" />
-                <div className="modern-service-badge">
-                  <span>{service.icon}</span>
-                </div>
                 <div className="modern-service-info-overlap-bottom">
                   <span className="modern-service-category" style={{ color: '#007a65' }}>{service.category}</span>
                   <h3 className="modern-service-title">{service.title}</h3>
                   <p className="modern-service-desc">{service.description}</p>
-                  <Link to="/register" className="modern-service-link">Explore</Link>
+                  <Link to="/Services" className="modern-service-link">Explore</Link>
                 </div>
               </div>
             </div>

@@ -141,13 +141,27 @@ const newRequests = [
 
   return (
   <div className="provider-dashboard-home">
-      {/* Header Section */}
-      <div className="provider-dashboard-header">
-        <div className="provider-dashboard-welcome">
-          <h2 className="provider-dashboard-title">Welcome back, John! 👋</h2>
-          <p className="provider-dashboard-subtitle">
-            Here's what's happening with your service business today
-          </p>
+    <div className="provider-dashboard-new-requests">
+      <h3>New Requests</h3>
+      {newRequests.length === 0 ? (
+        <div className="provider-dashboard-no-requests">No new requests at the moment.</div>
+      ) : (
+        newRequests.map((req, idx) => (
+          <div className="provider-dashboard-request-card" key={idx}>
+            <div>
+              <strong>{req.service}</strong> requested by <span className="provider-dashboard-request-customer">{req.customer}</span>
+            </div>
+            <div className="provider-dashboard-request-date">{req.date}</div>
+            <div className="provider-dashboard-request-status">{req.status}</div>
+          </div>
+        ))
+      )}
+    </div>
+    <div className="provider-dashboard-stats-grid">
+      {stats.map((stat) => (
+        <div className="provider-dashboard-stat-card" key={stat.label}>
+          <div className="provider-stat-value">{stat.value}</div>
+          <div className="provider-stat-label">{stat.label}</div>
         </div>
         <div className="provider-dashboard-time">
           <div className="time-display">

@@ -31,7 +31,6 @@ const Dashboard = () => {
 
   return (
     <div className="customer-home">
-      <h2 className="customer-dashboard-title">Welcome back!</h2>
       <div className="customer-dashboard-stats-grid">
         {statLabels.map((stat) => (
           <div className="customer-dashboard-stat-card" key={stat.key}>

@@ -94,6 +94,7 @@
   background: #f8f9fa !important;
   color: #005f4b !important;
   box-shadow: 0 10px 25px rgba(0, 122, 101, 0.2);
+  border: 2px solid #007a65 !important;
 }
 
 .btn-secondary {
@@ -1048,6 +1049,13 @@
   font-size: 1rem;
   color: #4b5563;
   margin-bottom: 0.7rem;
+  margin-top: 1.2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .modern-service-link {
@@ -1067,12 +1075,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 330px;
 }
 
 .modern-service-info-overlap-bottom {
   position: absolute;
   left: 50%;
-  bottom: -38px;
+  bottom: -100px;
   transform: translateX(-50%);
   background: #f8fafc;
   border-radius: 18px;
@@ -1083,9 +1092,7 @@
   gap: 0.5rem;
   width: 85%;
   z-index: 2;
-  min-height: 170px;
-  max-height: 210px;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .modern-service-link {
@@ -1113,8 +1120,6 @@
     width: 96%;
     padding: 1rem 0.7rem 0.9rem 0.7rem;
     bottom: -28px;
-    min-height: 150px;
-    max-height: 200px;
   }
 }
 

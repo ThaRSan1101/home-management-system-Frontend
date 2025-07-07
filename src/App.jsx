@@ -48,9 +48,9 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           {/* Dashboard Routes */}
-          <Route path="/customer/*" element={<CustomerDashboard />} />
-          <Route path="/provider/*" element={<ProviderDashboard />} />
-          <Route path="/admin/*" element={<AdminDashboard />} />
+          <Route path="/customer/dashboard/:userId/*" element={<CustomerDashboard />} />
+          <Route path="/provider/dashboard/:userId/*" element={<ProviderDashboard />} />
+          <Route path="/admin/dashboard/:userId/*" element={<AdminDashboard />} />
           {/* Redirect to correct dashboard after login */}
           <Route
             path="/dashboard"
