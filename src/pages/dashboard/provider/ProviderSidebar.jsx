@@ -1,17 +1,18 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { FaSignOutAlt, FaHome, FaClipboardList, FaComments, FaEnvelope } from 'react-icons/fa';
 import './ProviderSidebar.css';
 
 const navItems = [
-  { label: 'Dashboard', path: '/provider/dashboard' },
-  { label: 'Activity', path: '/provider/activity/services' },
-  { label: 'Feedback', path: '/provider/feedback' },
-  { label: 'Contact Us', path: '/provider/contact' },
+  { label: 'Dashboard', path: '/provider/dashboard', icon: <FaHome /> },
+  { label: 'Activity', path: '/provider/activity/services', icon: <FaClipboardList /> },
+  { label: 'Feedback', path: '/provider/feedback', icon: <FaComments /> },
+  { label: 'Contact Us', path: '/provider/contact', icon: <FaEnvelope /> },
 ];
 
 const ProviderSidebar = () => {
   const navigate = useNavigate();
+  
   const handleLogout = () => {
     localStorage.removeItem('userType');
     navigate('/login');
@@ -23,7 +24,12 @@ const ProviderSidebar = () => {
         <div className="sidebar-logo-round">
           <img src="/images/logo%20new.png" alt="Logo" className="sidebar-logo-img" />
         </div>
+        <div className="sidebar-brand">
+          <h3>ServiceHub</h3>
+          <span>Provider Portal</span>
+        </div>
       </div>
+      
       <nav className="sidebar-nav">
         {navItems.map((item) => (
           <NavLink
@@ -33,13 +39,16 @@ const ProviderSidebar = () => {
               'sidebar-link' + (isActive ? ' active' : '')
             }
           >
-            {item.label}
+            <span className="nav-icon">{item.icon}</span>
+            <span className="nav-label">{item.label}</span>
           </NavLink>
         ))}
       </nav>
-      <div className="sidebar-logout-bottom">
-        <button className="sidebar-logout-btn-bottom" onClick={handleLogout}>
-          <FaSignOutAlt style={{ marginRight: 8 }} /> Logout
+      
+      <div className="sidebar-footer">
+        <button className="sidebar-logout-btn" onClick={handleLogout}>
+          <FaSignOutAlt className="logout-icon" />
+          <span>Logout</span>
         </button>
       </div>
     </aside>

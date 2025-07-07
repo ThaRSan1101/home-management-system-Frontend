@@ -1,26 +1,59 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaUserCircle, FaBell } from 'react-icons/fa';
+import { FaBell, FaUser } from 'react-icons/fa';
 import './ProviderTopbar.css';
 
 const provider = {
-  fullName: 'Provider Name',
+  fullName: 'John Provider',
   address: '456 Service Rd, Colombo 00500',
   phone: '+94 77 987 6543',
-  email: 'provider@email.com',
+  email: 'john.provider@email.com',
   joined: '2022-08-10',
+  avatar: '/src/assets/man.png',
 };
 
 const notifications = [
-  { id: 1, message: 'You received a new booking request.', time: '1 hour ago' },
-  { id: 2, message: 'Your subscription was renewed.', time: '2 days ago' },
-  { id: 3, message: 'Feedback received from a customer.', time: '4 days ago' },
+  { 
+    id: 1, 
+    type: 'booking',
+    message: 'New booking request for Plumbing service', 
+    time: '1 hour ago',
+    read: false
+  },
+  { 
+    id: 2, 
+    type: 'payment',
+    message: 'Payment received for AC Service', 
+    time: '2 hours ago',
+    read: false
+  },
+  { 
+    id: 3, 
+    type: 'feedback',
+    message: '5-star review from Sarah Johnson', 
+    time: '1 day ago',
+    read: true
+  },
+  { 
+    id: 4, 
+    type: 'system',
+    message: 'Your subscription was renewed successfully', 
+    time: '2 days ago',
+    read: true
+  },
 ];
 
 const ProviderTopbar = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [unreadCount, setUnreadCount] = useState(0);
   const profileRef = useRef();
   const notifRef = useRef();
+
+  useEffect(() => {
+    const unread = notifications.filter(n => !n.read).length;
+    setUnreadCount(unread);
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -35,38 +68,127 @@ const ProviderTopbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handleNotificationClick = (notificationId) => {
+    // Mark notification as read
+    console.log('Marking notification as read:', notificationId);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log('Searching for:', searchQuery);
+  };
+
+  const getNotificationIcon = (type) => {
+    switch(type) {
+      case 'booking':
+        return '📋';
+      case 'payment':
+        return '💰';
+      case 'feedback':
+        return '⭐';
+      case 'system':
+        return '⚙️';
+      default:
+        return '📢';
+    }
+  };
+
   return (
-    <div className="provider-topbar-actions">
-      <div className="provider-topbar-notification-section" ref={notifRef}>
-        <FaBell className="provider-topbar-notification-icon" onClick={() => setNotifOpen((o) => !o)} />
-        {notifOpen && (
-          <div className="provider-notification-dropdown">
-            <div className="provider-notification-header">Notifications</div>
-            {notifications.length === 0 ? (
-              <div className="provider-notification-empty">No new notifications</div>
-            ) : (
-              notifications.map((notif) => (
-                <div className="provider-notification-item" key={notif.id}>
-                  <div className="provider-notification-message">{notif.message}</div>
-                  <div className="provider-notification-time">{notif.time}</div>
+    <div className="provider-topbar">
+      <div className="topbar-left">
+        {/* Removed search-container and search-form */}
+      </div>
+      <div className="topbar-right">
+        <div className="topbar-actions">
+          <div className="notification-container" ref={notifRef}>
+            <button 
+              className="notification-btn"
+              onClick={() => setNotifOpen(!notifOpen)}
+            >
+              <FaBell className="notification-icon" />
+              {unreadCount > 0 && (
+                <span className="notification-badge">{unreadCount}</span>
+              )}
+            </button>
+            {notifOpen && (
+              <div className="notification-dropdown">
+                <div className="notification-header">
+                  <h3>Notifications</h3>
+                  <button className="mark-all-read">Mark all read</button>
                 </div>
-              ))
+                <div className="notification-list">
+                  {notifications.length === 0 ? (
+                    <div className="notification-empty">
+                      <span>🎉</span>
+                      <p>No new notifications</p>
+                    </div>
+                  ) : (
+                    notifications.map((notif) => (
+                      <div 
+                        key={notif.id} 
+                        className={`notification-item ${!notif.read ? 'unread' : ''}`}
+                        onClick={() => handleNotificationClick(notif.id)}
+                      >
+                        <div className="notification-icon">
+                          {getNotificationIcon(notif.type)}
+                        </div>
+                        <div className="notification-content">
+                          <div className="notification-message">{notif.message}</div>
+                          <div className="notification-time">{notif.time}</div>
+                        </div>
+                        {!notif.read && <div className="unread-dot"></div>}
+                      </div>
+                    ))
+                  )}
+                </div>
+                <div className="notification-footer">
+                  <button className="view-all-notifications">View All</button>
+                </div>
+              </div>
             )}
           </div>
-        )}
-      </div>
-      <div className="provider-topbar-profile-section" ref={profileRef}>
-        <FaUserCircle className="provider-topbar-profile-icon" onClick={() => setProfileOpen((o) => !o)} />
-        {profileOpen && (
-          <div className="provider-profile-card-dropdown">
-            <div className="provider-profile-card-header">Provider Profile</div>
-            <div className="provider-profile-card-row"><span>Full Name:</span> {provider.fullName}</div>
-            <div className="provider-profile-card-row"><span>Address:</span> {provider.address}</div>
-            <div className="provider-profile-card-row"><span>Phone:</span> {provider.phone}</div>
-            <div className="provider-profile-card-row"><span>Email:</span> {provider.email}</div>
-            <div className="provider-profile-card-row"><span>Joined:</span> {provider.joined}</div>
+          <div className="profile-container" ref={profileRef}>
+            <button 
+              className="profile-btn"
+              onClick={() => setProfileOpen(!profileOpen)}
+            >
+              <FaUser className="profile-avatar" />
+            </button>
+            {profileOpen && (
+              <div className="profile-dropdown">
+                <div className="profile-header">
+                  <FaUser className="profile-dropdown-avatar" />
+                  <div className="profile-info">
+                    <h4>{provider.fullName}</h4>
+                    <span>Service Provider</span>
+                  </div>
+                </div>
+                <div className="profile-details">
+                  <div className="profile-detail-item">
+                    <span className="detail-label">Email:</span>
+                    <span className="detail-value">{provider.email}</span>
+                  </div>
+                  <div className="profile-detail-item">
+                    <span className="detail-label">Phone:</span>
+                    <span className="detail-value">{provider.phone}</span>
+                  </div>
+                  <div className="profile-detail-item">
+                    <span className="detail-label">Address:</span>
+                    <span className="detail-value">{provider.address}</span>
+                  </div>
+                  <div className="profile-detail-item">
+                    <span className="detail-label">Joined:</span>
+                    <span className="detail-value">{provider.joined}</span>
+                  </div>
+                </div>
+                <div className="profile-actions">
+                  <button className="profile-action-btn">Edit Profile</button>
+                  <button className="profile-action-btn">View Settings</button>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

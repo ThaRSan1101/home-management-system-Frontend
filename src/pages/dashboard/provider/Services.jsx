@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import './Services.css';
-import Subscription from './Subscription';
-import { FaInbox, FaSpinner, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-
-const TOP_TABS = [
-  { key: 'services', label: 'Services' },
-  { key: 'subscription', label: 'Subscription' },
-];
+import { FaInbox, FaSpinner, FaCheckCircle, FaTimesCircle, FaClipboardList } from 'react-icons/fa';
+import Footer from '../../../components/Footer';
 
 const STATUS_TABS = [
-  { key: 'new', label: 'New Requests', icon: <FaInbox /> },
+  { key: 'new', label: 'New', icon: <FaInbox /> },
   { key: 'processing', label: 'Processing', icon: <FaSpinner /> },
   { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
-  { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
+  { key: 'cancel', label: 'Cancelled', icon: <FaTimesCircle /> },
 ];
 
 const initialActivities = [
@@ -24,11 +19,8 @@ const initialActivities = [
 ];
 
 export default function ProviderActivity() {
-  const [topTab, setTopTab] = useState('services');
   const [activeTab, setActiveTab] = useState('new');
   const [activities, setActivities] = useState(initialActivities);
-
-  // Modal state
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [modalActivity, setModalActivity] = useState(null);
@@ -48,7 +40,6 @@ export default function ProviderActivity() {
     setActivities((prev) => prev.filter((a) => a.id !== id));
   };
 
-  // Cancel/Complete actions for processing
   const openCancelModal = (activity) => {
     setModalActivity(activity);
     setCancelReason('');
@@ -86,187 +77,146 @@ export default function ProviderActivity() {
   };
 
   return (
-    <div className="provider-activity-super">
-      <div className="provider-activity-top-tabs-bg">
-        <div className="provider-activity-top-tabs">
-          {TOP_TABS.map((tab) => (
-            <button
-              key={tab.key}
-              className={`provider-activity-top-tab-btn${topTab === tab.key ? ' active' : ''}`}
-              onClick={() => setTopTab(tab.key)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+    <div className="provider-activity-page">
+      <div className="activity-header">
+        <h1><FaClipboardList style={{marginRight:8}}/>Activity</h1>
+        <p>Manage and track all your service activities in one place.</p>
       </div>
-      {topTab === 'services' ? (
-        <>
-          <div className="provider-services-tabs-bg">
-            <div className="provider-services-tabs">
-              {STATUS_TABS.map((tab) => (
-                <button
-                  key={tab.key}
-                  className={`provider-services-tab-btn${activeTab === tab.key ? ' active' : ''}`}
-                  onClick={() => setActiveTab(tab.key)}
-                >
-                  <span className="tab-icon">{tab.icon}</span>
-                  <span className="tab-label">{tab.label}</span>
-                </button>
+      <div className="activity-tabs">
+        {STATUS_TABS.map((tab) => (
+          <button
+            key={tab.key}
+            className={`activity-tab-btn${activeTab === tab.key ? ' active' : ''}`}
+            onClick={() => setActiveTab(tab.key)}
+          >
+            <span className="tab-icon">{tab.icon}</span>
+            <span className="tab-label">{tab.label}</span>
+          </button>
+        ))}
+      </div>
+      <div className="activity-table-container">
+        {filteredActivities.length === 0 ? (
+          <div className="activity-empty-state">
+            <FaInbox className="empty-icon" />
+            <h3>No activities found for this status.</h3>
+          </div>
+        ) : (
+          <table className="activity-table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                {activeTab === 'new' && <th>Action</th>}
+                {activeTab === 'processing' && <th>Action</th>}
+                {activeTab === 'cancel' && <th>Reason</th>}
+                {activeTab === 'complete' && <th>Charge</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {filteredActivities.map((activity) => (
+                <tr key={activity.id}>
+                  <td>{activity.service}</td>
+                  <td>{activity.date}</td>
+                  <td>{activity.time}</td>
+                  <td>
+                    <span className={`activity-status-badge ${activity.status}`}>
+                      {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
+                    </span>
+                  </td>
+                  {activeTab === 'new' && (
+                    <td>
+                      <button className="activity-accept-btn" onClick={() => handleAccept(activity.id)}>Accept</button>
+                      <button className="activity-decline-btn" onClick={() => handleDecline(activity.id)}>Decline</button>
+                    </td>
+                  )}
+                  {activeTab === 'processing' && (
+                    <td>
+                      <button className="activity-cancel-btn" onClick={() => openCancelModal(activity)}>Cancel</button>
+                      <button className="activity-complete-btn" onClick={() => openCompleteModal(activity)}>Complete</button>
+                    </td>
+                  )}
+                  {activeTab === 'cancel' && (
+                    <td>{activity.cancelReason || '-'}</td>
+                  )}
+                  {activeTab === 'complete' && (
+                    <td>{activity.charge ? `LKR ${activity.charge}` : '-'}</td>
+                  )}
+                </tr>
               ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+      {/* Cancel Modal */}
+      {showCancelModal && (
+        <div className="activity-modal-overlay">
+          <div className="activity-modal">
+            <div className="activity-modal-icon cancel">
+              <FaTimesCircle size={44} />
             </div>
+            <button type="button" className="activity-modal-close-btn" onClick={() => setShowCancelModal(false)}>&times;</button>
+            <h3>Cancel Service</h3>
+            <form onSubmit={handleCancelSubmit}>
+              <label>
+                Reason for cancellation:
+                <textarea
+                  value={cancelReason}
+                  onChange={(e) => setCancelReason(e.target.value)}
+                  required
+                  placeholder="Enter reason..."
+                  className="activity-modal-textarea"
+                />
+              </label>
+              <div className="activity-modal-actions">
+                <button type="button" onClick={() => setShowCancelModal(false)} className="activity-modal-cancel-btn">Close</button>
+                <button type="submit" className="activity-modal-submit-btn">Submit</button>
+              </div>
+            </form>
           </div>
-          <div className="provider-services-content">
-            {filteredActivities.length === 0 ? (
-              <div className="provider-services-empty">
-                <span className="empty-icon">🗒️</span>
-                <h3>No activities found for this status.</h3>
-              </div>
-            ) : (
-              <div className="provider-services-table-container">
-                <div className="provider-services-table-scroll">
-                  <table className="provider-services-table">
-                    <thead>
-                      <tr>
-                        <th>Service</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Status</th>
-                        {activeTab === 'new' && <th>Action</th>}
-                        {activeTab === 'processing' && <th>Action</th>}
-                        {activeTab === 'cancel' && <th>Reason</th>}
-                        {activeTab === 'complete' && <th>Charge</th>}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredActivities.map((activity) => (
-                        <tr key={activity.id}>
-                          <td>{activity.service}</td>
-                          <td>{activity.date}</td>
-                          <td>{activity.time}</td>
-                          <td>
-                            <span className={`provider-services-status-badge ${activity.status}`}>
-                              {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
-                            </span>
-                          </td>
-                          {activeTab === 'new' && (
-                            <td>
-                              <button
-                                className="provider-services-accept-btn"
-                                onClick={() => handleAccept(activity.id)}
-                              >
-                                Accept
-                              </button>
-                              <button
-                                className="provider-services-decline-btn"
-                                onClick={() => handleDecline(activity.id)}
-                              >
-                                Decline
-                              </button>
-                            </td>
-                          )}
-                          {activeTab === 'processing' && (
-                            <td>
-                              <button
-                                className="provider-services-cancel-btn"
-                                onClick={() => openCancelModal(activity)}
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                className="provider-services-complete-btn"
-                                onClick={() => openCompleteModal(activity)}
-                              >
-                                Complete
-                              </button>
-                            </td>
-                          )}
-                          {activeTab === 'cancel' && (
-                            <td>{activity.cancelReason || '-'}</td>
-                          )}
-                          {activeTab === 'complete' && (
-                            <td>{activity.charge ? `LKR ${activity.charge}` : '-'}</td>
-                          )}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-            {/* Cancel Modal */}
-            {showCancelModal && (
-              <div className="provider-modal-overlay">
-                <div className="provider-modal playful-modal">
-                  <div className="provider-modal-icon-circle cancel">
-                    <FaTimesCircle size={44} />
-                  </div>
-                  <button type="button" className="provider-modal-close-btn" onClick={() => setShowCancelModal(false)}>&times;</button>
-                  <h3>Cancel Service</h3>
-                  <form onSubmit={handleCancelSubmit}>
-                    <label>
-                      Reason for cancellation:
-                      <textarea
-                        value={cancelReason}
-                        onChange={(e) => setCancelReason(e.target.value)}
-                        required
-                        placeholder="Enter reason..."
-                        className="provider-modal-textarea playful-input"
-                      />
-                    </label>
-                    <div className="provider-modal-actions">
-                      <button type="button" onClick={() => setShowCancelModal(false)} className="provider-modal-cancel-btn playful-btn">Close</button>
-                      <button type="submit" className="provider-modal-submit-btn playful-btn">Submit</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            )}
-            {/* Complete Modal */}
-            {showCompleteModal && (
-              <div className="provider-modal-overlay">
-                <div className="provider-modal playful-modal">
-                  <div className="provider-modal-icon-circle complete">
-                    <FaCheckCircle size={44} />
-                  </div>
-                  <button type="button" className="provider-modal-close-btn" onClick={() => setShowCompleteModal(false)}>&times;</button>
-                  <h3>Complete Service</h3>
-                  <form onSubmit={handleCompleteSubmit}>
-                    <label>
-                      Service Name:
-                      <input
-                        type="text"
-                        value={completeServiceName}
-                        onChange={(e) => setCompleteServiceName(e.target.value)}
-                        required
-                        className="provider-modal-input playful-input"
-                      />
-                    </label>
-                    <label>
-                      Service Charge (LKR):
-                      <input
-                        type="number"
-                        min="0"
-                        value={completeCharge}
-                        onChange={(e) => setCompleteCharge(e.target.value)}
-                        required
-                        placeholder="Enter charge..."
-                        className="provider-modal-input playful-input"
-                      />
-                    </label>
-                    <div className="provider-modal-actions">
-                      <button type="button" onClick={() => setShowCompleteModal(false)} className="provider-modal-cancel-btn playful-btn">Close</button>
-                      <button type="submit" className="provider-modal-submit-btn playful-btn">Submit</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            )}
-          </div>
-        </>
-      ) : (
-        <Subscription embedded hideUnsubscribe />
+        </div>
       )}
+      {/* Complete Modal */}
+      {showCompleteModal && (
+        <div className="activity-modal-overlay">
+          <div className="activity-modal">
+            <div className="activity-modal-icon complete">
+              <FaCheckCircle size={44} />
+            </div>
+            <button type="button" className="activity-modal-close-btn" onClick={() => setShowCompleteModal(false)}>&times;</button>
+            <h3>Complete Service</h3>
+            <form onSubmit={handleCompleteSubmit}>
+              <label>
+                Service Name:
+                <input
+                  type="text"
+                  value={completeServiceName}
+                  onChange={(e) => setCompleteServiceName(e.target.value)}
+                  required
+                  className="activity-modal-input"
+                />
+              </label>
+              <label>
+                Service Charge (LKR):
+                <input
+                  type="number"
+                  min="0"
+                  value={completeCharge}
+                  onChange={(e) => setCompleteCharge(e.target.value)}
+                  required
+                  className="activity-modal-input"
+                />
+              </label>
+              <div className="activity-modal-actions">
+                <button type="button" onClick={() => setShowCompleteModal(false)} className="activity-modal-cancel-btn">Close</button>
+                <button type="submit" className="activity-modal-submit-btn">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      <Footer />
     </div>
   );
 } 
