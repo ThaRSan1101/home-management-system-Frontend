@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaEye, FaEyeSlash, FaLock, FaUser } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaLock, FaUser, FaKey } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import './Login.css';
 
@@ -52,12 +52,18 @@ const Login = () => {
       });
       const result = await response.json();
       if (result.status === 'success') {
+        // Save user info for later use (optional)
+        localStorage.setItem('user_type', result.user_type);
+        localStorage.setItem('user_id', result.user_id);
+        localStorage.setItem('user_name', result.name);
+
+        // Redirect based on user type and user id
         if (result.user_type === 'admin') {
-          navigate('/admin/dashboard');
-        } else if (result.user_type === 'service_provider') {
-          navigate('/provider/dashboard');
+          navigate(`/admin/dashboard/${result.user_id}`);
+        } else if (result.user_type === 'provider') {
+          navigate(`/provider/dashboard/${result.user_id}`);
         } else {
-          navigate('/customer/dashboard');
+          navigate(`/customer/dashboard/${result.user_id}`);
         }
       } else {
         setLoginError(result.message || 'Invalid email or password.');
@@ -109,9 +115,11 @@ const Login = () => {
       const res = await fetch('http://localhost/project-root/backend/verify_reset_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: forgotEmail.trim().toLowerCase(), otp: forgotOtp.trim() })
+        body: JSON.stringify({ email: forgotEmail.trim().toLowerCase(), code: forgotOtp.trim() })
       });
+      
       const result = await res.json();
+      console.log(result.status);
       if (result.status === 'success') {
         setForgotStep(3);
         setForgotSuccess('OTP verified. Please enter your new password.');
@@ -169,7 +177,7 @@ const Login = () => {
     <div className="auth-wrapper">
       <div className="auth-card">
         <div className="auth-left">
-          <div className="auth-logo"><Logo size="medium" /></div>
+          <div className="auth-logo"><Logo size="medium" variant="auth" /></div>
           <h2>Welcome Back!</h2>
           <p>To keep connected with us please login with your personal info</p>
           <Link to="/register" className="auth-alt-btn">Register Now</Link>
@@ -207,7 +215,10 @@ const Login = () => {
             {loginError && <span className="auth-error">{loginError}</span>}
             <button type="submit" className="auth-submit-btn">Sign In</button>
           </form>
-          <button className="forgot-password-link" onClick={() => { setShowForgot(true); setForgotStep(1); setForgotError(''); setForgotSuccess(''); }}>Forgot Password?</button>
+          <button className="forgot-password-link" onClick={() => { setShowForgot(true); setForgotStep(1); setForgotError(''); setForgotSuccess(''); }}>
+            <FaKey style={{ marginRight: '0.4rem', fontSize: '1.1em' }} />
+            Forgot Password?
+          </button>
           {showForgot && (
             <div className="forgot-modal">
               <div className="forgot-modal-content">

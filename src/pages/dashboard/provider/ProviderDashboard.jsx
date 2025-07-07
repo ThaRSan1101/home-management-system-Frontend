@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import ProviderSidebar from './ProviderSidebar';
 import ProviderTopbar from './ProviderTopbar';
 import ServiceProviderDashboard from './ServiceProviderDashboard';
@@ -8,20 +8,28 @@ import Feedback from './Feedback';
 import Contact from './Contact';
 import './ServiceProviderDashboard.css';
 
-const ProviderDashboard = () => (
-  <div className="provider-dashboard-layout">
-    <ProviderSidebar />
-    <main className="provider-dashboard-main">
-      <ProviderTopbar />
-      <Routes>
-        <Route path="dashboard" element={<ServiceProviderDashboard />} />
-        <Route path="activity/services" element={<ProviderActivity />} />
-        <Route path="feedback" element={<Feedback />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="*" element={<Navigate to="/provider/dashboard" />} />
-      </Routes>
-    </main>
-  </div>
-);
+const ProviderDashboard = () => {
+  const { userId } = useParams();
+  const userName = localStorage.getItem('user_name');
+  return (
+    <div className="provider-dashboard-layout">
+      <ProviderSidebar userId={userId} />
+      <main className="provider-dashboard-main">
+        <ProviderTopbar userId={userId} />
+        <div style={{margin: '2rem 0 1rem 2rem', fontSize: '2rem', fontWeight: 700, color: '#007a65', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.7rem'}}>
+          <span>Welcome back</span>
+          {userName && <span style={{color: '#005f4b'}}>{userName} !</span>}
+        </div>
+        <Routes>
+          <Route path="dashboard" element={<ServiceProviderDashboard userId={userId} />} />
+          <Route path="activity/services" element={<ProviderActivity userId={userId} />} />
+          <Route path="feedback" element={<Feedback userId={userId} />} />
+          <Route path="contact" element={<Contact userId={userId} />} />
+          <Route path="*" element={<Navigate to={`/provider/dashboard/${userId}/dashboard`} />} />
+        </Routes>
+      </main>
+    </div>
+  );
+};
 
 export default ProviderDashboard; 

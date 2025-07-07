@@ -1,20 +1,21 @@
 import React, { useState, useRef } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import './AdminSidebar.css';
 
 const navItems = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
-  { label: 'Service Providers', path: '/admin/service-providers' },
-  { label: 'Reports', path: '/admin/reports' },
-  { label: 'Settings', path: '/admin/settings' },
-  { label: 'Profile', path: '/admin/profile' },
+  { label: 'Dashboard', path: 'dashboard' },
+  { label: 'Service Providers', path: 'service-providers' },
+  { label: 'Reports', path: 'reports' },
+  { label: 'Settings', path: 'settings' },
+  { label: 'Profile', path: 'profile' },
 ];
 
 const AdminSidebar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const { userId } = useParams();
 
   React.useEffect(() => {
     function handleClickOutside(event) {
@@ -52,7 +53,7 @@ const AdminSidebar = () => {
         {navItems.map((item) => (
           <NavLink
             key={item.path}
-            to={item.path}
+            to={`/admin/dashboard/${userId}/${item.path}`}
             className={({ isActive }) =>
               'sidebar-link' + (isActive ? ' active' : '')
             }
@@ -61,6 +62,11 @@ const AdminSidebar = () => {
           </NavLink>
         ))}
       </nav>
+      <div className="sidebar-logout-bottom">
+        <button className="sidebar-logout-btn-bottom" onClick={handleLogout}>
+          <FaSignOutAlt style={{ marginRight: 8 }} /> Logout
+        </button>
+      </div>
     </aside>
   );
 };

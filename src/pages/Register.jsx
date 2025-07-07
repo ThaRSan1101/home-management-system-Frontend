@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaPhone, FaIdCard } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import './Register.css';
 
@@ -12,6 +12,8 @@ const Register = () => {
     address: '',
     password: '',
     confirmPassword: '',
+    nic: '',
+    userType: 'customer',
     showPassword: false
   });
 
@@ -42,6 +44,13 @@ const Register = () => {
       const phoneRegex = /^\d{10}$/;
       if (!phoneRegex.test(value)) {
         setErrors({ ...errors, [name]: 'Phone must be 10 digits' });
+      }
+    }
+
+    if (name === 'nic') {
+      const nicRegex = /^\d{9}[VvXx]$/;
+      if (value && !nicRegex.test(value)) {
+        setErrors({ ...errors, [name]: 'NIC must be 9 digits followed by V, v, X, or x' });
       }
     }
 
@@ -148,14 +157,14 @@ const Register = () => {
     <div className="auth-wrapper">
       <div className="auth-card register-card">
         <div className="auth-left">
-          <div className="auth-logo"><Logo size="medium" /></div>
-          <h2>Create Account</h2>
-          <p>To keep connected with us, please log in with your personal info</p>
+          <div className="auth-logo"><Logo size="medium" variant="auth" /></div>
+          <h2>Create Customer Account</h2>
+          <p>Join ServiceHub as a customer to book services and manage your home maintenance needs</p>
           <Link to="/login" className="auth-alt-btn">Log In</Link>
         </div>
 
         <div className="auth-right">
-          <h2>Create Account</h2>
+          <h2>Create Customer Account</h2>
 
           {!otpSent && !registrationSuccess && (
             <form className="auth-form register-form" onSubmit={handleSubmit}>
@@ -163,6 +172,7 @@ const Register = () => {
               <InputField icon={<FaEnvelope />} type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} error={errors.email} />
               <InputField icon={<FaPhone />} type="tel" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} error={errors.phone} />
               <InputField icon={<FaUser />} type="text" name="address" placeholder="City & District" value={formData.address} onChange={handleChange} error={errors.address} />
+              <InputField icon={<FaIdCard />} type="text" name="nic" placeholder="NIC (Optional)" value={formData.nic} onChange={handleChange} error={errors.nic} />
 
               {/* Password Field */}
               <div className="auth-field-container">
@@ -188,7 +198,7 @@ const Register = () => {
                 {errors.confirmPassword && <span className="auth-error">{errors.confirmPassword}</span>}
               </div>
 
-              <button type="submit" className="auth-submit-btn">Register Now</button>
+              <button type="submit" className="auth-submit-btn">Register as Customer</button>
             </form>
           )}
 
@@ -206,8 +216,13 @@ const Register = () => {
 
           {/* Success Message */}
           {registrationSuccess && (
-            <div className="registration-success">
-              🎉 Registration Successful!
+            <div className="auth-success register-success">
+              <div className="register-success-icon">🎉</div>
+              <h3>Registration Successful!</h3>
+              <p>Your customer account has been created successfully.</p>
+              <div className="register-success-btn-container">
+                <Link to="/login" className="auth-submit-btn">Go to Login</Link>
+              </div>
             </div>
           )}
         </div>

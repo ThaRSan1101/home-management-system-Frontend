@@ -180,18 +180,26 @@
 }
 
 .forgot-password-link {
-  background: none;
+  background: #007a65;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   border: none;
-  color: #007a65;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-top: 1.2rem;
   font-size: 1rem;
   font-weight: 500;
-  transition: color 0.2s;
+  border-radius: 30px;
+  padding: 0.5rem 1.3rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .forgot-password-link:hover {
-  color: #005f4b;
+  background: #005f4b;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,122,101,0.08);
 }
 
 .forgot-modal {
