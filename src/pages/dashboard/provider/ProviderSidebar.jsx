@@ -1,18 +1,18 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { FaSignOutAlt, FaHome, FaClipboardList, FaComments, FaEnvelope } from 'react-icons/fa';
 import './ProviderSidebar.css';
 
 const navItems = [
-  { label: 'Dashboard', path: '/provider/dashboard', icon: <FaHome /> },
-  { label: 'Activity', path: '/provider/activity/services', icon: <FaClipboardList /> },
-  { label: 'Feedback', path: '/provider/feedback', icon: <FaComments /> },
-  { label: 'Contact Us', path: '/provider/contact', icon: <FaEnvelope /> },
-
+  { label: 'Dashboard', path: 'dashboard', icon: <FaHome /> },
+  { label: 'Activity', path: 'activity/services', icon: <FaClipboardList /> },
+  { label: 'Feedback', path: 'feedback', icon: <FaComments /> },
+  { label: 'Contact Us', path: 'contact', icon: <FaEnvelope /> },
 ];
 
 const ProviderSidebar = () => {
   const navigate = useNavigate();
+  const { userId } = useParams();
 
   const handleLogout = () => {
     localStorage.removeItem('userType');
