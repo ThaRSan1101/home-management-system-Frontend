@@ -104,7 +104,7 @@ const Register = () => {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch('http://localhost/project-root/backend/register.php', {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/register.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -134,7 +134,7 @@ const Register = () => {
     const payload = { ...formData, otp: otpInput };
 
     try {
-      const response = await fetch('http://localhost/project-root/backend/verify_otp.php', {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/verify_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

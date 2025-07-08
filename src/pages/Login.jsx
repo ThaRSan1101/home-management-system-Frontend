@@ -42,7 +42,7 @@ const Login = () => {
     e.preventDefault();
     if (!validateForm()) return;
     try {
-      const response = await fetch('http://localhost/project-root/backend/login.php', {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -52,9 +52,9 @@ const Login = () => {
       });
       const result = await response.json();
       if (result.status === 'success') {
-        // Save user info for later use (optional)
-        localStorage.setItem('user_type', result.user_type);
-        localStorage.setItem('user_id', result.user_id);
+        // Store JWT token for authentication
+        localStorage.setItem('token', result.token);
+        //console.log(result.token);
         localStorage.setItem('user_name', result.name);
 
         // Redirect based on user type and user id
@@ -84,7 +84,7 @@ const Login = () => {
     }
     setForgotLoading(true);
     try {
-      const res = await fetch('http://localhost/project-root/backend/forgot_password.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/forgot_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase() })
@@ -112,7 +112,7 @@ const Login = () => {
     }
     setForgotLoading(true);
     try {
-      const res = await fetch('http://localhost/project-root/backend/verify_reset_otp.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/verify_reset_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase(), code: forgotOtp.trim() })
@@ -150,7 +150,7 @@ const Login = () => {
     }
     setForgotLoading(true);
     try {
-      const res = await fetch('http://localhost/project-root/backend/reset_password.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/reset_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase(), otp: forgotOtp.trim(), newPassword: forgotNewPassword })
