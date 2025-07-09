@@ -18,9 +18,8 @@ const navItems = [
 const Sidebar = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
+  // No sensitive data is stored in localStorage. userType is not used for authentication.
   const handleLogout = () => {
-    localStorage.removeItem('userType');
-    // Remove any other auth tokens if needed
     navigate('/login');
   };
 

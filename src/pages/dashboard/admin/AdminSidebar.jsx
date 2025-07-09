@@ -28,7 +28,7 @@ const AdminSidebar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('userType');
+    // No sensitive data is stored in localStorage. userType is not used for authentication.
     navigate('/login');
   };
 

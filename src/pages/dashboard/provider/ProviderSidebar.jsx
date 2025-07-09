@@ -14,6 +14,7 @@ const ProviderSidebar = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
 
+  // No sensitive data is stored in localStorage. userType is not used for authentication.
   const handleLogout = () => {
     localStorage.removeItem('userType');
     navigate('/login');
