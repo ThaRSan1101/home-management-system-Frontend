@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash, FaLock, FaUser, FaKey } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import './Login.css';
+import axios from 'axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -42,21 +43,18 @@ const Login = () => {
     e.preventDefault();
     if (!validateForm()) return;
     try {
-      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/login.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const response = await axios.post(
+        'http://localhost/project-root/backend/home-management-system-Backend/login.php',
+        {
           email: formData.email,
           password: formData.password
-        })
-      });
-      const result = await response.json();
+        },
+        { withCredentials: true }
+      );
+      const result = response.data;
       if (result.status === 'success') {
-        // Store JWT token for authentication
-        localStorage.setItem('token', result.token);
-        //console.log(result.token);
-        localStorage.setItem('user_name', result.name);
-
+        // No need to store JWT in localStorage!
+        // Optionally, store user_name in memory or context if needed for UI
         // Redirect based on user type and user id
         if (result.user_type === 'admin') {
           navigate(`/admin/dashboard/${result.user_id}`);

@@ -12,9 +12,9 @@ import Contact from './Contact';
 import './CustomerDashboard.css';
 import Topbar from './Topbar';
 
-const CustomerDashboard = () => {
+const CustomerDashboard = ({ userName: propUserName }) => {
   const { userId } = useParams();
-  const userName = localStorage.getItem('user_name');
+  const userName = propUserName || '';
   return (
     <div className="customer-dashboard-layout">
       <Sidebar userId={userId} />
