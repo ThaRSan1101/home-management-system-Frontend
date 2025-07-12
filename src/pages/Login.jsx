@@ -44,7 +44,7 @@ const Login = () => {
     if (!validateForm()) return;
     try {
       const response = await axios.post(
-        'http://localhost/project-root/backend/home-management-system-Backend/login.php',
+        'http://localhost/project-root/backend/home-management-system-Backend/api/login.php',
         {
           email: formData.email,
           password: formData.password
@@ -82,7 +82,7 @@ const Login = () => {
     }
     setForgotLoading(true);
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/forgot_password.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/forgot_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase() })
@@ -110,7 +110,7 @@ const Login = () => {
     }
     setForgotLoading(true);
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/verify_reset_otp.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/verify_reset_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase(), code: forgotOtp.trim() })
@@ -148,7 +148,7 @@ const Login = () => {
     }
     setForgotLoading(true);
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/reset_password.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/reset_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase(), otp: forgotOtp.trim(), newPassword: forgotNewPassword })
