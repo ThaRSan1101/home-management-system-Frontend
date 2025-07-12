@@ -48,9 +48,10 @@ const Register = () => {
     }
 
     if (name === 'nic') {
-      const nicRegex = /^\d{9}[VvXx]$/;
+      // NIC must be 12 digits or 9 digits followed by V or v
+      const nicRegex = /^(\d{12}|\d{9}[Vv])$/;
       if (value && !nicRegex.test(value)) {
-        setErrors({ ...errors, [name]: 'NIC must be 9 digits followed by V, v, X, or x' });
+        setErrors({ ...errors, [name]: 'NIC must be 12 digits or 9 digits followed by V.' });
       }
     }
 
