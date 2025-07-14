@@ -6,9 +6,10 @@ body, .howitworks-page-main {
 }
 
 .how-it-works-page {
+  background: #fff;
   margin-top: 4rem;
   width: 100%;
-  background-color: #f5f6f7;
+  background-color: #f8fafc;
 }
 
 /* =====================
@@ -19,7 +20,7 @@ body, .howitworks-page-main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #006551;
+  background: var(--primary-color);
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.10);
   padding: 3.5rem 3rem 3.5rem 3rem;
@@ -32,25 +33,25 @@ body, .howitworks-page-main {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  color: #fff;
+  color: var(--white);
 }
 .howitworks-hero-content h1 {
   font-size: 2.7rem;
   font-weight: 800;
   margin-bottom: 1.1rem;
-  color: #fff;
+  color: var(--white);
   letter-spacing: 0.5px;
 }
 .howitworks-hero-content p {
   font-size: 1.25rem;
-  color: #f3f3f3;
+  color: var(--secondary-color);
   margin-bottom: 2.2rem;
   opacity: 0.97;
   line-height: 1.7;
 }
 .howitworks-hero-btn {
-  background: #fff;
-  color: #006551;
+  background: var(--white);
+  color: var(--primary-color);
   border: none;
   font-weight: 700;
   font-size: 1.15rem;
@@ -62,8 +63,8 @@ body, .howitworks-page-main {
   display: inline-block;
 }
 .howitworks-hero-btn:hover {
-  background: #f8f9fa;
-  color: #006551;
+  background: var(--secondary-color);
+  color: var(--primary-color);
   box-shadow: 0 10px 25px rgba(24,90,157,0.18);
 }
 .howitworks-hero-image {
@@ -222,19 +223,19 @@ body, .howitworks-page-main {
   transition: all 0.3s ease;
 }
 .primary-btn {
-  background-color: #007a65;
-  color: white;
+  background-color: var(--accent-color);
+  color: var(--white);
 }
 .secondary-btn {
-  background-color: white;
-  color: #007a65;
-  border: 1px solid #007a65;
+  background-color: var(--white);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
 }
 .primary-btn:hover {
-  background-color: #1d4ed8;
+  background-color: var(--primary-color);
 }
 .secondary-btn:hover {
-  background-color: #f8fafc;
+  background-color: var(--secondary-color);
 }
 
 /* =====================
@@ -510,7 +511,7 @@ body, .howitworks-page-main {
   font-size: 2.2rem;
   font-weight: 800;
   margin-bottom: 1.2rem;
-  color: #181818;
+  color: #1a3665;
 }
 .trust-intro {
   font-size: 1.15rem;
@@ -580,7 +581,7 @@ body, .howitworks-page-main {
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 2.5rem;
-  color: #181818;
+  color: #1a3665;
 }
 .new-faq-list {
   display: flex;
@@ -591,14 +592,14 @@ body, .howitworks-page-main {
 .faq-card {
   width: 100%;
   max-width: 800px;
-  background: #fafafa;
+  background: #f5f8fd;
   border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 12px rgba(26,54,101,0.04);
   transition: box-shadow 0.2s;
   overflow: hidden;
 }
 .faq-card:hover {
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(45,95,255,0.08);
 }
 .faq-question-row {
   width: 100%;
@@ -611,13 +612,13 @@ body, .howitworks-page-main {
   padding: 1.6rem 2rem;
   font-size: 1.35rem;
   font-weight: 500;
-  color: #181818;
+  color: #1a3665;
   cursor: pointer;
   text-align: left;
   transition: background 0.15s;
 }
 .faq-question-row:hover {
-  background: #f3f3f3;
+  background: #e6edfa;
 }
 .faq-question-text {
   flex: 1;
@@ -625,15 +626,15 @@ body, .howitworks-page-main {
 .faq-plus {
   font-size: 1.7rem;
   font-weight: 700;
-  color: #222;
+  color: #2d5fff;
   margin-left: 1.5rem;
 }
 .faq-answer-row {
   padding: 1.3rem 2rem 1.7rem 2rem;
   font-size: 1.08rem;
-  color: #006551;
-  background: #e6f4f1;
-  border-top: 1px solid #b2d8cf;
+  color: #1a3665;
+  background: #fff;
+  border-top: 1px solid #2d5fff;
   text-align: left;
   animation: fadeInFaq 0.2s;
 }
@@ -757,7 +758,7 @@ body, .howitworks-page-main {
   font-size: 2.5rem;
   font-weight: 900;
   margin-bottom: 2.5rem;
-  color: #006551;
+  color: #1a3665;
   letter-spacing: -1px;
   text-align: center;
   width: 100%;
@@ -829,22 +830,26 @@ body, .howitworks-page-main {
   width: 54px;
   height: 54px;
   background: #fff;
-  border: 2px solid #bfc5c9;
+  border: 2px solid #1a3665;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #3a5952;
+  color: #1a3665;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.phases-timeline-circle {
+  background: #f5f8fd;
 }
 
 .phases-timeline-content h3 {
   font-size: 1.8rem;
   font-weight: 900;
   margin-bottom: 0.7rem;
-  color: #181818;
+  color: #1a3665;
 }
 
 .phases-timeline-content p {
@@ -852,6 +857,10 @@ body, .howitworks-page-main {
   color: #222;
   margin: 0;
   line-height: 1.6;
+}
+
+.phases-timeline-content h3 {
+  color: #181818;
 }
 
 @media (max-width: 900px) {
@@ -989,11 +998,16 @@ body, .howitworks-page-main {
   align-items: stretch;
   gap: 3rem;
   height: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .phases-horizontal-left {
   flex: 0 0 65%;
   min-width: 0;
+  margin: 0 auto;
+  float: none;
 }
 
 .phases-horizontal-right {

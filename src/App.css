@@ -6,12 +6,12 @@
 }
 
 :root {
-  --primary-color: #007a65;
-  --secondary-color: #F5F5F5;
-  --accent-color: #F0EDE5;
-  --button-color: #4A6572;
-  --text-color: #2C2C2C;
-  --hover-color: #00BFA5;
+  --primary-color: #1a3665;
+  --secondary-color: #f5f8fd;
+  --accent-color: #2d5fff;
+  --button-color: #1a3665;
+  --text-color: #1a3665;
+  --hover-color: #2d5fff;
   --light-gray: #e0e0e0;
   --white: #ffffff;
 }
@@ -68,11 +68,11 @@ body {
 }
 
 .nav-links a:hover {
-  color: var(--primary-color);
+  color: var(--accent-color);
 }
 
 .navbar .login-btn:hover {
-  background-color: #357abd;
+  background-color: var(--accent-color);
 }
 
 .menu-toggle {
@@ -106,7 +106,7 @@ body {
 }
 
 .cta-button {
-  background-color: var(--primary-color);
+  background-color: var(--accent-color);
   color: var(--white);
   border: none;
   padding: 1rem 2rem;
@@ -117,6 +117,7 @@ body {
 }
 
 .cta-button:hover {
+  background-color: var(--primary-color);
   transform: scale(1.05);
 }
 
@@ -157,8 +158,8 @@ body {
 }
 
 .book-now {
-  background-color: var(--primary-color);
-  color: var(--white);
+  background-color: #f5f8fd;
+  color: var(--primary-color);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;
@@ -168,7 +169,8 @@ body {
 }
 
 .book-now:hover {
-  background-color: #357abd;
+  background-color: var(--accent-color);
+  color: var(--white);
 }
 
 /* How It Works Section */

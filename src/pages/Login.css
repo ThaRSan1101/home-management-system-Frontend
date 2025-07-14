@@ -1,7 +1,7 @@
 /* Auth Wrapper */
 .auth-wrapper {
   min-height: 100vh;
-  background: #f8fafc url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="1.5" fill="%23007a65" fill-opacity="0.04"/><circle cx="60" cy="60" r="1.5" fill="%23007a65" fill-opacity="0.04"/><circle cx="90" cy="30" r="1.5" fill="%23007a65" fill-opacity="0.04"/></svg>') repeat;
+  background: #1a3665 url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="1.5" fill="%231a3665" fill-opacity="0.04"/><circle cx="60" cy="60" r="1.5" fill="%231a3665" fill-opacity="0.04"/><circle cx="90" cy="30" r="1.5" fill="%231a3665" fill-opacity="0.04"/></svg>') repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,7 +22,7 @@
 }
 
 .auth-left {
-  background: linear-gradient(135deg, #007a65 0%, #005f4b 100%);
+  background: #1a3665 !important;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -64,8 +64,8 @@
   display: inline-block;
 }
 .auth-alt-btn:hover {
-  background: #fff;
-  color: #007a65;
+  background: var(--white);
+  color: var(--primary-color);
 }
 
 .auth-right {
@@ -77,7 +77,7 @@
 }
 
 .auth-right h2 {
-  color: #007a65;
+  color: #1a3665;
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -119,7 +119,7 @@
 .auth-input-icon {
   position: absolute;
   left: 0.8rem;
-  color: #007a65;
+  color: #1a3665 !important;
   font-size: 1.1rem;
 }
 .auth-eye {
@@ -132,7 +132,7 @@
   cursor: pointer;
 }
 .auth-eye:hover {
-  color: #007a65;
+  color: #1a3665 !important;
 }
 .auth-error {
   color: #ef4444;
@@ -142,7 +142,7 @@
   display: block;
 }
 .auth-submit-btn {
-  background: #007a65;
+  background: #1a3665 !important;
   color: #fff;
   border: none;
   border-radius: 30px;
@@ -155,7 +155,7 @@
   width: 100%;
 }
 .auth-submit-btn:hover {
-  background: #005f4b;
+  background: #14294d;
 }
 
 @media (max-width: 900px) {
@@ -180,7 +180,7 @@
 }
 
 .forgot-password-link {
-  background: #007a65;
+  background: #1a3665;
   color: #fff;
   display: inline-flex;
   align-items: center;
@@ -197,7 +197,7 @@
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .forgot-password-link:hover {
-  background: #005f4b;
+  background: #1a3665;
   color: #fff;
   box-shadow: 0 4px 16px rgba(0,122,101,0.08);
 }
@@ -245,7 +245,7 @@
   align-items: center;
 }
 .forgot-form h3 {
-  color: #007a65;
+  color: #1a3665;
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
   font-weight: 600;
@@ -262,11 +262,11 @@
 }
 .forgot-form input:focus {
   outline: none;
-  border-color: #007a65;
+  border-color: #1a3665;
   background: #fff;
 }
 .forgot-form button[type="submit"] {
-  background: #007a65;
+  background: #1a3665;
   color: #fff;
   border: none;
   border-radius: 30px;
@@ -279,7 +279,7 @@
   width: 100%;
 }
 .forgot-form button[type="submit"]:hover {
-  background: #005f4b;
+  background: #1a3665;
 }
 .auth-success {
   color: #22c55e;

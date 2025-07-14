@@ -1,7 +1,7 @@
 /* Contact Page Styles */
 .contact {
   min-height: 100vh;
-  background: var(--secondary-color);
+  background: #fff;
   width: 100%;
 }
 
@@ -18,21 +18,21 @@
 .contact section {
   margin-bottom: 3rem;
   padding: 3rem 2rem;
-  background: var(--white);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
   width: 100%;
 }
 
 /* Hero Section */
 .contact-hero {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #005f4b 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
   color: var(--white);
   padding: 5rem 2rem;
   text-align: center;
   position: relative;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
@@ -59,13 +59,13 @@
 .section-header h2 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1a202c;
+  color: #1a3665;
   margin-bottom: 1rem;
 }
 
 .section-header p {
   font-size: 1.1rem;
-  color: #718096;
+  color: #6b7a90;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -207,7 +207,7 @@
 }
 
 .success-message {
-  background: #005f4b;
+  background: #1a3665;
   color: var(--white);
   padding: 1rem;
   border-radius: 10px;
@@ -234,7 +234,7 @@
 }
 
 .submit-btn:hover, .btn-primary:hover {
-  background: #005f4b;
+  background: #1a3665;
   box-shadow: 0 10px 25px rgba(0, 122, 101, 0.2);
 }
 
@@ -285,11 +285,11 @@
 }
 
 .map-overlay {
+  background: #1a3665;
   position: absolute;
-  left: 0;
   right: 0;
+  left: 0;
   bottom: 0;
-  background: rgba(0, 95, 75, 0.85);
   color: #fff;
   font-size: 1.1rem;
   font-weight: 600;
@@ -346,7 +346,7 @@
 }
 
 .contactus-left {
-  background: #005f4b;
+  background: rgba(26, 54, 101, 0.95);
   color: #fff;
   flex: 1.1;
   display: flex;
@@ -407,7 +407,7 @@
 
 .contactus-send-btn {
   background: #fff;
-  color: #005f4b;
+  color: #1a3665;
   border: none;
   border-radius: 16px;
   padding: 0.9rem 2.2rem;
@@ -421,17 +421,17 @@
   align-items: center;
   justify-content: center;
 }
-.contactus-send-btn:hover {
-  background: #222b3a;
+/*.contactus-send-btn:hover {
+  background: #1a3665;
   color: #fff;
   border: 1.5px solid #fff;
   box-shadow: 0 8px 24px rgba(16,195,158,0.18);
-}
+}*/
 
 .contactus-success {
   margin-top: 1rem;
   color: #fff;
-  background: #005f4b;
+  background: #1a3665;
   padding: 0.7rem 1.2rem;
   border-radius: 6px;
   font-weight: 600;
@@ -465,7 +465,7 @@
 }
 
 .contactus-contactus {
-  color: #005f4b;
+  color: #1a3665;
   font-size: 2rem;
   font-family: 'Dancing Script', cursive, sans-serif;
   font-weight: 600;
@@ -486,16 +486,16 @@
   width: 100%;
 }
 .contactus-info-item {
+  background: rgba(26, 54, 101, 0.08);
+  border-radius: 50px;
+  padding: 0.7rem 1.2rem;
   display: flex;
   align-items: center;
   gap: 1.1rem;
   margin-bottom: 1.5rem;
-  background: #f6fcfa;
-  border-radius: 50px;
-  padding: 0.7rem 1.2rem;
 }
 .contactus-info-icon {
-  color: #222 !important;
+  color: #1a3665 !important;
   z-index: 2;
   padding: 0.5rem;
   background: none !important;

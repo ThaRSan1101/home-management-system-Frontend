@@ -4,6 +4,7 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import "./About.css";
 import { FaUserShield, FaClock, FaCheckCircle, FaHeadset, FaLock, FaStar } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const features = [
   {
@@ -68,19 +69,6 @@ function AboutUsHero() {
           <p className="aboutus-hero-desc">
           ServiceHub is a trusted digital platform that connects customers with verified service professionals for all their home needs, including cleaning, repairs, electrical work, and more. Designed for convenience and reliability, ServiceHub allows customers to easily book services, track appointments, and receive bills online, while ensuring that every provider is manually approved by the admin for quality and safety.
           </p>
-          <div className="aboutus-features-grid">
-            {features.map((f, i) => (
-              <div className="aboutus-feature-card card-hover shadow-soft animate-slide-up" key={f.title} style={{ animationDelay: `${i * 0.07 + 0.1}s` }}>
-                <div className="aboutus-feature-badge-wrapper">
-                  <div className="aboutus-feature-badge">{f.icon}</div>
-                </div>
-                <div className="aboutus-feature-content-centered">
-                  <div className="aboutus-feature-title">{f.title}</div>
-                  <div className="aboutus-feature-desc">{f.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
@@ -97,6 +85,28 @@ export default function About() {
     <div className="about-super">
       <div className="about-hero-team-wrapper">
         <AboutUsHero />
+
+{/* Stats/Goal Section */}
+<section className="aboutus-stats-section">
+  <div className="aboutus-stats-grid">
+    <div className="aboutus-stat">
+      <div className="aboutus-stat-value" style={{color: '#1a3665'}}>10K+</div>
+      <div className="aboutus-stat-label">Happy Customers</div>
+    </div>
+    <div className="aboutus-stat">
+      <div className="aboutus-stat-value" style={{color: '#2d5fff'}}>50+</div>
+      <div className="aboutus-stat-label">Verified Service Providers</div>
+    </div>
+    <div className="aboutus-stat">
+      <div className="aboutus-stat-value" style={{color: '#1a3665'}}>99%</div>
+      <div className="aboutus-stat-label">Satisfaction Rate</div>
+    </div>
+    <div className="aboutus-stat-goal">
+      <div className="aboutus-stat-goal-title">Our Goal is to Simplify Home Services</div>
+      <Link to="/register" className="aboutus-stat-btn">Get Started</Link>
+    </div>
+  </div>
+</section>
         {/* Meet the Team */}
         <motion.div
           className="team-section-super"

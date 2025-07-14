@@ -28,10 +28,9 @@
   margin: auto;
   border-radius: 50%;
   object-fit: cover;
-  /* background: #fff; */
   width: 96px;
   height: 96px;
-  filter: brightness(0) saturate(100%) invert(34%) sepia(99%) saturate(749%) hue-rotate(127deg) brightness(97%) contrast(101%);
+  filter: brightness(0) saturate(100%) invert(16%) sepia(44%) saturate(1200%) hue-rotate(186deg) brightness(90%) contrast(98%);
 }
 
 /* Size variants */
