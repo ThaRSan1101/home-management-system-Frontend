@@ -366,6 +366,6 @@ Modern Navbar Styles
   color: #1a3665;
   letter-spacing: 0.5px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* margin-left: 0.3rem;*/
+  margin-left: -0.5rem;
   user-select: none;
 } 
