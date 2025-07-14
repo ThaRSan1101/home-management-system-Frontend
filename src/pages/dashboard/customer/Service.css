@@ -693,7 +693,7 @@ body, .services-page-main {
   margin: 0 auto;
 }
 .subscription-card {
-  background: rgba(0, 122, 101, 0.08);
+  background: #f5f8fd;
   border: 2px solid var(--primary-color);
   border-radius: 18px;
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
@@ -1104,6 +1104,16 @@ text-align: center;
   color: #007a65;
   font-size: 1.2rem;
   margin-bottom: 1rem;
+}
+.modal-fee-explanation {
+  font-size: 0.97rem;
+  color: #1a3665;
+  margin-top: 0.3rem;
+  margin-bottom: 0.5rem;
+  background: #f5f8fd;
+  border-radius: 6px;
+  padding: 0.5rem 0.8rem;
+  text-align: left;
 }
 @media (max-width: 600px) {
   .booking-modal-form, .booking-modal-payment, .booking-modal-confirm, .booking-modal-success {

@@ -6,32 +6,32 @@ import { MdOutlineVerifiedUser, MdOutlineHandshake, MdOutlineCreditCard, MdOutli
 
 const guarantees = [
   {
-    icon: <MdOutlineVerifiedUser size={48} color="#006551" />,
+    icon: <MdOutlineVerifiedUser size={48} color="#1a3665" />,
     title: "Verified Professionals",
     description: "All service providers undergo thorough background checks, identity verification, and professional certification validation before joining our platform."
   },
   {
-    icon: <MdOutlineHandshake size={48} color="#006551" />,
+    icon: <MdOutlineHandshake size={48} color="#1a3665" />,
     title: "Satisfaction Guarantee",
     description: "If you're not completely satisfied with the service, we'll work with you to make it right or provide a refund according to our satisfaction guarantee policy."
   },
   {
-    icon: <MdOutlineCreditCard size={48} color="#006551" />,
+    icon: <MdOutlineCreditCard size={48} color="#1a3665" />,
     title: "Secure Payments",
     description: "All transactions are processed through our secure payment system. Your payment is only released to the provider after you approve the completed service."
   },
   {
-    icon: <MdOutlineShield size={48} color="#006551" />,
+    icon: <MdOutlineShield size={48} color="#1a3665" />,
     title: "Insurance Coverage",
     description: "Services booked through our platform are covered by our protection policy, providing peace of mind in the rare case of property damage during service."
   },
   {
-    icon: <MdOutlineSupportAgent size={48} color="#006551" />,
+    icon: <MdOutlineSupportAgent size={48} color="#1a3665" />,
     title: "24/7 Support",
     description: "Our customer support team is available around the clock to assist with any questions or concerns before, during, or after your service appointment."
   },
   {
-    icon: <MdOutlineLock size={48} color="#006551" />,
+    icon: <MdOutlineLock size={48} color="#1a3665" />,
     title: "Privacy Protection",
     description: "Your personal information and service details are kept secure and private. We never share your data with third parties without your explicit consent."
   },
@@ -87,8 +87,8 @@ const HowItWorks = () => {
     <div className="how-it-works-page page-content">
       {/* Phases of our works Timeline Section */}
       <section className="phases-horizontal-section">
-        <div className="phases-horizontal-grid">
-          <div className="phases-horizontal-left">
+        <div className="phases-horizontal-grid" style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+          <div className="phases-horizontal-left" style={{ margin: '0 auto', float: 'none' }}>
             <h2 className="phases-title">Phases of our works</h2>
             <div className="phases-timeline">
               <div className="phases-timeline-item">
@@ -116,13 +116,6 @@ const HowItWorks = () => {
                 <div className="phases-timeline-content right"></div>
               </div>
             </div>
-          </div>
-          <div className="phases-horizontal-right">
-            <img
-              src={cleaningImg}
-              alt="Office Cleaning Process"
-              className="phases-side-image"
-            />
           </div>
         </div>
       </section>

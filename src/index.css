@@ -3,6 +3,14 @@
   line-height: 1.5;
   font-weight: 400;
   font-size: 16px;
+  --primary-color: #1a3665;
+  --secondary-color: #f5f8fd;
+  --accent-color: #2d5fff;
+  --button-color: #1a3665;
+  --text-color: #1a3665;
+  --hover-color: #2d5fff;
+  --light-gray: #e0e0e0;
+  --white: #ffffff;
 }
 
 body {
@@ -10,13 +18,14 @@ body {
   min-width: 320px;
   min-height: 100vh;
   font-size: 1rem;
-  background: #fff;
+  background: var(--secondary-color);
+  color: var(--text-color);
 }
 
 #root {
   width: 100vw;
   min-height: 100vh;
-  background: #fff;
+  background: var(--secondary-color);
   box-shadow: none;
   border-radius: 0;
   padding: 0;

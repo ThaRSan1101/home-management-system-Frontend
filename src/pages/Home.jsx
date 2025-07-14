@@ -15,7 +15,7 @@ import service3 from '../assets/service3.jpg';
 import service4 from '../assets/service4.jpg';
 import service5 from '../assets/service5.jpg';
 import service6 from '../assets/service6.jpg';
-import bdImg from '../assets/bd-img.jpg';
+import new4nobg from '../assets/new4-nobg.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -202,7 +202,7 @@ const Home = () => {
   return (
     <div className="home page-content">
       {/* Hero Slider Section */}
-      <section className="hero-slider-section" style={{ position: 'relative', minHeight: '100vh' }}>
+      <section className="hero-slider-section" style={{ position: 'relative', minHeight: '95vh'}}>
         <Swiper
           modules={[Autoplay]}
           autoplay={{ delay: 3500, disableOnInteraction: false }}
@@ -213,11 +213,11 @@ const Home = () => {
         >
           {sliderImages.map((img, idx) => (
             <SwiperSlide key={idx}>
-              <div className="hero-slide" style={{ backgroundImage: `url(${img})`, minHeight: '100vh' }}></div>
+              <div className="hero-slide" style={{ backgroundImage: `url(${img})`, minHeight: '95vh' }}></div>
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className="hero-slide-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center', pointerEvents: 'none' }}>
+        <div className="hero-slide-overlay" style={{ position: 'absolute', top: 0, left: 0, width: '100%', minHeight: '95vh', display: 'flex', alignItems: 'center', pointerEvents: 'none' }}>
           <div className="hero-slide-content" style={{ pointerEvents: 'auto' }}>
             <h1>Professional Home Services <br />at Your Fingertips</h1>
             <p className="hero-subheading">
@@ -258,12 +258,13 @@ const Home = () => {
 
       {/* Testimonials */}
       <section className="reviews-bg-section">
-        <div className="reviews-bg" style={{ backgroundImage: `url(${bdImg})` }}>
+        <div className="reviews-bg" style={{ backgroundImage: `url(${new4nobg})` }}>
           <div className="reviews-bg-overlay">
             <div className="container">
+              <h2 className="reviews-title" style={{textAlign: 'center', color: '#1a3665', marginBottom: '0.8rem', fontWeight: 800, fontSize: '2.2rem', letterSpacing: '0.5px'}}>What Our Customers Say</h2>
+              <p className="reviews-subheading" style={{textAlign: 'center', color: '#718096', marginBottom: '2rem', fontSize: '1.1rem'}}>Real feedback from satisfied customers</p>
               <div className="section-header">
-                <h2>What Our Customers Say</h2>
-                <p>Real feedback from satisfied customers</p>
+                {/* Removed duplicate title and subheading here */}
               </div>
               <Swiper
                 slidesPerView={3}
@@ -304,14 +305,6 @@ const Home = () => {
               </Swiper>
             </div>
           </div>
-        </div>
-      </section>
- {/* Ready to Get Started Section */}
- <section className="ready-section">
-        <div className="ready-container">
-          <h2 className="ready-title">Ready to Get Started?</h2>
-          <p className="ready-subtitle">Join thousands of satisfied customers who trust us with their home services</p>
-          <button className="ready-btn" onClick={() => navigate('/register')}>Get Started </button>
         </div>
       </section>
     

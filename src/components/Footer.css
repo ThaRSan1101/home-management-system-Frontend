@@ -1,7 +1,7 @@
 /* Finalized Responsive Footer Styles */
-.footer-new {
-  background: #1a202c;
-  color: #e2e8f0;
+.footer, .footer-new {
+  background: #101d33 !important;
+  color: #fff !important;
   padding: 0;
   margin-top: 3rem;
   font-family: inherit;
@@ -13,7 +13,7 @@
   gap: 5.5rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 2rem 2rem 2rem;
+  padding: 3rem 2rem 0rem 2rem;
   align-items: flex-start;
 }
 
@@ -51,7 +51,7 @@
   object-fit: contain;
   display: block;
   margin: 0 auto;
-  filter: none;
+  filter: brightness(0) invert(1);
 }
 
 .footer-logo span {
@@ -66,7 +66,7 @@
 }
 
 .footer-desc {
-  color: #a0aec0;
+  color: #fff;
   font-size: 1rem;
   margin: 0;
 }
@@ -86,9 +86,9 @@
   position: relative;
 }
 
-.footer-nav a:hover {
+/*ooter-nav a:hover {
   color: #007a65;
-}
+}*/
 
 .footer-contact {
   display: flex;
@@ -111,7 +111,7 @@
 }
 
 .footer-contact a:hover {
-  color: #007a65;
+  color: #e2e8f0;
 }
 
 .footer-social {
@@ -126,17 +126,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
+  width:80px;
   height: 44px;
-  background: rgba(255,255,255,0.08);
+  background: none;
   color: #e2e8f0;
   border-radius: 50%;
   font-size: 1.4rem;
-  transition: background 0.2s, color 0.2s, transform 0.2s;
+  transition: color 0.2s, transform 0.2s;
 }
 
 .footer-social a:hover {
-  background: #007a65;
+  background: none;
   color: #fff;
   transform: translateY(-2px) scale(1.08);
 }
