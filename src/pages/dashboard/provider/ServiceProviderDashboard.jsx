@@ -159,17 +159,20 @@ const newRequests = [
     </div>
     <div className="provider-dashboard-stats-grid">
       {stats.map((stat) => (
-        <div className="provider-dashboard-stat-card" key={stat.label}>
-          <div className="provider-stat-value">{stat.value}</div>
-          <div className="provider-stat-label">{stat.label}</div>
-        </div>
-        <div className="provider-dashboard-time">
-          <div className="time-display">
-            <span className="time">{currentTime.toLocaleTimeString()}</span>
-            <span className="date">{currentTime.toLocaleDateString()}</span>
+        <React.Fragment key={stat.label}>
+          <div className="provider-dashboard-stat-card">
+            <div className="provider-stat-value">{stat.value}</div>
+            <div className="provider-stat-label">{stat.label}</div>
           </div>
-        </div>
-      </div>
+          <div className="provider-dashboard-time">
+            <div className="time-display">
+              <span className="time">{currentTime.toLocaleTimeString()}</span>
+              <span className="date">{currentTime.toLocaleDateString()}</span>
+            </div>
+          </div>
+        </React.Fragment>
+      ))}
+    </div>
 
       {/* Statistics Grid */}
       <div className="provider-dashboard-stats-grid">
