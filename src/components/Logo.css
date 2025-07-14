@@ -34,20 +34,20 @@
 }
 
 /* Size variants */
-.logo.small .logo-border { width: 80px; height: 80px; }
-.logo.small .logo-image { width: 72px; height: 72px; }
+.logo.small .logo-border { width: 60px; height: 60px; }
+.logo.small .logo-image { width: 50px; height: 50px; }
 
-.logo.medium .logo-border { width: 128px; height: 128px; }
-.logo.medium .logo-image { width: 112px; height: 112px; }
+.logo.medium .logo-border { width: 90px; height: 90px; }
+.logo.medium .logo-image { width: 75px; height: 75px; }
 
-.logo.large .logo-border { width: 180px; height: 180px; }
-.logo.large .logo-image { width: 160px; height: 160px; }
+.logo.large .logo-border { width: 130px; height: 130px; }
+.logo.large .logo-image { width: 110px; height: 110px; }
 
 @media (max-width: 768px) {
-  .logo.small .logo-border { width: 60px; height: 60px; }
-  .logo.small .logo-image { width: 54px; height: 54px; }
-  .logo.medium .logo-border { width: 90px; height: 90px; }
-  .logo.medium .logo-image { width: 80px; height: 80px; }
-  .logo.large .logo-border { width: 120px; height: 120px; }
-  .logo.large .logo-image { width: 100px; height: 100px; }
+  .logo.small .logo-border { width: 45px; height: 45px; }
+  .logo.small .logo-image { width: 38px; height: 38px; }
+  .logo.medium .logo-border { width: 65px; height: 65px; }
+  .logo.medium .logo-image { width: 54px; height: 54px; }
+  .logo.large .logo-border { width: 90px; height: 90px; }
+  .logo.large .logo-image { width: 75px; height: 75px; }
 }
