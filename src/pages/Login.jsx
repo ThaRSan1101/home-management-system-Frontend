@@ -43,10 +43,9 @@ const Login = () => {
     e.preventDefault();
     if (!validateForm()) return;
     try {
-      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/login.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const response = await axios.post(
+        'http://localhost/project-root/backend/home-management-system-Backend/api/login.php',
+        {
           email: formData.email,
           password: formData.password
         },
@@ -261,4 +260,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;
