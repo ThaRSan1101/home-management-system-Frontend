@@ -14,7 +14,9 @@ import Topbar from './Topbar';
 
 const CustomerDashboard = ({ userName: propUserName }) => {
   const { userId } = useParams();
-  const userName = propUserName || '';
+  // Try to get full name from localStorage (set this after login/registration)
+  const storedFullName = localStorage.getItem('customer_fullName');
+  const userName = storedFullName || propUserName || '';
   return (
     <div className="customer-dashboard-layout">
       <Sidebar userId={userId} />
