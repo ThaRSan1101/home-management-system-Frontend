@@ -71,7 +71,7 @@ const DashboardContact = () => {
         <div className="customer-dashboard-contactus-right">
           <div className="customer-dashboard-contactus-right-content">
             <span className="customer-dashboard-contactus-contactus">Contact Info</span>
-            <h2 className="customer-dashboard-contactus-title">Get in Touch</h2>
+            <h2 className="customer-dashboard-contactus-title">please Get in Touch</h2>
             <div className="customer-dashboard-contactus-info-list">
               <div className="customer-dashboard-contactus-info-item">
                 <FaMapMarkerAlt className="customer-dashboard-contactus-info-icon" />
@@ -80,12 +80,12 @@ const DashboardContact = () => {
               </div>
               <div className="customer-dashboard-contactus-info-item">
                 <FaPhone className="customer-dashboard-contactus-info-icon" />
-                <span className="customer-dashboard-contactus-info-label">Phone :</span>
+                <span className="customer-dashboard-contactus-info-label">Phone:</span>
                 <span className="customer-dashboard-contactus-info-value">(+94) 77 442 2448</span>
               </div>
               <div className="customer-dashboard-contactus-info-item">
                 <FaEnvelope className="customer-dashboard-contactus-info-icon" />
-                <span className="customer-dashboard-contactus-info-label">Email :</span>
+                <span className="customer-dashboard-contactus-info-label">Email:</span>
                 <span className="customer-dashboard-contactus-info-value">info@homeservice.com</span>
               </div>
             </div>
@@ -93,7 +93,7 @@ const DashboardContact = () => {
         </div>
       </div>
       <section className="customer-dashboard-map-section">
-        <div className="customer-dashboard-map-card" onClick={handleMapClick} title="Open in Google Maps">
+        <div className="customer-dashboard-map-card" onClick={handleMapClick} title="Open in Google Maps" style={{position: 'relative'}}>
           {isLoaded && (
             <GoogleMap
               mapContainerStyle={mapContainerStyle}
@@ -112,18 +112,15 @@ const DashboardContact = () => {
                 ],
               }}
               onClick={handleMapClick}
-            >
-              <Marker
-                position={mannarPosition}
-                onClick={handleMapClick}
-                icon={{
-                  url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                  scaledSize: { width: 40, height: 40 },
-                }}
-              />
-            </GoogleMap>
+            />
           )}
-          <div className="dashboard-map-overlay">Click to open Our Location</div>
+          {/* Custom marker overlay */}
+          <div className="custom-map-marker">
+            <div className="custom-map-marker-dot"></div>
+          </div>
+          <button className="get-directions-btn" onClick={handleMapClick} type="button">
+            GET DIRECTIONS
+          </button>
         </div>
       </section>
     </div>

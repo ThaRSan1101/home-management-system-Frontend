@@ -26,7 +26,7 @@ const Sidebar = () => {
   return (
     <aside className="customer-sidebar">
       <div className="customer-sidebar-logo-container">
-        <img src="/images/logo%20new.png" alt="Logo" className="customer-sidebar-logo-img" />
+        <img src="/images/Icon.png" alt="Logo" className="customer-sidebar-logo-img" />
       </div>
       <nav className="customer-sidebar-nav">
         {navItems.map((item) => (
@@ -41,9 +41,6 @@ const Sidebar = () => {
           </NavLink>
         ))}
       </nav>
-      <button className="customer-sidebar-logout-btn-bottom" onClick={handleLogout}>
-        <FaSignOutAlt style={{ marginRight: 8 }} /> Logout
-      </button>
     </aside>
   );
 };
