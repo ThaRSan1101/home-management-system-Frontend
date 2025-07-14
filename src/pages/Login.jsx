@@ -42,7 +42,7 @@ const Login = () => {
     e.preventDefault();
     if (!validateForm()) return;
     try {
-      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/login.php', {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

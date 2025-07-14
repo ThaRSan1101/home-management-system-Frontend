@@ -79,7 +79,7 @@
   z-index: 1;
 }
 .customer-dashboard-contactus-left {
-  background: #193d7b;
+  background:#26406d;
   color: #fff;
   flex: 1.1;
   display: flex;
@@ -135,7 +135,7 @@
 }
 .customer-dashboard-contactus-send-btn {
   background: #fff;
-  color: #005f4b;
+  color: #1a3665;
   border: none;
   border-radius: 16px;
   padding: 0.9rem 2.2rem;
@@ -188,7 +188,7 @@
   align-items: flex-start;
 }
 .customer-dashboard-contactus-contactus {
-  color: #00796b;
+  color: #1a3665;
   font-size: 1.8rem;
   font-family: 'Baloo 2', 'Comic Sans MS', 'Arial Rounded MT Bold', Arial, sans-serif;
   font-weight: 700;
@@ -220,7 +220,7 @@
   padding: 0.7rem 1.2rem;
 }
 .customer-dashboard-contactus-info-icon {
-  color: #005f4b;
+  color: #1a3665;
   background: #e6faf5;
   border-radius: 50%;
   font-size: 2rem;
@@ -310,7 +310,7 @@
   bottom: 3rem;
   right:3rem;
   width: 80%;
-  background: #185c3b;
+  background: #1a3665;
   color: #fff;
   border: none;
   border-radius: 0;
@@ -327,7 +327,8 @@
   display: block;
 }
 .get-directions-btn:hover {
-  background: #114127;
+  background:#fff;
+  color: #1a3665;
 }
 
 .dashboard-map-overlay {
@@ -335,7 +336,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 95, 75, 0.85);
+  background: #1a3665;
   color: #fff;
   font-size: 1rem;
   font-weight: 600;
