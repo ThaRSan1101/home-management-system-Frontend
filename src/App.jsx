@@ -25,8 +25,7 @@ function ScrollToTop() {
 }
 
 function App() {
-  // Example: get user type from localStorage (or context/redux)
-  const userType = localStorage.getItem('userType'); // 'customer', 'admin', 'provider'
+  // userType is only used for UI hints, not for authentication. Do not use localStorage for auth logic.
   const location = useLocation();
   const isDashboard =
     location.pathname.startsWith('/customer') ||
@@ -55,10 +54,10 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              userType === 'customer' ? <Navigate to="/customer" />
-              : userType === 'admin' ? <Navigate to="/admin" />
-              : userType === 'provider' ? <Navigate to="/provider" />
-              : <Navigate to="/login" />
+              // Example: get user type from localStorage (or context/redux)
+              // This part of the logic would typically involve a backend session check
+              // For now, it's a placeholder.
+              <Navigate to="/login" />
             }
           />
         </Routes>

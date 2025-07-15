@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash, FaLock, FaUser, FaKey } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import './Login.css';
+import axios from 'axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -42,21 +43,20 @@ const Login = () => {
     e.preventDefault();
     if (!validateForm()) return;
     try {
-      const response = await fetch('http://localhost/project-root/backend/login.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const response = await axios.post(
+        'http://localhost/project-root/backend/home-management-system-Backend/api/login.php',
+        {
           email: formData.email,
           password: formData.password
-        })
-      });
-      const result = await response.json();
+        },
+        { withCredentials: true }
+      );
+      const result = response.data;
       if (result.status === 'success') {
-        // Save user info for later use (optional)
-        localStorage.setItem('user_type', result.user_type);
-        localStorage.setItem('user_id', result.user_id);
-        localStorage.setItem('user_name', result.name);
 
+        // No need to store JWT in localStorage!
+        // Optionally, store user_name in memory or context if needed for UI
+        // No localStorage for auth! Only use cookies (set by backend)
         // Redirect based on user type and user id
         if (result.user_type === 'admin') {
           navigate(`/admin/dashboard/${result.user_id}`);
@@ -84,7 +84,7 @@ const Login = () => {
     }
     setForgotLoading(true);
     try {
-      const res = await fetch('http://localhost/project-root/backend/forgot_password.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/forgot_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase() })
@@ -112,7 +112,7 @@ const Login = () => {
     }
     setForgotLoading(true);
     try {
-      const res = await fetch('http://localhost/project-root/backend/verify_reset_otp.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/verify_reset_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase(), code: forgotOtp.trim() })
@@ -150,7 +150,7 @@ const Login = () => {
     }
     setForgotLoading(true);
     try {
-      const res = await fetch('http://localhost/project-root/backend/reset_password.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/reset_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase(), otp: forgotOtp.trim(), newPassword: forgotNewPassword })

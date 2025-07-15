@@ -8,9 +8,9 @@ import Feedback from './Feedback';
 import Contact from './Contact';
 import './ServiceProviderDashboard.css';
 
-const ProviderDashboard = () => {
+const ProviderDashboard = ({ userName: propUserName }) => {
   const { userId } = useParams();
-  const userName = localStorage.getItem('user_name');
+  const userName = propUserName || '';
   return (
     <div className="provider-dashboard-layout">
       <ProviderSidebar userId={userId} />

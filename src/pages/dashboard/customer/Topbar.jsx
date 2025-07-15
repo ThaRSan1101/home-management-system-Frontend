@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaUserCircle, FaBell } from 'react-icons/fa';
 import './Topbar.css';
+import { useNavigate } from 'react-router-dom';
 
 // Example customer data (replace with real data as needed)
 const customer = {
@@ -22,6 +23,10 @@ const Topbar = () => {
   const [notifOpen, setNotifOpen] = useState(false);
   const profileRef = useRef();
   const notifRef = useRef();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate('/login');
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -67,6 +72,9 @@ const Topbar = () => {
               <div className="profile-card-row"><span>Phone:</span> {customer.phone}</div>
               <div className="profile-card-row"><span>Email:</span> {customer.email}</div>
               <div className="profile-card-row"><span>Joined:</span> {customer.joined}</div>
+              <button className="customer-sidebar-logout-btn-bottom" style={{marginTop: '1.2rem'}} onClick={handleLogout}>
+                Logout
+              </button>
             </div>
           )}
         </div>

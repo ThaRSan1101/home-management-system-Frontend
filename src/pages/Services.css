@@ -10,7 +10,7 @@ html, body, .services-page {
 }
 
 body, .services-page-main {
-  background: #f8fafc url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="1.5" fill="%23007a65" fill-opacity="0.04"/><circle cx="60" cy="60" r="1.5" fill="%23007a65" fill-opacity="0.04"/><circle cx="90" cy="30" r="1.5" fill="%23007a65" fill-opacity="0.04"/></svg>') repeat;
+  background: var(--secondary-color) url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="1.5" fill="%231a3665" fill-opacity="0.04"/><circle cx="60" cy="60" r="1.5" fill="%231a3665" fill-opacity="0.04"/><circle cx="90" cy="30" r="1.5" fill="%231a3665" fill-opacity="0.04"/></svg>') repeat;
 }
 
 .services-page {
@@ -35,8 +35,8 @@ body, .services-page-main {
 
 /* ========== Hero Section ========== */
 .hero-section {
-  background: linear-gradient(135deg, #007a65 0%, #005f4b 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  color: var(--white);
   padding: 6rem 2rem;
   display: flex;
   align-items: center;
@@ -71,8 +71,8 @@ body, .services-page-main {
 }
 
 .btn-primary {
-  background: #ff6b6b;
-  color: white;
+  background: var(--accent-color);
+  color: var(--white);
   padding: 1rem 2rem;
   border-radius: 50px;
   text-decoration: none;
@@ -83,7 +83,7 @@ body, .services-page-main {
 }
 
 .btn-primary:hover {
-  background: #ff5252;
+  background: var(--primary-color);
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
 }
@@ -279,9 +279,9 @@ body, .services-page-main {
 }
 
 .modern-service-book-btn {
-  background: #007a65;
+  background: #1a3665 !important;
   color: #fff;
-  border: 2px solid #007a65;
+  border: 2px solid #1a3665 !important;
   border-radius: 30px;
   padding: 0.6rem 2rem;
   font-size: 1.05rem;
@@ -293,8 +293,8 @@ body, .services-page-main {
 }
 
 .modern-service-book-btn:hover {
-  background: #005f4b;
-  border-color: #005f4b;
+  background: #1a3665 !important  ;
+  border-color: #1a3665 !important;
   color: #fff;
 }
 
@@ -694,7 +694,7 @@ body, .services-page-main {
   margin: 0 auto;
 }
 .subscription-card {
-  background: rgba(0, 122, 101, 0.08);
+  background: #f5f8fd;
   border: 2px solid var(--primary-color);
   border-radius: 18px;
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
@@ -741,9 +741,9 @@ body, .services-page-main {
   gap: 0.5rem;
 }
 .subscription-btn {
-  background: rgba(26, 32, 44, 0.89);
+  background: #1a3665 !important;
   color: #fff;
-  border: 2px solid #1a202c;
+  border: 2px solid #1a3665 !important;
   border-radius: 30px;
   padding: 0.8rem 2.5rem;
   font-size: 1.1rem;

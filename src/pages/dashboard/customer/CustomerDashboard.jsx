@@ -12,9 +12,11 @@ import Contact from './Contact';
 import './CustomerDashboard.css';
 import Topbar from './Topbar';
 
-const CustomerDashboard = () => {
+const CustomerDashboard = ({ userName: propUserName }) => {
   const { userId } = useParams();
-  const userName = localStorage.getItem('user_name');
+  // Try to get full name from localStorage (set this after login/registration)
+  const storedFullName = localStorage.getItem('customer_fullName');
+  const userName = storedFullName || propUserName || '';
   return (
     <div className="customer-dashboard-layout">
       <Sidebar userId={userId} />

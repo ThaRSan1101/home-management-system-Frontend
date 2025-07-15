@@ -48,9 +48,10 @@ const Register = () => {
     }
 
     if (name === 'nic') {
-      const nicRegex = /^\d{9}[VvXx]$/;
+      // NIC must be 12 digits or 9 digits followed by V or v
+      const nicRegex = /^(\d{12}|\d{9}[Vv])$/;
       if (value && !nicRegex.test(value)) {
-        setErrors({ ...errors, [name]: 'NIC must be 9 digits followed by V, v, X, or x' });
+        setErrors({ ...errors, [name]: 'NIC must be 12 digits or 9 digits followed by V.' });
       }
     }
 
@@ -104,7 +105,7 @@ const Register = () => {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch('http://localhost/project-root/backend/register.php', {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/register.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -134,7 +135,7 @@ const Register = () => {
     const payload = { ...formData, otp: otpInput };
 
     try {
-      const response = await fetch('http://localhost/project-root/backend/verify_otp.php', {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/verify_otp.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

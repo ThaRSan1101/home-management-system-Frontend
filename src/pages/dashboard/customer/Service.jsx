@@ -240,7 +240,8 @@ const Service = () => {
             <label>
               <input type="radio" name="paymethod" checked={payment.method==='mc'} onChange={()=>setPayment(p=>({...p,method:'mc'}))} /> MasterCard
             </label>
-            <span className="modal-charge">Booking charge: <b>Rs. 100</b></span>
+            <span className="modal-charge">Booking fee: <b>Rs. 500</b></span>
+            <div className="modal-fee-explanation">This non-refundable fee secures your service slot and will be deducted from your final bill.</div>
           </div>
           {errors.method && <div className="modal-err">{errors.method}</div>}
           {payment.method && (
