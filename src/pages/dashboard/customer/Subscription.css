@@ -1,13 +1,13 @@
 .customer-subscription {
   font-size: 1.2rem;
-  color: #F59E0B;
+  color: #1a3665;
   font-weight: 500;
   padding: 2rem 0;
 }
 
 .customer-subscription-super {
   width: 100%;
-  background: #f5f6f7;
+  background: #f5f8fd;
   margin: 0;
   padding: 2rem 2vw 0 2vw;
   min-height: 100vh;
@@ -17,7 +17,7 @@
   width: 100%;
   background: #fff;
   border-radius: 18px;
-  box-shadow: 0 4px 24px rgba(0, 122, 101, 0.10);
+  box-shadow: 0 4px 24px rgba(26,54,101,0.10);
   padding: 1.5rem 1rem;
   margin: 0 auto;
   overflow-x: auto;
@@ -37,12 +37,12 @@
   padding: 1rem 1.2rem;
   text-align: left;
   font-size: 1.05rem;
-  border-bottom: 1.5px solid #f1f5f9;
+  border-bottom: 1.5px solid #e0e7ef;
 }
 .customer-subscription-table th {
-  color: #007a65;
+  color: #1a3665;
   font-weight: 700;
-  background: #f8fafc;
+  background: #f5f8fd;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 0.98rem;
@@ -60,10 +60,10 @@
   display: inline-block;
 }
 .subscription-status-badge.subscribed {
-  background: #e6faf5;
-  color: #007a65;
-  border: 1.5px solid #b2f7ef;
-  box-shadow: 0 2px 8px rgba(0, 122, 101, 0.07);
+  background: #e6eafd;
+  color: #1a3665;
+  border: 1.5px solid #b2c7f7;
+  box-shadow: 0 2px 8px rgba(26,54,101,0.07);
 }
 .subscription-status-badge.unsubscribed {
   background: #ffeaea;
@@ -137,7 +137,7 @@
   align-items: center;
   background: #fff;
   border-radius: 40px;
-  box-shadow: 0 2px 16px rgba(0, 122, 101, 0.07);
+  box-shadow: 0 2px 16px rgba(26,54,101,0.07);
   padding: 0.4rem 0.5rem;
 }
 .customer-subscription-tab-btn {
@@ -159,13 +159,13 @@
 }
 .customer-subscription-tab-btn.active {
   color: #fff;
-  background: #007a65;
-  box-shadow: 0 2px 12px rgba(0, 122, 101, 0.13);
+  background: #1a3665;
+  box-shadow: 0 2px 12px rgba(26,54,101,0.13);
   font-weight: 700;
 }
 .customer-subscription-tab-btn:not(.active):hover {
-  background: #f1f8f6;
-  color: #007a65;
+  background: #e6eafd;
+  color: #1a3665;
 }
 @media (max-width: 900px) {
   .customer-subscription-tabs {
@@ -189,7 +189,7 @@
 }
 
 .customer-subscription-btn {
-  background: #007a65;
+  background: #1a3665;
   color: #fff;
   border: none;
   border-radius: 22px;
@@ -198,9 +198,9 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
-  box-shadow: 0 2px 8px rgba(0,122,101,0.07);
+  box-shadow: 0 2px 8px rgba(26,54,101,0.07);
 }
 .customer-subscription-btn:hover {
-  background: #005f4b;
+  background: #16305a;
   color: #fff;
 } 

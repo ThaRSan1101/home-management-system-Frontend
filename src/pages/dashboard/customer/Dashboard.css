@@ -1,6 +1,6 @@
 .customer-home {
   font-size: 1.5rem;
-  color: #007a65;
+  color: #1a3665;
   font-weight: 600;
   padding: 2rem 0;
 }
@@ -8,7 +8,7 @@
 .customer-dashboard-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #059669;
+  color: #1a3665;
   margin-bottom: 2rem;
 }
 
@@ -22,7 +22,7 @@
 .customer-dashboard-stat-card {
   background: #fff;
   border-radius: 18px;
-  box-shadow: 0 4px 18px rgba(16,185,129,0.08);
+  box-shadow: 0 4px 18px rgba(26,54,101,0.08);
   padding: 2rem 1.2rem 1.2rem 1.2rem;
   display: flex;
   flex-direction: column;
@@ -31,14 +31,14 @@
 }
 
 .customer-dashboard-stat-card:hover {
-  box-shadow: 0 8px 32px rgba(16,185,129,0.13);
+  box-shadow: 0 8px 32px rgba(26,54,101,0.13);
   transform: translateY(-2px) scale(1.02);
 }
 
 .customer-stat-value {
   font-size: 2.2rem;
   font-weight: 900;
-  color: #059669;
+  color: #1a3665;
   margin-bottom: 0.5rem;
 }
 
@@ -55,14 +55,14 @@
 .customer-dashboard-appointments h3 {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #059669;
+  color: #1a3665;
   margin-bottom: 1.2rem;
 }
 
 .customer-appointment-card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+  box-shadow: 0 2px 8px rgba(26,54,101,0.08);
   padding: 1.1rem 1.2rem;
   margin-bottom: 1rem;
   display: flex;
@@ -84,11 +84,31 @@
 }
 
 .customer-appointment-status.customer-confirmed {
-  background: #e6faf5;
-  color: #059669;
+  background: #e6eafd;
+  color: #1a3665;
 }
 
 .customer-appointment-status.customer-pending {
   background: #fff7e6;
   color: #eab308;
+}
+
+.customer-dashboard-welcome-msg {
+  margin: 2rem 0 1rem 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a3665;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  animation: fadeInWelcome 0.8s ease;
+}
+.customer-dashboard-welcome-username {
+  color: #16305a;
+  margin-left: 0.5rem;
+}
+@keyframes fadeInWelcome {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
 } 

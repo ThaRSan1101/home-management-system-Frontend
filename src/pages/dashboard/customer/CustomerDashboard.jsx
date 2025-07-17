@@ -22,12 +22,16 @@ const CustomerDashboard = ({ userName: propUserName }) => {
       <Sidebar userId={userId} />
       <main className="customer-dashboard-main">
         <Topbar userId={userId} />
-        <div style={{margin: '2rem 0 1rem 2rem', fontSize: '2rem', fontWeight: 700, color: '#007a65', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.7rem'}}>
-          <span>Welcome back</span>
-          {userName && <span style={{color: '#005f4b'}}>{userName} !</span>}
-        </div>
         <Routes>
-          <Route path="/home" element={<Dashboard userId={userId} />} />
+          <Route path="/home" element={
+            <>
+              <div className="customer-dashboard-welcome-msg">
+                <span>Welcome back</span>
+                {userName && <span className="customer-dashboard-welcome-username">{userName} !</span>}
+              </div>
+              <Dashboard userId={userId} />
+            </>
+          } />
           <Route path="/service" element={<Service userId={userId} />} />
           <Route path="/activity" element={<Activity userId={userId} />} />
           <Route path="/subscription" element={<Subscription userId={userId} />} />

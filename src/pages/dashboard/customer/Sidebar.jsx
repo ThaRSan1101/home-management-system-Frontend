@@ -1,43 +1,42 @@
 import React from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { FaSignOutAlt, FaHome, FaTools, FaHistory, FaRegCreditCard, FaCommentDots, FaQuestionCircle, FaInfoCircle, FaPhoneAlt, FaUserCircle } from 'react-icons/fa';
 import './Sidebar.css';
-import logo from '../../../assets/Logo.png';
 
 const navItems = [
-  { label: 'Dashboard', path: 'home' },
-  { label: 'Service', path: 'service' },
-  { label: 'Activity', path: 'activity' },
-  { label: 'Subscription', path: 'subscription' },
-  { label: 'Feedback', path: 'feedback' },
-  { label: 'How It Works', path: 'how-it-works' },
-  { label: 'About Us', path: 'about' },
-  { label: 'Contact Us', path: 'contact' },
+  { label: 'Dashboard', path: 'home', icon: <FaHome /> },
+  { label: 'Service', path: 'service', icon: <FaTools /> },
+  { label: 'Activity', path: 'activity', icon: <FaHistory /> },
+  { label: 'Subscription', path: 'subscription', icon: <FaRegCreditCard /> },
+  { label: 'Feedback', path: 'feedback', icon: <FaCommentDots /> },
+  { label: 'How It Works', path: 'how-it-works', icon: <FaQuestionCircle /> },
+  { label: 'About Us', path: 'about', icon: <FaInfoCircle /> },
+  { label: 'Contact Us', path: 'contact', icon: <FaPhoneAlt /> },
 ];
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
-  // No sensitive data is stored in localStorage. userType is not used for authentication.
   const handleLogout = () => {
     navigate('/login');
   };
 
   return (
-    <aside className="customer-sidebar">
-      <div className="customer-sidebar-logo-container">
-        <img src="/images/Icon.png" alt="Logo" className="customer-sidebar-logo-img" />
+    <aside className="modern-sidebar">
+      <div className="modern-sidebar-logo-container">
+        <img src="/images/logo neww.png" alt="Logo" className="modern-sidebar-logo-img" />
       </div>
-      <nav className="customer-sidebar-nav">
+      <nav className="modern-sidebar-nav">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={`/customer/dashboard/${userId}/${item.path}`}
             className={({ isActive }) =>
-              'customer-sidebar-link' + (isActive ? ' active' : '')
+              'modern-sidebar-link' + (isActive ? ' active' : '')
             }
+            title={item.label}
           >
-            {item.label}
+            {item.icon}
           </NavLink>
         ))}
       </nav>
