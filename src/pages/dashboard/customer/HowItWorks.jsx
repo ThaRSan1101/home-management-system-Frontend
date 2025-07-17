@@ -5,32 +5,32 @@ import { MdOutlineVerifiedUser, MdOutlineHandshake, MdOutlineCreditCard, MdOutli
 
 const guarantees = [
   {
-    icon: <MdOutlineVerifiedUser size={40} color="#006551" />,
+    icon: <MdOutlineVerifiedUser size={40} color="#1a3665" />,
     title: "Verified Professionals",
     description: "All service providers undergo thorough background checks and certification validation before joining our platform."
   },
   {
-    icon: <MdOutlineHandshake size={40} color="#006551" />,
+    icon: <MdOutlineHandshake size={40} color="#1a3665" />,
     title: "Satisfaction Guarantee",
     description: "If you're not completely satisfied, we'll work to make it right or provide a refund according to our policy."
   },
   {
-    icon: <MdOutlineCreditCard size={40} color="#006551" />,
+    icon: <MdOutlineCreditCard size={40} color="#1a3665" />,
     title: "Secure Payments",
     description: "All transactions are processed securely. Your payment is only released after you approve the completed service."
   },
   {
-    icon: <MdOutlineShield size={40} color="#006551" />,
+    icon: <MdOutlineShield size={40} color="#1a3665" />,
     title: "Insurance Coverage",
     description: "Services booked are covered by our protection policy, providing peace of mind in the rare case of property damage."
   },
   {
-    icon: <MdOutlineSupportAgent size={40} color="#006551" />,
+    icon: <MdOutlineSupportAgent size={40} color="#1a3665" />,
     title: "24/7 Support",
     description: "Our customer support team is available around the clock to assist with any questions or concerns."
   },
   {
-    icon: <MdOutlineLock size={40} color="#006551" />,
+    icon: <MdOutlineLock size={40} color="#1a3665" />,
     title: "Privacy Protection",
     description: "Your personal information and service details are kept secure and private."
   },
@@ -70,7 +70,7 @@ const HowItWorks = () => {
         <section className="customer-phases-horizontal-section">
           <div className="customer-phases-horizontal-grid">
             <div className="customer-phases-horizontal-left">
-              <h2 className="customer-phases-title">How It Works</h2>
+              <h2 className="customer-phases-title">Phases of our works</h2>
               <div className="customer-phases-timeline">
                 <div className="customer-phases-timeline-item">
                   <div className="customer-phases-timeline-content left">
@@ -98,13 +98,7 @@ const HowItWorks = () => {
                 </div>
               </div>
             </div>
-            <div className="customer-phases-horizontal-right">
-              <img
-                src={cleaningImg}
-                alt="Office Cleaning Process"
-                className="customer-phases-side-image"
-              />
-            </div>
+            
           </div>
         </section>
 

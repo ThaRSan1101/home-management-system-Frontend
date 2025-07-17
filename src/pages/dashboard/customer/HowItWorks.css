@@ -1,7 +1,7 @@
 .customer-howitworks-outer {
   width: 100vw;
   min-height: 100vh;
-  background: #f5f6f7;
+  background: #fafbfc;
   box-sizing: border-box;
   padding: 0;
 }
@@ -9,334 +9,312 @@
 .customer-howitworks-page {
   width: 100%;
   max-width: 1400px;
-  margin-left: 2.5rem;
-  margin-right: 0;
-  margin-top: 2.5rem;
-  margin-bottom: 2.5rem;
-  padding: 2.5rem 2rem 2.5rem 2rem;
-  background: #fff;
-  border-radius: 2rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  margin-left: -9rem;
+  padding: 0;
   min-height: 80vh;
   text-align: center;
   box-sizing: border-box;
+  background: none;
 }
 
-/* Phases Timeline Section */
 .customer-phases-horizontal-section {
   width: 100%;
-  max-width: 1350px;
-  margin: 0 0 2.5rem 0;
+  max-width: 1100px;
+  margin: 0 auto;
   padding: 0;
   background: none;
   box-shadow: none;
   border-radius: 0;
   text-align: center;
-  background: #fff;
 }
-.customer-phases-horizontal-grid {
-  display: flex;
-  width: 100%;
-  max-width: 950px;
-  margin: 0 auto;
-  align-items: stretch;
-  gap: 3rem;
-  height: 100%;
-  box-sizing: border-box;
-  justify-content: center;
-}
-.customer-phases-horizontal-left {
-  flex: 0 0 65%;
-  min-width: 0;
-}
-.customer-phases-horizontal-right {
-  flex: 0 0 35%;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  min-width: 0;
-  height: 100%;
-  position: relative;
-  z-index: 2;
-}
-.customer-phases-side-image {
-  width: 100%;
-  height: 100%;
-  max-width: 400px;
-  max-height: 350px;
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  object-fit: cover;
-  display: block;
-  margin: 0 auto;
-  background: #fff;
-}
+
 .customer-phases-title {
-  font-size: 2.1rem;
+  font-size: 3rem;
   font-weight: 900;
-  margin-bottom: 2.2rem;
+  margin-bottom: 2.5rem;
   color: #1a3665;
   letter-spacing: -1px;
   text-align: center;
   width: 100%;
 }
+
 .customer-phases-timeline {
   position: relative;
   max-width: 900px;
   margin: 0 auto;
   padding: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.customer-phases-timeline:before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #bfc5c9;
+  transform: translateX(-50%);
+  z-index: 0;
+  border-radius: 2px;
 }
 .customer-phases-timeline-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2.2rem;
+  margin-bottom: 4.5rem;
   position: relative;
   z-index: 1;
   min-height: 120px;
+  width: 100%;
 }
 .customer-phases-timeline-content {
   flex: 1;
   max-width: 420px;
-}
-.customer-phases-timeline-content.left, .customer-phases-timeline-content.right {
   text-align: center;
-  padding: 0 40px;
 }
+.customer-phases-timeline-content.left {
+  text-align: right;
+  padding-right: 40px;
+}
+.customer-phases-timeline-content.right {
+  text-align: left;
+  padding-left: 40px;
+}
+@keyframes numberPopIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .customer-phases-timeline-circle {
   z-index: 2;
-  width: 54px;
-  height: 54px;
-  background: #fff;
-  border: 2px solid #1a3665;
+  width: 64px;
+  height: 64px;
+  background: #fafbfc;
+  border: 3px solid #1a3665;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #1a3665;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: none;
+  margin: 0 2.5rem;
+  animation: numberPopIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+.customer-phases-timeline-item:nth-child(1) .customer-phases-timeline-circle {
+  animation-delay: 0.1s;
+}
+.customer-phases-timeline-item:nth-child(2) .customer-phases-timeline-circle {
+  animation-delay: 0.3s;
+}
+.customer-phases-timeline-item:nth-child(3) .customer-phases-timeline-circle {
+  animation-delay: 0.5s;
 }
 .customer-phases-timeline-content h3 {
-  font-size: 1.3rem;
+  font-size: 2.1rem;
   font-weight: 900;
   margin-bottom: 0.7rem;
-  color: #1a3665;
+  color: #181818;
+  text-align: center;
 }
 .customer-phases-timeline-content p {
-  font-size: 1.05rem;
-  color: #222;
+  font-size: 1.15rem;
+  color: #444;
   margin: 0;
   line-height: 1.5;
-}
-@media (max-width: 1500px) {
-  .customer-howitworks-page {
-    max-width: 99vw;
-    margin-left: 1rem;
-    padding: 1.5rem 0.5rem 1.5rem 0.5rem;
-  }
-  .customer-phases-horizontal-section,
-  .customer-trust-section.customer-trust-cards-section,
-  .customer-faq-section.customer-new-faq-section {
-    max-width: 99vw;
-  }
+  text-align: center;
 }
 @media (max-width: 900px) {
   .customer-howitworks-page {
     max-width: 100vw;
-    margin-left: 0.2rem;
-    padding: 1rem 0.1rem 1rem 0.1rem;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    padding: 0.5rem 0.1rem 0.5rem 0.1rem;
   }
-  .customer-phases-horizontal-section,
-  .customer-trust-section.customer-trust-cards-section,
-  .customer-faq-section.customer-new-faq-section {
-    max-width: 100vw;
-  }
-  .customer-phases-horizontal-grid {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-    justify-content: center;
-  }
-  .customer-phases-horizontal-left, .customer-phases-horizontal-right {
-    flex: 1 1 100%;
-    min-width: 0;
-    max-width: 100vw;
-  }
-  .customer-phases-side-image {
-    max-width: 96vw;
-    max-height: 110px;
-    border-radius: 0.6rem;
-    margin-top: 0.5rem;
+  .customer-phases-title {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
   }
   .customer-phases-timeline {
-    padding-bottom: 0.5rem;
+    max-width: 98vw;
   }
   .customer-phases-timeline-item {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     min-height: 50px;
-    margin-bottom: 0.7rem;
+    margin-bottom: 2.2rem;
   }
   .customer-phases-timeline-circle {
-    width: 24px;
-    height: 24px;
-    font-size: 0.9rem;
-    margin: 0.1rem 0;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    margin: 1.2rem 0;
   }
-  .customer-phases-title {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+  .customer-phases-timeline-content.left, .customer-phases-timeline-content.right {
+    text-align: center;
+    padding: 0;
   }
   .customer-phases-timeline-content h3 {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
   }
   .customer-phases-timeline-content p {
-    font-size: 0.9rem;
-  }
-}
-@media (max-width: 600px) {
-  .customer-howitworks-page {
-    padding: 0.5rem 0.1rem 0.5rem 0.1rem;
-    max-width: 100vw;
-    border-radius: 0.7rem;
-    margin-left: 0;
-  }
-  .customer-phases-horizontal-section,
-  .customer-trust-section.customer-trust-cards-section,
-  .customer-faq-section.customer-new-faq-section {
-    max-width: 100vw;
-  }
-  .customer-trust-cards-grid {
-    grid-template-columns: 1fr;
-    gap: 0.7rem;
-  }
-  .customer-faq-card {
-    max-width: 99vw;
-    border-radius: 7px;
-    font-size: 0.97rem;
-    width: 100vw;
-    margin: 0 auto;
-  }
-  .customer-trust-title {
-    font-size: 0.95rem;
-    margin-bottom: 0.4rem;
-  }
-  .customer-trust-intro {
-    font-size: 0.85rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.98rem;
   }
 }
 
 /* Trust & Security Guarantees Section */
 .customer-trust-section.customer-trust-cards-section {
   width: 100%;
-  max-width: 950px;
-  padding: 2.5rem 0 2rem 0;
-  background: #fff;
+  max-width: 1200px;
+  margin: 0 auto 3.5rem auto;
+  padding: 0;
+  background: none;
   border-radius: 0;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  box-shadow: none;
   text-align: center;
-  margin: 0 auto;
 }
+
 .customer-trust-title {
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #1a3665;
+  text-align: center;
   margin-bottom: 1.2rem;
-  color: #181818;
-  text-align: center;
+  letter-spacing: -1px;
 }
+
 .customer-trust-intro {
-  font-size: 1.08rem;
-  color: #222;
-  margin-bottom: 2.2rem;
+  font-size: 1.35rem;
+  color: #444;
+  margin-bottom: 3.5rem;
   text-align: center;
 }
+
 .customer-trust-cards-grid {
   width: 100%;
-  max-width: 950px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2.5rem;
   justify-items: center;
   box-sizing: border-box;
+  padding-left: 5rem;
 }
+
 .customer-trust-card {
   background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-  padding: 1.5rem 1rem 1.2rem 1rem;
+  border-radius: 28px;
+  box-shadow: 0 8px 32px rgba(26,54,101,0.07);
+  padding: 3.2rem 2.2rem 2.5rem 2.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: box-shadow 0.2s, transform 0.2s;
-  min-height: 180px;
+  min-height: 320px;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  border: none;
 }
-.customer-trust-card:hover {
-  box-shadow: 0 6px 32px rgba(0,0,0,0.13);
-  transform: translateY(-2px) scale(1.01);
-}
+
 .customer-trust-card-icon {
-  font-size: 2.1rem;
-  margin-bottom: 1.2rem;
+  font-size: 3.2rem !important;
+  margin-bottom: 1.7rem;
+  color: #1a3665 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .customer-trust-card-title {
-  font-size: 1.08rem;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 0.7rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #181818;
+  margin-bottom: 1.1rem;
+  text-align: center;
 }
+
 .customer-trust-card-desc {
-  font-size: 0.98rem;
+  font-size: 1.13rem;
   color: #444;
   margin: 0;
+  text-align: center;
+  line-height: 1.7;
+}
+
+@media (max-width: 900px) {
+  .customer-trust-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .customer-trust-card {
+    max-width: 98vw;
+    padding: 2rem 1rem 1.5rem 1rem;
+    min-height: 0;
+  }
+  .customer-trust-title {
+    font-size: 2rem;
+  }
+  .customer-trust-intro {
+    font-size: 1.1rem;
+  }
 }
 
 /* FAQ Section (Accordion Style) */
 .customer-faq-section.customer-new-faq-section {
   width: 100%;
-  max-width: 950px;
-  margin: 0 auto 2.5rem auto;
-  padding: 2rem 1rem 1.5rem 1rem;
+  max-width: 1100px;
+  margin: 0 auto 4rem auto;
+  padding: 0;
   background: none;
   text-align: center;
   box-sizing: border-box;
-  background: #fff;
 }
+
 .customer-faq-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 2rem;
-  color: #181818;
+  font-size: 2.7rem;
+  font-weight: 900;
+  margin-bottom: 2.7rem;
+  color: #1a3665;
   text-align: center;
+  letter-spacing: -1px;
 }
+
 .customer-faq-list.customer-new-faq-list {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.7rem;
   align-items: center;
   width: 100%;
-  max-width: 950px;
+  max-width: 1100px;
   margin: 0 auto;
   box-sizing: border-box;
 }
+
 .customer-faq-card {
   width: 100%;
-  max-width: 800px;
-  background: #fafafa;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  transition: box-shadow 0.2s, transform 0.2s;
+  max-width: 1000px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(26,54,101,0.07);
+  transition: box-shadow 0.2s, background 0.2s;
   overflow: hidden;
   margin: 0 auto;
 }
-.customer-faq-card:hover {
-  box-shadow: 0 6px 32px rgba(0,0,0,0.13);
-  transform: translateY(-2px) scale(1.01);
+.customer-faq-card:hover, .customer-faq-card.active {
+  background: #f3f7fe;
+  box-shadow: 0 12px 40px rgba(26,54,101,0.13);
 }
 .customer-faq-question-row {
   width: 100%;
@@ -346,33 +324,40 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 1.5rem;
-  font-size: 1.08rem;
+  padding: 2.1rem 2.5rem;
+  font-size: 1.45rem;
   font-weight: 500;
-  color: #181818;
+  color: #1a3665;
   cursor: pointer;
-  text-align: center;
+  text-align: left;
   transition: background 0.15s;
+  border-radius: 24px;
 }
 .customer-faq-question-row:hover {
-  background: #f3f3f3;
+  background: #f3f7fe;
 }
 .customer-faq-question-text {
   flex: 1;
+  color: #1a3665;
+  font-size: 1.35rem;
+  font-weight: 500;
 }
 .customer-faq-plus {
-  font-size: 1.3rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: #222;
-  margin-left: 1.2rem;
+  color: #2563eb;
+  margin-left: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .customer-faq-answer-row {
-  padding: 1rem 1.5rem 1.2rem 1.5rem;
-  font-size: 0.98rem;
-  color: #006551;
-  background: #e6f4f1;
-  border-top: 1px solid #b2d8cf;
-  text-align: center;
+  padding: 1.7rem 2.5rem 2.2rem 2.5rem;
+  font-size: 1.13rem;
+  color: #1a3665;
+  background: #f8fafc;
+  border-top: none;
+  text-align: left;
   animation: fadeInFaq 0.2s;
   transition: max-height 0.3s, opacity 0.3s;
 }
@@ -380,28 +365,10 @@
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@media (max-width: 600px) {
-  .customer-faq-title { font-size: 1.1rem; }
-  .customer-faq-card { max-width: 98vw; }
-  .customer-faq-question-row, .customer-faq-answer-row { padding-left: 0.7rem; padding-right: 0.7rem; }
-  .customer-faq-section.customer-new-faq-section {
-    padding: 0.5rem 0.1rem 0.3rem 0.1rem;
-    max-width: 99vw;
-  }
-  .customer-faq-title {
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
-  }
-  .customer-faq-card {
-    max-width: 99vw;
-    border-radius: 5px;
-    font-size: 0.93rem;
-  }
-  .customer-faq-question-row, .customer-faq-answer-row {
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
-    font-size: 0.93rem;
-  }
+@media (max-width: 900px) {
+  .customer-faq-title { font-size: 2rem; }
+  .customer-faq-card { max-width: 98vw; border-radius: 14px; }
+  .customer-faq-question-row, .customer-faq-answer-row { padding: 1.2rem 1rem; font-size: 1.1rem; }
 }
 
 .customer-howitworks-super, .howitworks-super {
