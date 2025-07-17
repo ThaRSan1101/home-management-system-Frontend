@@ -1,0 +1,97 @@
+.monitoring-page {
+  font-size: 1.2rem;
+  color: #059669;
+  font-weight: 500;
+  padding: 2rem 0;
+}
+
+.monitoring-wrapper-outer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.monitoring-section-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a3665;
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.monitoring-wrapper {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.monitoring-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(26,54,101,0.08);
+  padding: 2.2rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  min-width: 280px;
+}
+
+.monitoring-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a3665;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.monitoring-image {
+  width: 220px;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 1.2rem;
+  border-radius: 10px;
+  background: #f3f4f6;
+}
+
+.monitoring-desc {
+  font-size: 1.08rem;
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.monitoring-btn {
+  background: #1a3665;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 2.2rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+  margin-top: 0.5rem;
+}
+
+.monitoring-btn:hover {
+  background: #27477e;
+}
+
+@media (max-width: 900px) {
+  .monitoring-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .monitoring-card {
+    max-width: 95vw;
+    width: 100%;
+  }
+} 
