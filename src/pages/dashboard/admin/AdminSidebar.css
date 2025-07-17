@@ -1,7 +1,7 @@
 .admin-sidebar {
   width: 230px;
   min-width: 200px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: #1a3665;
   color: #fff;
   height: 100vh;
   position: fixed;
@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   z-index: 100;
-  box-shadow: 2px 0 10px rgba(16, 185, 129, 0.10);
+  box-shadow: 2px 0 10px rgba(26, 54, 101, 0.10);
 }
 .sidebar-logo {
   font-size: 1.5rem;
@@ -37,7 +37,7 @@
   margin-bottom: 0.1rem;
 }
 .sidebar-link:hover, .sidebar-link.active {
-  background: rgba(255,255,255,0.13);
+  background: #27477e;
   color: #fff;
 }
 .sidebar-profile {
@@ -56,7 +56,7 @@
   transition: box-shadow 0.18s;
 }
 .sidebar-avatar:hover {
-  box-shadow: 0 4px 16px rgba(16,185,129,0.18);
+  box-shadow: 0 4px 16px rgba(26,54,101,0.18);
 }
 .sidebar-dropdown {
   position: absolute;
@@ -64,7 +64,7 @@
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
-  color: #007a65;
+  color: #1a3665;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.13);
   min-width: 120px;
@@ -77,7 +77,7 @@
 .sidebar-logout-btn {
   background: none;
   border: none;
-  color: #007a65;
+  color: #1a3665;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -88,8 +88,8 @@
   transition: background 0.18s, color 0.18s;
 }
 .sidebar-logout-btn:hover {
-  background: #f3f4f6;
-  color: #059669;
+  background: #e5eaf4;
+  color: #27477e;
 }
 @media (max-width: 900px) {
   .admin-sidebar {
