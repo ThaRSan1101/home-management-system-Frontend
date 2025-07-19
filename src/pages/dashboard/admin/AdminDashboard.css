@@ -6,9 +6,10 @@
 
 .admin-dashboard-main {
   flex: 1;
-  margin-left: 230px;
+  margin-left: 0;
   padding: 2.5rem 2rem;
   min-width: 0;
+  padding-top: 72px;
 }
 
 .sidebar {
@@ -115,6 +116,16 @@
   font-size: 1.1rem;
 }
 
+.admin-dashboard-content {
+  margin-left: 230px; /* same as sidebar width */
+  width: calc(100vw - 230px); /* must match sidebar width */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: transparent;
+}
+
 /* Responsive Design */
 @media (max-width: 900px) {
   .admin-dashboard-main {
@@ -123,6 +134,10 @@
   }
   .admin-dashboard-layout {
     flex-direction: column;
+  }
+  .admin-dashboard-content {
+    margin-left: 0;
+    width: 100vw;
   }
 }
 

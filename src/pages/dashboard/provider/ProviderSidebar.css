@@ -1,7 +1,7 @@
 .provider-sidebar {
   width: 280px;
-  background: #fff !important;
-  color: #007a65;
+  background: rgb(26, 54, 101) !important;
+  color: #fff;
   height: 100vh;
   position: fixed;
   left: 0;
@@ -18,13 +18,14 @@
   align-items: center;
   gap: 1rem;
   border-bottom: 1px solid #b2dfd5;
+  background: transparent;
 }
 
 .sidebar-logo-round {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #e6faf5 !important;
+  background: rgba(255,255,255,0.08) !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,17 +38,9 @@
   object-fit: contain;
 }
 
-.sidebar-brand h3 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #007a65;
-}
-
+.sidebar-brand h3,
 .sidebar-brand span {
-  font-size: 0.8rem;
-  opacity: 0.8;
-  color: #007a65;
+  color: #fff;
 }
 
 .sidebar-nav {
@@ -60,7 +53,7 @@
   display: flex;
   align-items: center;
   padding: 1rem 1.5rem;
-  color: #007a65 !important;
+  color: #fff !important;
   text-decoration: none;
   transition: all 0.3s ease;
   border-left: 3px solid transparent;
@@ -70,17 +63,12 @@
   background: transparent !important;
 }
 
-.sidebar-link:hover {
-  background: #007a65 !important;
-  color: #fff !important;
-  border-left-color: #007a65 !important;
-}
-
+.sidebar-link:hover,
 .sidebar-link.active {
-  background: #007a65 !important;
+  background: rgba(255,255,255,0.10) !important;
   color: #fff !important;
-  border-left-color: #005f4b !important;
-  box-shadow: 0 0 0 1px #b2dfd5 inset !important;
+  border-left-color: #fff !important;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08) inset !important;
 }
 
 .nav-icon {
@@ -90,7 +78,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #007a65 !important;
+  color: #fff !important;
   opacity: 1 !important;
   z-index: 2;
   background: none !important;
@@ -104,12 +92,13 @@
 .nav-label {
   font-size: 0.95rem;
   font-weight: 500;
+  color: #fff;
 }
 
 .sidebar-footer {
   margin-top: auto;
   padding: 1.5rem 1rem 2rem 1rem;
-  background: #fff !important;
+  background: transparent !important;
   text-align: center;
   border-top: none !important;
 }
@@ -120,7 +109,7 @@
   gap: 1rem;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #b2dfd5;
+ /*border-bottom: 1px solid #b2dfd5;*/
 }
 
 .provider-avatar {
@@ -152,7 +141,7 @@
 }
 
 .sidebar-logout-btn {
-  background: #007a65 !important;
+  background: rgba(255,255,255,0.10) !important;
   color: #fff !important;
   border: none !important;
   font-size: 1.2rem;
@@ -170,14 +159,14 @@
 }
 
 .sidebar-logout-btn:hover {
-  background: #005f4b !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: rgb(26, 54, 101) !important;
   box-shadow: 0 6px 24px rgba(0,122,101,0.18);
 }
 
 .logout-icon {
   font-size: 1rem;
-  color: #007a65 !important;
+  color: #fff !important;
 }
 
 /* Responsive Design */

@@ -17,7 +17,6 @@ const ProviderDashboard = ({ userName: propUserName }) => {
       <main className="provider-dashboard-main">
         <ProviderTopbar userId={userId} />
         <div style={{margin: '2rem 0 1rem 2rem', fontSize: '2rem', fontWeight: 700, color: '#007a65', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.7rem'}}>
-          <span>Welcome back</span>
           {userName && <span style={{color: '#005f4b'}}>{userName} !</span>}
         </div>
         <Routes>

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaStar, FaPhone, FaEnvelope, FaCheckCircle, FaTimesCircle, FaSpinner, FaInbox, FaChartLine, FaUsers, FaMoneyBillWave, FaTools } from 'react-icons/fa';
+import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaStar, FaPhone, FaEnvelope, FaCheckCircle, FaTimesCircle, FaSpinner, FaInbox, FaChartLine, FaUsers, FaMoneyBillWave, FaTools, FaArrowUp, FaCheck, FaTimes, FaInfoCircle, FaSmile, FaCalendarCheck, FaBell, FaUser } from 'react-icons/fa';
 import './ServiceProviderDashboard.css';
+import ProviderTopbarContent from './ProviderTopbar';
 
 const ServiceProviderDashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [selectedPeriod, setSelectedPeriod] = useState('week');
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(2); // Example unread count
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -139,159 +143,183 @@ const newRequests = [
     console.log('Viewing details for request:', requestId);
   };
 
+  const statCards = [
+    {
+      label: 'Total Bookings',
+      value: 24,
+      growth: '+12%',
+      icon: <FaCalendarAlt />,
+      growthColor: '#16a34a',
+      emoji: '📅',
+    },
+    {
+      label: 'Completed Jobs',
+      value: 20,
+      growth: '+8%',
+      icon: <FaCheckCircle />,
+      growthColor: '#16a34a',
+      emoji: '✅',
+    },
+    {
+      label: 'Earnings (LKR)',
+      value: '120,000',
+      growth: '+15%',
+      icon: <FaMoneyBillWave />,
+      growthColor: '#16a34a',
+      emoji: '🔥',
+    },
+  ];
+
+  const summaryMetrics = [
+    {
+      label: 'Satisfaction Rate',
+      value: '98%',
+      icon: <FaSmile />, 
+      color: '#16a34a',
+    },
+    {
+      label: 'Avg. Response Time',
+      value: '2m 15s',
+      icon: <FaClock />, 
+      color: '#f59e0b',
+    },
+    {
+      label: 'Jobs This Month',
+      value: 18,
+      icon: <FaCalendarCheck />, 
+      color: '#3b82f6',
+    },
+    {
+      label: 'Avg. Rating',
+      value: '4.8',
+      icon: <FaStar />, 
+      color: '#fbbf24',
+    },
+  ];
+
+  // Helper to get emoji and background class for each service type
+  const getServiceEmoji = (service) => {
+    switch (service) {
+      case 'Plumbing':
+        return { emoji: '🛠', bgClass: 'service-emoji-plumbing' };
+      case 'Electrical':
+        return { emoji: '⚡', bgClass: 'service-emoji-electrical' };
+      case 'AC Service':
+        return { emoji: '❄️', bgClass: 'service-emoji-ac' };
+      case 'Home Cleaning':
+        return { emoji: '🧼', bgClass: 'service-emoji-cleaning' };
+      default:
+        return { emoji: '🔧', bgClass: 'service-emoji-plumbing' };
+    }
+  };
+
   return (
-  <div className="provider-dashboard-home">
-    <div className="provider-dashboard-new-requests">
-      <h3>New Requests</h3>
-      {newRequests.length === 0 ? (
-        <div className="provider-dashboard-no-requests">No new requests at the moment.</div>
-      ) : (
-        newRequests.map((req, idx) => (
-          <div className="provider-dashboard-request-card" key={idx}>
-            <div>
-              <strong>{req.service}</strong> requested by <span className="provider-dashboard-request-customer">{req.customer}</span>
-            </div>
-            <div className="provider-dashboard-request-date">{req.date}</div>
-            <div className="provider-dashboard-request-status">{req.status}</div>
-          </div>
-        ))
-      )}
-    </div>
-    <div className="provider-dashboard-stats-grid">
-      {stats.map((stat) => (
-        <div className="provider-dashboard-stat-card" key={stat.label}>
-          <div className="provider-stat-value">{stat.value}</div>
-          <div className="provider-stat-label">{stat.label}</div>
-          <div className="provider-dashboard-time">
-            <div className="time-display">
-              <span className="time">{currentTime.toLocaleTimeString()}</span>
-              <span className="date">{currentTime.toLocaleDateString()}</span>
-            </div>
-          </div>
+    <div className="provider-dashboard-main-bg">
+      <div className="dashboard-topbar-row">
+        <h1 className="dashboard-welcome-top">Welcome back <span role="img" aria-label="wave">👋</span></h1>
+        <div className="dashboard-topbar-right">
+          <button className="notification-btn" onClick={() => setNotifOpen(!notifOpen)}>
+            <FaBell className="notification-icon" />
+            {unreadCount > 0 && (
+              <span className="notification-badge">{unreadCount}</span>
+            )}
+          </button>
+          <button className="profile-btn" onClick={() => setProfileOpen(!profileOpen)}>
+            <FaUser className="profile-avatar" />
+          </button>
         </div>
-      ))}
-    </div>
-
-    {/* Statistics Grid */}
-    <div className="provider-dashboard-stats-grid">
-      {stats.map((stat, index) => (
-        <div className="provider-dashboard-stat-card" key={index}>
-          <div className="stat-icon" style={{ color: stat.color }}>
-            {stat.icon}
-          </div>
-          <div className="stat-content">
-            <div className="provider-stat-value">{stat.value}</div>
-            <div className="provider-stat-label">{stat.label}</div>
-            <div className={`stat-change ${stat.changeType}`}>
-              {stat.change} from last {selectedPeriod}
+      </div>
+      <div className="dashboard-stats-row">
+        {statCards.map((stat, idx) => (
+          <div className="dashboard-stat-card" key={stat.label}>
+            <div className="stat-emoji-circle">
+              <span className="stat-emoji" role="img" aria-label={stat.label + ' emoji'}>{stat.emoji}</span>
+            </div>
+            <div className="stat-value">{stat.value}</div>
+            <div className="stat-label">{stat.label}</div>
+            <div className="stat-growth" style={{ color: stat.growthColor }}>
+              <FaArrowUp style={{ marginRight: 4 }} /> {stat.growth}
+              <span className="stat-growth-period">from last week</span>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
-
-    {/* Main Content Grid */}
-    <div className="provider-dashboard-content-grid">
-      {/* New Requests Section */}
-      <div className="provider-dashboard-section new-requests-section">
-        <div className="section-header">
-          <h3>New Service Requests</h3>
-          <span className="request-count">{newRequests.length} new</span>
-        </div>
-        <div className="requests-container">
+        ))}
+      </div>
+      <div className="dashboard-main-content">
+        <div className="dashboard-left-col">
+          <h3 className="section-title">New Service Requests</h3>
           {newRequests.length === 0 ? (
-            <div className="provider-dashboard-no-requests">
-              <FaInbox className="empty-icon" />
-              <p>No new requests at the moment.</p>
-            </div>
+            <div className="no-requests">No new requests at the moment.</div>
           ) : (
-            newRequests.map((req) => (
-              <div className="provider-dashboard-request-card" key={req.id}>
-                <div className="request-header">
-                  <div className="request-service">
-                    <FaTools className="service-icon" />
-                    <strong>{req.service}</strong>
+            newRequests.map((req, idx) => {
+              const { emoji, bgClass } = getServiceEmoji(req.service);
+              return (
+                <div
+                  className="request-card"
+                  key={req.id}
+                  style={{ animationDelay: `${0.1 + idx * 0.1}s` }}
+                >
+                  <div className="request-header">
+                    <div className="service-title-content">
+                      <span className={`service-emoji-circle ${bgClass}`}>{emoji}</span>
+                      <strong>{req.service}</strong>
+                    </div>
+                    <span className="request-new-tag">New</span>
+                  </div>
+                  <div className="request-customer">{req.customer}</div>
+                  <div className="request-details">
+                    <div><FaClock className="request-detail-icon" /> {req.date}</div>
+                    <div><FaMapMarkerAlt className="request-detail-icon" /> {req.location}</div>
+                    <div><FaPhone className="request-detail-icon" /> {req.phone}</div>
+                  </div>
+                  <div className="request-actions">
+                    <button className="request-btn accept" onClick={() => handleAcceptRequest(req.id)}><FaCheck /> Accept</button>
+                    <button className="request-btn decline" onClick={() => handleDeclineRequest(req.id)}><FaTimes /> Decline</button>
+                    <button className="request-btn details" onClick={() => handleViewDetails(req.id)}><FaInfoCircle /> Details</button>
                   </div>
                 </div>
-                <div className="request-customer">
-                  <span className="customer-name">{req.customer}</span>
-                </div>
-                <div className="request-details">
-                  <div className="detail-item">
-                    <FaCalendarAlt className="detail-icon" />
-                    <span>{req.date}</span>
-                  </div>
-                  <div className="detail-item">
-                    <FaMapMarkerAlt className="detail-icon" />
-                    <span>{req.location}</span>
-                  </div>
-                  <div className="detail-item">
-                    <FaPhone className="detail-icon" />
-                    <span>{req.phone}</span>
-                  </div>
-                </div>
-                <div className="request-actions">
-                  <button 
-                    className="action-btn accept-btn"
-                    onClick={() => handleAcceptRequest(req.id)}
-                  >
-                    Accept
-                  </button>
-                  <button 
-                    className="action-btn decline-btn"
-                    onClick={() => handleDeclineRequest(req.id)}
-                  >
-                    Decline
-                  </button>
-                  <button 
-                    className="action-btn details-btn"
-                    onClick={() => handleViewDetails(req.id)}
-                  >
-                    Details
-                  </button>
-                </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
+        <div className="dashboard-right-col">
+          <h3 className="section-title">Recent Bookings</h3>
+          {recentBookings.map((booking, idx) => {
+            const { emoji, bgClass } = getServiceEmoji(booking.service);
+            return (
+              <div
+                className="booking-card"
+                key={booking.id}
+                style={{ animationDelay: `${0.1 + idx * 0.1}s` }}
+              >
+                <div className="booking-main-row">
+                  <div className="service-title-content">
+                    <span className={`service-emoji-circle ${bgClass}`}>{emoji}</span>
+                    <strong>{booking.service}</strong>
+                  </div>
+                  <span className={`booking-status ${booking.status}`}>{booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</span>
+                </div>
+                <div className="booking-customer">{booking.customer}</div>
+                <div className="booking-details-row">
+                  <div><FaCalendarAlt className="booking-detail-icon" /> {booking.date}</div>
+                  <div><FaMapMarkerAlt className="booking-detail-icon" /> {booking.location}</div>
+                </div>
+                <div className="booking-amount">{booking.amount}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
-
-      {/* Recent Bookings Section */}
-      <div className="provider-dashboard-section recent-bookings-section">
-        <div className="section-header">
-          <h3>Recent Bookings</h3>
-          <button className="view-all-btn">View All</button>
-        </div>
-        <div className="bookings-container">
-          {recentBookings.map((booking) => (
-            <div className="provider-booking-card" key={booking.id}>
-              <div className="booking-header">
-                <div className="booking-service">
-                  <strong>{booking.service}</strong>
-                </div>
-                <span className={`provider-booking-status ${booking.status}`}>
-                  {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                </span>
-              </div>
-              <div className="booking-customer">{booking.customer}</div>
-              <div className="booking-details">
-                <div className="detail-item">
-                  <FaCalendarAlt className="detail-icon" />
-                  <span>{booking.date}</span>
-                </div>
-                <div className="detail-item">
-                  <FaMapMarkerAlt className="detail-icon" />
-                  <span>{booking.location}</span>
-                </div>
-              </div>
-              <div className="booking-amount">{booking.amount}</div>
-            </div>
-          ))}
-        </div>
+      <div className="dashboard-summary-bar">
+        {summaryMetrics.map((metric) => (
+          <div className="summary-metric" key={metric.label}>
+            <span className="summary-icon" style={{ color: metric.color }}>{metric.icon}</span>
+            <span className="summary-value" style={{ color: metric.color }}>{metric.value}</span>
+            <span className="summary-label">{metric.label}</span>
+          </div>
+        ))}
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default ServiceProviderDashboard; 

@@ -42,11 +42,12 @@ const notifications = [
   },
 ];
 
-const ProviderTopbar = () => {
+const ProviderTopbarContent = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [unreadCount, setUnreadCount] = useState(0);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const profileRef = useRef();
   const notifRef = useRef();
 
@@ -66,6 +67,13 @@ const ProviderTopbar = () => {
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
   }, []);
 
   const handleNotificationClick = (notificationId) => {
@@ -94,104 +102,8 @@ const ProviderTopbar = () => {
   };
 
   return (
-    <div className="provider-topbar">
-      <div className="topbar-left">
-        {/* Removed search-container and search-form */}
-      </div>
-      <div className="topbar-right">
-        <div className="topbar-actions">
-          <div className="notification-container" ref={notifRef}>
-            <button 
-              className="notification-btn"
-              onClick={() => setNotifOpen(!notifOpen)}
-            >
-              <FaBell className="notification-icon" />
-              {unreadCount > 0 && (
-                <span className="notification-badge">{unreadCount}</span>
-              )}
-            </button>
-            {notifOpen && (
-              <div className="notification-dropdown">
-                <div className="notification-header">
-                  <h3>Notifications</h3>
-                  <button className="mark-all-read">Mark all read</button>
-                </div>
-                <div className="notification-list">
-                  {notifications.length === 0 ? (
-                    <div className="notification-empty">
-                      <span>🎉</span>
-                      <p>No new notifications</p>
-                    </div>
-                  ) : (
-                    notifications.map((notif) => (
-                      <div 
-                        key={notif.id} 
-                        className={`notification-item ${!notif.read ? 'unread' : ''}`}
-                        onClick={() => handleNotificationClick(notif.id)}
-                      >
-                        <div className="notification-icon">
-                          {getNotificationIcon(notif.type)}
-                        </div>
-                        <div className="notification-content">
-                          <div className="notification-message">{notif.message}</div>
-                          <div className="notification-time">{notif.time}</div>
-                        </div>
-                        {!notif.read && <div className="unread-dot"></div>}
-                      </div>
-                    ))
-                  )}
-                </div>
-                <div className="notification-footer">
-                  <button className="view-all-notifications">View All</button>
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="profile-container" ref={profileRef}>
-            <button 
-              className="profile-btn"
-              onClick={() => setProfileOpen(!profileOpen)}
-            >
-              <FaUser className="profile-avatar" />
-            </button>
-            {profileOpen && (
-              <div className="profile-dropdown">
-                <div className="profile-header">
-                  <FaUser className="profile-dropdown-avatar" />
-                  <div className="profile-info">
-                    <h4>{provider.fullName}</h4>
-                    <span>Service Provider</span>
-                  </div>
-                </div>
-                <div className="profile-details">
-                  <div className="profile-detail-item">
-                    <span className="detail-label">Email:</span>
-                    <span className="detail-value">{provider.email}</span>
-                  </div>
-                  <div className="profile-detail-item">
-                    <span className="detail-label">Phone:</span>
-                    <span className="detail-value">{provider.phone}</span>
-                  </div>
-                  <div className="profile-detail-item">
-                    <span className="detail-label">Address:</span>
-                    <span className="detail-value">{provider.address}</span>
-                  </div>
-                  <div className="profile-detail-item">
-                    <span className="detail-label">Joined:</span>
-                    <span className="detail-value">{provider.joined}</span>
-                  </div>
-                </div>
-                <div className="profile-actions">
-                  <button className="profile-action-btn">Edit Profile</button>
-                  <button className="profile-action-btn">View Settings</button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+    <></>
   );
 };
 
-export default ProviderTopbar; 
+export default ProviderTopbarContent; 

@@ -2,10 +2,14 @@ import React from 'react';
 import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
 import DashboardHome from './DashboardHome';
-import ServiceProviders from './ServiceProviders';
-import Reports from './Reports';
-import Settings from './Settings';
-import Profile from './Profile';
+import ServiceBooking from './ServiceBooking';
+import SubscriptionBooking from './SubscriptionBooking';
+import Customer from './Customer';
+import Provider from './Provider';
+import Feedback from './Feedback';
+import UserSuggestion from './UserSuggestion';
+import Monitoring from './Monitoring';
+import AdminTopbar from './AdminTopbar';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -13,16 +17,22 @@ const AdminDashboard = () => {
   return (
     <div className="admin-dashboard-layout">
       <AdminSidebar userId={userId} />
-      <main className="admin-dashboard-main">
-        <Routes>
-          <Route path="/dashboard" element={<DashboardHome userId={userId} />} />
-          <Route path="/service-providers" element={<ServiceProviders userId={userId} />} />
-          <Route path="/reports" element={<Reports userId={userId} />} />
-          <Route path="/settings" element={<Settings userId={userId} />} />
-          <Route path="/profile" element={<Profile userId={userId} />} />
-          <Route path="*" element={<Navigate to={`/admin/dashboard/${userId}/dashboard`} />} />
-        </Routes>
-      </main>
+      <div className="admin-dashboard-content">
+        <AdminTopbar />
+        <main className="admin-dashboard-main">
+          <Routes>
+            <Route path="/dashboard" element={<DashboardHome userId={userId} />} />
+            <Route path="/service-booking" element={<ServiceBooking userId={userId} />} />
+            <Route path="/subscription-booking" element={<SubscriptionBooking userId={userId} />} />
+            <Route path="/customer" element={<Customer userId={userId} />} />
+            <Route path="/provider" element={<Provider userId={userId} />} />
+            <Route path="/feedback" element={<Feedback userId={userId} />} />
+            <Route path="/user-suggestion" element={<UserSuggestion userId={userId} />} />
+            <Route path="/monitoring" element={<Monitoring userId={userId} />} />
+            <Route path="*" element={<Navigate to={`/admin/dashboard/${userId}/dashboard`} />} />
+          </Routes>
+        </main>
+      </div>
     </div>
   );
 };
