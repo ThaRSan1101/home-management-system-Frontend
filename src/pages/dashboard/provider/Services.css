@@ -588,6 +588,8 @@
   gap: 1rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 .activity-tab-btn {
   display: flex;
@@ -863,13 +865,28 @@
   background: none !important;
 } 
 
-.activity-animate-in {
-  animation: fadeUpIn 0.7s cubic-bezier(0.4,0,0.2,1);
+/* Remove animation and emoji styles for activity table */
+.activity-row-animate,
+.animated-badge,
+.animated-btn,
+.service-emoji {
+  animation: none !important;
+  transition: none !important;
+  background: none !important;
+  color: inherit !important;
+  filter: none !important;
+  box-shadow: none !important;
+  font-size: inherit !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: initial !important;
 }
-@keyframes fadeUpIn {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+
+/* Remove keyframes for rowFadeIn, badgePulse, emojiWiggle, fadeUpIn, etc. */
+@keyframes rowFadeIn {}
+@keyframes badgePulse {}
+@keyframes emojiWiggle {}
+@keyframes fadeUpIn {}
 
 /* Tab Emoji Badges */
 .tab-emoji-badge {
@@ -1098,4 +1115,39 @@
   background: #f3f6fa !important;
   border-bottom: 2.5px solid #b2c7f7 !important;
   text-transform: uppercase;
+} 
+
+.user-suggestion-table-container {
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(26,54,101,0.07);
+  padding: 1.2rem 0.5rem;
+}
+.user-suggestion-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  background: #fff;
+}
+.user-suggestion-table th {
+  background: #1a3665;
+  color: #fff;
+  font-weight: 700;
+  padding: 0.85rem 0.7rem;
+  text-align: left;
+  border-bottom: 2px solid #e5eaf4;
+}
+.user-suggestion-table td {
+  padding: 0.7rem 0.7rem;
+  border-bottom: 1px solid #e5eaf4;
+  color: #1a3665;
+  background: #fff;
+}
+.user-suggestion-table tr:nth-child(even) td {
+  background: #f5f7fa;
+}
+.user-suggestion-table tr:last-child td {
+  border-bottom: none;
 } 
