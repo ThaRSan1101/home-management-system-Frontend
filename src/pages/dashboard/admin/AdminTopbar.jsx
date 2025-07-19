@@ -27,6 +27,10 @@ const AdminTopbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Get admin email from localStorage or use default
+  const adminEmail = localStorage.getItem('admin_email') || 'admin@servicehub.com';
+  const adminRole = 'Admin';
+
   return (
     <div className="admin-topbar">
       <div className="admin-topbar-actions">
@@ -53,8 +57,8 @@ const AdminTopbar = () => {
           {profileOpen && (
             <div className="admin-profile-dropdown">
               <div className="admin-profile-header">Admin Profile</div>
-              <div className="admin-profile-row"><span>Role:</span> Admin</div>
-              <div className="admin-profile-row"><span>Email:</span> admin@servicehub.com</div>
+              <div className="admin-profile-row"><span>Role:</span> {adminRole}</div>
+              <div className="admin-profile-row"><span>Email:</span> {adminEmail}</div>
               <button className="admin-profile-logout-btn" style={{marginTop: '1.2rem'}} onClick={() => { localStorage.clear(); window.location.href='/login'; }}> Logout</button>
             </div>
           )}
