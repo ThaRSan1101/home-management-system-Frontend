@@ -55,9 +55,7 @@ const AdminTopbar = () => {
               <div className="admin-profile-header">Admin Profile</div>
               <div className="admin-profile-row"><span>Role:</span> Admin</div>
               <div className="admin-profile-row"><span>Email:</span> admin@servicehub.com</div>
-              <button className="admin-profile-logout-btn" style={{marginTop: '1.2rem'}} onClick={() => { localStorage.clear(); window.location.href='/login'; }}>
-                Logout
-              </button>
+              <button className="admin-profile-logout-btn" style={{marginTop: '1.2rem'}}>Logout</button>
             </div>
           )}
         </div>
