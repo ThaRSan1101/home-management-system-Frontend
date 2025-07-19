@@ -95,72 +95,7 @@ const ProviderContact = () => {
           </div>
         </div>
       </div>
-      <section className="map-section">
-        <div className="map-card" onClick={handleMapClick} title="Open in Google Maps">
-          {GOOGLE_MAPS_API_KEY === 'YOUR_GOOGLE_MAPS_API_KEY_HERE' ? (
-            <div style={{
-              width: '100%',
-              height: '400px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '20px',
-              background: '#e6faf5',
-              color: '#007a65',
-              fontWeight: 600,
-              fontSize: '1.1rem',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.10)',
-            }}>
-              Please add your Google Maps API key to display the map.
-            </div>
-          ) : loadError ? (
-            <div style={{
-              width: '100%',
-              height: '400px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '20px',
-              background: '#e6faf5',
-              color: '#d32f2f',
-              fontWeight: 600,
-              fontSize: '1.1rem',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.10)',
-            }}>
-              Failed to load Google Maps. Please check your API key.
-            </div>
-          ) : isLoaded && (
-            <GoogleMap
-              mapContainerStyle={mapContainerStyle}
-              center={mannarPosition}
-              zoom={13}
-              options={{
-                disableDefaultUI: true,
-                clickableIcons: false,
-                gestureHandling: 'none',
-                styles: [
-                  { elementType: 'geometry', stylers: [{ color: '#e6faf5' }] },
-                  { elementType: 'labels.text.fill', stylers: [{ color: '#222b3a' }] },
-                  { elementType: 'labels.text.stroke', stylers: [{ color: '#fff' }] },
-                  { featureType: 'water', stylers: [{ color: '#b2f7ef' }] },
-                  { featureType: 'poi', stylers: [{ visibility: 'off' }] },
-                ],
-              }}
-              onClick={handleMapClick}
-            >
-              <Marker
-                position={mannarPosition}
-                onClick={handleMapClick}
-                icon={{
-                  url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                  scaledSize: { width: 40, height: 40 },
-                }}
-              />
-            </GoogleMap>
-          )}
-          <div className="map-overlay">Click to open Our Location</div>
-        </div>
-      </section>
+      {/* Removed Google Map location section */}
     </>
   );
 };
