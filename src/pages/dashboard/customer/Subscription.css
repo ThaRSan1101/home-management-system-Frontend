@@ -73,20 +73,25 @@
 }
 .customer-subscription-unsubscribe-btn {
   background: #fff;
-  color: #c0392b;
-  border: 1.5px solid #c0392b;
-  border-radius: 22px;
+  color: #1a3665;
+  border: 2px solid #1a3665;
+  border-radius: 10px;
   padding: 0.5rem 1.3rem;
+  font-weight: 700;
   font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border 0.2s;
-  box-shadow: 0 2px 8px rgba(192,57,43,0.07);
+  transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(26,54,101,0.08);
+  outline: none;
+  margin: 0 0.2rem;
+  display: inline-block;
 }
-.customer-subscription-unsubscribe-btn:hover {
-  background: #c0392b;
+.customer-subscription-unsubscribe-btn:hover,
+.customer-subscription-unsubscribe-btn:focus {
+  background: #1a3665;
   color: #fff;
-  border: 1.5px solid #c0392b;
+  border-color: #1a3665;
+  box-shadow: 0 4px 16px rgba(26,54,101,0.18);
 }
 .subscription-unsubscribed-label {
   color: #b0b0b0;
@@ -139,6 +144,7 @@
   border-radius: 40px;
   box-shadow: 0 2px 16px rgba(26,54,101,0.07);
   padding: 0.4rem 0.5rem;
+  margin-top: 3rem;
 }
 .customer-subscription-tab-btn {
   background: none;

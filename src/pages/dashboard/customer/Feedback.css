@@ -25,6 +25,7 @@
   max-width: 100%;
   margin-left: 0;
   margin-right: 0;
+  margin-top: 2.5rem;
 }
 
 .customer-dashboard-feedback-header h1 {
@@ -282,6 +283,24 @@
   font-weight: 600;
   text-transform: capitalize;
   letter-spacing: 0.5px;
+}
+
+.date-cell, .service-type-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  max-width: 140px;
+  text-align: center;
+}
+.service-type-badge {
+  background: #e6eafd;
+  color: #1a3665;
+  border-radius: 8px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.98rem;
+  font-weight: 600;
+  display: inline-block;
 }
 
 @media (max-width: 1200px) {
