@@ -96,6 +96,14 @@ export default function Subscription() {
     setPayment(p => ({ ...p, expiry: val }));
   };
 
+  const handleUnsubscribe = (id) => {
+    setPlans((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, status: 'unsubscribed', startDate: '-', endDate: '-' } : p
+      )
+    );
+  };
+
   const renderModal = () => {
     if (modalStep === 'form') {
       return (
@@ -219,6 +227,7 @@ export default function Subscription() {
                 <th>Plan</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                {activeTab === 'subscribed' && <th>Action</th>}
               </tr>
             </thead>
             <tbody>
@@ -227,6 +236,13 @@ export default function Subscription() {
                   <td>{plan.plan}</td>
                   <td>{plan.startDate}</td>
                   <td>{plan.endDate}</td>
+                  {activeTab === 'subscribed' && (
+                    <td>
+                      <button className="customer-subscription-unsubscribe-btn" onClick={() => handleUnsubscribe(plan.id)}>
+                        Unsubscribe
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
