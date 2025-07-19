@@ -6,18 +6,18 @@ const DashboardHome = () => {
   const navigate = useNavigate();
 
   // Placeholder data
-  const customers = Array.from({ length: 10 }, (_, i) => ({ name: `Customer ${i + 1}` }));
-  const providers = Array.from({ length: 10 }, (_, i) => ({ name: `Provider ${i + 1}` }));
-  const bookings = Array.from({ length: 10 }, (_, i) => ({ detail: `Booking #${i + 1}` }));
+  const customers = Array.from({ length: 3 }, (_, i) => ({ name: `Customer ${i + 1}` }));
+  const providers = Array.from({ length: 3 }, (_, i) => ({ name: `Provider ${i + 1}` }));
+  const bookings = Array.from({ length: 3 }, (_, i) => ({ detail: `Booking #${i + 1}` }));
 
   return (
     <div className="dashboard-home-wrapper">
       <h2 className="dashboard-overview-heading">Overview</h2>
       <div className="dashboard-stats-row">
-        <div className="dashboard-stat-box">Customers<br /><span className="dashboard-stat-count">--</span></div>
-        <div className="dashboard-stat-box">Service Providers<br /><span className="dashboard-stat-count">--</span></div>
-        <div className="dashboard-stat-box">Successful Services and Subscriptions<br /><span className="dashboard-stat-count">--</span></div>
-        <div className="dashboard-stat-box">Total Income<br /><span className="dashboard-stat-count">--</span></div>
+        <div className="dashboard-stat-box">Customers<br /><span className="dashboard-stat-count">0</span></div>
+        <div className="dashboard-stat-box">Service Providers<br /><span className="dashboard-stat-count">0</span></div>
+        <div className="dashboard-stat-box">Completed Bookings<br /><span className="dashboard-stat-count">0</span></div>
+        <div className="dashboard-stat-box">Total Booking<br /><span className="dashboard-stat-count">0</span></div>
       </div>
       <div className="dashboard-fullwidth-row">
         <div className="dashboard-fullwidth-box">
@@ -48,6 +48,7 @@ const DashboardHome = () => {
             {bookings.map((b, i) => (
               <li key={i} className="dashboard-list-item">
                 <span>{b.detail}</span>
+                <button className="dashboard-view-btn" onClick={() => {/* TODO: Add booking view logic */}}>View</button>
               </li>
             ))}
           </ul>
