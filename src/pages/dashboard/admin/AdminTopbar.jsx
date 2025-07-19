@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaBell, FaUserCircle } from 'react-icons/fa';
+import { FaBell, FaUser } from 'react-icons/fa';
 import './AdminTopbar.css';
 
 const notifications = [
@@ -53,7 +53,7 @@ const AdminTopbar = () => {
           )}
         </div>
         <div className="admin-topbar-profile-section" ref={profileRef}>
-          <FaUserCircle className="admin-topbar-icon" size={38} onClick={() => setProfileOpen((o) => !o)} />
+          <FaUser className="admin-topbar-icon solid" size={38} onClick={() => setProfileOpen((o) => !o)} />
           {profileOpen && (
             <div className="admin-profile-dropdown">
               <div className="admin-profile-header">Admin Profile</div>

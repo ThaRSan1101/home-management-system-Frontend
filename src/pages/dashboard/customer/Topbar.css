@@ -44,6 +44,19 @@
 .topbar-profile-icon:hover {
   box-shadow: 0 4px 16px rgba(26,54,101,0.18);
 }
+.topbar-profile-icon.solid {
+  background: #e6faf5;
+  color: #1a3665;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(26,54,101,0.10);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.1rem;
+  padding: 0.3rem;
+}
 .notification-dropdown {
   position: absolute;
   top: 48px;
