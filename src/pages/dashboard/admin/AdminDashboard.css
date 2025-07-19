@@ -117,7 +117,7 @@
 }
 
 .admin-dashboard-content {
-  margin-left: 230px; /* same as sidebar width */
+  margin-left: 150px; /* same as sidebar width */
   width: calc(100vw - 230px); /* must match sidebar width */
   min-width: 0;
   display: flex;

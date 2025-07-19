@@ -1,56 +1,64 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaUserCircle, FaBell, FaSignOutAlt } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { FaBell, FaUserCircle } from 'react-icons/fa';
 import './AdminTopbar.css';
 
-const adminDetails = {
-  fullName: 'Jane Doe',
-  address: '123 Main St, Colombo 00400',
-  phone: '+94 77 123 4567',
-  email: 'jane.doe@email.com',
-  joined: '2023-01-15',
-};
+const notifications = [
+  { id: 1, message: 'New user registered.', time: '2 hours ago' },
+  { id: 2, message: 'System update completed.', time: '1 day ago' },
+  { id: 3, message: 'Feedback received.', time: '3 days ago' },
+];
 
 const AdminTopbar = () => {
   const [profileOpen, setProfileOpen] = useState(false);
-  const profileRef = useRef(null);
-  const navigate = useNavigate();
+  const [notifOpen, setNotifOpen] = useState(false);
+  const profileRef = useRef();
+  const notifRef = useRef();
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
         setProfileOpen(false);
       }
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setNotifOpen(false);
+      }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    navigate('/login');
-  };
-
   return (
     <div className="admin-topbar">
-      <FaBell className="admin-topbar-bell" title="Notifications" />
-      <div ref={profileRef} className="admin-topbar-profile-wrapper">
-        <FaUserCircle
-          className="admin-topbar-avatar"
-          onClick={() => setProfileOpen((open) => !open)}
-          title="Profile"
-        />
-        {profileOpen && (
-          <div className="admin-topbar-dropdown">
-            <div className="admin-topbar-name">{adminDetails.fullName}</div>
-            <div className="admin-topbar-detail"><b>Address:</b> {adminDetails.address}</div>
-            <div className="admin-topbar-detail"><b>Phone:</b> {adminDetails.phone}</div>
-            <div className="admin-topbar-detail"><b>Email:</b> {adminDetails.email}</div>
-            <div className="admin-topbar-detail"><b>Joined:</b> {adminDetails.joined}</div>
-            <button onClick={handleLogout} className="admin-topbar-logout-btn">
-              <FaSignOutAlt style={{ marginRight: 8 }} /> Logout
-            </button>
-          </div>
-        )}
+      <div className="admin-topbar-actions">
+        <div className="admin-topbar-notification-section" ref={notifRef}>
+          <FaBell className="admin-topbar-icon" size={26} onClick={() => setNotifOpen((o) => !o)} />
+          {notifOpen && (
+            <div className="admin-notification-dropdown">
+              <div className="admin-notification-header">Notifications</div>
+              {notifications.length === 0 ? (
+                <div className="admin-notification-empty">No new notifications</div>
+              ) : (
+                notifications.map((notif) => (
+                  <div className="admin-notification-item" key={notif.id}>
+                    <div className="admin-notification-message">{notif.message}</div>
+                    <div className="admin-notification-time">{notif.time}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+        <div className="admin-topbar-profile-section" ref={profileRef}>
+          <FaUserCircle className="admin-topbar-icon" size={38} onClick={() => setProfileOpen((o) => !o)} />
+          {profileOpen && (
+            <div className="admin-profile-dropdown">
+              <div className="admin-profile-header">Admin Profile</div>
+              <div className="admin-profile-row"><span>Role:</span> Admin</div>
+              <div className="admin-profile-row"><span>Email:</span> admin@servicehub.com</div>
+              <button className="admin-profile-logout-btn" style={{marginTop: '1.2rem'}}>Logout</button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
