@@ -191,7 +191,6 @@ export default function ProviderActivity() {
           </table>
         )}
       </div>
-      <Footer />
     </div>
   );
 }
