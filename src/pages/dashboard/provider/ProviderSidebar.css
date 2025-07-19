@@ -1,6 +1,7 @@
+/* Provider Sidebar - Modern Look (matches customer sidebar) */
 .provider-sidebar {
-  width: 280px;
-  background: rgb(26, 54, 101) !important;
+  width: 72px;
+  background: #1a3665;
   color: #fff;
   height: 100vh;
   position: fixed;
@@ -8,24 +9,29 @@
   top: 0;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 20px rgba(0, 122, 101, 0.10) !important;
-  z-index: 1000;
+  align-items: center;
+  z-index: 200;
+  box-shadow: 2px 0 16px rgba(26,54,101,0.10);
+  padding: 1.2rem 0 1.2rem 0;
+  transition: width 0.2s;
 }
 
 .sidebar-logo-container {
-  padding: 2rem 1.5rem 1rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
-  border-bottom: 1px solid #b2dfd5;
-  background: transparent;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 2.2rem;
+  padding: 0;
+  border-bottom: none;
+  background: none;
 }
 
 .sidebar-logo-round {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.08) !important;
+  background: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,204 +39,121 @@
 }
 
 .sidebar-logo-img {
-  width: 35px;
-  height: 35px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
+  filter: brightness(0) invert(1);
+  padding: 4px;
 }
 
 .sidebar-brand h3,
 .sidebar-brand span {
   color: #fff;
+  display: none;
 }
 
 .sidebar-nav {
-  flex: 1 1 auto;
-  padding: 1rem 0;
-  overflow-y: auto;
+  margin-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  align-items: center;
+  flex: 1;
+  padding: 0;
+  overflow-y: visible;
 }
 
 .sidebar-link {
+  color: #fff !important;
+  font-size: 1.45rem;
   display: flex;
   align-items: center;
-  padding: 1rem 1.5rem;
-  color: #fff !important;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  border-left: 3px solid transparent;
-  font-weight: 500;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  margin: 0 auto;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
   position: relative;
-  border-radius: 12px;
-  background: transparent !important;
+  background: none !important;
+  border: none;
+  box-shadow: none;
+  text-align: center;
+  padding: 0;
 }
-
-.sidebar-link:hover,
-.sidebar-link.active {
-  background: rgba(255,255,255,0.10) !important;
-  color: #fff !important;
-  border-left-color: #fff !important;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.08) inset !important;
+.sidebar-link.active, .sidebar-link:hover {
+  background: #fff !important;
+  color: #1a3665 !important;
+  box-shadow: 0 2px 12px rgba(45,95,255,0.10);
 }
 
 .nav-icon {
-  font-size: 1.1rem;
-  margin-right: 1rem;
-  min-width: 20px;
+  color: inherit !important;
+  font-size: 1.45rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff !important;
-  opacity: 1 !important;
-  z-index: 2;
-  background: none !important;
-}
-
-.sidebar-link.active .nav-icon,
-.sidebar-link:hover .nav-icon {
-  color: #fff !important;
+  min-width: 24px;
+  margin-right: 0;
 }
 
 .nav-label {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #fff;
+  display: none;
 }
 
-.sidebar-footer {
-  margin-top: auto;
-  padding: 1.5rem 1rem 2rem 1rem;
-  background: transparent !important;
-  text-align: center;
-  border-top: none !important;
-}
-
-.provider-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
- /*border-bottom: 1px solid #b2dfd5;*/
-}
-
-.provider-avatar {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid #b2dfd5;
-  flex-shrink: 0;
-}
-
-.provider-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.provider-details h4 {
-  margin: 0 0 0.25rem 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #007a65;
-}
-
-.provider-details span {
-  font-size: 0.8rem;
-  opacity: 0.8;
-  color: #007a65;
-}
-
-.sidebar-logout-btn {
-  background: rgba(255,255,255,0.10) !important;
-  color: #fff !important;
-  border: none !important;
-  font-size: 1.2rem;
-  width: 100%;
-  margin: 1.5rem 0 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  padding: 1rem 0;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0,122,101,0.12);
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-}
-
-.sidebar-logout-btn:hover {
-  background: #fff !important;
-  color: rgb(26, 54, 101) !important;
-  box-shadow: 0 6px 24px rgba(0,122,101,0.18);
-}
-
-.logout-icon {
-  font-size: 1rem;
-  color: #fff !important;
-}
-
-/* Responsive Design */
 @media (max-width: 900px) {
   .provider-sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    background: #fff !important;
+    flex-direction: row;
+    width: 100vw;
+    height: 64px;
+    min-width: 0;
+    border-radius: 0 0 24px 24px;
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 16px rgba(26,54,101,0.10);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
   }
-  
-  .provider-sidebar.open {
-    transform: translateX(0);
+  .sidebar-logo-container {
+    margin-bottom: 0;
+    margin-right: 1.2rem;
   }
-  
-  .sidebar-brand h3 {
-    font-size: 1.1rem;
+  .sidebar-nav {
+    flex-direction: row;
+    gap: 1.2rem;
+    width: auto;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
   }
-  
-  .sidebar-brand span {
-    font-size: 0.75rem;
-  }
-  
-  .nav-label {
-    font-size: 0.9rem;
+  .sidebar-link {
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
+    border-radius: 12px;
+    margin: 0 0.2rem;
   }
 }
 
 @media (max-width: 600px) {
   .provider-sidebar {
-    width: 100%;
-    max-width: 300px;
+    padding: 0.5rem 0.2vw 0 0.2vw;
   }
-  
   .sidebar-logo-container {
-    padding: 1.5rem 1rem 1rem;
+    margin-bottom: 0;
+    margin-right: 0.7rem;
   }
-  
-  .sidebar-nav {
-    padding: 0.5rem 0;
-  }
-  
-  .sidebar-link {
-    padding: 0.75rem 1rem;
-  }
-  
-  .sidebar-footer {
-    padding: 1rem;
-  }
-  
-  .provider-info {
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.75rem;
-  }
-  
-  .provider-avatar {
+  .sidebar-logo-img {
     width: 40px;
     height: 40px;
+    padding: 2px;
   }
-  
-  .provider-details h4 {
-    font-size: 0.9rem;
-  }
-  
-  .provider-details span {
-    font-size: 0.75rem;
-  }
+}
+
+/* Hide old provider sidebar extras */
+.provider-info, .provider-avatar, .provider-details, .sidebar-footer, .sidebar-logout-btn {
+  display: none !important;
 } 

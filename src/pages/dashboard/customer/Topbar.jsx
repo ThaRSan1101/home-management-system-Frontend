@@ -24,6 +24,16 @@ const Topbar = () => {
   const profileRef = useRef();
   const notifRef = useRef();
   const navigate = useNavigate();
+
+  // Fetch customer details from localStorage
+  const customer = {
+    fullName: localStorage.getItem('customer_fullName') || '',
+    address: localStorage.getItem('customer_address') || '',
+    phone: localStorage.getItem('customer_phone') || '',
+    email: localStorage.getItem('customer_email') || '',
+    joined: localStorage.getItem('customer_joined') || '',
+  };
+
   const handleLogout = () => {
     navigate('/login');
   };

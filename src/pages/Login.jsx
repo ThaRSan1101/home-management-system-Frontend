@@ -54,9 +54,15 @@ const Login = () => {
       const result = response.data;
       if (result.status === 'success') {
 
-        // No need to store JWT in localStorage!
-        // Optionally, store user_name in memory or context if needed for UI
-        // No localStorage for auth! Only use cookies (set by backend)
+        // Store customer details in localStorage for dashboard/profile use
+        if (result.user_type === 'customer' && result.user_details) {
+          localStorage.setItem('customer_fullName', result.user_details.fullName || '');
+          localStorage.setItem('customer_address', result.user_details.address || '');
+          localStorage.setItem('customer_phone', result.user_details.phone || '');
+          localStorage.setItem('customer_email', result.user_details.email || '');
+          localStorage.setItem('customer_joined', result.user_details.joined || '');
+        }
+
         // Redirect based on user type and user id
         if (result.user_type === 'admin') {
           navigate(`/admin/dashboard/${result.user_id}`);

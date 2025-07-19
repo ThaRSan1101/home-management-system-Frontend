@@ -8,7 +8,6 @@ const navItems = [
   { label: 'Activity', path: 'activity/services', icon: <FaClipboardList /> },
   { label: 'Feedback', path: 'feedback', icon: <FaComments /> },
   { label: 'Contact Us', path: 'contact', icon: <FaEnvelope /> },
-  { label: 'Logout', path: 'logout', icon: <FaSignOutAlt /> },
 ];
 
 const ProviderSidebar = () => {

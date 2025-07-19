@@ -11,51 +11,61 @@ const DashboardFeedback = () => {
       id: 1,
       customerName: "Sarah Johnson",
       service: "House Cleaning",
+      provider: "CleanPro Services",
+      amount: 120,
       rating: 5,
       comment: "Excellent service! The team was professional and thorough. My house looks spotless.",
       date: "2024-01-15",
-      status: "completed",
-      provider: "CleanPro Services"
+      serviceType: "Service Booking",
+      status: "completed"
     },
     {
       id: 2,
       customerName: "Michael Chen",
       service: "Electrical Repair",
+      provider: "ElectroFix Solutions",
+      amount: 80,
       rating: 4,
       comment: "Good work on fixing the electrical issues. Arrived on time and completed the job efficiently.",
       date: "2024-01-12",
-      status: "completed",
-      provider: "ElectroFix Solutions"
+      serviceType: "Service Booking",
+      status: "completed"
     },
     {
       id: 3,
       customerName: "Emily Rodriguez",
       service: "Plumbing",
+      provider: "PlumbRight Co.",
+      amount: 95,
       rating: 5,
       comment: "Outstanding service! Fixed the leak quickly and explained everything clearly.",
       date: "2024-01-10",
-      status: "completed",
-      provider: "PlumbRight Co."
+      serviceType: "Service Booking",
+      status: "completed"
     },
     {
       id: 4,
       customerName: "David Thompson",
       service: "Garden Maintenance",
+      provider: "GreenThumb Services",
+      amount: 60,
       rating: 3,
       comment: "Service was okay, but took longer than expected. Garden looks good now.",
       date: "2024-01-08",
-      status: "completed",
-      provider: "GreenThumb Services"
+      serviceType: "Subscription Booking",
+      status: "completed"
     },
     {
       id: 5,
       customerName: "Lisa Wang",
       service: "Carpet Cleaning",
+      provider: "FreshCarpet Pro",
+      amount: 110,
       rating: 5,
       comment: "Amazing results! The carpets look brand new. Highly recommend!",
       date: "2024-01-05",
-      status: "completed",
-      provider: "FreshCarpet Pro"
+      serviceType: "Subscription Booking",
+      status: "completed"
     }
   ];
 
@@ -92,10 +102,11 @@ const DashboardFeedback = () => {
           <div className="customer-dashboard-feedback-table-header">
             <div className="header-cell">Service</div>
             <div className="header-cell">Provider Name</div>
+            <div className="header-cell">Amount</div>
             <div className="header-cell">Rating</div>
             <div className="header-cell">Comment</div>
             <div className="header-cell">Date</div>
-            <div className="header-cell">Status</div>
+            <div className="header-cell">Service Type</div>
           </div>
           
           <div className="customer-dashboard-feedback-table-body">
@@ -111,6 +122,10 @@ const DashboardFeedback = () => {
                   <div className="provider-info">
                     <span>{feedback.provider}</span>
                   </div>
+                </div>
+                
+                <div className="table-cell amount-cell">
+                  <span className="amount">${feedback.amount.toFixed(2)}</span>
                 </div>
                 
                 <div className="table-cell rating-cell">
@@ -133,11 +148,8 @@ const DashboardFeedback = () => {
                   </div>
                 </div>
                 
-                <div className="table-cell status-cell">
-                  <div className={`status-badge ${feedback.status}`}>
-                    <FaThumbsUp className="status-icon" />
-                    <span>{feedback.status}</span>
-                  </div>
+                <div className="table-cell service-type-cell">
+                  <span className="service-type-badge">{feedback.serviceType}</span>
                 </div>
               </div>
             ))}

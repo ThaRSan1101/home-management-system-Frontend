@@ -90,7 +90,7 @@
 
 .customer-dashboard-feedback-table-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1fr 1fr;
   background: #f5f8fd;
   border-bottom: 2px solid #e0e7ef;
   padding: 1rem 0;
@@ -112,7 +112,7 @@
 
 .customer-dashboard-feedback-table-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1fr 1fr;
   border-bottom: 1px solid #f1f5f9;
   transition: background-color 0.2s ease;
 }
@@ -264,6 +264,24 @@
 .customer-dashboard-feedback-empty p {
   color: #64748b;
   font-size: 1rem;
+}
+
+.amount-cell .amount {
+  font-weight: 600;
+  color: #007a65;
+  font-size: 1rem;
+}
+
+.service-type-cell .service-type-badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  background: #e6eafd;
+  color: #1a3665;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
 }
 
 @media (max-width: 1200px) {
