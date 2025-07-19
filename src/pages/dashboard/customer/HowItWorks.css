@@ -4,6 +4,7 @@
   background: #fafbfc;
   box-sizing: border-box;
   padding: 0;
+  margin-left: 5rem;
 }
 
 .customer-howitworks-page {
@@ -177,7 +178,7 @@
 .customer-trust-section.customer-trust-cards-section {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto 3.5rem auto;
+  margin: 0 auto 3.5rem 4.5rem;
   padding: 0;
   background: none;
   border-radius: 0;
