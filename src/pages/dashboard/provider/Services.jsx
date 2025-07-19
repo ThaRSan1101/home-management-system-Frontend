@@ -4,14 +4,12 @@ import { FaInbox, FaSpinner, FaCheckCircle, FaTimesCircle, FaClipboardList } fro
 import Footer from '../../../components/Footer';
 
 const STATUS_TABS = [
-  { key: 'new', label: 'New', icon: <FaInbox /> },
   { key: 'processing', label: 'Processing', icon: <FaSpinner /> },
   { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
   { key: 'cancel', label: 'Cancelled', icon: <FaTimesCircle /> },
 ];
 
 const STATUS_TAB_EMOJIS = {
-  new: '🆕',
   processing: '🔄',
   complete: '✅',
   cancel: '❌',
@@ -24,35 +22,49 @@ const SERVICE_EMOJIS = {
   'AC Service': '❄️',
 };
 
-const initialActivities = [
-  // New
-  { id: 1, service: 'Plumbing', customer: 'John Doe', date: '2024-07-01', time: '9:00 AM', status: 'new', details: 'Fix leaking sink in kitchen' },
-  { id: 2, service: 'Window Cleaning', customer: 'Jane Smith', date: '2024-07-02', time: '11:00 AM', status: 'new', details: 'Clean all windows, 2nd floor' },
-  { id: 3, service: 'AC Service', customer: 'Bob Lee', date: '2024-07-03', time: '2:00 PM', status: 'new', details: 'AC not cooling, needs inspection' },
-  // Processing
-  { id: 4, service: 'Electrical Repair', customer: 'Alice Brown', date: '2024-07-04', time: '10:30 AM', status: 'processing', details: 'Replace broken light switch' },
-  { id: 5, service: 'Carpet Cleaning', customer: 'Tom Clark', date: '2024-07-05', time: '1:00 PM', status: 'processing', details: 'Deep clean living room carpet' },
-  { id: 6, service: 'Plumbing', customer: 'Sara White', date: '2024-07-06', time: '3:30 PM', status: 'processing', details: 'Install new bathroom faucet' },
-  // Complete
-  { id: 7, service: 'Window Cleaning', customer: 'Mike Green', date: '2024-06-28', time: '9:00 AM', status: 'complete', details: 'Cleaned all windows', charge: '3500' },
-  { id: 8, service: 'AC Service', customer: 'Linda Blue', date: '2024-06-27', time: '12:00 PM', status: 'complete', details: 'Replaced AC filter', charge: '2500' },
-  { id: 9, service: 'Electrical Repair', customer: 'Chris Red', date: '2024-06-26', time: '4:00 PM', status: 'complete', details: 'Fixed power outlet', charge: '1800' },
-  // Cancelled
-  { id: 10, service: 'Carpet Cleaning', customer: 'Nina Violet', date: '2024-06-25', time: '10:00 AM', status: 'cancel', details: 'Customer unavailable', cancelReason: 'Customer not at home' },
-  { id: 11, service: 'Plumbing', customer: 'Oscar Black', date: '2024-06-24', time: '2:00 PM', status: 'cancel', details: 'Job cancelled by provider', cancelReason: 'Emergency, unable to attend' },
-  { id: 12, service: 'AC Service', customer: 'Pam Orange', date: '2024-06-23', time: '11:00 AM', status: 'cancel', details: 'Customer rescheduled', cancelReason: 'Rescheduled by customer' },
+const SERVICE_TABS = [
+  { key: 'processing', label: 'Processing' },
+  { key: 'complete', label: 'Complete' },
+  { key: 'cancel', label: 'Cancelled' },
+];
+const SUBSCRIPTION_TABS = [
+  { key: 'processing', label: 'Processing' },
+  { key: 'cancel', label: 'Cancelled' },
+];
+
+const initialServiceActivities = [
+  { id: 4, service: 'Electrical Repair', customer: 'Alice Brown', date: '2024-07-04', time: '10:30 AM', location: 'Colombo 01', status: 'processing' },
+  { id: 5, service: 'Carpet Cleaning', customer: 'Tom Clark', date: '2024-07-05', time: '1:00 PM', location: 'Colombo 02', status: 'processing' },
+  { id: 6, service: 'Plumbing', customer: 'Sara White', date: '2024-07-06', time: '3:30 PM', location: 'Colombo 03', status: 'processing' },
+  { id: 7, service: 'Window Cleaning', customer: 'Mike Green', date: '2024-06-28', time: '9:00 AM', location: 'Colombo 04', status: 'complete', charge: '3500' },
+  { id: 8, service: 'AC Service', customer: 'Linda Blue', date: '2024-06-27', time: '12:00 PM', location: 'Colombo 05', status: 'complete', charge: '2500' },
+  { id: 9, service: 'Electrical Repair', customer: 'Chris Red', date: '2024-06-26', time: '4:00 PM', location: 'Colombo 06', status: 'complete', charge: '1800' },
+  { id: 10, service: 'Carpet Cleaning', customer: 'Nina Violet', date: '2024-06-25', time: '10:00 AM', location: 'Colombo 07', status: 'cancel', cancelReason: 'Customer not at home' },
+  { id: 11, service: 'Plumbing', customer: 'Oscar Black', date: '2024-06-24', time: '2:00 PM', location: 'Colombo 08', status: 'cancel', cancelReason: 'Emergency, unable to attend' },
+  { id: 12, service: 'AC Service', customer: 'Pam Orange', date: '2024-06-23', time: '11:00 AM', location: 'Colombo 09', status: 'cancel', cancelReason: 'Rescheduled by customer' },
+];
+const initialSubscriptionActivities = [
+  { id: 1, service: 'Monthly Cleaning', customer: 'John Doe', date: '2024-07-10', time: '10:00 AM', location: 'Colombo 10', status: 'processing' },
+  { id: 2, service: 'Weekly Gardening', customer: 'Jane Smith', date: '2024-07-11', time: '2:00 PM', location: 'Colombo 11', status: 'processing' },
+  { id: 3, service: 'Monthly Cleaning', customer: 'Bob Lee', date: '2024-07-01', time: '9:00 AM', location: 'Colombo 12', status: 'cancel', cancelReason: 'Customer cancelled' },
 ];
 
 export default function ProviderActivity() {
-  const [activeTab, setActiveTab] = useState('new');
-  const [activities, setActivities] = useState(initialActivities);
+  const [topTab, setTopTab] = useState('service');
+  const [activeTab, setActiveTab] = useState('processing');
+  const [serviceActivities, setServiceActivities] = useState(initialServiceActivities);
+  const [subscriptionActivities, setSubscriptionActivities] = useState(initialSubscriptionActivities);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [modalActivity, setModalActivity] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
   const [completeCharge, setCompleteCharge] = useState('');
   const [completeServiceName, setCompleteServiceName] = useState('');
+  const [waitingForCustomer, setWaitingForCustomer] = useState(false);
+  const [pendingCompleteId, setPendingCompleteId] = useState(null);
 
+  const TABS = topTab === 'service' ? SERVICE_TABS : SUBSCRIPTION_TABS;
+  const activities = topTab === 'service' ? serviceActivities : subscriptionActivities;
   const filteredActivities = activities.filter((activity) => activity.status === activeTab);
 
   const handleAccept = (id) => {
@@ -65,132 +77,203 @@ export default function ProviderActivity() {
     setActivities((prev) => prev.filter((a) => a.id !== id));
   };
 
+  // Cancel logic
   const openCancelModal = (activity) => {
     setModalActivity(activity);
-    setCancelReason('');
     setShowCancelModal(true);
+    setCancelReason('');
   };
-  const openCompleteModal = (activity) => {
-    setModalActivity(activity);
-    setCompleteCharge('');
-    setCompleteServiceName(activity.service);
-    setShowCompleteModal(true);
-  };
-  const handleCancelSubmit = (e) => {
-    e.preventDefault();
-    setActivities((prev) =>
-      prev.map((a) =>
-        a.id === modalActivity.id
-          ? { ...a, status: 'cancel', cancelReason }
-          : a
-      )
-    );
+  const handleCancelSubmit = () => {
+    if (!cancelReason.trim()) return;
+    if (topTab === 'service') {
+      setServiceActivities((prev) =>
+        prev.map((a) =>
+          a.id === modalActivity.id ? { ...a, status: 'cancel', cancelReason } : a
+        )
+      );
+    } else {
+      setSubscriptionActivities((prev) =>
+        prev.map((a) =>
+          a.id === modalActivity.id ? { ...a, status: 'cancel', cancelReason } : a
+        )
+      );
+    }
     setShowCancelModal(false);
     setModalActivity(null);
+    setCancelReason('');
+    setActiveTab('cancel');
   };
-  const handleCompleteSubmit = (e) => {
-    e.preventDefault();
-    setActivities((prev) =>
+
+  // Complete logic
+  const openCompleteModal = (activity) => {
+    setModalActivity(activity);
+    setShowCompleteModal(true);
+    setCompleteServiceName(activity.service || '');
+    setCompleteCharge('');
+  };
+  const handleCompleteSubmit = () => {
+    if (!completeServiceName.trim() || !completeCharge.trim()) return;
+    setShowCompleteModal(false);
+    setWaitingForCustomer(true);
+    setPendingCompleteId(modalActivity.id);
+  };
+  const handleCustomerAccept = () => {
+    setServiceActivities((prev) =>
       prev.map((a) =>
-        a.id === modalActivity.id
-          ? { ...a, status: 'complete', charge: completeCharge, completedService: completeServiceName }
+        a.id === pendingCompleteId
+          ? { ...a, status: 'complete', charge: completeCharge, service: completeServiceName }
           : a
       )
     );
-    setShowCompleteModal(false);
+    setWaitingForCustomer(false);
+    setPendingCompleteId(null);
     setModalActivity(null);
+    setCompleteServiceName('');
+    setCompleteCharge('');
+    setActiveTab('complete');
   };
 
   return (
     <div className="provider-activity-page activity-animate-in" style={{ marginTop: 0, width: '100%', maxWidth: '100%', paddingLeft: '2rem', paddingRight: '1rem' }}>
-      <h1 style={{ color: 'rgb(26, 54, 101)', fontWeight: 900, fontSize: '2rem', margin: 0, letterSpacing: '0.5px', display: 'flex', alignItems: 'center' }}><FaClipboardList style={{marginRight:8}}/>Activity</h1>
-      <p style={{ color: '#64748b', fontSize: '1.1rem', margin: 0, marginBottom: '1.5rem' }}>Manage and track all your service activities in one place.</p>
+      <div className="provider-activity-top-tabs-bg">
+        <div className="provider-activity-top-tabs">
+          <button
+            className={`provider-activity-top-tab-btn${topTab === 'service' ? ' active' : ''}`}
+            onClick={() => { setTopTab('service'); setActiveTab('processing'); }}
+          >
+            Service
+          </button>
+          <button
+            className={`provider-activity-top-tab-btn${topTab === 'subscription' ? ' active' : ''}`}
+            onClick={() => { setTopTab('subscription'); setActiveTab('processing'); }}
+          >
+            Subscription
+          </button>
+        </div>
+      </div>
       <div className="activity-tabs">
-        {STATUS_TABS.map((tab) => (
+        {TABS.map((tab) => (
           <button
             key={tab.key}
             className={`activity-tab-btn${activeTab === tab.key ? ' active' : ''}`}
             onClick={() => setActiveTab(tab.key)}
           >
-            <span className={`tab-emoji-badge tab-emoji-${tab.key}`}>{STATUS_TAB_EMOJIS[tab.key]}</span>
             <span className="tab-label">{tab.label}</span>
           </button>
         ))}
       </div>
-      <div className="activity-table-container" style={{ width: '100%', maxWidth: '100%', marginLeft: 0, marginRight: 0, paddingLeft: 0, paddingRight: 0, overflowX: 'auto' }}>
-        {filteredActivities.length === 0 ? (
-          <div className="activity-empty-state">
-            <FaInbox className="empty-icon" />
-            <h3>No activities found for this status.</h3>
-          </div>
-        ) : (
-          <table className="activity-table">
-            <thead>
+      <div className="user-suggestion-table-container">
+        <table className="user-suggestion-table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Location</th>
+              {activeTab === 'processing' && <th>Action</th>}
+              {activeTab === 'cancel' && <th>Reason</th>}
+              {activeTab === 'complete' && topTab === 'service' && <th>Charge</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredActivities.length === 0 ? (
               <tr>
-                <th>Service</th>
-                <th>Customer</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Details</th>
-                {activeTab === 'new' && <th>Action</th>}
-                {activeTab === 'processing' && <th>Action</th>}
-                {activeTab === 'cancel' && <th>Reason</th>}
-                {activeTab === 'complete' && <th>Charge</th>}
+                <td colSpan={5 + (activeTab === 'processing' ? 1 : 0) + (activeTab === 'cancel' ? 1 : 0) + (activeTab === 'complete' && topTab === 'service' ? 1 : 0)} style={{ textAlign: 'center', color: '#888', padding: '2rem 0' }}>
+                  No activities found for this status.
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredActivities.map((activity, idx) => (
-                <tr key={activity.id} className="activity-row-animate" style={{ animationDelay: `${0.1 + idx * 0.07}s` }}>
-                  <td>
-                    <span className="service-emoji" style={{marginRight:6}}>{SERVICE_EMOJIS[activity.service] || '\ud83d\udd27'}</span>
-                    {activity.service}
-                  </td>
+            ) : (
+              filteredActivities.map((activity) => (
+                <tr key={activity.id}>
+                  <td>{activity.service}</td>
                   <td>{activity.customer}</td>
                   <td>{activity.date}</td>
                   <td>{activity.time}</td>
-                  <td>
-                    <span className={`activity-status-badge animated-badge ${activity.status}`}>
-                      {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
-                    </span>
-                  </td>
-                  <td>{activity.details}</td>
-                  {activeTab === 'new' && (
-                    <td>
-                      <div className="activity-action-btn-group">
-                        <button className="activity-accept-btn animated-btn" onClick={() => handleAccept(activity.id)}>
-                          Accept
-                        </button>
-                        <button className="activity-decline-btn animated-btn" onClick={() => handleDecline(activity.id)}>
-                          Decline
-                        </button>
-                      </div>
-                    </td>
-                  )}
+                  <td>{activity.location || '-'}</td>
                   {activeTab === 'processing' && (
                     <td>
                       <div className="activity-action-btn-group">
-                        <button className="activity-cancel-btn animated-btn" onClick={() => openCancelModal(activity)}>
+                        <button className="activity-cancel-btn" onClick={() => openCancelModal(activity)}>
                           Cancel
                         </button>
-                        <button className="activity-complete-btn animated-btn" onClick={() => openCompleteModal(activity)}>
-                          Complete
-                        </button>
+                        {topTab === 'service' && (
+                          <button className="activity-complete-btn" onClick={() => openCompleteModal(activity)}>
+                            Complete
+                          </button>
+                        )}
                       </div>
                     </td>
                   )}
                   {activeTab === 'cancel' && (
                     <td>{activity.cancelReason || '-'}</td>
                   )}
-                  {activeTab === 'complete' && (
+                  {activeTab === 'complete' && topTab === 'service' && (
                     <td>{activity.charge ? `LKR ${activity.charge}` : '-'}</td>
                   )}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
+
+      {/* Cancel Modal */}
+      {showCancelModal && (
+        <div className="activity-modal-overlay">
+          <div className="activity-modal">
+            <h3>Cancel Service</h3>
+            <textarea
+              className="activity-modal-textarea"
+              placeholder="Enter reason for cancellation..."
+              value={cancelReason}
+              onChange={e => setCancelReason(e.target.value)}
+              rows={3}
+            />
+            <div className="activity-modal-actions">
+              <button className="activity-modal-cancel-btn" onClick={() => setShowCancelModal(false)}>Close</button>
+              <button className="activity-modal-submit-btn" onClick={handleCancelSubmit} disabled={!cancelReason.trim()}>Submit</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Complete Modal */}
+      {showCompleteModal && (
+        <div className="activity-modal-overlay">
+          <div className="activity-modal">
+            <h3>Complete Service</h3>
+            <input
+              className="activity-modal-input"
+              placeholder="Service Name"
+              value={completeServiceName}
+              onChange={e => setCompleteServiceName(e.target.value)}
+            />
+            <input
+              className="activity-modal-input"
+              placeholder="Amount (LKR)"
+              type="number"
+              value={completeCharge}
+              onChange={e => setCompleteCharge(e.target.value)}
+            />
+            <div className="activity-modal-actions">
+              <button className="activity-modal-cancel-btn" onClick={() => setShowCompleteModal(false)}>Close</button>
+              <button className="activity-modal-submit-btn" onClick={handleCompleteSubmit} disabled={!completeServiceName.trim() || !completeCharge.trim()}>Submit</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Waiting for Customer Acceptance Popup */}
+      {waitingForCustomer && (
+        <div className="activity-modal-overlay">
+          <div className="activity-modal">
+            <h3>Waiting for Customer Acceptance</h3>
+            <p>The customer has been notified. Please wait for their confirmation.</p>
+            {/* Button removed as per user request */}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
