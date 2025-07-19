@@ -158,3 +158,87 @@
     min-width: 60px;
   }
 } 
+.profile-edit-btn {
+  background: #1a3665;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 1.7rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-top: 0.7rem;
+  box-shadow: 0 2px 8px rgba(26,54,101,0.10);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  display: block;
+  width: 100%;
+  letter-spacing: 0.5px;
+  margin-bottom: -1rem;
+}
+.profile-edit-btn:hover {
+  background: #16305a;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(26,54,101,0.18);
+}
+.profile-edit-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(26,54,101,0.13);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-edit-modal {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(26,54,101,0.13);
+  padding: 2.2rem 2.2rem 1.5rem 2.2rem;
+  min-width: 320px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  animation: fadeInProfile 0.2s;
+}
+.profile-edit-modal h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1a3665;
+  margin-bottom: 1.2rem;
+}
+.profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.profile-edit-form label {
+  font-size: 1.01rem;
+  color: #1a3665;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.profile-edit-form input {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #e6ecf7;
+  font-size: 1.01rem;
+  color: #1a3665;
+  background: #f7f8fa;
+  margin-top: 0.2rem;
+  outline: none;
+  transition: border 0.18s;
+}
+.profile-edit-form input:focus {
+  border: 1.5px solid #1a3665;
+  background: #fff;
+}
+.profile-edit-modal-actions {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+  justify-content: flex-end;
+} 

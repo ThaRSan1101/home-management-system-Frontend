@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Services.css';
-import { FaInbox, FaSpinner, FaCheckCircle, FaTimesCircle, FaClipboardList } from 'react-icons/fa';
+import { FaInbox, FaSpinner, FaCheckCircle, FaTimesCircle, FaClipboardList, FaTools, FaRegCalendarAlt } from 'react-icons/fa';
 import Footer from '../../../components/Footer';
 
 const STATUS_TABS = [
@@ -22,14 +22,28 @@ const SERVICE_EMOJIS = {
   'AC Service': '❄️',
 };
 
+function getTabIcon(tab, isActive) {
+  const color = isActive ? '#fff' : '#222';
+  switch(tab.key) {
+    case 'processing':
+      return <FaSpinner style={{marginRight:'8px', color}} />;
+    case 'complete':
+      return <FaCheckCircle style={{marginRight:'8px', color}} />;
+    case 'cancel':
+      return <FaTimesCircle style={{marginRight:'8px', color}} />;
+    default:
+      return null;
+  }
+}
+
 const SERVICE_TABS = [
   { key: 'processing', label: 'Processing' },
   { key: 'complete', label: 'Complete' },
-  { key: 'cancel', label: 'Cancelled' },
+  { key: 'cancel', label: 'Cancel' },
 ];
 const SUBSCRIPTION_TABS = [
   { key: 'processing', label: 'Processing' },
-  { key: 'cancel', label: 'Cancelled' },
+  { key: 'cancel', label: 'Cancel' },
 ];
 
 const initialServiceActivities = [
@@ -52,7 +66,17 @@ const initialSubscriptionActivities = [
 export default function ProviderActivity() {
   const [topTab, setTopTab] = useState('service');
   const [activeTab, setActiveTab] = useState('processing');
-  const [serviceActivities, setServiceActivities] = useState(initialServiceActivities);
+  const [serviceActivities, setServiceActivities] = useState(() => {
+    // Merge new requests from localStorage if any
+    const stored = localStorage.getItem('provider_service_activities');
+    let activities = stored ? JSON.parse(stored) : initialServiceActivities;
+    const newRequests = JSON.parse(localStorage.getItem('provider_new_requests') || '[]');
+    // Only add requests not already present
+    const existingIds = new Set(activities.map(a => a.id));
+    const merged = [...activities, ...newRequests.filter(r => !existingIds.has(r.id)).map(r => ({ ...r, status: 'processing' }))];
+    localStorage.setItem('provider_service_activities', JSON.stringify(merged));
+    return merged;
+  });
   const [subscriptionActivities, setSubscriptionActivities] = useState(initialSubscriptionActivities);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
@@ -67,15 +91,10 @@ export default function ProviderActivity() {
   const activities = topTab === 'service' ? serviceActivities : subscriptionActivities;
   const filteredActivities = activities.filter((activity) => activity.status === activeTab);
 
-  const handleAccept = (id) => {
-    setActivities((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, status: 'processing' } : a))
-    );
-  };
-
-  const handleDecline = (id) => {
-    setActivities((prev) => prev.filter((a) => a.id !== id));
-  };
+  const activityTabs = [
+    { key: 'service', label: 'Service', icon: FaTools },
+    { key: 'subscription', label: 'Subscription', icon: FaRegCalendarAlt },
+  ];
 
   // Cancel logic
   const openCancelModal = (activity) => {
@@ -135,53 +154,61 @@ export default function ProviderActivity() {
 
   return (
     <div className="provider-activity-page activity-animate-in" style={{ marginTop: 0, width: '100%', maxWidth: '100%', paddingLeft: '2rem', paddingRight: '1rem' }}>
-      <div className="provider-activity-top-tabs-bg">
-        <div className="provider-activity-top-tabs">
-          <button
-            className={`provider-activity-top-tab-btn${topTab === 'service' ? ' active' : ''}`}
-            onClick={() => { setTopTab('service'); setActiveTab('processing'); }}
-          >
-            Service
-          </button>
-          <button
-            className={`provider-activity-top-tab-btn${topTab === 'subscription' ? ' active' : ''}`}
-            onClick={() => { setTopTab('subscription'); setActiveTab('processing'); }}
-          >
-            Subscription
-          </button>
-        </div>
+      <div className="activity-large-icon-tabs">
+        {activityTabs.map(tab => {
+          const Icon = tab.icon;
+          const isActive = topTab === tab.key;
+          return (
+            <button
+              key={tab.key}
+              className={`activity-large-icon-tab${isActive ? ' active' : ''}`}
+              onClick={() => { setTopTab(tab.key); setActiveTab('processing'); }}
+              type="button"
+            >
+              <span className="activity-large-icon-tab-icon">
+                <Icon />
+              </span>
+              <span className="activity-large-icon-tab-label">{tab.label}</span>
+            </button>
+          );
+        })}
       </div>
+      <div className={`activity-status-tabs-bg${topTab === 'subscription' ? ' subscription' : ''}`}>
       <div className="activity-tabs">
-        {TABS.map((tab) => (
+          {TABS.map((tab) => (
           <button
             key={tab.key}
             className={`activity-tab-btn${activeTab === tab.key ? ' active' : ''}`}
             onClick={() => setActiveTab(tab.key)}
           >
+              <span style={{display:'flex',alignItems:'center',gap:'6px'}}>
+                {getTabIcon(tab, activeTab === tab.key)}
             <span className="tab-label">{tab.label}</span>
+              </span>
           </button>
         ))}
       </div>
+          </div>
       <div className="user-suggestion-table-container">
         <table className="user-suggestion-table">
-          <thead>
-            <tr>
-              <th>Service</th>
-              <th>Customer</th>
-              <th>Date</th>
-              <th>Time</th>
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Time</th>
               <th>Location</th>
-              {activeTab === 'processing' && <th>Action</th>}
-              {activeTab === 'cancel' && <th>Reason</th>}
+                {activeTab === 'processing' && <th>Action</th>}
+                {activeTab === 'cancel' && <th>Reason</th>}
               {activeTab === 'complete' && topTab === 'service' && <th>Charge</th>}
-            </tr>
-          </thead>
-          <tbody>
+              </tr>
+            </thead>
+            <tbody>
             {filteredActivities.length === 0 ? (
               <tr>
                 <td colSpan={5 + (activeTab === 'processing' ? 1 : 0) + (activeTab === 'cancel' ? 1 : 0) + (activeTab === 'complete' && topTab === 'service' ? 1 : 0)} style={{ textAlign: 'center', color: '#888', padding: '2rem 0' }}>
                   No activities found for this status.
-                </td>
+                  </td>
               </tr>
             ) : (
               filteredActivities.map((activity) => (
@@ -194,14 +221,14 @@ export default function ProviderActivity() {
                   {activeTab === 'processing' && (
                     <td>
                       <div className="activity-action-btn-group">
-                        <button className="activity-cancel-btn" onClick={() => openCancelModal(activity)}>
-                          Cancel
-                        </button>
                         {topTab === 'service' && (
                           <button className="activity-complete-btn" onClick={() => openCompleteModal(activity)}>
                             Complete
                           </button>
                         )}
+                        <button className="activity-cancel-btn" onClick={() => openCancelModal(activity)}>
+                          Cancel
+                        </button>
                       </div>
                     </td>
                   )}
@@ -214,8 +241,8 @@ export default function ProviderActivity() {
                 </tr>
               ))
             )}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
       </div>
 
       {/* Cancel Modal */}
