@@ -48,7 +48,18 @@ const Navbar = () => {
       <div className="navbar-inner">
         {/* Logo Left */}
         <div className="navbar-brand">
-          <Link to="/" onClick={handleLinkClick} aria-label="Home" style={{display: 'flex', alignItems: 'center', gap: '0'}}>
+          <Link
+            to="/"
+            onClick={e => {
+              handleLinkClick();
+              setTimeout(() => {
+                if (window.location.pathname === '/') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }, 0);
+            }}
+            aria-label="Home"
+            style={{display: 'flex', alignItems: 'center', gap: '0'}}>
             <Logo size="small" />
             <span className="navbar-title">ServiceHub</span>
           </Link>

@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: -7rem;
 }
 
 .monitoring-section-heading {
@@ -57,7 +58,7 @@
   object-fit: contain;
   margin-bottom: 1.2rem;
   border-radius: 10px;
-  background: #f3f4f6;
+  /*background: #f3f4f6;*/
 }
 
 .monitoring-desc {

@@ -1,76 +1,143 @@
 .admin-topbar {
-  position: fixed;
-  top: 0;
-  left: 230px;
-  width: calc(100vw - 230px);
-  z-index: 100;
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
+  width: 100%;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  padding: 1rem 2rem 0.5rem 0;
-  min-height: 60px;
-  box-sizing: border-box;
+  align-items: flex-start;
+  padding: 1.2rem 2.2rem 0.5rem 0;
+  background: transparent;
+  z-index: 2000;
 }
-
-.admin-topbar-bell {
-  font-size: 26px;
-  margin-right: 28px;
-  cursor: pointer;
-  color: #27477e;
+.admin-topbar-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  margin-right: -5rem;
 }
-
-.admin-topbar-profile-wrapper {
+.admin-topbar-notification-section,
+.admin-topbar-profile-section {
   position: relative;
+  display: flex;
+  align-items: flex-start;
+  height: 44px;
 }
-
-.admin-topbar-avatar {
-  font-size: 34px;
+.admin-topbar-icon {
+  width: 44px;
+  height: 44px;
+  color: #1a3665;
   cursor: pointer;
-  color: #27477e;
+  border-radius: 50%;
+  background: #e6faf5;
+  box-shadow: 0 2px 8px rgba(26,54,101,0.08);
+  transition: box-shadow 0.18s;
+  padding: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.admin-topbar-dropdown {
+.admin-topbar-icon:hover {
+  box-shadow: 0 4px 16px rgba(26,54,101,0.18);
+}
+.admin-notification-dropdown {
   position: absolute;
+  top: 48px;
   right: 0;
-  top: 40px;
   background: #fff;
   color: #1a3665;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.13);
-  min-width: 240px;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(26,54,101,0.13);
+  min-width: 270px;
+  padding: 1.2rem 1.2rem 1.2rem 1.2rem;
   z-index: 100;
-  padding: 1rem 1.2rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  font-size: 15px;
+  gap: 0.7rem;
+  animation: fadeInProfile 0.2s;
 }
-
-.admin-topbar-name {
-  font-weight: 700;
-  font-size: 17px;
-  margin-bottom: 6px;
-}
-
-.admin-topbar-detail {
-  margin-bottom: 4px;
-}
-
-.admin-topbar-logout-btn {
-  background: none;
-  border: none;
+.admin-notification-header {
+  font-size: 1.08rem;
+  font-weight: 800;
   color: #1a3665;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  margin-top: 8px;
-  transition: color 0.18s;
+  margin-bottom: 0.5rem;
 }
-
-.admin-topbar-logout-btn:hover {
-  color: #27477e;
+.admin-notification-item {
+  background: #f7f8fa;
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+  margin-bottom: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.admin-notification-message {
+  color: #222;
+  font-size: 1.01rem;
+}
+.admin-notification-time {
+  color: #888;
+  font-size: 0.92rem;
+  margin-top: 0.1rem;
+}
+.admin-notification-empty {
+  color: #aaa;
+  font-size: 1rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+.admin-profile-dropdown {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: #fff;
+  color: #1a3665;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(26,54,101,0.13);
+  min-width: 270px;
+  padding: 1.2rem 1.5rem;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  animation: fadeInProfile 0.2s;
+}
+.admin-profile-header {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #1a3665;
+  margin-bottom: 0.5rem;
+}
+.admin-profile-row {
+  font-size: 1.02rem;
+  color: #1a3665;
+  display: flex;
+  gap: 0.5rem;
+}
+.admin-profile-row span {
+  font-weight: 700;
+  color: #1a3665;
+  min-width: 90px;
+}
+.admin-profile-logout-btn {
+  background: #1a3665;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 1.7rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-top: 1.2rem;
+  box-shadow: 0 2px 8px rgba(26,54,101,0.10);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  display: block;
+  width: 100%;
+  letter-spacing: 0.5px;
+}
+.admin-profile-logout-btn:hover {
+  background: #16305a;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(26,54,101,0.18);
+}
+@keyframes fadeInProfile {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 } 
