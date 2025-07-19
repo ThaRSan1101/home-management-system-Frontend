@@ -2,10 +2,10 @@ import React from "react";
 import './About.css';
 
 const team = [
-  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "src/assets/tharshan.jpg" },
-  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "src/assets/abiramy.jpg" },
-  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "src/assets/tharshi.jpg" },
-  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "src/assets/abiram.jpg" }
+  { name: "Yoganathan Arultharshan", role: "Founder and CEO", img: "/src/assets/tharshan.jpg" },
+  { name: "Abiramy Thirulinganathan", role: "Chief Technology Officer", img: "/src/assets/abiramy.jpg" },
+  { name: "Tharshika Pathmanathan", role: "Chief Financial Officer", img: "/src/assets/tharshi.jpg" },
+  { name: "Maheswaralingam Aberam", role: "Chief Service Coordinator", img: "/src/assets/abiram.jpg" }
 ];
 
 export default function About() {
