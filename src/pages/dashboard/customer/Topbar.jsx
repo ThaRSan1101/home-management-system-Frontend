@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaUserCircle, FaBell } from 'react-icons/fa';
+import { FaUser, FaBell } from 'react-icons/fa';
 import './Topbar.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -74,7 +74,7 @@ const Topbar = () => {
           )}
         </div>
         <div className="topbar-profile-section" ref={profileRef}>
-          <FaUserCircle className="topbar-profile-icon" size={38} onClick={() => setProfileOpen((o) => !o)} />
+          <FaUser className="topbar-profile-icon solid" size={38} onClick={() => setProfileOpen((o) => !o)} />
           {profileOpen && (
             <div className="profile-card-dropdown">
               <div className="profile-card-header">Customer Profile</div>
