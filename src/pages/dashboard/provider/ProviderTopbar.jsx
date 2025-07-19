@@ -3,11 +3,11 @@ import { FaBell, FaUser } from 'react-icons/fa';
 import './ProviderTopbar.css';
 
 const provider = {
-  fullName: 'John Provider',
-  address: '456 Service Rd, Colombo 00500',
-  phone: '+94 77 987 6543',
-  email: 'john.provider@email.com',
-  joined: '2022-08-10',
+  fullName: localStorage.getItem('provider_fullName') || '',
+  address: localStorage.getItem('provider_address') || '',
+  phone: localStorage.getItem('provider_phone') || '',
+  email: localStorage.getItem('provider_email') || '',
+  joined: localStorage.getItem('provider_joined') || '',
   avatar: '/src/assets/man.png',
 };
 
@@ -68,7 +68,7 @@ const ProviderTopbarContent = () => {
               <div className="profile-card-row"><span>Phone:</span> {provider.phone}</div>
               <div className="profile-card-row"><span>Email:</span> {provider.email}</div>
               <div className="profile-card-row"><span>Joined:</span> {provider.joined}</div>
-              <button className="provider-sidebar-logout-btn-bottom" style={{marginTop: '1.2rem'}} onClick={() => window.location.href='/login'}>
+              <button className="provider-sidebar-logout-btn-bottom" style={{marginTop: '1.2rem'}} onClick={() => { localStorage.clear(); window.location.href='/login'; }}>
                 Logout
               </button>
             </div>

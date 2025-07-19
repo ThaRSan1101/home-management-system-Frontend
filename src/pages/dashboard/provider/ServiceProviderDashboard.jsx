@@ -213,10 +213,13 @@ const newRequests = [
     }
   };
 
+  // Get provider name from localStorage
+  const providerName = localStorage.getItem('provider_fullName') || '';
+
   return (
     <div className="provider-dashboard-main-bg">
       <div className="dashboard-topbar-row">
-        <h1 className="dashboard-welcome-top">Welcome back </h1>
+        <h1 className="dashboard-welcome-top">Welcome back {providerName && <span>{providerName} !</span>}</h1>
 
       </div>
       <div className="dashboard-stats-row">

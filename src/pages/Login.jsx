@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash, FaLock, FaUser, FaKey } from 'react-icons/fa';
 import Logo from '../components/Logo';
@@ -23,6 +23,10 @@ const Login = () => {
   const [forgotSuccess, setForgotSuccess] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setFormData({ email: '', password: '' });
+  }, []); // Clear fields on mount
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,6 +65,19 @@ const Login = () => {
           localStorage.setItem('customer_phone', result.user_details.phone || '');
           localStorage.setItem('customer_email', result.user_details.email || '');
           localStorage.setItem('customer_joined', result.user_details.joined || '');
+        }
+        // Store provider details in localStorage for dashboard/profile use
+        if (result.user_type === 'provider' && result.user_details) {
+          localStorage.setItem('provider_fullName', result.user_details.fullName || '');
+          localStorage.setItem('provider_address', result.user_details.address || '');
+          localStorage.setItem('provider_phone', result.user_details.phone || '');
+          localStorage.setItem('provider_email', result.user_details.email || '');
+          localStorage.setItem('provider_joined', result.user_details.joined || '');
+        }
+        // Store admin details in localStorage for dashboard/profile use
+        if (result.user_type === 'admin' && result.user_details) {
+          localStorage.setItem('admin_fullName', result.user_details.fullName || '');
+          localStorage.setItem('admin_email', result.user_details.email || '');
         }
 
         // Redirect based on user type and user id

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
 import Service from './Service';
@@ -14,6 +14,12 @@ import Topbar from './Topbar';
 
 const CustomerDashboard = ({ userName: propUserName }) => {
   const { userId } = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem('customer_fullName')) {
+      navigate('/login', { replace: true });
+    }
+  }, [navigate]);
   // Try to get full name from localStorage (set this after login/registration)
   const storedFullName = localStorage.getItem('customer_fullName');
   const userName = storedFullName || propUserName || '';
