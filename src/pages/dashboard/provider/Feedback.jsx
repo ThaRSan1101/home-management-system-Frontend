@@ -151,7 +151,6 @@ export default function ProviderFeedback() {
         <span role="img" aria-label="celebration">🎉</span>
         Showing {filtered.length} of {feedbackData.length} reviews
       </div>
-      <Footer />
     </div>
   );
 } 

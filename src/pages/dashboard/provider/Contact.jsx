@@ -161,7 +161,6 @@ const ProviderContact = () => {
           <div className="map-overlay">Click to open Our Location</div>
         </div>
       </section>
-      <Footer />
     </>
   );
 };
