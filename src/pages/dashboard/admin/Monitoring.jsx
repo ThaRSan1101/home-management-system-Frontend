@@ -1,23 +1,57 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Monitoring.css';
+
+const DEMO_ACCOUNTS = {
+  customer: {
+    email: 'customer@gmail.com',
+    password: 'customer', // <-- Replace with real password
+  },
+  provider: {
+    email: 'provider@gmail.com',
+    password: 'provider', // <-- Replace with real password
+  },
+};
 
 const Monitoring = () => {
   const navigate = useNavigate();
 
-  const handleImpersonate = async (type) => {
+  const handleQuickLogin = async (type) => {
+    const creds = DEMO_ACCOUNTS[type];
+    if (!creds) return;
     try {
-      const res = await fetch(
-        `http://localhost/project-root/backend/home-management-system-Backend/api/impersonate.php?type=${type}`,
-        { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' } }
+      const response = await axios.post(
+        'http://localhost/project-root/backend/home-management-system-Backend/api/login.php',
+        {
+          email: creds.email,
+          password: creds.password,
+        },
+        { withCredentials: true }
       );
-      if (!res.ok) throw new Error('Failed to impersonate');
-      const data = await res.json();
-      localStorage.setItem('token', data.token);
-      if (type === 'customer') navigate('/customer/dashboard');
-      else navigate('/provider/dashboard');
+      const result = response.data;
+      if (result.status === 'success') {
+        // Store user details in localStorage (same as Login.jsx)
+        if (result.user_type === 'customer' && result.user_details) {
+          localStorage.setItem('customer_fullName', result.user_details.fullName || '');
+          localStorage.setItem('customer_address', result.user_details.address || '');
+          localStorage.setItem('customer_phone', result.user_details.phone || '');
+          localStorage.setItem('customer_email', result.user_details.email || '');
+          localStorage.setItem('customer_joined', result.user_details.joined || '');
+          navigate(`/customer/dashboard/${result.user_id}/home`);
+        } else if (result.user_type === 'provider' && result.user_details) {
+          localStorage.setItem('provider_fullName', result.user_details.fullName || '');
+          localStorage.setItem('provider_address', result.user_details.address || '');
+          localStorage.setItem('provider_phone', result.user_details.phone || '');
+          localStorage.setItem('provider_email', result.user_details.email || '');
+          localStorage.setItem('provider_joined', result.user_details.joined || '');
+          navigate(`/provider/dashboard/${result.user_id}`);
+        }
+      } else {
+        alert('Login failed: ' + (result.message || 'Unknown error'));
+      }
     } catch (err) {
-      alert('Impersonation failed');
+      alert('Login failed: ' + (err.response?.data?.message || err.message));
     }
   };
 
@@ -37,7 +71,7 @@ const Monitoring = () => {
           </div>
           <button
             className="monitoring-btn"
-            onClick={() => handleImpersonate('customer')}
+            onClick={() => handleQuickLogin('customer')}
           >
             Switch as Customer
           </button>
@@ -54,7 +88,7 @@ const Monitoring = () => {
           </div>
           <button
             className="monitoring-btn"
-            onClick={() => handleImpersonate('provider')}
+            onClick={() => handleQuickLogin('provider')}
           >
             Switch as Provider
           </button>

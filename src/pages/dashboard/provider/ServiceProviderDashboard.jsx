@@ -216,18 +216,8 @@ const newRequests = [
   return (
     <div className="provider-dashboard-main-bg">
       <div className="dashboard-topbar-row">
-        <h1 className="dashboard-welcome-top">Welcome back <span role="img" aria-label="wave">👋</span></h1>
-        <div className="dashboard-topbar-right">
-          <button className="notification-btn" onClick={() => setNotifOpen(!notifOpen)}>
-            <FaBell className="notification-icon" />
-            {unreadCount > 0 && (
-              <span className="notification-badge">{unreadCount}</span>
-            )}
-          </button>
-          <button className="profile-btn" onClick={() => setProfileOpen(!profileOpen)}>
-            <FaUser className="profile-avatar" />
-          </button>
-        </div>
+        <h1 className="dashboard-welcome-top">Welcome back </h1>
+
       </div>
       <div className="dashboard-stats-row">
         {statCards.map((stat, idx) => (
