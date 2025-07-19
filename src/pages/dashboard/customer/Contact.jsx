@@ -119,7 +119,7 @@ const DashboardContact = () => {
             <div className="custom-map-marker-dot"></div>
           </div>
           <button className="get-directions-btn" onClick={handleMapClick} type="button">
-            GET DIRECTIONS
+            Click to open Our Location
           </button>
         </div>
       </section>

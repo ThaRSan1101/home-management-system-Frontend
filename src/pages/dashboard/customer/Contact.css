@@ -79,7 +79,7 @@
   z-index: 1;
 }
 .customer-dashboard-contactus-left {
-  background: #193d7b;
+  background:#26406d;
   color: #fff;
   flex: 1.1;
   display: flex;
@@ -135,7 +135,7 @@
 }
 .customer-dashboard-contactus-send-btn {
   background: #fff;
-  color: #005f4b;
+  color: #1a3665;
   border: none;
   border-radius: 16px;
   padding: 0.9rem 2.2rem;
@@ -177,7 +177,7 @@
   z-index: 3;
   margin-left: -40px;
   position: relative;
-  margin-top: 5rem;
+  margin-top: 3.5rem;
   animation: slideInRight 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
 }
 .customer-dashboard-contactus-right-content {
@@ -188,7 +188,7 @@
   align-items: flex-start;
 }
 .customer-dashboard-contactus-contactus {
-  color: #00796b;
+  color: #1a3665;
   font-size: 1.8rem;
   font-family: 'Baloo 2', 'Comic Sans MS', 'Arial Rounded MT Bold', Arial, sans-serif;
   font-weight: 700;
@@ -215,13 +215,12 @@
   align-items: center;
   gap: 1.1rem;
   margin-bottom: 1.2rem;
-  background: #f6fcfa;
-  border-radius: 50px;
-  padding: 0.7rem 1.2rem;
+  background: #edeff3;
+  border-radius: 18px;
+  padding: 1.2rem 1rem;
 }
 .customer-dashboard-contactus-info-icon {
-  color: #005f4b;
-  background: #e6faf5;
+  color: #1a3665;
   border-radius: 50%;
   font-size: 2rem;
   padding: 0.4rem;
@@ -272,9 +271,9 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -100%);
-  width: 60px;
-  height: 60px;
-  background: #17694a;
+  width: 40px;
+  height: 40px;
+  background:#1a3665;
   border-radius: 50% 50% 50% 50% / 60% 60% 100% 100%;
   display: flex;
   align-items: center;
@@ -290,15 +289,15 @@
   bottom: -18px;
   transform: translateX(-50%);
   width: 18px;
-  height: 18px;
-  background: #17694a;
+  height: 25px;
+  background: #1a3665;
   border-radius: 50%;
   clip-path: polygon(50% 100%, 0 0, 100% 0);
   z-index: 1;
 }
 .custom-map-marker-dot {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   background: #fff;
   border-radius: 50%;
   z-index: 2;
@@ -306,19 +305,20 @@
 
 .get-directions-btn {
   position: absolute;
-  left: 5rem;
-  bottom: 3rem;
-  right:3rem;
-  width: 80%;
-  background: #185c3b;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: #1a3665;
   color: #fff;
   border: none;
-  border-radius: 0;
-  padding: 1.2rem 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  padding: 0.7rem 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0.5px;
   cursor: pointer;
   text-align: center;
   box-shadow: 0 2px 8px rgba(24,92,59,0.10);
@@ -327,7 +327,8 @@
   display: block;
 }
 .get-directions-btn:hover {
-  background: #114127;
+  background: #274b8c;
+  color: #fff;
 }
 
 .dashboard-map-overlay {
@@ -335,7 +336,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 95, 75, 0.85);
+  background: #1a3665;
   color: #fff;
   font-size: 1rem;
   font-weight: 600;

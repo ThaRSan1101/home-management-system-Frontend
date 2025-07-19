@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaTools, FaHammer, FaLightbulb, FaPaintRoller, FaTv, FaBroom } from 'react-icons/fa';
 import service1 from '../../../assets/service1.jpg';
 import service2 from '../../../assets/service2.jpg';
 import service3 from '../../../assets/service3.jpg';
@@ -14,36 +15,48 @@ const services = [
   {
     id: 1,
     image: service1,
+    category: 'Pipes, Leaks & Water Flow',
+    icon: <FaTools color="#1a3665" size={28} />, // Plumbing icon
     title: 'Plumbing Services',
-    description: 'Fixing leaks, clogs, and water flow issues. Quick response for urgent plumbing problems.',
+    description: 'Fixing leaks, clogs, and water flow issues. Bathroom and kitchen plumbing made simple. Quick response for urgent plumbing problems.',
   },
   {
     id: 2,
     image: service2,
+    category: 'Woodwork & Furniture',
+    icon: <FaHammer color="#1a3665" size={28} />, // Carpentry icon
     title: 'Carpentry Services',
-    description: 'Expert repairs for doors, windows, and furniture. Custom woodwork made easy and affordable.',
+    description: 'Expert repairs for doors, windows, and furniture. Custom woodwork made easy and affordable. Fast fixes and installations for all wood-related needs.',
   },
   {
     id: 3,
     image: service3,
+    category: 'Wiring, Lights & Power',
+    icon: <FaLightbulb color="#1a3665" size={28} />, // Electrical icon
     title: 'Electrical Services',
-    description: 'Safe installation of lights, fans, and switches. Quick repairs for power issues and wiring.',
+    description: 'Safe installation of lights, fans, and switches. Quick repairs for power issues and wiring. Certified electricians for hassle-free service.',
   },
   {
     id: 4,
     image: service4,
+    category: 'Painting & Walls',
+    icon: <FaPaintRoller color="#1a3665" size={28} />, // Painting icon
     title: 'Painting Services',
     description: 'Clean, smooth wall painting with lasting results. Interior or exterior, big or small.',
   },
   {
     id: 5,
     image: service5,
+    category: 'Appliance Repair',
+    icon: <FaTv color="#1a3665" size={28} />, // Electronics icon
     title: 'Electronic Services',
     description: 'Get your home appliances fixed fast. We service TVs, fridges, ovens, washers & more.',
   },
   {
     id: 6,
     image: service6,
+    category: 'Home & Deep Cleaning',
+    icon: <FaBroom color="#1a3665" size={28} />, // Cleaning icon
     title: 'Cleaning Service',
     description: 'Deep cleaning for every space in your home. Kitchen, bathroom, and full-house cleaning.',
   },
@@ -51,33 +64,39 @@ const services = [
 
 const subscriptionPlans = [
   {
-    title: 'Weekly Plan',
-    price: 'LKR 2,000/week',
+    plan: 'Weekly Plan',
+    title: 'Vehicle Wash',
     features: [
-      '1 Home Cleaning per week',
-      'Priority Booking',
-      'Basic Maintenance Check',
-      'Cancel anytime',
+      'Weekly Vehicle Wash',
+      'Car and bike washing',
+      'Exterior and tire cleaning',
+      'Basic interior wipe',
+      'One service every week',
+      'Doorstep service',
     ],
   },
   {
-    title: 'Monthly Plan',
-    price: 'LKR 7,000/month',
+    plan: 'Monthly Plan',
+    title: 'Deep Cleaning',
     features: [
-      '4 Home Cleanings per month',
-      'Discounted Extra Services',
-      'Free Plumbing/Electrical Check',
-      'Cancel anytime',
+      'Monthly Deep Cleaning',
+      'Home, kitchen, bathroom, office, garden',
+      'Full deep cleaning and dust removal',
+      'Disinfection included',
+      'One visit per month',
+      'Trusted professionals',
     ],
   },
   {
-    title: 'Yearly Plan',
-    price: 'LKR 75,000/year',
+    plan: 'Yearly Plan',
+    title: 'Utility Check',
     features: [
-      '48 Home Cleanings per year',
-      'All Maintenance Checks Included',
-      'Annual Deep Cleaning',
-      'Best Value',
+      'Annual Maintenance',
+      'AC deep cleaning',
+      'Plumbing check-up',
+      'Electrical safety inspection',
+      'One visit per service yearly',
+      'Preventive maintenance',
     ],
   },
 ];
@@ -299,8 +318,10 @@ const Service = () => {
           <div className="customer-service-card" key={service.id}>
             <div className="customer-service-img-wrapper">
               <img src={service.image} alt={service.title} className="customer-service-img" />
+              <div className="customer-service-icon-badge">{service.icon}</div>
             </div>
             <div className="customer-service-info">
+              <div className="customer-service-category">{service.category}</div>
               <h3 className="customer-service-name">{service.title}</h3>
               <p className="customer-service-desc">{service.description}</p>
               <button className="customer-service-btn" onClick={()=>openBooking('service', service)}>Book Now</button>
@@ -310,18 +331,19 @@ const Service = () => {
       </div>
 
       <section className="customer-subscription-section">
-        <h2 className="customer-subscription-title">Subscription Plans</h2>
         <div className="customer-subscription-grid">
           {subscriptionPlans.map((plan, idx) => (
             <div className="customer-subscription-card" key={plan.title}>
-              <div className="customer-subscription-header">{plan.title}</div>
-              <div className="customer-subscription-price">{plan.price}</div>
-              <ul className="customer-subscription-features">
+              <div className="customer-subscription-header" style={{fontSize: '2rem', fontWeight: 800, color: '#1a3665', textAlign: 'center', marginBottom: '0.7rem'}}>{plan.plan}</div>
+              <div className="customer-subscription-title" style={{fontSize: '2.1rem', fontWeight: 900, color: '#1a3665', textAlign: 'center', marginBottom: '1.5rem'}}>{plan.title}</div>
+              <ul className="customer-subscription-features" style={{marginBottom: '2.5rem'}}>
                 {plan.features.map((feature, i) => (
-                  <li key={i}>✔ {feature}</li>
+                  <li key={i} style={{color: '#1a3665', fontSize: '1.18rem', marginBottom: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.7rem'}}>
+                    <span style={{color: '#2563eb', fontSize: '1.2rem', fontWeight: 700}}>✓</span> {feature}
+                  </li>
                 ))}
               </ul>
-              <button className="customer-subscription-btn" onClick={()=>openBooking('subscription', plan)}>Subscribe</button>
+              <button className="customer-subscription-btn" style={{background: '#1a3665', color: '#fff', borderRadius: '32px', fontSize: '1.18rem', fontWeight: 700, padding: '1.1rem 0', width: '80%', margin: '0 auto', display: 'block', boxShadow: '0 2px 8px rgba(26,54,101,0.10)'}}>Subscribe</button>
             </div>
           ))}
         </div>

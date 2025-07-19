@@ -386,7 +386,8 @@
 .aboutus-title {
   font-size: 5rem;
   font-weight: 900;
-  color: #1a2340;
+  color: #232323;
+
   margin-bottom: 0.5rem;
   padding-right: 40rem;
   letter-spacing: -1px;
@@ -396,7 +397,7 @@
 .aboutus-subtitle {
   font-size: 2rem;
   font-weight: 800;
-  color: #232b3b;
+  color: #1a3665;
   margin-bottom: 2.2rem;
   text-align: center;
   padding-right: 51rem;
@@ -404,7 +405,7 @@
 
 .aboutus-desc {
   font-size: 1.18rem;
-  color: #232b3b;
+  color: #232323;
   text-align: center;
   max-width: 800px;
   margin: 0 auto 3.5rem auto;

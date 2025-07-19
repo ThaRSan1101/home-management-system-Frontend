@@ -15,8 +15,8 @@ export default function About() {
         <h1 className="aboutus-title">About Us</h1>
         <h2 className="aboutus-subtitle">ServiceHub</h2>
         <p className="aboutus-desc">
-          ServiceHub is a trusted digital platform that connects customers with verified service professionals for all their home needs, including cleaning, repairs, electrical work, and more. Designed for convenience and reliability, ServiceHub allows customers to easily book services, track appointments, and receive bills online, while ensuring that every provider is manually approved by the admin for quality and safety.
-        </p>
+            ServiceHub is a trusted digital platform that connects customers with verified service professionals for all their home needs, including cleaning, repairs, electrical work, and more. Designed for convenience and reliability, ServiceHub allows customers to easily book services, track appointments, and receive bills online, while ensuring that every provider is manually approved by the admin for quality and safety.
+          </p>
         <div className="aboutus-stats-row">
           <div className="aboutus-stat-card">
             <div className="aboutus-stat-value">10K+</div>
@@ -33,7 +33,7 @@ export default function About() {
           <div className="aboutus-goal-card">
             <div className="aboutus-goal-title">Our Goal is to Simplify Home Services</div>
           </div>
-        </div>
+                </div>
         <div className="aboutus-team-section">
           <h2 className="aboutus-team-title">Meet the team</h2>
           <div className="aboutus-team-grid">
