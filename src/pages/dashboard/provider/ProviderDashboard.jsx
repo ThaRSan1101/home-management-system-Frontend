@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
 import ProviderSidebar from './ProviderSidebar';
 import ProviderTopbar from './ProviderTopbar';
 import ServiceProviderDashboard from './ServiceProviderDashboard';
@@ -10,6 +10,12 @@ import './ServiceProviderDashboard.css';
 
 const ProviderDashboard = ({ userName: propUserName }) => {
   const { userId } = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem('provider_fullName')) {
+      navigate('/login', { replace: true });
+    }
+  }, [navigate]);
   const userName = propUserName || '';
   return (
     <div className="provider-dashboard-layout">

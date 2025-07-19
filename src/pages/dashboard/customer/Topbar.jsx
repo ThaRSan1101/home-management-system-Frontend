@@ -35,6 +35,7 @@ const Topbar = () => {
   };
 
   const handleLogout = () => {
+    localStorage.clear();
     navigate('/login');
   };
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
 import DashboardHome from './DashboardHome';
 import ServiceBooking from './ServiceBooking';
@@ -14,6 +14,12 @@ import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const { userId } = useParams();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!localStorage.getItem('admin_fullName')) {
+      navigate('/login', { replace: true });
+    }
+  }, [navigate]);
   return (
     <div className="admin-dashboard-layout">
       <AdminSidebar userId={userId} />

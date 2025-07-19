@@ -38,14 +38,14 @@ const Monitoring = () => {
           localStorage.setItem('customer_phone', result.user_details.phone || '');
           localStorage.setItem('customer_email', result.user_details.email || '');
           localStorage.setItem('customer_joined', result.user_details.joined || '');
-          navigate(`/customer/dashboard/${result.user_id}/home`);
+          navigate(`/customer/dashboard/${result.user_id}/home`); // push
         } else if (result.user_type === 'provider' && result.user_details) {
           localStorage.setItem('provider_fullName', result.user_details.fullName || '');
           localStorage.setItem('provider_address', result.user_details.address || '');
           localStorage.setItem('provider_phone', result.user_details.phone || '');
           localStorage.setItem('provider_email', result.user_details.email || '');
           localStorage.setItem('provider_joined', result.user_details.joined || '');
-          navigate(`/provider/dashboard/${result.user_id}`);
+          navigate(`/provider/dashboard/${result.user_id}`); // push, not replace
         }
       } else {
         alert('Login failed: ' + (result.message || 'Unknown error'));
