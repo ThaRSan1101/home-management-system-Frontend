@@ -18,6 +18,7 @@ const AdminSidebar = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
   const handleLogout = () => {
+    localStorage.clear();
     navigate('/login');
   };
 
