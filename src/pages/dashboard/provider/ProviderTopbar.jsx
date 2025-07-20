@@ -21,6 +21,14 @@ const notifications = [
 const ProviderTopbarContent = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editData, setEditData] = useState({
+    fullName: provider.fullName,
+    address: provider.address,
+    phone: provider.phone,
+    email: provider.email,
+  });
+  const [profileData, setProfileData] = useState(provider);
   const profileRef = useRef();
   const notifRef = useRef();
 
@@ -36,6 +44,19 @@ const ProviderTopbarContent = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleEditChange = (e) => {
+    setEditData({ ...editData, [e.target.name]: e.target.value });
+  };
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem('provider_fullName', editData.fullName);
+    localStorage.setItem('provider_address', editData.address);
+    localStorage.setItem('provider_phone', editData.phone);
+    localStorage.setItem('provider_email', editData.email);
+    setProfileData({ ...profileData, ...editData });
+    setEditOpen(false);
+  };
 
   return (
     <div className="provider-topbar">
@@ -63,11 +84,14 @@ const ProviderTopbarContent = () => {
           {profileOpen && (
             <div className="profile-card-dropdown">
               <div className="profile-card-header">Provider Profile</div>
-              <div className="profile-card-row"><span>Full Name:</span> {provider.fullName}</div>
-              <div className="profile-card-row"><span>Address:</span> {provider.address}</div>
-              <div className="profile-card-row"><span>Phone:</span> {provider.phone}</div>
-              <div className="profile-card-row"><span>Email:</span> {provider.email}</div>
-              <div className="profile-card-row"><span>Joined:</span> {provider.joined}</div>
+              <div className="profile-card-row"><span>Full Name:</span> {profileData.fullName}</div>
+              <div className="profile-card-row"><span>Address:</span> {profileData.address}</div>
+              <div className="profile-card-row"><span>Phone:</span> {profileData.phone}</div>
+              <div className="profile-card-row"><span>Email:</span> {profileData.email}</div>
+              <div className="profile-card-row"><span>Joined:</span> {profileData.joined}</div>
+              <button className="profile-edit-btn" style={{marginTop: '0.7rem'}} onClick={() => setEditOpen(true)}>
+                Edit Profile
+              </button>
               <button className="provider-sidebar-logout-btn-bottom" style={{marginTop: '1.2rem'}} onClick={() => { localStorage.clear(); window.location.href='/login'; }}>
                 Logout
               </button>
@@ -75,6 +99,31 @@ const ProviderTopbarContent = () => {
           )}
         </div>
       </div>
+      {editOpen && (
+        <div className="profile-edit-modal-overlay">
+          <div className="profile-edit-modal">
+            <h3>Edit Profile</h3>
+            <form onSubmit={handleEditSubmit} className="profile-edit-form">
+              <label>Full Name
+                <input name="fullName" value={editData.fullName} onChange={handleEditChange} required />
+              </label>
+              <label>Address
+                <input name="address" value={editData.address} onChange={handleEditChange} required />
+              </label>
+              <label>Phone
+                <input name="phone" value={editData.phone} onChange={handleEditChange} required />
+              </label>
+              <label>Email
+                <input name="email" value={editData.email} onChange={handleEditChange} required type="email" />
+              </label>
+              <div className="profile-edit-modal-actions">
+                <button type="button" className="activity-modal-cancel-btn" onClick={() => setEditOpen(false)}>Cancel</button>
+                <button type="submit" className="activity-modal-submit-btn">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

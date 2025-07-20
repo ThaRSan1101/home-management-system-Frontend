@@ -8,6 +8,12 @@ const statLabels = [
   { key: 'feedback', label: 'Total Feedback' },
 ];
 
+const initialRequests = [
+  { id: 1, service: 'Plumbing', customer: 'Arun Kumar', date: '2024-07-10', time: '2:00 PM', location: 'Colombo 03' },
+  { id: 2, service: 'Electrical', customer: 'Meena Silva', date: '2024-07-11', time: '11:00 AM', location: 'Dehiwala' },
+  { id: 3, service: 'AC Service', customer: 'Raj Perera', date: '2024-07-12', time: '4:30 PM', location: 'Mount Lavinia' },
+];
+
 const ServiceProviderDashboard = () => {
   const [stats, setStats] = useState({
     bookings: 0,
@@ -15,7 +21,13 @@ const ServiceProviderDashboard = () => {
     feedback: 0,
     services: 0,
   });
-  const [upcoming, setUpcoming] = useState([]);
+  const [requests, setRequests] = useState(() => {
+    const stored = localStorage.getItem('provider_new_requests');
+    return stored ? JSON.parse(stored) : initialRequests;
+  });
+  const [showDeclineModal, setShowDeclineModal] = useState(false);
+  const [declineReason, setDeclineReason] = useState('');
+  const [declineRequest, setDeclineRequest] = useState(null);
 
   useEffect(() => {
     setStats({
@@ -24,13 +36,46 @@ const ServiceProviderDashboard = () => {
       feedback: Number(localStorage.getItem('provider_feedback') || 0),
       services: Number(localStorage.getItem('provider_services') || 0),
     });
-    // Load bookings from localStorage
-    const allBookings = JSON.parse(localStorage.getItem('provider_service_bookings') || '[]');
-    setUpcoming(allBookings.filter(b => b.status === 'Pending' || b.status === 'Processing'));
   }, []);
 
   // Get provider name from localStorage
   const providerName = localStorage.getItem('provider_fullName') || '';
+
+  const handleAccept = (req) => {
+    // Remove from new requests
+    const updatedRequests = requests.filter(r => r.id !== req.id);
+    setRequests(updatedRequests);
+    localStorage.setItem('provider_new_requests', JSON.stringify(updatedRequests));
+    // Add to processing in activity page
+    const activities = JSON.parse(localStorage.getItem('provider_service_activities') || '[]');
+    activities.push({ ...req, status: 'processing' });
+    localStorage.setItem('provider_service_activities', JSON.stringify(activities));
+  };
+
+  const handleDecline = (req) => {
+    setDeclineRequest(req);
+    setShowDeclineModal(true);
+    setDeclineReason('');
+  };
+
+  const handleDeclineSubmit = () => {
+    if (!declineReason.trim()) return;
+    // Remove from new requests
+    const updatedRequests = requests.filter(r => r.id !== declineRequest.id);
+    setRequests(updatedRequests);
+    localStorage.setItem('provider_new_requests', JSON.stringify(updatedRequests));
+    // Add to cancel in activity page
+    const activities = JSON.parse(localStorage.getItem('provider_service_activities') || '[]');
+    activities.push({ ...declineRequest, status: 'cancel', cancelReason: declineReason });
+    localStorage.setItem('provider_service_activities', JSON.stringify(activities));
+    setShowDeclineModal(false);
+    setDeclineRequest(null);
+    setDeclineReason('');
+  };
+
+  useEffect(() => {
+    localStorage.setItem('provider_new_requests', JSON.stringify(requests));
+  }, [requests]);
 
   return (
     <div className="provider-home">
@@ -61,43 +106,45 @@ const ServiceProviderDashboard = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Plumbing</td>
-                <td>Arun Kumar</td>
-                <td>2024-07-10</td>
-                <td>2:00 PM</td>
-                <td>Colombo 03</td>
-                <td>
-                  <button className="provider-action-btn accept">Accept</button>
-                  <button className="provider-action-btn decline">Decline</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Electrical</td>
-                <td>Meena Silva</td>
-                <td>2024-07-11</td>
-                <td>11:00 AM</td>
-                <td>Dehiwala</td>
-                <td>
-                  <button className="provider-action-btn accept">Accept</button>
-                  <button className="provider-action-btn decline">Decline</button>
-                </td>
-              </tr>
-              <tr>
-                <td>AC Service</td>
-                <td>Raj Perera</td>
-                <td>2024-07-12</td>
-                <td>4:30 PM</td>
-                <td>Mount Lavinia</td>
-                <td>
-                  <button className="provider-action-btn accept">Accept</button>
-                  <button className="provider-action-btn decline">Decline</button>
-                </td>
-              </tr>
+              {requests.length === 0 ? (
+                <tr><td colSpan={6} style={{textAlign:'center',color:'#888',padding:'2rem 0'}}>No new requests.</td></tr>
+              ) : (
+                requests.map((req) => (
+                  <tr key={req.id}>
+                    <td>{req.service}</td>
+                    <td>{req.customer}</td>
+                    <td>{req.date}</td>
+                    <td>{req.time}</td>
+                    <td>{req.location}</td>
+                    <td>
+                      <button className="provider-action-btn accept" onClick={() => handleAccept(req)}>Accept</button>
+                      <button className="provider-action-btn decline" onClick={() => handleDecline(req)}>Decline</button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </div>
+      {showDeclineModal && (
+        <div className="activity-modal-overlay">
+          <div className="activity-modal">
+            <h3>Cancel Service</h3>
+            <textarea
+              className="activity-modal-textarea"
+              placeholder="Enter reason for cancellation..."
+              value={declineReason}
+              onChange={e => setDeclineReason(e.target.value)}
+              rows={3}
+            />
+            <div className="activity-modal-actions">
+              <button className="activity-modal-cancel-btn" onClick={() => setShowDeclineModal(false)}>Close</button>
+              <button className="activity-modal-submit-btn" onClick={handleDeclineSubmit} disabled={!declineReason.trim()}>Submit</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
