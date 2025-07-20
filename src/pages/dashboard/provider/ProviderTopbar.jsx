@@ -29,8 +29,28 @@ const ProviderTopbarContent = () => {
     email: provider.email,
   });
   const [profileData, setProfileData] = useState(provider);
+  const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const profileRef = useRef();
   const notifRef = useRef();
+
+  // Ensure profile data is loaded from localStorage on mount (fixes missing details after login)
+  useEffect(() => {
+    setProfileData({
+      fullName: localStorage.getItem('provider_fullName') || '',
+      address: localStorage.getItem('provider_address') || '',
+      phone: localStorage.getItem('provider_phone') || '',
+      email: localStorage.getItem('provider_email') || '',
+      joined: localStorage.getItem('provider_joined') || '',
+      avatar: '/src/assets/man.png',
+    });
+    setEditData({
+      fullName: localStorage.getItem('provider_fullName') || '',
+      address: localStorage.getItem('provider_address') || '',
+      phone: localStorage.getItem('provider_phone') || '',
+      email: localStorage.getItem('provider_email') || '',
+    });
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
