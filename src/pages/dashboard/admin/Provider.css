@@ -20,7 +20,7 @@
   padding: 2.2rem 2.5rem 1.7rem 2.5rem;
   position: relative;
   min-width: 260px;
-  max-width: 420px;
+  max-width: 700px;
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -93,25 +93,28 @@
 }
 .provider-modal-actions button {
   border: none;
-  border-radius: 8px;
-  padding: 0.7rem 1.7rem;
+  border-radius: 10px;
+  padding: 0.7rem 2.2rem;
   font-size: 1.08rem;
   font-weight: 700;
   cursor: pointer;
-  background: #1a3665;
-  color: #fff;
   transition: background 0.18s, color 0.18s, box-shadow 0.18s;
   box-shadow: 0 2px 8px rgba(26,54,101,0.10);
   letter-spacing: 0.5px;
+  background: #1a3665;
+  color: #fff;
 }
 .provider-modal-actions button:hover {
-  background: #fbbf24;
-  color: #1a3665;
+  background: #16305a;
+  color: #fff;
 }
 .provider-modal-actions button:last-child {
-  background: #fbbf24;
-  color: #1a3665;
+ /* background: #fbbf24;
+  color: #1a3665;*/
+  background: #16305a;
+  color: #fff;
 }
+
 .provider-modal-actions button:last-child:hover {
   background: #1a3665;
   color: #fff;
@@ -133,12 +136,18 @@
   outline: none;
 }
 .provider-action-btn.edit-btn {
-  background: #1a3665;
+  /*background: #1a3665;
   color: #fff;
-  box-shadow: 0 1px 4px rgba(26,54,101,0.07);
+  box-shadow: 0 1px 4px rgba(26,54,101,0.07);*/
+  background: #f5f8fd;
+  color: #1a3665;
+  border: 1.5px solid #1a3665;
 }
 .provider-action-btn.edit-btn:hover {
-  background: #224b8b;
+  /*background: #224b8b;*/
+  background: #e6eafd;
+  color: #16305a;
+  border-color: #16305a;
 }
 .provider-action-btn.view-btn {
   background: #f5f8fd;
@@ -183,16 +192,16 @@
   margin: 0 auto;
 }
 .add-provider-btn {
-  background: #1a3665;
-  color: #fff;
+  background: #fff !important;
+  color: #1a3665 !important;
   font-weight: 700;
-  border: none;
-  border-radius: 8px;
+  border: 2px solid #1a3665 !important;
+  border-radius: 12px;
   padding: 0.7rem 2.2rem;
   font-size: 1.08rem;
   cursor: pointer;
   box-shadow: 0 2px 12px rgba(26,54,101,0.10);
-  transition: background 0.18s, box-shadow 0.18s;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
   margin-bottom: 2rem;
   margin-top: 1.2rem;
   letter-spacing: 0.5px;
@@ -203,8 +212,78 @@
   margin-right: auto;
 }
 .add-provider-btn:hover {
-  background: #27477e;
+  background: #1a3665 !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(26,54,101,0.13);
 }
 .add-provider-modal .provider-modal-title {
   background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+.provider-management-subtitle {
+  font-size: 1.1rem;
+  color: #6b7a89;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  margin-top: -1.8rem;
+  letter-spacing: 0.2px;
+  text-align: center;
+}
+.user-suggestion-heading {
+  text-align: center;
+}
+.provider-modal-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 2.2rem;
+  margin-bottom: 1.2rem;
+}
+.provider-modal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+.provider-modal-form-group label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 1.05rem;
+  color: #1a3665;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+.provider-modal-form-group input[type="text"],
+.provider-modal-form-group input[type="email"],
+.provider-modal-form-group input[type="number"],
+.provider-modal-form-group input[type="date"],
+.provider-modal-form-group input[type="password"] {
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  padding: 0.7rem 1.2rem;
+  font-size: 1.08rem;
+  background: #f8fafc;
+  margin-top: 0.2rem;
+  transition: border 0.18s;
+}
+.provider-modal-form-group input[type="text"]:focus,
+.provider-modal-form-group input[type="email"]:focus,
+.provider-modal-form-group input[type="number"]:focus,
+.provider-modal-form-group input[type="date"]:focus,
+.provider-modal-form-group input[type="password"]:focus {
+  border-color: #1a3665;
+  outline: none;
+  background: #fff;
+}
+.provider-modal-form-group input[type="checkbox"] {
+  margin-left: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  accent-color: #1a3665;
+}
+@media (max-width: 700px) {
+  .provider-modal-form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+  }
 } 

@@ -105,16 +105,48 @@ const Customer = () => {
           <div className="customer-modal">
             <div className="customer-modal-title">Edit Customer</div>
             <button className="customer-modal-close" onClick={closeModals} title="Close">&times;</button>
-            <div className="customer-modal-form">
-              <label>Name: <input name="name" value={editForm.name} onChange={handleEditChange} /></label>
-              <label>Email: <input name="email" value={editForm.email} onChange={handleEditChange} /></label>
-              <label>Password: <input name="password" type="password" value={editForm.password || ''} onChange={handleEditChange} /></label>
-              <label>Phone Number: <input name="phone" value={editForm.phone} onChange={handleEditChange} /></label>
-              <label>Address: <input name="address" value={editForm.address} onChange={handleEditChange} /></label>
-              <label>NIC: <input name="nic" value={editForm.nic} onChange={handleEditChange} /></label>
-              <label>Disable Status: <input type="checkbox" name="disabled" checked={editForm.disabled} onChange={handleEditChange} /> Disabled</label>
-              <label>Registered Date: <input name="registered" value={editForm.registered} onChange={handleEditChange} /></label>
-            </div>
+            <form className="customer-modal-form-grid">
+              <div className="customer-modal-form-group">
+                <label> Name
+                  <input name="name" value={editForm.name} onChange={handleEditChange} placeholder="First and Last Name" type="text" />
+                </label>
+              </div>
+              <div className="customer-modal-form-group">
+                <label> Email
+                  <input name="email" value={editForm.email} onChange={handleEditChange} placeholder="E-mail Address" type="text" />
+                </label>
+              </div>
+              <div className="customer-modal-form-group">
+                <label> Password
+                  <input name="password" type="password" value={editForm.password || ''} onChange={handleEditChange} placeholder="Password" />
+                </label>
+              </div>
+              <div className="customer-modal-form-group">
+                <label> Phone Number
+                  <input name="phone" value={editForm.phone} onChange={handleEditChange} placeholder="Phone Number" type="text" />
+                </label>
+              </div>
+              <div className="customer-modal-form-group">
+                <label> Address
+                  <input name="address" value={editForm.address} onChange={handleEditChange} placeholder="Address" type="text" />
+                </label>
+              </div>
+              <div className="customer-modal-form-group">
+                <label> NIC
+                  <input name="nic" value={editForm.nic} onChange={handleEditChange} placeholder="NIC" type="text" />
+                </label>
+              </div>
+              <div className="customer-modal-form-group">
+                <label> Disable Status
+                  <input type="checkbox" name="disabled" checked={editForm.disabled} onChange={handleEditChange} style={{marginLeft:'0.5rem'}} /> Disabled
+                </label>
+              </div>
+              <div className="customer-modal-form-group">
+                <label> Registered Date
+                  <input name="registered" value={editForm.registered} onChange={handleEditChange} placeholder="Registered Date" type="text" />
+                </label>
+              </div>
+            </form>
             <div className="customer-modal-actions">
               <button onClick={closeModals}>Cancel</button>
               <button onClick={handleEditSave}>Save</button>
