@@ -143,7 +143,7 @@ const ServiceProviderDashboard = () => {
               <button className="activity-modal-submit-btn" onClick={handleDeclineSubmit} disabled={!declineReason.trim()}>Submit</button>
             </div>
           </div>
-        </div>
+      </div>
       )}
     </div>
   );
