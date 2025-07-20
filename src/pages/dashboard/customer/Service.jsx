@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaTools, FaHammer, FaLightbulb, FaPaintRoller, FaTv, FaBroom } from 'react-icons/fa';
-import service1 from '../../../assets/service1.jpg';
-import service2 from '../../../assets/service2.jpg';
-import service3 from '../../../assets/service3.jpg';
-import service4 from '../../../assets/service4.jpg';
-import service5 from '../../../assets/service5.jpg';
-import service6 from '../../../assets/service6.jpg';
+import service1 from '../../../assets/plumbing.jpg';
+import service2 from '../../../assets/carpentry.jpg';
+import service3 from '../../../assets/electrical.jpg';
+import service4 from '../../../assets/painting.webp';
+import service5 from '../../../assets/electronic.webp';
+import service6 from '../../../assets/cleaning.webp';
 import Modal from '../../../components/Modal';
 import visaImg from '../../../assets/visa.png';
 import mcImg from '../../../assets/master.png';
@@ -16,7 +16,6 @@ const services = [
     id: 1,
     image: service1,
     category: 'Pipes, Leaks & Water Flow',
-    icon: <FaTools color="#1a3665" size={28} />, // Plumbing icon
     title: 'Plumbing Services',
     description: 'Fixing leaks, clogs, and water flow issues. Bathroom and kitchen plumbing made simple. Quick response for urgent plumbing problems.',
   },
@@ -24,7 +23,6 @@ const services = [
     id: 2,
     image: service2,
     category: 'Woodwork & Furniture',
-    icon: <FaHammer color="#1a3665" size={28} />, // Carpentry icon
     title: 'Carpentry Services',
     description: 'Expert repairs for doors, windows, and furniture. Custom woodwork made easy and affordable. Fast fixes and installations for all wood-related needs.',
   },
@@ -32,33 +30,29 @@ const services = [
     id: 3,
     image: service3,
     category: 'Wiring, Lights & Power',
-    icon: <FaLightbulb color="#1a3665" size={28} />, // Electrical icon
     title: 'Electrical Services',
     description: 'Safe installation of lights, fans, and switches. Quick repairs for power issues and wiring. Certified electricians for hassle-free service.',
   },
   {
     id: 4,
     image: service4,
-    category: 'Painting & Walls',
-    icon: <FaPaintRoller color="#1a3665" size={28} />, // Painting icon
+    category: 'Walls & Surfaces',
     title: 'Painting Services',
-    description: 'Clean, smooth wall painting with lasting results. Interior or exterior, big or small.',
+    description: 'Clean, smooth wall painting with lasting results. Choose your colors we handle the rest. Interior or exterior, big or small we paint it all.',
   },
   {
     id: 5,
     image: service5,
-    category: 'Appliance Repair',
-    icon: <FaTv color="#1a3665" size={28} />, // Electronics icon
+    category: 'Home Appliances',
     title: 'Electronic Services',
-    description: 'Get your home appliances fixed fast. We service TVs, fridges, ovens, washers & more.',
+    description: 'Get your home appliances fixed fast. We service TVs, fridges, ovens, washers & more. Quality repairs with genuine spare parts.',
   },
   {
     id: 6,
     image: service6,
-    category: 'Home & Deep Cleaning',
-    icon: <FaBroom color="#1a3665" size={28} />, // Cleaning icon
+    category: 'Home & Kitchen Cleaning',
     title: 'Cleaning Service',
-    description: 'Deep cleaning for every space in your home. Kitchen, bathroom, and full-house cleaning.',
+    description: 'Deep cleaning for every space in your home. Kitchen, bathroom, and full-house cleaning. Trained staff using safe, effective products.',
   },
 ];
 
@@ -260,8 +254,8 @@ const Service = () => {
               <input type="radio" name="paymethod" checked={payment.method==='mc'} onChange={()=>setPayment(p=>({...p,method:'mc'}))} /> MasterCard
             </label>
             <span className="modal-charge">Booking fee: <b>Rs. 500</b></span>
-            <div className="modal-fee-explanation">This non-refundable fee secures your service slot and will be deducted from your final bill.</div>
           </div>
+          <div className="modal-fee-explanation">This non-refundable fee secures your service slot and will be deducted from your final bill.</div>
           {errors.method && <div className="modal-err">{errors.method}</div>}
           {payment.method && (
             <div className="modal-card-fields">
@@ -312,13 +306,25 @@ const Service = () => {
 
   return (
     <div className="customer-service-list">
-      <h2 className="customer-service-title">Available Services</h2>
+      <div className="customer-services-hero-heading" style={{position: 'relative'}}>
+        <div className="decor-circles">
+          <div className="circle gray" style={{left: '8%', top: '28px', width: '60px', height: '60px', border: '3px solid #1a3665', opacity: 0.18, position: 'absolute'}}></div>
+          <div className="circle gray" style={{left: '16%', top: '65px', width: '70px', height: '70px', border: '3px solid #1a3665', opacity: 0.13, position: 'absolute'}}></div>
+          <div className="circle gray" style={{right: '16%', top: '65px', width: '70px', height: '70px', border: '3px solid #1a3665', opacity: 0.18, position: 'absolute'}}></div>
+          <div className="circle gray" style={{right: '8%', top: '28px', width: '60px', height: '60px', border: '3px solid #1a3665', opacity: 0.13, position: 'absolute'}}></div>
+          <div className="circle gray" style={{right: '12%', top: '120px', width: '50px', height: '50px', border: '3px solid #1a3665', opacity: 0.18, position: 'absolute'}}></div>
+        </div>
+        <h2 className="customer-service-title">Our Services</h2>
+        <div className="customer-service-subtitle">
+          Your comfort is our priority<br/>
+          Book trusted services with just a few clicks
+        </div>
+      </div>
       <div className="customer-service-grid">
         {services.map(service => (
           <div className="customer-service-card" key={service.id}>
             <div className="customer-service-img-wrapper">
               <img src={service.image} alt={service.title} className="customer-service-img" />
-              <div className="customer-service-icon-badge">{service.icon}</div>
             </div>
             <div className="customer-service-info">
               <div className="customer-service-category">{service.category}</div>
@@ -330,20 +336,27 @@ const Service = () => {
         ))}
       </div>
 
+      {/* Subscription Section Heading */}
+      <div className="subscription-section-header" style={{marginTop: '4rem', marginBottom: '2.2rem', textAlign: 'center'}}>
+        <h2 style={{fontSize: '2.5rem', fontWeight: 600, color: '#1a3665', marginBottom: '1.2rem', letterSpacing: '-1px'}}>Choose Your Subscription Plan</h2>
+        <div style={{fontSize: '1.25rem', color: '#1a3665', fontWeight: 400}}>
+          Select one of our value-packed plans and enjoy hassle-free home and vehicle care.
+        </div>
+      </div>
       <section className="customer-subscription-section">
         <div className="customer-subscription-grid">
           {subscriptionPlans.map((plan, idx) => (
             <div className="customer-subscription-card" key={plan.title}>
-              <div className="customer-subscription-header" style={{fontSize: '2rem', fontWeight: 800, color: '#1a3665', textAlign: 'center', marginBottom: '0.7rem'}}>{plan.plan}</div>
-              <div className="customer-subscription-title" style={{fontSize: '2.1rem', fontWeight: 900, color: '#1a3665', textAlign: 'center', marginBottom: '1.5rem'}}>{plan.title}</div>
+              <div className="customer-subscription-header" style={{fontSize: '1.2rem', fontWeight: 600, color: '#1a3665', textAlign: 'center', marginBottom: '0.7rem'}}>{plan.plan}</div>
+              <div className="customer-subscription-title" style={{fontSize: '2.1rem', fontWeight: 700, color: '#1a3665', textAlign: 'center', marginBottom: '1.5rem'}}>{plan.title}</div>
               <ul className="customer-subscription-features" style={{marginBottom: '2.5rem'}}>
                 {plan.features.map((feature, i) => (
                   <li key={i} style={{color: '#1a3665', fontSize: '1.18rem', marginBottom: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.7rem'}}>
-                    <span style={{color: '#2563eb', fontSize: '1.2rem', fontWeight: 700}}>✓</span> {feature}
+                    <span style={{color: '#1a3665', fontSize: '1.2rem', fontWeight: 700}}>✓</span> {feature}
                   </li>
                 ))}
               </ul>
-              <button className="customer-subscription-btn" style={{background: '#1a3665', color: '#fff', borderRadius: '32px', fontSize: '1.18rem', fontWeight: 700, padding: '1.1rem 0', width: '80%', margin: '0 auto', display: 'block', boxShadow: '0 2px 8px rgba(26,54,101,0.10)'}}>Subscribe</button>
+              <button className="customer-subscription-btn">Subscribe</button>
             </div>
           ))}
         </div>

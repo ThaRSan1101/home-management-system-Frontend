@@ -92,37 +92,7 @@ const DashboardContact = () => {
           </div>
         </div>
       </div>
-      <section className="customer-dashboard-map-section">
-        <div className="customer-dashboard-map-card" onClick={handleMapClick} title="Open in Google Maps" style={{position: 'relative'}}>
-          {isLoaded && (
-            <GoogleMap
-              mapContainerStyle={mapContainerStyle}
-              center={mannarPosition}
-              zoom={13}
-              options={{
-                disableDefaultUI: true,
-                clickableIcons: false,
-                gestureHandling: 'none',
-                styles: [
-                  { elementType: 'geometry', stylers: [{ color: '#e6faf5' }] },
-                  { elementType: 'labels.text.fill', stylers: [{ color: '#222b3a' }] },
-                  { elementType: 'labels.text.stroke', stylers: [{ color: '#fff' }] },
-                  { featureType: 'water', stylers: [{ color: '#b2f7ef' }] },
-                  { featureType: 'poi', stylers: [{ visibility: 'off' }] },
-                ],
-              }}
-              onClick={handleMapClick}
-            />
-          )}
-          {/* Custom marker overlay */}
-          <div className="custom-map-marker">
-            <div className="custom-map-marker-dot"></div>
-          </div>
-          <button className="get-directions-btn" onClick={handleMapClick} type="button">
-            Click to open Our Location
-          </button>
-        </div>
-      </section>
+      {/* Removed customer-dashboard-map-section and customer-dashboard-map-card (map) section as requested */}
     </div>
   );
 };
