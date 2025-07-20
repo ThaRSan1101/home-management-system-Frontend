@@ -356,7 +356,7 @@ const Service = () => {
                   </li>
                 ))}
               </ul>
-              <button className="customer-subscription-btn">Subscribe</button>
+              <button className="customer-subscription-btn" onClick={() => openBooking('subscription', plan)}>Subscribe</button>
             </div>
           ))}
         </div>
