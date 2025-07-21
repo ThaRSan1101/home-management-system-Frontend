@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaPhone, FaIdCard } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import './Register.css';
@@ -24,6 +24,7 @@ const Register = () => {
   const [otpInput, setOtpInput] = useState('');
   const [otpError, setOtpError] = useState('');
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const navigate = useNavigate();
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -158,6 +159,13 @@ const Register = () => {
     }
   };
 
+  // Redirect to login after registration success
+  React.useEffect(() => {
+    if (registrationSuccess) {
+      navigate('/login');
+    }
+  }, [registrationSuccess, navigate]);
+
   return (
     <div className="auth-wrapper">
       <div className="auth-card register-card">
@@ -220,16 +228,6 @@ const Register = () => {
           )}
 
           {/* Success Message */}
-          {registrationSuccess && (
-            <div className="auth-success register-success">
-              <div className="register-success-icon">🎉</div>
-              <h3>Registration Successful!</h3>
-              <p>Your customer account has been created successfully.</p>
-              <div className="register-success-btn-container">
-                <Link to="/login" className="auth-submit-btn">Go to Login</Link>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>

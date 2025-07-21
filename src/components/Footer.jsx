@@ -23,8 +23,8 @@ const Footer = () => {
           }}>Home</Link>
           <Link to="/services">Services</Link>
           <Link to="/how-it-works">How It Works</Link>
-          <Link to="/about">About Us</Link>
-          <Link to="/contact">Contact Us</Link>
+          <Link to="/about">Contact Us</Link>
+          <Link to="/contact">About Us</Link>
         </nav>
         <div className="footer-contact">
           <div><FaPhone /> <a href="tel:+94778200752">+94 778 200 752 </a></div>

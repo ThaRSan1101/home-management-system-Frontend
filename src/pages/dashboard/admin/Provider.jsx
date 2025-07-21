@@ -186,7 +186,7 @@ const Provider = () => {
                 <label>Qualification
                   <input name="qualification" value={addForm.qualification} onChange={handleAddChange} placeholder="Qualification" type="text" />
                 </label>
-              </div>
+            </div>
             </form>
             <div className="provider-modal-actions">
               <button onClick={closeModals}>Cancel</button>
@@ -251,7 +251,7 @@ const Provider = () => {
                 <label>Qualification
                   <input name="qualification" value={editForm.qualification || ''} onChange={handleEditChange} placeholder="Qualification" type="text" />
                 </label>
-              </div>
+            </div>
             </form>
             <div className="provider-modal-actions">
               <button onClick={closeModals}>Cancel</button>
