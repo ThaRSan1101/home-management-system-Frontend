@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FaUser, FaBell } from 'react-icons/fa';
 import './Topbar.css';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 // Example customer data (replace with real data as needed)
 const customer = {
@@ -27,6 +28,7 @@ const Topbar = () => {
     address: '',
     phone: '',
     email: '',
+    nic: '',
   });
   const [customerData, setCustomerData] = useState({
     fullName: localStorage.getItem('customer_fullName') || '',
@@ -34,6 +36,7 @@ const Topbar = () => {
     phone: localStorage.getItem('customer_phone') || '',
     email: localStorage.getItem('customer_email') || '',
     joined: localStorage.getItem('customer_joined') || '',
+    nic: localStorage.getItem('customer_nic') || '',
   });
   const profileRef = useRef();
   const notifRef = useRef();
@@ -50,6 +53,7 @@ const Topbar = () => {
       address: customerData.address,
       phone: customerData.phone,
       email: customerData.email,
+      nic: customerData.nic,
     });
     setEditOpen(true);
     setProfileOpen(false);
@@ -66,14 +70,43 @@ const Topbar = () => {
     }
   };
 
-  const handleEditSubmit = (e) => {
+  const handleEditSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem('customer_fullName', editData.fullName);
-    localStorage.setItem('customer_address', editData.address);
-    localStorage.setItem('customer_phone', editData.phone);
-    localStorage.setItem('customer_email', editData.email);
-    setEditOpen(false);
-    setCustomerData((prev) => ({ ...prev, ...editData }));
+    const user_id = localStorage.getItem('customer_user_id');
+    if (!user_id) {
+      toast.error('User ID not found. Please log in again.');
+      return;
+    }
+    const payload = {
+      user_id,
+      name: editData.fullName,
+      email: editData.email,
+      phone_number: editData.phone,
+      address: editData.address,
+      nic: editData.nic,
+    };
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_customer_profile.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      if (result.status === 'success') {
+        localStorage.setItem('customer_fullName', editData.fullName);
+        localStorage.setItem('customer_address', editData.address);
+        localStorage.setItem('customer_phone', editData.phone);
+        localStorage.setItem('customer_email', editData.email);
+        localStorage.setItem('customer_nic', editData.nic);
+        setCustomerData((prev) => ({ ...prev, ...editData }));
+        setEditOpen(false);
+        toast.success('Your profile was updated successfully.');
+      } else {
+        toast.error(result.message || 'Failed to update profile.');
+      }
+    } catch (err) {
+      toast.error(err.message || 'Unknown error occurred.');
+    }
   };
 
   useEffect(() => {
@@ -120,6 +153,7 @@ const Topbar = () => {
               <div className="profile-card-row"><span>Phone:</span> {customerData.phone}</div>
               <div className="profile-card-row"><span>Email:</span> {customerData.email}</div>
               <div className="profile-card-row"><span>Joined:</span> {customerData.joined}</div>
+              <div className="profile-card-row"><span>NIC:</span> {customerData.nic}</div>
               <button className="customer-sidebar-edit-btn" onClick={handleEditProfile}>
                 Edit Profile
               </button>
@@ -146,6 +180,9 @@ const Topbar = () => {
               </label>
               <label>Email
                 <input name="email" value={editData.email} onChange={handleEditChange} required type="email" />
+              </label>
+              <label>NIC
+                <input name="nic" value={editData.nic} onChange={handleEditChange} required />
               </label>
               <div className="customer-edit-modal-actions">
                 <button type="button" className="customer-edit-cancel-btn" onClick={() => setEditOpen(false)}>Cancel</button>

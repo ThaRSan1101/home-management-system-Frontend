@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Monitoring.css';
-import Modal from '../../../components/Modal';
+import { toast } from 'sonner';
 
 const DEMO_ACCOUNTS = {
   customer: {
@@ -17,8 +17,6 @@ const DEMO_ACCOUNTS = {
 
 const Monitoring = () => {
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
 
   const handleQuickLogin = async (type) => {
     const creds = DEMO_ACCOUNTS[type];
@@ -51,12 +49,10 @@ const Monitoring = () => {
           navigate(`/provider/dashboard/${result.user_id}`); // push, not replace
         }
       } else {
-        setModalMessage('Login failed: ' + (result.message || 'Unknown error'));
-        setModalOpen(true);
+        toast.error('Login failed: ' + (result.message || 'Unknown error'));
       }
     } catch (err) {
-      setModalMessage('Login failed: ' + (err.response?.data?.message || err.message));
-      setModalOpen(true);
+      toast.error('Login failed: ' + (err.response?.data?.message || err.message));
     }
   };
 
@@ -99,12 +95,6 @@ const Monitoring = () => {
           </button>
         </div>
       </div>
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-        <div style={{textAlign: 'center'}}>
-          <p>{modalMessage}</p>
-          <button onClick={() => setModalOpen(false)} style={{marginTop: '1rem'}}>OK</button>
-        </div>
-      </Modal>
     </div>
   );
 };
