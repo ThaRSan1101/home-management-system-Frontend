@@ -33,6 +33,7 @@ const ProviderTopbarContent = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const profileRef = useRef();
   const notifRef = useRef();
+  const [online, setOnline] = useState(localStorage.getItem('provider_online') === 'true');
 
   // Ensure profile data is loaded from localStorage on mount (fixes missing details after login)
   useEffect(() => {
@@ -78,6 +79,12 @@ const ProviderTopbarContent = () => {
     setEditOpen(false);
   };
 
+  const handleToggleOnline = () => {
+    const newStatus = !online;
+    setOnline(newStatus);
+    localStorage.setItem('provider_online', newStatus);
+  };
+
   return (
     <div className="provider-topbar">
       <div className="topbar-actions">
@@ -109,6 +116,16 @@ const ProviderTopbarContent = () => {
               <div className="profile-card-row"><span>Phone:</span> {profileData.phone}</div>
               <div className="profile-card-row"><span>Email:</span> {profileData.email}</div>
               <div className="profile-card-row"><span>Joined:</span> {profileData.joined}</div>
+              <div className="profile-card-row" style={{marginTop: '0.7rem', marginBottom: '0.7rem'}}>
+                <span>Status:</span>
+                <button
+                  className={`provider-status-toggle ${online ? 'online' : 'offline'}`}
+                  onClick={handleToggleOnline}
+                  style={{marginLeft: '0.7rem', padding: '0.3rem 1.2rem', borderRadius: '18px', border: 'none', fontWeight: 600, background: online ? '#007a65' : '#640f1c', color: '#fff', cursor: 'pointer', transition: 'background 0.2s'}}
+                >
+                  {online ? 'Online' : 'Offline'}
+                </button>
+              </div>
               <button className="profile-edit-btn" style={{marginTop: '0.7rem'}} onClick={() => setEditOpen(true)}>
                 Edit Profile
               </button>

@@ -21,22 +21,59 @@ const notifications = [
 const Topbar = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
-  const profileRef = useRef();
-  const notifRef = useRef();
-  const navigate = useNavigate();
-
-  // Fetch customer details from localStorage
-  const customer = {
+  const [editOpen, setEditOpen] = useState(false);
+  const [editData, setEditData] = useState({
+    fullName: '',
+    address: '',
+    phone: '',
+    email: '',
+  });
+  const [customerData, setCustomerData] = useState({
     fullName: localStorage.getItem('customer_fullName') || '',
     address: localStorage.getItem('customer_address') || '',
     phone: localStorage.getItem('customer_phone') || '',
     email: localStorage.getItem('customer_email') || '',
     joined: localStorage.getItem('customer_joined') || '',
-  };
+  });
+  const profileRef = useRef();
+  const notifRef = useRef();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.clear();
     navigate('/login');
+  };
+
+  const handleEditProfile = () => {
+    setEditData({
+      fullName: customerData.fullName,
+      address: customerData.address,
+      phone: customerData.phone,
+      email: customerData.email,
+    });
+    setEditOpen(true);
+    setProfileOpen(false);
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'phone') {
+      // Only allow numbers
+      const numeric = value.replace(/[^0-9]/g, '');
+      setEditData((prev) => ({ ...prev, [name]: numeric }));
+    } else {
+      setEditData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem('customer_fullName', editData.fullName);
+    localStorage.setItem('customer_address', editData.address);
+    localStorage.setItem('customer_phone', editData.phone);
+    localStorage.setItem('customer_email', editData.email);
+    setEditOpen(false);
+    setCustomerData((prev) => ({ ...prev, ...editData }));
   };
 
   useEffect(() => {
@@ -78,11 +115,14 @@ const Topbar = () => {
           {profileOpen && (
             <div className="profile-card-dropdown">
               <div className="profile-card-header">Customer Profile</div>
-              <div className="profile-card-row"><span>Full Name:</span> {customer.fullName}</div>
-              <div className="profile-card-row"><span>Address:</span> {customer.address}</div>
-              <div className="profile-card-row"><span>Phone:</span> {customer.phone}</div>
-              <div className="profile-card-row"><span>Email:</span> {customer.email}</div>
-              <div className="profile-card-row"><span>Joined:</span> {customer.joined}</div>
+              <div className="profile-card-row"><span>Full Name:</span> {customerData.fullName}</div>
+              <div className="profile-card-row"><span>Address:</span> {customerData.address}</div>
+              <div className="profile-card-row"><span>Phone:</span> {customerData.phone}</div>
+              <div className="profile-card-row"><span>Email:</span> {customerData.email}</div>
+              <div className="profile-card-row"><span>Joined:</span> {customerData.joined}</div>
+              <button className="customer-sidebar-edit-btn" onClick={handleEditProfile}>
+                Edit Profile
+              </button>
               <button className="customer-sidebar-logout-btn-bottom" style={{marginTop: '1.2rem'}} onClick={handleLogout}>
                 Logout
               </button>
@@ -90,6 +130,31 @@ const Topbar = () => {
           )}
         </div>
       </div>
+      {editOpen && (
+        <div className="customer-edit-modal-overlay">
+          <div className="customer-edit-modal">
+            <h3>Edit Profile</h3>
+            <form onSubmit={handleEditSubmit} className="customer-edit-form">
+              <label>Full Name
+                <input name="fullName" value={editData.fullName} onChange={handleEditChange} required />
+              </label>
+              <label>Address
+                <input name="address" value={editData.address} onChange={handleEditChange} required />
+              </label>
+              <label>Phone
+                <input name="phone" value={editData.phone} onChange={handleEditChange} required />
+              </label>
+              <label>Email
+                <input name="email" value={editData.email} onChange={handleEditChange} required type="email" />
+              </label>
+              <div className="customer-edit-modal-actions">
+                <button type="button" className="customer-edit-cancel-btn" onClick={() => setEditOpen(false)}>Cancel</button>
+                <button type="submit" className="customer-edit-save-btn">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
