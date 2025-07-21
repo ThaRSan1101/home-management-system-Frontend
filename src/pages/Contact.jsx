@@ -13,6 +13,12 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  // Add missing error state for form validation
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [subjectError, setSubjectError] = useState('');
+  const [messageError, setMessageError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,8 +27,19 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Validate fields
+    let valid = true;
+    setNameError(''); setEmailError(''); setPhoneError(''); setSubjectError(''); setMessageError('');
+    if (!formData.name.trim()) { setNameError('Name is required'); valid = false; }
+    if (!formData.email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email)) { setEmailError('Valid email is required'); valid = false; }
+    if (!formData.phone.trim() || !/^\d{10}$/.test(formData.phone)) { setPhoneError('10-digit phone required'); valid = false; }
+    if (!formData.subject.trim()) { setSubjectError('Subject is required'); valid = false; }
+    if (!formData.message.trim()) { setMessageError('Message is required'); valid = false; }
+    if (!valid) {
+      toast.error('Please fill in all required fields.');
+      return;
+    }
     toast.success('Message sent successfully!');
-
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
 
