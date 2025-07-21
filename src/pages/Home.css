@@ -94,8 +94,9 @@
 .btn-primary:hover {
   background: var(--white) !important;
   color: #1a3665 !important;
-  box-shadow: 0 10px 25px rgba(26,54,101,0.2);
+  /*box-shadow: 0 10px 25px rgba(26,54,101,0.2);*/
   border: 2px solid #1a3665 !important;
+  box-shadow: none !important;
 }
 
 .btn-secondary {

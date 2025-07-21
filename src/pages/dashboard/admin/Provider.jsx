@@ -136,19 +136,58 @@ const Provider = () => {
         <div className="provider-modal-overlay">
           <div className="provider-modal add-provider-modal">
             <div className="provider-modal-title">Add New Provider</div>
-            <button className="provider-modal-close" onClick={closeModals} title="Close">&times;</button>
-            <div className="provider-modal-form">
-              <label>Name: <input name="name" value={addForm.name} onChange={handleAddChange} /></label>
-              <label>Email: <input name="email" value={addForm.email} onChange={handleAddChange} /></label>
-              <label>Password: <input name="password" type="password" value={addForm.password} onChange={handleAddChange} /></label>
-              <label>Phone Number: <input name="phone" value={addForm.phone} onChange={handleAddChange} /></label>
-              <label>Address: <input name="address" value={addForm.address} onChange={handleAddChange} /></label>
-              <label>NIC: <input name="nic" value={addForm.nic} onChange={handleAddChange} /></label>
-              <label>Disable Status: <input type="checkbox" name="disabled" checked={addForm.disabled} onChange={handleAddChange} /> Disabled</label>
-              <label>Registered Date: <input name="registered" value={addForm.registered} onChange={handleAddChange} /></label>
-              <label>Description: <input name="description" value={addForm.description} onChange={handleAddChange} /></label>
-              <label>Qualification: <input name="qualification" value={addForm.qualification} onChange={handleAddChange} /></label>
-            </div>
+            <form className="provider-modal-form-grid">
+              <div className="provider-modal-form-group">
+                <label>Name
+                  <input name="name" value={addForm.name} onChange={handleAddChange} placeholder="Full Name" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Email
+                  <input name="email" value={addForm.email} onChange={handleAddChange} placeholder="E-mail Address" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Password
+                  <input name="password" type="password" value={addForm.password} onChange={handleAddChange} placeholder="Password" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Phone Number
+                  <input name="phone" value={addForm.phone} onChange={handleAddChange} placeholder="Phone Number" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Address
+                  <input name="address" value={addForm.address} onChange={handleAddChange} placeholder="Address" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>NIC
+                  <input name="nic" value={addForm.nic} onChange={handleAddChange} placeholder="NIC" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Disable Status
+                  <input type="checkbox" name="disabled" checked={addForm.disabled} onChange={handleAddChange} style={{marginLeft:'0.5rem'}} /> Disabled
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Registered Date
+                  <input name="registered" value={addForm.registered} onChange={handleAddChange} placeholder="Registered Date" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Description
+                  <input name="description" value={addForm.description} onChange={handleAddChange} placeholder="Description" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Qualification
+                  <input name="qualification" value={addForm.qualification} onChange={handleAddChange} placeholder="Qualification" type="text" />
+                </label>
+              </div>
+            </form>
             <div className="provider-modal-actions">
               <button onClick={closeModals}>Cancel</button>
               <button onClick={handleAddProvider}>Add</button>
@@ -162,7 +201,6 @@ const Provider = () => {
         <div className="provider-modal-overlay">
           <div className="provider-modal">
             <div className="provider-modal-title">Edit Provider</div>
-            <button className="provider-modal-close" onClick={closeModals} title="Close">&times;</button>
             <form className="provider-modal-form-grid">
               <div className="provider-modal-form-group">
                 <label>Name
