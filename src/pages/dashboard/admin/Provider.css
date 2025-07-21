@@ -217,7 +217,14 @@
   box-shadow: 0 4px 16px rgba(26,54,101,0.13);
 }
 .add-provider-modal .provider-modal-title {
-  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(90deg, #1a3665 0%, #27477e 100%) !important;
+}
+.add-provider-modal .provider-modal {
+  max-width: 400px;
+  padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+}
+.add-provider-modal .provider-modal-actions {
+  margin-top: -1rem;
 }
 .provider-management-subtitle {
   font-size: 1.1rem;
@@ -280,6 +287,9 @@
   width: 1.5rem;
   height: 1.5rem;
   accent-color: #1a3665;
+}
+.provider-modal:not(.add-provider-modal) .provider-modal-actions {
+  margin-top: -1rem;
 }
 @media (max-width: 700px) {
   .provider-modal-form-grid {
