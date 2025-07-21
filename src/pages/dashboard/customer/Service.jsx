@@ -6,6 +6,7 @@ import service3 from '../../../assets/electrical.jpg';
 import service4 from '../../../assets/painting.webp';
 import service5 from '../../../assets/electronic.webp';
 import service6 from '../../../assets/cleaning.webp';
+import { toast } from 'sonner';
 import Modal from '../../../components/Modal';
 import visaImg from '../../../assets/visa.png';
 import mcImg from '../../../assets/master.png';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import './Contact.css';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import Modal from '../components/Modal';
+import { toast } from 'sonner';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +13,6 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,7 +20,7 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setModalOpen(true);
+    toast.success('Message sent successfully!');
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
 
@@ -126,9 +125,6 @@ const Contact = () => {
           <div className="map-overlay">Click to open Our Location</div>
         </div>
       </section>
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} type="success" title="Message Sent">
-        <div>Thank you! Your message has been sent.</div>
-      </Modal>
     </>
   );
 };

@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash, FaLock, FaUser, FaKey } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import './Login.css';
 import axios from 'axios';
-import Modal from '../components/Modal';
+import { toast } from 'sonner';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -24,10 +24,6 @@ const Login = () => {
   const [forgotSuccess, setForgotSuccess] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState('info');
-  const [modalTitle, setModalTitle] = useState('');
-  const [modalMessage, setModalMessage] = useState('');
 
   useEffect(() => {
     setFormData({ email: '', password: '' });
@@ -65,19 +61,23 @@ const Login = () => {
 
         // Store customer details in localStorage for dashboard/profile use
         if (result.user_type === 'customer' && result.user_details) {
+          localStorage.setItem('customer_user_id', result.user_id);
           localStorage.setItem('customer_fullName', result.user_details.fullName || '');
           localStorage.setItem('customer_address', result.user_details.address || '');
           localStorage.setItem('customer_phone', result.user_details.phone || '');
           localStorage.setItem('customer_email', result.user_details.email || '');
           localStorage.setItem('customer_joined', result.user_details.joined || '');
+          localStorage.setItem('customer_nic', result.user_details.nic || '');
         }
         // Store provider details in localStorage for dashboard/profile use
         if (result.user_type === 'provider' && result.user_details) {
+          localStorage.setItem('provider_user_id', result.user_id);
           localStorage.setItem('provider_fullName', result.user_details.fullName || '');
           localStorage.setItem('provider_address', result.user_details.address || '');
           localStorage.setItem('provider_phone', result.user_details.phone || '');
           localStorage.setItem('provider_email', result.user_details.email || '');
           localStorage.setItem('provider_joined', result.user_details.joined || '');
+          localStorage.setItem('provider_nic', result.user_details.nic || '');
         }
         // Store admin details in localStorage for dashboard/profile use
         if (result.user_type === 'admin' && result.user_details) {
@@ -94,16 +94,10 @@ const Login = () => {
           navigate(`/customer/dashboard/${result.user_id}`);
         }
       } else {
-        setModalType('error');
-        setModalTitle('Login Failed');
-        setModalMessage(result.message || 'Invalid email or password.');
-        setModalOpen(true);
+        toast.error(result.message || 'Invalid email or password.');
       }
     } catch (err) {
-      setModalType('error');
-      setModalTitle('Server Error');
-      setModalMessage('Server error. Please try again later.');
-      setModalOpen(true);
+      toast.error('Server error. Please try again later.');
     }
   };
 
@@ -113,10 +107,7 @@ const Login = () => {
     setForgotError('');
     setForgotSuccess('');
     if (!forgotEmail) {
-      setModalType('warning');
-      setModalTitle('Missing Email');
-      setModalMessage('Please enter your email.');
-      setModalOpen(true);
+      toast.warning('Please enter your email.');
       return;
     }
     setForgotLoading(true);
@@ -129,21 +120,12 @@ const Login = () => {
       const result = await res.json();
       if (result.status === 'success') {
         setForgotStep(2);
-        setModalType('success');
-        setModalTitle('OTP Sent');
-        setModalMessage('OTP sent to your email.');
-        setModalOpen(true);
+        toast.success('OTP sent to your email.');
       } else {
-        setModalType('error');
-        setModalTitle('Error');
-        setModalMessage(result.message);
-        setModalOpen(true);
+        toast.error(result.message);
       }
     } catch (err) {
-      setModalType('error');
-      setModalTitle('Server Error');
-      setModalMessage('Server error.');
-      setModalOpen(true);
+      toast.error('Server error.');
     }
     setForgotLoading(false);
   };
@@ -153,10 +135,7 @@ const Login = () => {
     setForgotError('');
     setForgotSuccess('');
     if (!forgotOtp || forgotOtp.length !== 6) {
-      setModalType('warning');
-      setModalTitle('Invalid OTP');
-      setModalMessage('Please enter the 6-digit OTP.');
-      setModalOpen(true);
+      toast.warning('Please enter the 6-digit OTP.');
       return;
     }
     setForgotLoading(true);
@@ -171,21 +150,12 @@ const Login = () => {
       console.log(result.status);
       if (result.status === 'success') {
         setForgotStep(3);
-        setModalType('success');
-        setModalTitle('OTP Verified');
-        setModalMessage('OTP verified. Please enter your new password.');
-        setModalOpen(true);
+        toast.success('OTP verified. Please enter your new password.');
       } else {
-        setModalType('error');
-        setModalTitle('Error');
-        setModalMessage(result.message);
-        setModalOpen(true);
+        toast.error(result.message);
       }
     } catch (err) {
-      setModalType('error');
-      setModalTitle('Server Error');
-      setModalMessage('Server error.');
-      setModalOpen(true);
+      toast.error('Server error.');
     }
     setForgotLoading(false);
   };
@@ -195,24 +165,15 @@ const Login = () => {
     setForgotError('');
     setForgotSuccess('');
     if (!forgotNewPassword || !forgotConfirmPassword) {
-      setModalType('warning');
-      setModalTitle('Missing Password');
-      setModalMessage('Please enter and confirm your new password.');
-      setModalOpen(true);
+      toast.warning('Please enter and confirm your new password.');
       return;
     }
     if (forgotNewPassword !== forgotConfirmPassword) {
-      setModalType('warning');
-      setModalTitle('Password Mismatch');
-      setModalMessage('Passwords do not match.');
-      setModalOpen(true);
+      toast.warning('Passwords do not match.');
       return;
     }
     if (forgotNewPassword.length < 8) {
-      setModalType('warning');
-      setModalTitle('Weak Password');
-      setModalMessage('Password must be at least 8 characters.');
-      setModalOpen(true);
+      toast.warning('Password must be at least 8 characters.');
       return;
     }
     setForgotLoading(true);
@@ -224,27 +185,18 @@ const Login = () => {
       });
       const result = await res.json();
       if (result.status === 'success') {
-        setModalType('success');
-        setModalTitle('Password Changed');
-        setModalMessage('Password changed successfully! You can now log in.');
+        toast.success('Password changed successfully! You can now log in.');
         setForgotStep(1);
         setForgotEmail('');
         setForgotOtp('');
         setForgotNewPassword('');
         setForgotConfirmPassword('');
         setShowForgot(false);
-        setModalOpen(true);
       } else {
-        setModalType('error');
-        setModalTitle('Error');
-        setModalMessage(result.message);
-        setModalOpen(true);
+        toast.error(result.message);
       }
     } catch (err) {
-      setModalType('error');
-      setModalTitle('Server Error');
-      setModalMessage('Server error.');
-      setModalOpen(true);
+      toast.error('Server error.');
     }
     setForgotLoading(false);
   };
@@ -332,9 +284,6 @@ const Login = () => {
           )}
         </div>
       </div>
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} type={modalType} title={modalTitle}>
-        <div>{modalMessage}</div>
-      </Modal>
     </div>
   );
 };
