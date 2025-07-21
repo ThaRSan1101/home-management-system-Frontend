@@ -403,7 +403,7 @@
 .contactus-form input:focus,
 .contactus-form textarea:focus {
   border-bottom: 2.5px solid #fff;
-  background: transparent;
+  background: transparent !important;
 }
 
 .contactus-send-btn {

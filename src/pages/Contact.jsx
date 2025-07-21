@@ -13,7 +13,11 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [phoneError, setPhoneError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [messageError, setMessageError] = useState("");
+  const [subjectError, setSubjectError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,7 +25,50 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setModalOpen(true);
+    let valid = true;
+    // Name validation
+    if (!formData.name.trim()) {
+      setNameError("Please enter your name.");
+      valid = false;
+    } else {
+      setNameError("");
+    }
+    // Email validation
+    if (!formData.email.trim()) {
+      setEmailError("Please enter your email address.");
+      valid = false;
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      setEmailError("Please enter a valid email address.");
+      valid = false;
+    } else {
+      setEmailError("");
+    }
+    // Subject validation
+    if (!formData.subject.trim()) {
+      setSubjectError("Please enter the subject.");
+      valid = false;
+    } else {
+      setSubjectError("");
+    }
+    // Message validation
+    if (!formData.message.trim()) {
+      setMessageError("Please enter your message.");
+      valid = false;
+    } else {
+      setMessageError("");
+    }
+    // Phone validation (allow empty or exactly 10 digits)
+    if (formData.phone && !/^\d{10}$/.test(formData.phone)) {
+      setPhoneError("Phone number must be exactly 10 digits.");
+      valid = false;
+    } else {
+      setPhoneError("");
+    }
+    if (!valid) {
+      setIsSubmitted(false);
+      return;
+    }
+    setIsSubmitted(true);
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
 
@@ -51,21 +98,51 @@ const Contact = () => {
           <h1 className="contactus-header">Contact Us</h1>
           <form className="contactus-form" onSubmit={handleSubmit}>
             <div className="contactus-form-group">
-              <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
+              <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} />
+              {nameError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {nameError}
+                </div>
+              )}
             </div>
             <div className="contactus-form-group">
-              <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
+              <input type="text" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} />
+              {emailError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {emailError}
+                </div>
+              )}
             </div>
             <div className="contactus-form-group">
               <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} />
+              {phoneError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {phoneError}
+                </div>
+              )}
             </div>
             <div className="contactus-form-group">
               <input type="text" name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} />
+              {subjectError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {subjectError}
+                </div>
+              )}
             </div>
             <div className="contactus-form-group">
-              <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} required />
+              <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} />
+              {messageError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {messageError}
+                </div>
+              )}
             </div>
             <button type="submit" className="contactus-send-btn">Send Message</button>
+            {isSubmitted && (
+              <div className="contactus-success" style={{marginTop:'1.2rem', color:'#fff', background:'#1a3665', borderRadius:'10px', fontWeight:600, fontSize:'1.08rem', textAlign:'center', padding:'0.8rem 1.2rem'}}>
+                Thank you! Your message has been sent.
+              </div>
+            )}
           </form>
         </div>
         <div className="contactus-right">
@@ -126,9 +203,6 @@ const Contact = () => {
           <div className="map-overlay">Click to open Our Location</div>
         </div>
       </section>
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} type="success" title="Message Sent">
-        <div>Thank you! Your message has been sent.</div>
-      </Modal>
     </>
   );
 };

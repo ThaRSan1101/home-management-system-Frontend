@@ -145,7 +145,7 @@ const Customer = () => {
                 <label> Registered Date
                   <input name="registered" value={editForm.registered} onChange={handleEditChange} placeholder="Registered Date" type="text" />
                 </label>
-              </div>
+            </div>
             </form>
             <div className="customer-modal-actions">
               <button onClick={closeModals}>Cancel</button>
