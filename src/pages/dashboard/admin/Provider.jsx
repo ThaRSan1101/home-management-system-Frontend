@@ -12,6 +12,8 @@ const initialProviders = [
     nic: '901234567V',
     disabled: false,
     registered: '2024-06-01',
+    description: 'Experienced plumber with 10+ years in residential and commercial services.',
+    qualification: 'NVQ Level 4 in Plumbing',
   },
   {
     id: 2,
@@ -23,6 +25,8 @@ const initialProviders = [
     nic: '880123456V',
     disabled: true,
     registered: '2024-06-10',
+    description: 'Certified electrician specializing in home automation and repairs.',
+    qualification: 'Diploma in Electrical Engineering',
   },
 ];
 
@@ -41,6 +45,8 @@ const Provider = () => {
     nic: '',
     disabled: false,
     registered: '',
+    description: '',
+    qualification: '',
   });
 
   const openEdit = (provider) => {
@@ -66,15 +72,18 @@ const Provider = () => {
     const newProvider = {
       ...addForm,
       id: Date.now(),
+      description: addForm.description || '',
+      qualification: addForm.qualification || '',
     };
     setProviders((prev) => [...prev, newProvider]);
-    setAddForm({ name: '', email: '', password: '', phone: '', address: '', nic: '', disabled: false, registered: '' });
+    setAddForm({ name: '', email: '', password: '', phone: '', address: '', nic: '', disabled: false, registered: '', description: '', qualification: '' });
     setAddModal(false);
   };
 
   return (
     <div className="user-suggestion-wrapper">
       <h2 className="user-suggestion-heading">Provider Management</h2>
+      <div className="provider-management-subtitle">Manage and review all registered Service Providers</div>
       <button className="add-provider-btn" onClick={() => setAddModal(true)}>Add New Provider</button>
       <div className="user-suggestion-table-container">
         <table className="user-suggestion-table">
@@ -137,6 +146,8 @@ const Provider = () => {
               <label>NIC: <input name="nic" value={addForm.nic} onChange={handleAddChange} /></label>
               <label>Disable Status: <input type="checkbox" name="disabled" checked={addForm.disabled} onChange={handleAddChange} /> Disabled</label>
               <label>Registered Date: <input name="registered" value={addForm.registered} onChange={handleAddChange} /></label>
+              <label>Description: <input name="description" value={addForm.description} onChange={handleAddChange} /></label>
+              <label>Qualification: <input name="qualification" value={addForm.qualification} onChange={handleAddChange} /></label>
             </div>
             <div className="provider-modal-actions">
               <button onClick={closeModals}>Cancel</button>
@@ -152,16 +163,58 @@ const Provider = () => {
           <div className="provider-modal">
             <div className="provider-modal-title">Edit Provider</div>
             <button className="provider-modal-close" onClick={closeModals} title="Close">&times;</button>
-            <div className="provider-modal-form">
-              <label>Name: <input name="name" value={editForm.name} onChange={handleEditChange} /></label>
-              <label>Email: <input name="email" value={editForm.email} onChange={handleEditChange} /></label>
-              <label>Password: <input name="password" type="password" value={editForm.password || ''} onChange={handleEditChange} /></label>
-              <label>Phone Number: <input name="phone" value={editForm.phone} onChange={handleEditChange} /></label>
-              <label>Address: <input name="address" value={editForm.address} onChange={handleEditChange} /></label>
-              <label>NIC: <input name="nic" value={editForm.nic} onChange={handleEditChange} /></label>
-              <label>Disable Status: <input type="checkbox" name="disabled" checked={editForm.disabled} onChange={handleEditChange} /> Disabled</label>
-              <label>Registered Date: <input name="registered" value={editForm.registered} onChange={handleEditChange} /></label>
-            </div>
+            <form className="provider-modal-form-grid">
+              <div className="provider-modal-form-group">
+                <label>Name
+                  <input name="name" value={editForm.name} onChange={handleEditChange} placeholder="Full Name" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Email
+                  <input name="email" value={editForm.email} onChange={handleEditChange} placeholder="E-mail Address" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Password
+                  <input name="password" type="password" value={editForm.password || ''} onChange={handleEditChange} placeholder="Password" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Phone Number
+                  <input name="phone" value={editForm.phone} onChange={handleEditChange} placeholder="Phone Number" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Address
+                  <input name="address" value={editForm.address} onChange={handleEditChange} placeholder="Address" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>NIC
+                  <input name="nic" value={editForm.nic} onChange={handleEditChange} placeholder="NIC" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Disable Status
+                  <input type="checkbox" name="disabled" checked={editForm.disabled} onChange={handleEditChange} style={{marginLeft:'0.5rem'}} /> Disabled
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Registered Date
+                  <input name="registered" value={editForm.registered} onChange={handleEditChange} placeholder="Registered Date" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Description
+                  <input name="description" value={editForm.description || ''} onChange={handleEditChange} placeholder="Description" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>Qualification
+                  <input name="qualification" value={editForm.qualification || ''} onChange={handleEditChange} placeholder="Qualification" type="text" />
+                </label>
+              </div>
+            </form>
             <div className="provider-modal-actions">
               <button onClick={closeModals}>Cancel</button>
               <button onClick={handleEditSave}>Save</button>
@@ -179,12 +232,13 @@ const Provider = () => {
             <div className="provider-modal-details">
               <div><b>Name:</b> {viewModal.name}</div>
               <div><b>Email:</b> {viewModal.email}</div>
-              <div><b>Password:</b> {viewModal.password}</div>
-              <div><b>Phone Number:</b> {viewModal.phone}</div>
+              <div><b>Phone:</b> {viewModal.phone}</div>
               <div><b>Address:</b> {viewModal.address}</div>
               <div><b>NIC:</b> {viewModal.nic}</div>
-              <div><b>Disable Status:</b> {viewModal.disabled ? 'Disabled' : 'Active'}</div>
+              <div><b>Status:</b> {viewModal.disabled ? 'Disabled' : 'Active'}</div>
               <div><b>Registered Date:</b> {viewModal.registered}</div>
+              <div><b>Description:</b> {viewModal.description || '-'}</div>
+              <div><b>Qualification:</b> {viewModal.qualification || '-'}</div>
             </div>
             <div className="provider-modal-actions">
               <button onClick={closeModals}>Close</button>

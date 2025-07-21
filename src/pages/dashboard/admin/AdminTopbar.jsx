@@ -54,14 +54,14 @@ const AdminTopbar = () => {
         </div>
         <div className="admin-topbar-profile-section" ref={profileRef}>
           <FaUser className="admin-topbar-icon solid" size={38} onClick={() => setProfileOpen((o) => !o)} />
-          {profileOpen && (
+        {profileOpen && (
             <div className="admin-profile-dropdown">
               <div className="admin-profile-header">Admin Profile</div>
               <div className="admin-profile-row"><span>Role:</span> {adminRole}</div>
               <div className="admin-profile-row"><span>Email:</span> {adminEmail}</div>
               <button className="admin-profile-logout-btn" style={{marginTop: '1.2rem'}} onClick={() => { localStorage.clear(); window.location.href='/login'; }}> Logout</button>
-            </div>
-          )}
+          </div>
+        )}
         </div>
       </div>
     </div>

@@ -57,12 +57,18 @@
   outline: none;
 }
 .customer-action-btn.edit-btn {
-  background: #1a3665;
+ /* background: #1a3665;
   color: #fff;
-  box-shadow: 0 1px 4px rgba(26,54,101,0.07);
+  box-shadow: 0 1px 4px rgba(26,54,101,0.07);*/
+  background: #f5f8fd;
+  color: #1a3665;
+  border: 1.5px solid #1a3665;
 }
 .customer-action-btn.edit-btn:hover {
-  background: #224b8b;
+ /* background: #224b8b;*/
+ background: #e6eafd;
+ color: #16305a;
+ border-color: #16305a;
 }
 .customer-action-btn.view-btn {
   background: #f5f8fd;
@@ -83,8 +89,9 @@
 }
 .customer-management-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   padding: 2rem 0 0.5rem 0;
+  margin-top: -6rem;
 }
 .customer-management-header h1 {
   font-size: 2.2rem;
@@ -122,24 +129,26 @@
   box-shadow: 0 8px 32px rgba(26,54,101,0.18);
   padding: 2.2rem 2.5rem 1.7rem 2.5rem;
   position: relative;
-  min-width: 260px;
-  max-width: 420px;
+  min-width: 320px;
+  max-width: 95vw;
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.5rem;
   border: 2.5px solid #1a3665;
+  align-items: stretch;
 }
 .customer-modal-title {
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 800;
   color: #fff;
   background: linear-gradient(90deg, #1a3665 0%, #27477e 100%);
-  border-radius: 12px 12px 0 0;
+  border-radius: 14px 14px 0 0;
   margin: -2.2rem -2.5rem 1.2rem -2.5rem;
-  padding: 1.1rem 2.5rem;
+  padding: 1.2rem 2.5rem;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 8px rgba(26,54,101,0.10);
+  text-align: center;
 }
 .customer-modal-close {
   position: absolute;
@@ -158,22 +167,29 @@
   color: #fbbf24;
   opacity: 1;
 }
-.customer-modal-form label {
+.customer-modal-form {
   display: flex;
   flex-direction: column;
-  font-size: 1rem;
+  gap: 1.2rem;
+}
+.customer-modal-form label {
+  font-size: 1.05rem;
   color: #1a3665;
-  margin-bottom: 0.7rem;
-  gap: 0.2rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 .customer-modal-form input[type="text"],
 .customer-modal-form input[type="email"],
 .customer-modal-form input[type="number"],
-.customer-modal-form input[type="date"] {
-  border-radius: 8px;
+.customer-modal-form input[type="date"],
+.customer-modal-form input[type="password"] {
+  border-radius: 10px;
   border: 1.5px solid #e2e8f0;
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
+  padding: 0.7rem 1.2rem;
+  font-size: 1.08rem;
   background: #f8fafc;
   margin-top: 0.2rem;
   transition: border 0.18s;
@@ -181,46 +197,110 @@
 .customer-modal-form input[type="text"]:focus,
 .customer-modal-form input[type="email"]:focus,
 .customer-modal-form input[type="number"]:focus,
-.customer-modal-form input[type="date"]:focus {
+.customer-modal-form input[type="date"]:focus,
+.customer-modal-form input[type="password"]:focus {
   border-color: #1a3665;
   outline: none;
+  background: #fff;
 }
 .customer-modal-form input[type="checkbox"] {
   margin-left: 0.5rem;
+  width: 1.1rem;
+  height: 1.1rem;
 }
 .customer-modal-actions {
   display: flex;
-  gap: 1rem;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
   justify-content: flex-end;
-  margin-top: 1.5rem;
 }
 .customer-modal-actions button {
   border: none;
-  border-radius: 8px;
-  padding: 0.7rem 1.7rem;
+  border-radius: 10px;
+  padding: 0.7rem 2.2rem;
   font-size: 1.08rem;
   font-weight: 700;
   cursor: pointer;
-  background: #1a3665;
-  color: #fff;
   transition: background 0.18s, color 0.18s, box-shadow 0.18s;
   box-shadow: 0 2px 8px rgba(26,54,101,0.10);
   letter-spacing: 0.5px;
 }
-.customer-modal-actions button:hover {
-  background: #fbbf24;
-  color: #1a3665;
+.customer-modal-actions button:first-child {
+  background: #1a3665;
+  color: #fff;
+}
+.customer-modal-actions button:first-child:hover {
+  background: #16305a;
+  color: #fff;
 }
 .customer-modal-actions button:last-child {
-  background: #fbbf24;
-  color: #1a3665;
+  background: #1a3665;
+  color: #fff;
 }
 .customer-modal-actions button:last-child:hover {
-  background: #1a3665;
+  background: #16305a;
   color: #fff;
 }
 .customer-modal-details div {
   margin-bottom: 0.5rem;
   font-size: 1.05rem;
   color: #1a3665;
+}
+.customer-modal-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 2.2rem;
+  margin-bottom: 1.2rem;
+}
+.customer-modal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+.customer-modal-form-group label {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  color: #1a3665;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  text-align: left;
+}
+.customer-modal-form-group input[type="text"],
+.customer-modal-form-group input[type="email"],
+.customer-modal-form-group input[type="number"],
+.customer-modal-form-group input[type="date"],
+.customer-modal-form-group input[type="password"] {
+  width: 100%;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  padding: 0.7rem 1.2rem;
+  font-size: 1.08rem;
+  background: #f8fafc;
+  margin-top: 0.2rem;
+  transition: border 0.18s;
+}
+.customer-modal-form-group input[type="text"]:focus,
+.customer-modal-form-group input[type="email"]:focus,
+.customer-modal-form-group input[type="number"]:focus,
+.customer-modal-form-group input[type="date"]:focus,
+.customer-modal-form-group input[type="password"]:focus {
+  border-color: #1a3665;
+  outline: none;
+  background: #fff;
+}
+.customer-modal-form-group input[type="checkbox"] {
+  margin-left: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  accent-color: #1a3665;
+}
+@media (max-width: 700px) {
+  .customer-modal-form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+  }
 } 
