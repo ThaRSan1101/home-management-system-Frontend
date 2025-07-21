@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Modal from '../../../components/Modal';
+import { toast } from 'sonner';
 import visaImg from '../../../assets/visa.png';
 import mcImg from '../../../assets/master.png';
 import './Subscription.css';
@@ -43,7 +43,6 @@ const samplePlans = [
 export default function Subscription() {
   const [plans, setPlans] = useState(samplePlans);
   const [activeTab, setActiveTab] = useState('subscribed');
-  const [modalStep, setModalStep] = useState(null); // null | 'form' | 'payment' | 'confirm' | 'success'
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [form, setForm] = useState({ name: '', address: '', phone: '', date: '', time: '' });
   const [payment, setPayment] = useState({ method: '', card: '', expiry: '', cvv: '' });
@@ -56,9 +55,10 @@ export default function Subscription() {
     setForm({ name: '', address: '', phone: '', date: '', time: '' });
     setPayment({ method: '', card: '', expiry: '', cvv: '' });
     setErrors({});
-    setModalStep('form');
+    toast.info(`Booking for ${plan.plan}`, {
+      description: "Please fill in the details and proceed to payment.",
+    });
   };
-  const closeModal = () => setModalStep(null);
 
   const validateForm = () => {
     const errs = {};
@@ -68,6 +68,11 @@ export default function Subscription() {
     if (!form.date) errs.date = 'Date required';
     if (!form.time) errs.time = 'Time required';
     setErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      toast.error('Please fill in all required fields.', {
+        description: Object.values(errs).join(' '),
+      });
+    }
     return Object.keys(errs).length === 0;
   };
   const validatePayment = () => {
@@ -83,6 +88,11 @@ export default function Subscription() {
     }
     if (!/^\d{3}$/.test(payment.cvv)) errs.cvv = '3-digit CVV required';
     setErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      toast.error('Please fill in all payment details.', {
+        description: Object.values(errs).join(' '),
+      });
+    }
     return Object.keys(errs).length === 0;
   };
   const handleCardInput = (e) => {
@@ -102,9 +112,12 @@ export default function Subscription() {
         p.id === id ? { ...p, status: 'unsubscribed', startDate: '-', endDate: '-' } : p
       )
     );
+    toast.success('Unsubscription successful!');
   };
 
   const renderModal = () => {
+    if (selectedPlan === null) return null;
+
     if (modalStep === 'form') {
       return (
         <div className="customer-booking-modal-form">
@@ -189,6 +202,7 @@ export default function Subscription() {
         const services = Number(localStorage.getItem('customer_services') || 0) + 1;
         localStorage.setItem('customer_subscriptions', subs);
         localStorage.setItem('customer_services', services);
+        toast.success('Booking successful!');
       }, [modalStep]);
       return (
         <div className="customer-booking-modal-success">
@@ -249,9 +263,7 @@ export default function Subscription() {
           </table>
         </div>
       </div>
-      <Modal isOpen={!!modalStep} onClose={closeModal}>
-        {renderModal()}
-      </Modal>
+      {renderModal()}
     </div>
   );
 } 

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaBell, FaUser } from 'react-icons/fa';
 import './ProviderTopbar.css';
+import { toast } from 'sonner';
 
 const provider = {
   fullName: localStorage.getItem('provider_fullName') || '',
@@ -27,8 +28,12 @@ const ProviderTopbarContent = () => {
     address: provider.address,
     phone: provider.phone,
     email: provider.email,
+    nic: localStorage.getItem('provider_nic') || '',
   });
-  const [profileData, setProfileData] = useState(provider);
+  const [profileData, setProfileData] = useState({
+    ...provider,
+    nic: localStorage.getItem('provider_nic') || '',
+  });
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const profileRef = useRef();
@@ -44,12 +49,14 @@ const ProviderTopbarContent = () => {
       email: localStorage.getItem('provider_email') || '',
       joined: localStorage.getItem('provider_joined') || '',
       avatar: '/src/assets/man.png',
+      nic: localStorage.getItem('provider_nic') || '',
     });
     setEditData({
       fullName: localStorage.getItem('provider_fullName') || '',
       address: localStorage.getItem('provider_address') || '',
       phone: localStorage.getItem('provider_phone') || '',
       email: localStorage.getItem('provider_email') || '',
+      nic: localStorage.getItem('provider_nic') || '',
     });
   }, []);
 
@@ -67,16 +74,52 @@ const ProviderTopbarContent = () => {
   }, []);
 
   const handleEditChange = (e) => {
-    setEditData({ ...editData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'phone') {
+      // Only allow numbers
+      const numeric = value.replace(/[^0-9]/g, '');
+      setEditData((prev) => ({ ...prev, [name]: numeric }));
+    } else {
+      setEditData((prev) => ({ ...prev, [name]: value }));
+    }
   };
-  const handleEditSubmit = (e) => {
+  const handleEditSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem('provider_fullName', editData.fullName);
-    localStorage.setItem('provider_address', editData.address);
-    localStorage.setItem('provider_phone', editData.phone);
-    localStorage.setItem('provider_email', editData.email);
-    setProfileData({ ...profileData, ...editData });
-    setEditOpen(false);
+    const user_id = localStorage.getItem('provider_user_id');
+    if (!user_id) {
+      toast.error('User ID not found. Please log in again.');
+      return;
+    }
+    const payload = {
+      user_id,
+      name: editData.fullName,
+      email: editData.email,
+      phone_number: editData.phone,
+      address: editData.address,
+      nic: editData.nic,
+    };
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_provider_profile.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      if (result.status === 'success') {
+        localStorage.setItem('provider_fullName', editData.fullName);
+        localStorage.setItem('provider_address', editData.address);
+        localStorage.setItem('provider_phone', editData.phone);
+        localStorage.setItem('provider_email', editData.email);
+        localStorage.setItem('provider_nic', editData.nic);
+        setProfileData((prev) => ({ ...prev, ...editData }));
+        setEditOpen(false);
+        toast.success('Your profile was updated successfully.');
+      } else {
+        toast.error(result.message || 'Failed to update profile.');
+      }
+    } catch (err) {
+      toast.error(err.message || 'Unknown error occurred.');
+    }
   };
 
   const handleToggleOnline = () => {
@@ -116,6 +159,7 @@ const ProviderTopbarContent = () => {
               <div className="profile-card-row"><span>Phone:</span> {profileData.phone}</div>
               <div className="profile-card-row"><span>Email:</span> {profileData.email}</div>
               <div className="profile-card-row"><span>Joined:</span> {profileData.joined}</div>
+              <div className="profile-card-row"><span>NIC:</span> {profileData.nic}</div>
               <div className="profile-card-row" style={{marginTop: '0.7rem', marginBottom: '0.7rem'}}>
                 <span>Status:</span>
                 <button
@@ -152,6 +196,9 @@ const ProviderTopbarContent = () => {
               </label>
               <label>Email
                 <input name="email" value={editData.email} onChange={handleEditChange} required type="email" />
+              </label>
+              <label>NIC
+                <input name="nic" value={editData.nic} onChange={handleEditChange} required />
               </label>
               <div className="profile-edit-modal-actions">
                 <button type="button" className="activity-modal-cancel-btn" onClick={() => setEditOpen(false)}>Cancel</button>

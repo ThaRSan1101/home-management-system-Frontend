@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './App.css';
+import { Toaster } from 'sonner';
 
 // Pages
 import Home from './pages/Home';
@@ -62,6 +63,7 @@ function App() {
           />
         </Routes>
       </main>
+      <Toaster position="top-center" richColors closeButton theme="light" />
       {!isDashboard && <Footer />}
     </div>
   );

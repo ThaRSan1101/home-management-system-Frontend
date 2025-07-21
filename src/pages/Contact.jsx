@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import './Contact.css';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import Modal from '../components/Modal';
+import { toast } from 'sonner';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,11 +13,6 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [phoneError, setPhoneError] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [messageError, setMessageError] = useState("");
-  const [subjectError, setSubjectError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,50 +20,9 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let valid = true;
-    // Name validation
-    if (!formData.name.trim()) {
-      setNameError("Please enter your name.");
-      valid = false;
-    } else {
-      setNameError("");
-    }
-    // Email validation
-    if (!formData.email.trim()) {
-      setEmailError("Please enter your email address.");
-      valid = false;
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      setEmailError("Please enter a valid email address.");
-      valid = false;
-    } else {
-      setEmailError("");
-    }
-    // Subject validation
-    if (!formData.subject.trim()) {
-      setSubjectError("Please enter the subject.");
-      valid = false;
-    } else {
-      setSubjectError("");
-    }
-    // Message validation
-    if (!formData.message.trim()) {
-      setMessageError("Please enter your message.");
-      valid = false;
-    } else {
-      setMessageError("");
-    }
-    // Phone validation (allow empty or exactly 10 digits)
-    if (formData.phone && !/^\d{10}$/.test(formData.phone)) {
-      setPhoneError("Phone number must be exactly 10 digits.");
-      valid = false;
-    } else {
-      setPhoneError("");
-    }
-    if (!valid) {
-      setIsSubmitted(false);
-      return;
-    }
-    setIsSubmitted(true);
+
+    toast.success('Message sent successfully!');
+
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
 
