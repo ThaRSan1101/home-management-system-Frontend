@@ -17,8 +17,8 @@ export default function Modal({ isOpen, onClose, children, type = 'info', title 
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleEsc);
-    // Focus trap
-    if (modalRef.current) modalRef.current.focus();
+    // Focus trap (removed to prevent input blur issue)
+    // if (modalRef.current) modalRef.current.focus();
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isOpen, onClose]);
 
@@ -32,12 +32,7 @@ export default function Modal({ isOpen, onClose, children, type = 'info', title 
         tabIndex={0}
         aria-label={title || type + ' notification'}
       >
-        <div className="modal-header">
-          {ICONS[type]}
-          {title && <span className="modal-title">{title}</span>}
-        </div>
         <div className="modal-body">{children}</div>
-        <button className="modal-btn" onClick={onClose} autoFocus>OK</button>
       </div>
     </div>
   );

@@ -917,6 +917,18 @@ text-align: center;
   font-size: 1.08rem;
   margin-bottom: 0.7rem;
   text-align: left;
+  min-height: 110px;
+  display: block;
+}
+.customer-service-booking-fee {
+  font-weight: 700;
+  color: #1a3665;
+  font-size: 1.13rem;
+  margin-bottom: 0.7rem;
+  text-align: left;
+  margin-top: 0.2rem;
+  min-height: 24px;
+  display: block;
 }
 .customer-service-btn {
   background: #1a3665;
@@ -1082,6 +1094,9 @@ text-align: center;
   min-width: 280px;
   max-width: 700px;
 }
+.booking-modal-form h2 {
+  color: #1a3665;
+}
 .booking-modal-form h2,
 .booking-modal-payment h2,
 .booking-modal-confirm h2,
@@ -1155,6 +1170,7 @@ text-align: center;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  text-align: left;
 }
 .modal-payment-methods {
   display: flex;

@@ -216,7 +216,14 @@ const Service = () => {
     if (modalStep === 'form') {
       return (
         <div className="booking-modal-form">
-          <h2>Book {bookingType === 'service' ? selectedService?.title : 'Subscription'}</h2>
+          <h2>
+            {bookingType === 'service' && selectedService?.title && (
+              <>Book {selectedService.title}</>
+            )}
+            {bookingType === 'subscription' && selectedService?.plan && (
+              <>Book {selectedService.plan} Subscription</>
+            )}
+          </h2>
           <form onSubmit={e => { e.preventDefault(); if (validateForm()) setModalStep('payment'); }}>
             <input placeholder="Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
             {errors.name && <div className="modal-err">{errors.name}</div>}
@@ -254,7 +261,7 @@ const Service = () => {
             <label>
               <input type="radio" name="paymethod" checked={payment.method==='mc'} onChange={()=>setPayment(p=>({...p,method:'mc'}))} /> MasterCard
             </label>
-            <span className="modal-charge">Booking fee: <b>Rs. 500</b></span>
+            <span className="modal-charge">Booking fee: <b>Rs. {bookingType === 'subscription' ? '1000' : '500'}</b></span>
           </div>
           <div className="modal-fee-explanation">This non-refundable fee secures your service slot and will be deducted from your final bill.</div>
           {errors.method && <div className="modal-err">{errors.method}</div>}
@@ -331,7 +338,17 @@ const Service = () => {
               <div className="customer-service-category">{service.category}</div>
               <h3 className="customer-service-name">{service.title}</h3>
               <p className="customer-service-desc">{service.description}</p>
-              <div style={{fontWeight:'600',color:'#1a3665',marginBottom:'0.7rem',fontSize:'1.08rem'}}>Booking Fee: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 500</span></div>
+
+              <div className="customer-service-booking-fee"
+                style={
+                  service.title === 'Plumbing Services'
+                    ? { paddingTop: '28px' }
+                    : service.title === 'Electrical Services'
+                    ? { paddingTop: '28px' }
+                    : {}
+                }
+              >Booking Fee: Rs 500</div>
+
               <button className="customer-service-btn" onClick={()=>openBooking('service', service)}>Book Now</button>
             </div>
           </div>
@@ -351,6 +368,7 @@ const Service = () => {
             <div className="customer-subscription-card" key={plan.title}>
               <div className="customer-subscription-header" style={{fontSize: '1.2rem', fontWeight: 600, color: '#1a3665', textAlign: 'center', marginBottom: '0.7rem'}}>{plan.plan}</div>
               <div className="customer-subscription-title" style={{fontSize: '2.1rem', fontWeight: 700, color: '#1a3665', textAlign: 'center', marginBottom: '1.5rem'}}>{plan.title}</div>
+              <div className="customer-subscription-fee" style={{fontWeight: 700, color: '#1a3665', fontSize: '1.13rem', marginBottom: '1.1rem', textAlign: 'center'}}>Subscription Fee: Rs 1000</div>
               <ul className="customer-subscription-features" style={{marginBottom: '2.5rem'}}>
                 {plan.features.map((feature, i) => (
                   <li key={i} style={{color: '#1a3665', fontSize: '1.18rem', marginBottom: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.7rem'}}>
