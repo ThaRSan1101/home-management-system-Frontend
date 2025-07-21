@@ -49,8 +49,37 @@ const Provider = () => {
     setEditForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
   // Placeholder for edit save (not implemented)
-  const handleEditSave = () => {
-    toast.info('Edit provider functionality not implemented yet.');
+  const handleEditSave = async () => {
+    try {
+      // Ensure correct field names for backend
+      const payload = {
+        user_id: editForm.user_id,
+        provider_id: editForm.provider_id,
+        name: editForm.name,
+        email: editForm.email,
+        phone_number: editForm.phone_number,
+        address: editForm.address,
+        nic: editForm.NIC,
+        description: editForm.description,
+        qualifications: editForm.qualifications,
+        status: editForm.status,
+        disable_status: !!editForm.disable_status ? 1 : 0
+      };
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_provider_profile.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      if (result.status === 'success') {
+        toast.success('Provider updated successfully.');
+        fetchProviders();
+      } else {
+        toast.error(result.message || 'Failed to update provider.');
+      }
+    } catch (err) {
+      toast.error('Error updating provider.');
+    }
     closeModals();
   };
   const handleAddChange = (e) => {
@@ -101,6 +130,7 @@ const Provider = () => {
               <th>Address</th>
               <th>NIC</th>
               <th>Status</th>
+              <th>Disable Status</th>
               <th>Registered Date</th>
               <th>Action</th>
             </tr>
@@ -121,6 +151,7 @@ const Provider = () => {
                   <td>{p.address}</td>
                   <td>{p.NIC}</td>
                   <td>{p.status === 'active' ? 'Active' : 'Inactive'}</td>
+                  <td>{p.disable_status ? 'Disabled' : 'Active'}</td>
                   <td>{p.registered_date ? p.registered_date.substring(0, 10) : ''}</td>
                   <td>
                     <div className="provider-action-btn-group">
@@ -207,11 +238,6 @@ const Provider = () => {
                 </label>
               </div>
               <div className="provider-modal-form-group">
-                <label>Password
-                  <input name="password" type="password" value={editForm.password || ''} onChange={handleEditChange} placeholder="Password" />
-                </label>
-              </div>
-              <div className="provider-modal-form-group">
                 <label>Phone Number
                   <input name="phone_number" value={editForm.phone_number} onChange={handleEditChange} placeholder="Phone Number" type="text" />
                 </label>
@@ -234,6 +260,12 @@ const Provider = () => {
               <div className="provider-modal-form-group">
                 <label>Qualification
                   <input name="qualifications" value={editForm.qualifications || ''} onChange={handleEditChange} placeholder="Qualification" type="text" />
+                </label>
+              </div>
+              <div className="provider-modal-form-group">
+                <label>
+                  Disable Status
+                  <input name="disable_status" type="checkbox" checked={!!editForm.disable_status} onChange={handleEditChange} />
                 </label>
               </div>
             </form>

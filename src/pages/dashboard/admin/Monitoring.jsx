@@ -39,6 +39,7 @@ const Monitoring = () => {
           localStorage.setItem('customer_phone', result.user_details.phone || '');
           localStorage.setItem('customer_email', result.user_details.email || '');
           localStorage.setItem('customer_joined', result.user_details.joined || '');
+          localStorage.setItem('customer_nic', result.user_details.nic || '');
           navigate(`/customer/dashboard/${result.user_id}/home`); // push
         } else if (result.user_type === 'provider' && result.user_details) {
           localStorage.setItem('provider_fullName', result.user_details.fullName || '');
@@ -46,6 +47,7 @@ const Monitoring = () => {
           localStorage.setItem('provider_phone', result.user_details.phone || '');
           localStorage.setItem('provider_email', result.user_details.email || '');
           localStorage.setItem('provider_joined', result.user_details.joined || '');
+          localStorage.setItem('provider_nic', result.user_details.nic || '');
           navigate(`/provider/dashboard/${result.user_id}`); // push, not replace
         }
       } else {
