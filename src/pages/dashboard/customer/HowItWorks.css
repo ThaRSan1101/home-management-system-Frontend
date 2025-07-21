@@ -10,7 +10,7 @@
 .customer-howitworks-page {
   width: 100%;
   max-width: 1400px;
-  margin-left: -9rem;
+  margin-left: -10rem;
   padding: 0;
   min-height: 80vh;
   text-align: center;
@@ -30,8 +30,9 @@
 }
 
 .customer-phases-title {
-  font-size: 3rem;
-  font-weight: 900;
+  margin-top: 2.5rem;
+  font-size: 2rem;
+  font-weight: 800;
   margin-bottom: 2.5rem;
   color: #1a3665;
   letter-spacing: -1px;
@@ -125,7 +126,7 @@
   animation-delay: 0.5s;
 }
 .customer-phases-timeline-content h3 {
-  font-size: 2.1rem;
+  font-size: 1.6rem;
   font-weight: 900;
   margin-bottom: 0.7rem;
   color: #181818;
@@ -187,16 +188,17 @@
 }
 
 .customer-trust-title {
-  font-size: 3rem;
-  font-weight: 900;
+  font-size: 2rem;
+  font-weight: 800;
   color: #1a3665;
   text-align: center;
   margin-bottom: 1.2rem;
   letter-spacing: -1px;
+  margin-top: 3rem;
 }
 
 .customer-trust-intro {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   color: #444;
   margin-bottom: 3.5rem;
   text-align: center;
@@ -239,7 +241,7 @@
 }
 
 .customer-trust-card-title {
-  font-size: 1.45rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: #181818;
   margin-bottom: 1.1rem;
@@ -247,7 +249,7 @@
 }
 
 .customer-trust-card-desc {
-  font-size: 1.13rem;
+  font-size: 1.1rem;
   color: #444;
   margin: 0;
   text-align: center;
@@ -284,12 +286,13 @@
 }
 
 .customer-faq-title {
-  font-size: 2.7rem;
-  font-weight: 900;
+  font-size: 2rem;
+  font-weight: 800;
   margin-bottom: 2.7rem;
   color: #1a3665;
   text-align: center;
   letter-spacing: -1px;
+  margin-top: 2.5rem;
 }
 
 .customer-faq-list.customer-new-faq-list {
@@ -304,8 +307,8 @@
 }
 
 .customer-faq-card {
-  width: 100%;
-  max-width: 1000px;
+  width: 75%;
+  max-width: 900px;
   background: #fff;
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(26,54,101,0.07);
@@ -326,7 +329,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 2.1rem 2.5rem;
-  font-size: 1.45rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: #1a3665;
   cursor: pointer;
@@ -340,12 +343,12 @@
 .customer-faq-question-text {
   flex: 1;
   color: #1a3665;
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   font-weight: 500;
 }
 .customer-faq-plus {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 500;
   color: #2563eb;
   margin-left: 1.5rem;
   display: flex;

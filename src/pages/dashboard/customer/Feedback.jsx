@@ -125,7 +125,7 @@ const DashboardFeedback = () => {
                 </div>
                 
                 <div className="table-cell amount-cell">
-                  <span className="amount">${feedback.amount.toFixed(2)}</span>
+                  <span className="amount">Rs {feedback.amount.toFixed(2)}</span>
                 </div>
                 
                 <div className="table-cell rating-cell">

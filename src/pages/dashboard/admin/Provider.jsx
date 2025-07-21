@@ -1,37 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Provider.css';
-
-const initialProviders = [
-  {
-    id: 1,
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    password: 'provider123',
-    phone: '0712345678',
-    address: '123 Main St, Colombo',
-    nic: '901234567V',
-    disabled: false,
-    registered: '2024-06-01',
-    description: 'Experienced plumber with 10+ years in residential and commercial services.',
-    qualification: 'NVQ Level 4 in Plumbing',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    email: 'jane.smith@example.com',
-    password: 'provider456',
-    phone: '0723456789',
-    address: '456 Park Ave, Kandy',
-    nic: '880123456V',
-    disabled: true,
-    registered: '2024-06-10',
-    description: 'Certified electrician specializing in home automation and repairs.',
-    qualification: 'Diploma in Electrical Engineering',
-  },
-];
+import { toast } from 'sonner';
 
 const Provider = () => {
-  const [providers, setProviders] = useState(initialProviders);
+  const [providers, setProviders] = useState([]);
   const [editModal, setEditModal] = useState(null); // provider object or null
   const [viewModal, setViewModal] = useState(null); // provider object or null
   const [editForm, setEditForm] = useState({});
@@ -43,11 +15,28 @@ const Provider = () => {
     phone: '',
     address: '',
     nic: '',
-    disabled: false,
-    registered: '',
     description: '',
     qualification: '',
   });
+
+  // Fetch providers from backend
+  const fetchProviders = async () => {
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/get_providers.php');
+      const result = await res.json();
+      if (result.status === 'success') {
+        setProviders(result.providers);
+      } else {
+        toast.error(result.message || 'Failed to fetch providers.');
+      }
+    } catch (err) {
+      toast.error('Error fetching providers.');
+    }
+  };
+
+  useEffect(() => {
+    fetchProviders();
+  }, []);
 
   const openEdit = (provider) => {
     setEditForm({ ...provider });
@@ -59,25 +48,71 @@ const Provider = () => {
     const { name, value, type, checked } = e.target;
     setEditForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
-  const handleEditSave = () => {
-    setProviders((prev) => prev.map((p) => p.id === editForm.id ? { ...editForm } : p));
+  // Placeholder for edit save (not implemented)
+  const handleEditSave = async () => {
+    try {
+      // Ensure correct field names for backend
+      const payload = {
+        user_id: editForm.user_id,
+        provider_id: editForm.provider_id,
+        name: editForm.name,
+        email: editForm.email,
+        phone_number: editForm.phone_number,
+        address: editForm.address,
+        nic: editForm.NIC,
+        description: editForm.description,
+        qualifications: editForm.qualifications,
+        status: editForm.status,
+        disable_status: !!editForm.disable_status ? 1 : 0
+      };
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_provider_profile.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      if (result.status === 'success') {
+        toast.success('Provider updated successfully.');
+        fetchProviders();
+      } else {
+        toast.error(result.message || 'Failed to update provider.');
+      }
+    } catch (err) {
+      toast.error('Error updating provider.');
+    }
     closeModals();
   };
   const handleAddChange = (e) => {
     const { name, value, type, checked } = e.target;
     setAddForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
-  const handleAddProvider = () => {
-    if (!addForm.name || !addForm.email || !addForm.password) return;
-    const newProvider = {
-      ...addForm,
-      id: Date.now(),
-      description: addForm.description || '',
-      qualification: addForm.qualification || '',
-    };
-    setProviders((prev) => [...prev, newProvider]);
-    setAddForm({ name: '', email: '', password: '', phone: '', address: '', nic: '', disabled: false, registered: '', description: '', qualification: '' });
-    setAddModal(false);
+  const handleAddProvider = async (e) => {
+    e.preventDefault();
+    if (!addForm.name || !addForm.email || !addForm.password || !addForm.phone || !addForm.address || !addForm.nic) {
+      toast.error('Please fill in all required fields.');
+      return;
+    }
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/add_provider.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(addForm)
+      });
+      const result = await res.json();
+      if (result.status === 'success') {
+        toast.success('Provider account created and email sent.');
+        setAddForm({ name: '', email: '', password: '', phone: '', address: '', nic: '', description: '', qualification: '' });
+        setAddModal(false);
+        fetchProviders();
+      } else {
+        toast.error(result.message || 'Failed to add provider.');
+        if (result.emailError) {
+          toast.error('Email error: ' + result.emailError);
+        }
+      }
+    } catch (err) {
+      toast.error('Error adding provider.');
+    }
   };
 
   return (
@@ -91,10 +126,10 @@ const Provider = () => {
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Password</th>
               <th>Phone Number</th>
               <th>Address</th>
               <th>NIC</th>
+              <th>Status</th>
               <th>Disable Status</th>
               <th>Registered Date</th>
               <th>Action</th>
@@ -103,21 +138,21 @@ const Provider = () => {
           <tbody>
             {providers.length === 0 ? (
               <tr>
-                <td colSpan={9} style={{ textAlign: 'center', color: '#888', padding: '2rem 0' }}>
+                <td colSpan={8} style={{ textAlign: 'center', color: '#888', padding: '2rem 0' }}>
                   No providers found.
                 </td>
               </tr>
             ) : (
               providers.map((p) => (
-                <tr key={p.id}>
+                <tr key={p.provider_id}>
                   <td>{p.name}</td>
                   <td>{p.email}</td>
-                  <td>{p.password}</td>
-                  <td>{p.phone}</td>
+                  <td>{p.phone_number}</td>
                   <td>{p.address}</td>
-                  <td>{p.nic}</td>
-                  <td>{p.disabled ? 'Disabled' : 'Active'}</td>
-                  <td>{p.registered}</td>
+                  <td>{p.NIC}</td>
+                  <td>{p.status === 'active' ? 'Active' : 'Inactive'}</td>
+                  <td>{p.disable_status ? 'Disabled' : 'Active'}</td>
+                  <td>{p.registered_date ? p.registered_date.substring(0, 10) : ''}</td>
                   <td>
                     <div className="provider-action-btn-group">
                       <button className="provider-action-btn edit-btn" onClick={() => openEdit(p)}>Edit</button>
@@ -136,45 +171,35 @@ const Provider = () => {
         <div className="provider-modal-overlay">
           <div className="provider-modal add-provider-modal">
             <div className="provider-modal-title">Add New Provider</div>
-            <form className="provider-modal-form-grid">
+            <form className="provider-modal-form-grid" onSubmit={handleAddProvider}>
               <div className="provider-modal-form-group">
                 <label>Name
-                  <input name="name" value={addForm.name} onChange={handleAddChange} placeholder="Full Name" type="text" />
+                  <input name="name" value={addForm.name} onChange={handleAddChange} placeholder="Full Name" type="text" required />
                 </label>
               </div>
               <div className="provider-modal-form-group">
                 <label>Email
-                  <input name="email" value={addForm.email} onChange={handleAddChange} placeholder="E-mail Address" type="text" />
+                  <input name="email" value={addForm.email} onChange={handleAddChange} placeholder="E-mail Address" type="email" required />
                 </label>
               </div>
               <div className="provider-modal-form-group">
                 <label>Password
-                  <input name="password" type="password" value={addForm.password} onChange={handleAddChange} placeholder="Password" />
+                  <input name="password" type="password" value={addForm.password} onChange={handleAddChange} placeholder="Password" required />
                 </label>
               </div>
               <div className="provider-modal-form-group">
                 <label>Phone Number
-                  <input name="phone" value={addForm.phone} onChange={handleAddChange} placeholder="Phone Number" type="text" />
+                  <input name="phone" value={addForm.phone} onChange={handleAddChange} placeholder="Phone Number" type="text" required />
                 </label>
               </div>
               <div className="provider-modal-form-group">
                 <label>Address
-                  <input name="address" value={addForm.address} onChange={handleAddChange} placeholder="Address" type="text" />
+                  <input name="address" value={addForm.address} onChange={handleAddChange} placeholder="Address" type="text" required />
                 </label>
               </div>
               <div className="provider-modal-form-group">
                 <label>NIC
-                  <input name="nic" value={addForm.nic} onChange={handleAddChange} placeholder="NIC" type="text" />
-                </label>
-              </div>
-              <div className="provider-modal-form-group">
-                <label>Disable Status
-                  <input type="checkbox" name="disabled" checked={addForm.disabled} onChange={handleAddChange} style={{marginLeft:'0.5rem'}} /> Disabled
-                </label>
-              </div>
-              <div className="provider-modal-form-group">
-                <label>Registered Date
-                  <input name="registered" value={addForm.registered} onChange={handleAddChange} placeholder="Registered Date" type="text" />
+                  <input name="nic" value={addForm.nic} onChange={handleAddChange} placeholder="NIC" type="text" required />
                 </label>
               </div>
               <div className="provider-modal-form-group">
@@ -186,12 +211,14 @@ const Provider = () => {
                 <label>Qualification
                   <input name="qualification" value={addForm.qualification} onChange={handleAddChange} placeholder="Qualification" type="text" />
                 </label>
+
               </div>
+              <div className="provider-modal-actions">
+                <button type="button" onClick={closeModals}>Cancel</button>
+                <button type="submit">Add</button>
+              </div>
+
             </form>
-            <div className="provider-modal-actions">
-              <button onClick={closeModals}>Cancel</button>
-              <button onClick={handleAddProvider}>Add</button>
-            </div>
           </div>
         </div>
       )}
@@ -213,13 +240,8 @@ const Provider = () => {
                 </label>
               </div>
               <div className="provider-modal-form-group">
-                <label>Password
-                  <input name="password" type="password" value={editForm.password || ''} onChange={handleEditChange} placeholder="Password" />
-                </label>
-              </div>
-              <div className="provider-modal-form-group">
                 <label>Phone Number
-                  <input name="phone" value={editForm.phone} onChange={handleEditChange} placeholder="Phone Number" type="text" />
+                  <input name="phone_number" value={editForm.phone_number} onChange={handleEditChange} placeholder="Phone Number" type="text" />
                 </label>
               </div>
               <div className="provider-modal-form-group">
@@ -229,17 +251,7 @@ const Provider = () => {
               </div>
               <div className="provider-modal-form-group">
                 <label>NIC
-                  <input name="nic" value={editForm.nic} onChange={handleEditChange} placeholder="NIC" type="text" />
-                </label>
-              </div>
-              <div className="provider-modal-form-group">
-                <label>Disable Status
-                  <input type="checkbox" name="disabled" checked={editForm.disabled} onChange={handleEditChange} style={{marginLeft:'0.5rem'}} /> Disabled
-                </label>
-              </div>
-              <div className="provider-modal-form-group">
-                <label>Registered Date
-                  <input name="registered" value={editForm.registered} onChange={handleEditChange} placeholder="Registered Date" type="text" />
+                  <input name="NIC" value={editForm.NIC} onChange={handleEditChange} placeholder="NIC" type="text" />
                 </label>
               </div>
               <div className="provider-modal-form-group">
@@ -249,9 +261,15 @@ const Provider = () => {
               </div>
               <div className="provider-modal-form-group">
                 <label>Qualification
-                  <input name="qualification" value={editForm.qualification || ''} onChange={handleEditChange} placeholder="Qualification" type="text" />
+                  <input name="qualifications" value={editForm.qualifications || ''} onChange={handleEditChange} placeholder="Qualification" type="text" />
                 </label>
               </div>
+              <div className="provider-modal-form-group">
+                <label>
+                  Disable Status
+                  <input name="disable_status" type="checkbox" checked={!!editForm.disable_status} onChange={handleEditChange} />
+                </label>
+            </div>
             </form>
             <div className="provider-modal-actions">
               <button onClick={closeModals}>Cancel</button>
@@ -270,13 +288,13 @@ const Provider = () => {
             <div className="provider-modal-details">
               <div><b>Name:</b> {viewModal.name}</div>
               <div><b>Email:</b> {viewModal.email}</div>
-              <div><b>Phone:</b> {viewModal.phone}</div>
+              <div><b>Phone:</b> {viewModal.phone_number}</div>
               <div><b>Address:</b> {viewModal.address}</div>
-              <div><b>NIC:</b> {viewModal.nic}</div>
-              <div><b>Status:</b> {viewModal.disabled ? 'Disabled' : 'Active'}</div>
-              <div><b>Registered Date:</b> {viewModal.registered}</div>
+              <div><b>NIC:</b> {viewModal.NIC}</div>
+              <div><b>Status:</b> {viewModal.status === 'active' ? 'Active' : 'Inactive'}</div>
+              <div><b>Registered Date:</b> {viewModal.registered_date ? viewModal.registered_date.substring(0, 10) : ''}</div>
               <div><b>Description:</b> {viewModal.description || '-'}</div>
-              <div><b>Qualification:</b> {viewModal.qualification || '-'}</div>
+              <div><b>Qualification:</b> {viewModal.qualifications || '-'}</div>
             </div>
             <div className="provider-modal-actions">
               <button onClick={closeModals}>Close</button>

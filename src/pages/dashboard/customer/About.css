@@ -375,23 +375,33 @@
 }
 
 .aboutus-container {
-  max-width: 1100px;
-  margin: 0 auto;
+  /* max-width: 1100px; */
+  /* margin: 0 auto;
   padding: 3.5rem 1.5rem 0 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-right: 16rem; */
+
+  width: 100%;
+  background: #f5f8fd;
+  margin-top: -2rem;
+  padding: 2rem 2vw 0 3vw;
+  min-height: 100vh;
+  
+  margin-left: -3rem;
 }
 
 .aboutus-title {
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: 900;
   color: #232323;
-
+  text-align: center;
   margin-bottom: 0.5rem;
-  padding-right: 40rem;
+  padding-right: 41rem;
   letter-spacing: -1px;
-  margin-top: -5rem;
+  margin-top: 1.5rem;
+  margin-right: 8.5rem !important;
 }
 
 .aboutus-subtitle {
@@ -401,20 +411,22 @@
   margin-bottom: 2.2rem;
   text-align: center;
   padding-right: 51rem;
+  margin-right: 5.5rem;
 }
 
 .aboutus-desc {
   font-size: 1rem;
   color: #232323;
   text-align: left;
-  max-width: 800px;
-  margin: 0 auto 3.5rem 1.5rem;
+  max-width: 90%;
+  margin: 0 auto 3.5rem 5.5rem;
   line-height: 1.7;
   justify-content: center;
 }
 
 .aboutus-stats-row {
   display: flex;
+  flex-direction: row;
   gap: 0;
   width: 100%;
   max-width: 1000px;
@@ -423,10 +435,12 @@
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(16, 40, 80, 0.08);
   background: #fff;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
 }
-
 .aboutus-stat-card {
-  flex: 1;
+  flex: 1 1 0;
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -434,6 +448,8 @@
   justify-content: center;
   padding: 2.5rem 1.2rem 2.2rem 1.2rem;
   border-right: 1.5px solid #f0f3fa;
+  min-width: 0;
+  max-width: 300px;
 }
 .aboutus-stat-card:last-child {
   border-right: none;
@@ -494,9 +510,11 @@
 
 @media (max-width: 900px) {
   .aboutus-stats-row {
-    flex-direction: column;
-    border-radius: 18px;
-    box-shadow: 0 4px 16px rgba(16, 40, 80, 0.10);
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    max-width: 98vw;
+    overflow-x: auto;
   }
   .aboutus-stat-card, .aboutus-goal-card {
     border-right: none;
