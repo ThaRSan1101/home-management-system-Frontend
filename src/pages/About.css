@@ -242,7 +242,7 @@ h1, h2, h3 {
   margin-top: 0.5rem;
   opacity: 0;
   height: 0;
-  transition: opacity 0.4s, height 0.4s;
+  transition: none !important;
 }
 .team-card-super:hover .team-bio {
   opacity: 1;
@@ -1186,4 +1186,14 @@ h1, h2, h3 {
     border-bottom: none;
     border-radius: 0 0 18px 18px;
   }
+} 
+
+/* Remove all animation and transition from Meet Our Team section */
+.team-section-super,
+.team-grid-super,
+.team-card-super,
+.team-bio,
+.team-card-super:hover .team-bio {
+  animation: none !important;
+  transition: none !important;
 } 

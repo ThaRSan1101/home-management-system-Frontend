@@ -15,16 +15,21 @@ const Footer = () => {
           <p className="footer-desc">Your trusted partner for professional home services.</p>
         </div>
         <nav className="footer-nav">
-          <Link to="/">Home</Link>
+          <Link to="/" onClick={e => {
+            if (window.location.pathname === '/') {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}>Home</Link>
           <Link to="/services">Services</Link>
           <Link to="/how-it-works">How It Works</Link>
           <Link to="/about">About Us</Link>
           <Link to="/contact">Contact Us</Link>
         </nav>
         <div className="footer-contact">
-          <div><FaPhone /> <a href="tel:+15551234567">+1 (555) 123-4567</a></div>
-          <div><FaEnvelope /> <a href="mailto:hello@homeservice.com">hello@homeservice.com</a></div>
-          <div><FaMapMarkerAlt /> <span>123 Service Street, City, State</span></div>
+          <div><FaPhone /> <a href="tel:+94778200752">+94 778 200 752 </a></div>
+          <div><FaEnvelope /> <a href="mailto:hello@homeservice.com">ServiceHub@gmail.com</a></div>
+          <div><FaMapMarkerAlt /> <span>07,Main Street Road,Jaffna</span></div>
         </div>
         <div className="footer-social">
           <a href="#" aria-label="Facebook"><FaFacebookF /></a>

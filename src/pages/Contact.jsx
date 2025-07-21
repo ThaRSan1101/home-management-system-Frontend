@@ -20,7 +20,9 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     toast.success('Message sent successfully!');
+
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
 
@@ -50,21 +52,51 @@ const Contact = () => {
           <h1 className="contactus-header">Contact Us</h1>
           <form className="contactus-form" onSubmit={handleSubmit}>
             <div className="contactus-form-group">
-              <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
+              <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} />
+              {nameError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {nameError}
+                </div>
+              )}
             </div>
             <div className="contactus-form-group">
-              <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
+              <input type="text" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} />
+              {emailError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {emailError}
+                </div>
+              )}
             </div>
             <div className="contactus-form-group">
               <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} />
+              {phoneError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {phoneError}
+                </div>
+              )}
             </div>
             <div className="contactus-form-group">
               <input type="text" name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} />
+              {subjectError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {subjectError}
+                </div>
+              )}
             </div>
             <div className="contactus-form-group">
-              <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} required />
+              <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} />
+              {messageError && (
+                <div style={{ color: '#d32f2f', fontSize: '0.98rem', marginTop: '0.3rem', fontWeight: 500 }}>
+                  {messageError}
+                </div>
+              )}
             </div>
             <button type="submit" className="contactus-send-btn">Send Message</button>
+            {isSubmitted && (
+              <div className="contactus-success" style={{marginTop:'1.2rem', color:'#fff', background:'#1a3665', borderRadius:'10px', fontWeight:600, fontSize:'1.08rem', textAlign:'center', padding:'0.8rem 1.2rem'}}>
+                Thank you! Your message has been sent.
+              </div>
+            )}
           </form>
         </div>
         <div className="contactus-right">
