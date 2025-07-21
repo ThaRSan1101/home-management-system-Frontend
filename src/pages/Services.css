@@ -723,7 +723,7 @@ body, .services-page-main {
   font-size: 1.7rem;
   font-weight: 700;
   color: var(--text-color);
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.5rem !important;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .subscription-features {
@@ -731,6 +731,7 @@ body, .services-page-main {
   padding: 0;
   margin: 0 0 2rem 0;
   width: 100%;
+  margin-top: 1rem !important;
 }
 .subscription-features li {
   color: var(--primary-color);
