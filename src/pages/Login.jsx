@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash, FaLock, FaUser, FaKey } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import './Login.css';
 import axios from 'axios';
+import Modal from '../components/Modal';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +24,10 @@ const Login = () => {
   const [forgotSuccess, setForgotSuccess] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState('info');
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalMessage, setModalMessage] = useState('');
 
   useEffect(() => {
     setFormData({ email: '', password: '' });
@@ -89,10 +94,16 @@ const Login = () => {
           navigate(`/customer/dashboard/${result.user_id}`);
         }
       } else {
-        setLoginError(result.message || 'Invalid email or password.');
+        setModalType('error');
+        setModalTitle('Login Failed');
+        setModalMessage(result.message || 'Invalid email or password.');
+        setModalOpen(true);
       }
     } catch (err) {
-      setLoginError('Server error. Please try again later.');
+      setModalType('error');
+      setModalTitle('Server Error');
+      setModalMessage('Server error. Please try again later.');
+      setModalOpen(true);
     }
   };
 
@@ -102,7 +113,10 @@ const Login = () => {
     setForgotError('');
     setForgotSuccess('');
     if (!forgotEmail) {
-      setForgotError('Please enter your email.');
+      setModalType('warning');
+      setModalTitle('Missing Email');
+      setModalMessage('Please enter your email.');
+      setModalOpen(true);
       return;
     }
     setForgotLoading(true);
@@ -115,12 +129,21 @@ const Login = () => {
       const result = await res.json();
       if (result.status === 'success') {
         setForgotStep(2);
-        setForgotSuccess('OTP sent to your email.');
+        setModalType('success');
+        setModalTitle('OTP Sent');
+        setModalMessage('OTP sent to your email.');
+        setModalOpen(true);
       } else {
-        setForgotError(result.message);
+        setModalType('error');
+        setModalTitle('Error');
+        setModalMessage(result.message);
+        setModalOpen(true);
       }
     } catch (err) {
-      setForgotError('Server error.');
+      setModalType('error');
+      setModalTitle('Server Error');
+      setModalMessage('Server error.');
+      setModalOpen(true);
     }
     setForgotLoading(false);
   };
@@ -130,7 +153,10 @@ const Login = () => {
     setForgotError('');
     setForgotSuccess('');
     if (!forgotOtp || forgotOtp.length !== 6) {
-      setForgotError('Please enter the 6-digit OTP.');
+      setModalType('warning');
+      setModalTitle('Invalid OTP');
+      setModalMessage('Please enter the 6-digit OTP.');
+      setModalOpen(true);
       return;
     }
     setForgotLoading(true);
@@ -145,12 +171,21 @@ const Login = () => {
       console.log(result.status);
       if (result.status === 'success') {
         setForgotStep(3);
-        setForgotSuccess('OTP verified. Please enter your new password.');
+        setModalType('success');
+        setModalTitle('OTP Verified');
+        setModalMessage('OTP verified. Please enter your new password.');
+        setModalOpen(true);
       } else {
-        setForgotError(result.message);
+        setModalType('error');
+        setModalTitle('Error');
+        setModalMessage(result.message);
+        setModalOpen(true);
       }
     } catch (err) {
-      setForgotError('Server error.');
+      setModalType('error');
+      setModalTitle('Server Error');
+      setModalMessage('Server error.');
+      setModalOpen(true);
     }
     setForgotLoading(false);
   };
@@ -160,15 +195,24 @@ const Login = () => {
     setForgotError('');
     setForgotSuccess('');
     if (!forgotNewPassword || !forgotConfirmPassword) {
-      setForgotError('Please enter and confirm your new password.');
+      setModalType('warning');
+      setModalTitle('Missing Password');
+      setModalMessage('Please enter and confirm your new password.');
+      setModalOpen(true);
       return;
     }
     if (forgotNewPassword !== forgotConfirmPassword) {
-      setForgotError('Passwords do not match.');
+      setModalType('warning');
+      setModalTitle('Password Mismatch');
+      setModalMessage('Passwords do not match.');
+      setModalOpen(true);
       return;
     }
     if (forgotNewPassword.length < 8) {
-      setForgotError('Password must be at least 8 characters.');
+      setModalType('warning');
+      setModalTitle('Weak Password');
+      setModalMessage('Password must be at least 8 characters.');
+      setModalOpen(true);
       return;
     }
     setForgotLoading(true);
@@ -180,18 +224,27 @@ const Login = () => {
       });
       const result = await res.json();
       if (result.status === 'success') {
-        setForgotSuccess('Password changed successfully! You can now log in.');
+        setModalType('success');
+        setModalTitle('Password Changed');
+        setModalMessage('Password changed successfully! You can now log in.');
         setForgotStep(1);
         setForgotEmail('');
         setForgotOtp('');
         setForgotNewPassword('');
         setForgotConfirmPassword('');
         setShowForgot(false);
+        setModalOpen(true);
       } else {
-        setForgotError(result.message);
+        setModalType('error');
+        setModalTitle('Error');
+        setModalMessage(result.message);
+        setModalOpen(true);
       }
     } catch (err) {
-      setForgotError('Server error.');
+      setModalType('error');
+      setModalTitle('Server Error');
+      setModalMessage('Server error.');
+      setModalOpen(true);
     }
     setForgotLoading(false);
   };
@@ -279,6 +332,9 @@ const Login = () => {
           )}
         </div>
       </div>
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} type={modalType} title={modalTitle}>
+        <div>{modalMessage}</div>
+      </Modal>
     </div>
   );
 };
