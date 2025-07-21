@@ -9,7 +9,6 @@
   padding: 1.2rem 2.2rem 0.5rem 0;
   background: transparent;
   z-index: 2000;
-  pointer-events: none;
 }
 .topbar-actions {
   display: flex;
@@ -157,6 +156,27 @@
   color: #fff;
   box-shadow: 0 4px 16px rgba(26,54,101,0.18);
 }
+.customer-sidebar-edit-btn {
+  background: linear-gradient(90deg, #16305a 0%, #1e2e4a 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 1.7rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-top: 0.7rem;
+  box-shadow: 0 2px 8px rgba(22,48,90,0.10);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  display: block;
+  width: 100%;
+  letter-spacing: 0.5px;
+}
+.customer-sidebar-edit-btn:hover {
+  background: linear-gradient(90deg, #1e2e4a 0%, #16305a 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(22,48,90,0.18);
+}
 @keyframes fadeInProfile {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -168,5 +188,221 @@
   }
   .profile-card-row span {
     min-width: 60px;
+  }
+} 
+.profile-edit-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(100,15,28,0.13); /* #640f1c with opacity */
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-edit-modal {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(100,15,28,0.13);
+  padding: 2.2rem 2.2rem 1.5rem 2.2rem;
+  min-width: 320px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  animation: fadeInProfile 0.2s;
+}
+.profile-edit-modal h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #640f1c;
+  margin-bottom: 1.2rem;
+}
+.profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.profile-edit-form label {
+  font-size: 1.01rem;
+  color: #640f1c;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.profile-edit-form input {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1.5px solid #e6ecf7;
+  font-size: 1.01rem;
+  color: #640f1c;
+  background: #fff;
+  margin-top: 0.2rem;
+  outline: none;
+  transition: border 0.18s;
+}
+.profile-edit-form input:focus {
+  border: 1.5px solid #560c17;
+  background: #fff;
+}
+.profile-edit-modal-actions {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+  justify-content: flex-end;
+}
+.activity-modal-cancel-btn {
+  background: #fff;
+  color: #640f1c;
+  border: none;
+  border-radius: 1.1rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  padding: 0.7rem 1.7rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.activity-modal-cancel-btn:hover {
+  background: #f7f7f7;
+  color: #560c17;
+}
+.activity-modal-submit-btn {
+  background: linear-gradient(90deg, #640f1c 0%, #560c17 100%);
+  color: #fff;
+  border: none;
+  border-radius: 1.1rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  padding: 0.7rem 2.2rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 2px 8px rgba(100,15,28,0.08);
+}
+.activity-modal-submit-btn:hover {
+  background: linear-gradient(90deg, #560c17 0%, #640f1c 100%);
+  color: #fff;
+} 
+/* --- Customer Edit Profile Modal (original style) --- */
+.customer-edit-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.32);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto !important;
+}
+.customer-edit-modal {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(22,48,90,0.18);
+  padding: 2.5rem 2.2rem 2rem 2.2rem;
+  min-width: 320px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  animation: fadeInProfile 0.22s;
+  pointer-events: auto !important;
+}
+.customer-edit-modal h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #16305a;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+.customer-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.customer-edit-form label {
+  font-size: 1.08rem;
+  color: #16305a;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.customer-edit-form input {
+  padding: 0.7rem 1.1rem;
+  border-radius: 10px;
+  border: 1.5px solid #16305a;
+  font-size: 1.08rem;
+  color: #16305a;
+  background: #fff;
+  margin-top: 0.2rem;
+  outline: none;
+  transition: border 0.18s;
+}
+.customer-edit-form input:focus {
+  border: 1.5px solid #16305a;
+  background: #f7f7f7;
+}
+.customer-edit-modal-actions {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 1.2rem;
+  justify-content: flex-end;
+}
+.customer-edit-cancel-btn {
+  background: #fff;
+  color: #16305a;
+  border: 1.5px solid #16305a;
+  border-radius: 1.2rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  padding: 0.7rem 1.7rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+}
+.customer-edit-cancel-btn:hover {
+  background: #f7f7f7;
+  color: #16305a;
+  border: 1.5px solid #16305a;
+}
+.customer-edit-save-btn {
+  background: linear-gradient(90deg, #16305a 0%, #1e2e4a 100%);
+  color: #fff;
+  border: none;
+  border-radius: 1.2rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  padding: 0.7rem 2.2rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  box-shadow: 0 2px 8px rgba(22,48,90,0.08);
+}
+.customer-edit-save-btn:hover {
+  background: linear-gradient(90deg, #1e2e4a 0%, #16305a 100%);
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .customer-edit-modal {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    border-radius: 1rem;
+  }
+  .customer-edit-modal h3 {
+    font-size: 1.08rem;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  .customer-edit-form input {
+    padding: 0.5rem;
+    border-radius: 0.7rem;
+    font-size: 0.97rem;
+  }
+  .customer-edit-cancel-btn, .customer-edit-save-btn {
+    font-size: 0.97rem !important;
+    padding: 0.5rem 1.1rem !important;
+    border-radius: 0.7rem !important;
   }
 } 
