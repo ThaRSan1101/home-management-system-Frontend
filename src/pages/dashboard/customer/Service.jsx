@@ -331,6 +331,7 @@ const Service = () => {
               <div className="customer-service-category">{service.category}</div>
               <h3 className="customer-service-name">{service.title}</h3>
               <p className="customer-service-desc">{service.description}</p>
+              <div style={{fontWeight:'600',color:'#1a3665',marginBottom:'0.7rem',fontSize:'1.08rem'}}>Booking Fee: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 500</span></div>
               <button className="customer-service-btn" onClick={()=>openBooking('service', service)}>Book Now</button>
             </div>
           </div>

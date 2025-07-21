@@ -211,11 +211,13 @@ const Provider = () => {
                 <label>Qualification
                   <input name="qualification" value={addForm.qualification} onChange={handleAddChange} placeholder="Qualification" type="text" />
                 </label>
+
               </div>
               <div className="provider-modal-actions">
                 <button type="button" onClick={closeModals}>Cancel</button>
                 <button type="submit">Add</button>
               </div>
+
             </form>
           </div>
         </div>
@@ -267,7 +269,7 @@ const Provider = () => {
                   Disable Status
                   <input name="disable_status" type="checkbox" checked={!!editForm.disable_status} onChange={handleEditChange} />
                 </label>
-              </div>
+            </div>
             </form>
             <div className="provider-modal-actions">
               <button onClick={closeModals}>Cancel</button>

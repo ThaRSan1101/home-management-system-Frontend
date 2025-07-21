@@ -148,6 +148,7 @@ const Services = () => {
                   <span className="modern-service-category-list">{service.category}</span>
                   <h3 className="modern-service-title-list">{service.title}</h3>
                   <p className="modern-service-desc-list">{service.description}</p>
+                  <div style={{fontWeight:'600',color:'#1a3665',marginBottom:'0.7rem',fontSize:'1.08rem'}}>Booking Fee: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 500</span></div>
                   <Link to="/register" className="modern-service-book-btn">Book Now</Link>
                 </div>
               </div>
@@ -162,6 +163,7 @@ const Services = () => {
               <div className="subscription-card">
                 <div className="subscription-header">Weekly Plan</div>
                 <div className="subscription-price">Vehicle Wash</div>
+                <div style={{fontWeight:'600',color:'#1a3665',margin:'0.2rem 0 0.5rem 0',fontSize:'1.08rem'}}>Subscription Fee: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 1000</span></div>
                 <ul className="subscription-features">
                   <li>✔ Weekly Vehicle Wash</li>
                   <li>✔ Car and bike washing</li>
@@ -176,6 +178,7 @@ const Services = () => {
               <div className="subscription-card">
                 <div className="subscription-header">Monthly Plan</div>
                 <div className="subscription-price">Deep Cleaning</div>
+                <div style={{fontWeight:'600',color:'#1a3665',margin:'0.2rem 0 0.5rem 0',fontSize:'1.08rem'}}>Subscription Fee: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 1000</span></div>
                 <ul className="subscription-features">
                   <li>✔ Monthly Deep Cleaning</li>
                   <li>✔ Home, kitchen, bathroom, office, garden</li>
@@ -190,6 +193,7 @@ const Services = () => {
               <div className="subscription-card">
                 <div className="subscription-header">Yearly Plan</div>
                 <div className="subscription-price">Utility Check</div>
+                <div style={{fontWeight:'600',color:'#1a3665',margin:'0.2rem 0 0.5rem 0',fontSize:'1.08rem'}}>Subscription Fee: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 1000</span></div>
                 <ul className="subscription-features">
                   <li>✔ Annual Maintenance</li>
                   <li>✔ AC deep cleaning</li>
