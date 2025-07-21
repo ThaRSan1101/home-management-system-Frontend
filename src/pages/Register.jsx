@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaPhone, FaIdCard } from 'react-icons/fa';
 import Logo from '../components/Logo';
 import './Register.css';
+import Modal from '../components/Modal';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +24,8 @@ const Register = () => {
   const [otpInput, setOtpInput] = useState('');
   const [otpError, setOtpError] = useState('');
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   // Handle form field changes
   const handleChange = (e) => {
@@ -114,12 +117,15 @@ const Register = () => {
       const result = await response.json();
       if (result.status === 'success') {
         setOtpSent(true);
-        alert('OTP has been sent to your email');
+        setModalMessage('OTP has been sent to your email');
+        setModalOpen(true);
       } else {
-        alert(result.message || 'Failed to send OTP');
+        setModalMessage(result.message || 'Failed to send OTP');
+        setModalOpen(true);
       }
     } catch (err) {
-      alert('Error sending request to server');
+      setModalMessage('Error sending request to server');
+      setModalOpen(true);
       console.error(err);
     }
   };
@@ -228,6 +234,12 @@ const Register = () => {
           )}
         </div>
       </div>
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+        <div style={{textAlign: 'center'}}>
+          <p>{modalMessage}</p>
+          <button onClick={() => setModalOpen(false)} style={{marginTop: '1rem'}}>OK</button>
+        </div>
+      </Modal>
     </div>
   );
 };

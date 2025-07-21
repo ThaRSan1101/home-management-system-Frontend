@@ -3,6 +3,7 @@ import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import './Contact.css';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Footer from '../../../components/Footer';
+import Modal from '../../../components/Modal';
 
 const ProviderContact = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const ProviderContact = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,9 +22,8 @@ const ProviderContact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setModalOpen(true);
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-    setTimeout(() => setIsSubmitted(false), 3000);
   };
 
   // Google Maps settings
@@ -68,7 +69,6 @@ const ProviderContact = () => {
               <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} required />
             </div>
             <button type="submit" className="contactus-send-btn">Send Message</button>
-            {isSubmitted && <div className="contactus-success">Thank you! Your message has been sent.</div>}
           </form>
         </div>
         <div className="contactus-right">
@@ -96,6 +96,9 @@ const ProviderContact = () => {
         </div>
       </div>
       {/* Removed Google Map location section */}
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} type="success" title="Message Sent">
+        <div>Thank you! Your message has been sent.</div>
+      </Modal>
     </>
   );
 };

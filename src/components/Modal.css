@@ -1,3 +1,4 @@
+/* Modal Overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -11,33 +12,91 @@
   z-index: 1000;
   animation: modalFadeIn 0.2s;
 }
-
 @keyframes modalFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
+/* Modal Content */
 .modal-content {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 18px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  padding: 2rem 1.5rem;
-  min-width: 320px;
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 340px;
   max-width: 95vw;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  animation: modalPopIn 0.2s;
+  animation: modalPopIn 0.25s cubic-bezier(.68,-0.55,.27,1.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  outline: none;
+}
+@keyframes modalPopIn {
+  0% { transform: scale(0.92); opacity: 0; }
+  80% { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
-@keyframes modalPopIn {
-  from { transform: scale(0.96); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+/* Modal Header & Icon */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+  gap: 0.7rem;
+}
+.modal-icon {
+  font-size: 2.2rem;
+  display: inline-block;
+  margin-right: 0.2rem;
+}
+.modal-success { color: #007a65; }
+.modal-error { color: #640f1c; }
+.modal-info { color: #560c17; }
+.modal-warning { color: #f59e42; }
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.01em;
+}
+
+/* Modal Body */
+.modal-body {
+  font-size: 1.08rem;
+  color: #222;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+/* Modal Button */
+.modal-btn {
+  background: linear-gradient(90deg, #640f1c 0%, #560c17 100%);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 0.8rem 2.2rem;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(100,15,28,0.08);
+  transition: background 0.18s, transform 0.12s;
+  margin: 0 auto;
+  display: block;
+}
+.modal-btn:hover, .modal-btn:focus {
+  background: linear-gradient(90deg, #560c17 0%, #640f1c 100%);
+  transform: translateY(-2px) scale(1.04);
+  outline: none;
 }
 
 @media (max-width: 600px) {
   .modal-content {
-    padding: 1rem 0.5rem;
+    padding: 1.2rem 0.5rem;
     min-width: 0;
     width: 98vw;
   }

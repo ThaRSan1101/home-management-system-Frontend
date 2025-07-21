@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import './Contact.css';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import Modal from '../../../components/Modal';
 
 const DashboardContact = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const DashboardContact = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,9 +21,8 @@ const DashboardContact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setModalOpen(true);
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-    setTimeout(() => setIsSubmitted(false), 3000);
   };
 
   // Google Maps settings
@@ -65,7 +66,6 @@ const DashboardContact = () => {
               <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} required />
             </div>
             <button type="submit" className="customer-dashboard-contactus-send-btn">Send Message</button>
-            {isSubmitted && <div className="customer-dashboard-contactus-success">Thank you! Your message has been sent.</div>}
           </form>
         </div>
         <div className="customer-dashboard-contactus-right">
@@ -93,6 +93,9 @@ const DashboardContact = () => {
         </div>
       </div>
       {/* Removed customer-dashboard-map-section and customer-dashboard-map-card (map) section as requested */}
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} type="success" title="Message Sent">
+        <div>Thank you! Your message has been sent.</div>
+      </Modal>
     </div>
   );
 };
