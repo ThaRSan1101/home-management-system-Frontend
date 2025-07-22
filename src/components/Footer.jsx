@@ -21,10 +21,30 @@ const Footer = () => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }
           }}>Home</Link>
-          <Link to="/services">Services</Link>
-          <Link to="/how-it-works">How It Works</Link>
-          <Link to="/about">Contact Us</Link>
-          <Link to="/contact">About Us</Link>
+          <Link to="/services" onClick={e => {
+            if (window.location.pathname === '/services') {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}>Services</Link>
+          <Link to="/how-it-works" onClick={e => {
+            if (window.location.pathname === '/how-it-works') {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}>How It Works</Link>
+          <Link to="/contact" onClick={e => {
+            if (window.location.pathname === '/contact') {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}>Contact Us</Link>
+          <Link to="/about" onClick={e => {
+            if (window.location.pathname === '/about') {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}>About Us</Link>
         </nav>
         <div className="footer-contact">
           <div><FaPhone /> <a href="tel:+94778200752">+94 778 200 752 </a></div>
