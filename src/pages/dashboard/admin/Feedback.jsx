@@ -7,7 +7,7 @@ const feedbackData = [
     service: 'House Cleaning',
     customerName: 'Sarah Johnson',
     providerName: 'CleanPro Services',
-    amount: 120,
+    amount: 1500,
     rating: 5,
     comment: 'Excellent service! The team was professional and thorough. My house looks spotless.',
     date: '2024-01-15',
@@ -18,7 +18,7 @@ const feedbackData = [
     service: 'Electrical Repair',
     customerName: 'Michael Chen',
     providerName: 'ElectroFix Solutions',
-    amount: 80,
+    amount: 1500,
     rating: 4,
     comment: 'Good work on fixing the electrical issues. Arrived on time and completed the job efficiently.',
     date: '2024-01-12',
@@ -29,7 +29,7 @@ const feedbackData = [
     service: 'Plumbing',
     customerName: 'Emily Rodriguez',
     providerName: 'PlumbRight Co.',
-    amount: 95,
+    amount: 1500,
     rating: 5,
     comment: 'Outstanding service! Fixed the leak quickly and explained everything clearly.',
     date: '2024-01-10',
@@ -74,7 +74,7 @@ const AdminFeedback = () => (
                 <span>{feedback.providerName}</span>
               </div>
               <div className="table-cell amount-cell">
-                <span className="amount">${feedback.amount.toFixed(2)}</span>
+                <span className="amount">{feedback.amount.toFixed(2)}</span>
               </div>
               <div className="table-cell rating-cell">
                 <div className="rating-stars">

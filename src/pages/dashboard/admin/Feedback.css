@@ -56,10 +56,11 @@
 }
 .admin-feedback-table-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1.1fr 1.5fr 2fr 1fr 1fr;
   background: #f5f8fd;
   border-bottom: 2px solid #e0e7ef;
   padding: 1rem 0;
+  padding-left: 0rem;
 }
 .header-cell {
   padding: 1rem 1.5rem;
@@ -78,6 +79,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 2fr 1fr 1fr;
   border-bottom: 1px solid #f1f5f9;
   transition: background-color 0.2s ease;
+  text-align: center;
 }
 .admin-feedback-table-row:hover {
   background-color: #f5f8fd;
@@ -87,6 +89,7 @@
   display: flex;
   align-items: center;
   font-size: 0.95rem;
+  justify-content: center;
 }
 .service-name {
   font-weight: 600;

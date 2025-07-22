@@ -2253,6 +2253,6 @@ body, .provider-dashboard-home {
 }
 .provider-action-btn.decline:hover {
   background: #ffeaea;
-  color: #1a3665;
-  border-color: #1a3665;
+  color: #1a3665 !important;
+  border-color: #1a3665 !important;
 } 
