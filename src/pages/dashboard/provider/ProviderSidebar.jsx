@@ -25,16 +25,16 @@ const ProviderSidebar = () => {
       </div>
       <nav className="sidebar-nav">
         {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={`/provider/dashboard/${userId}/${item.path}`}
-            className={({ isActive }) =>
-              'sidebar-link' + (isActive ? ' active' : '')
-            }
+            <NavLink
+              key={item.path}
+              to={`/provider/dashboard/${userId}/${item.path}`}
+              className={({ isActive }) =>
+                'sidebar-link' + (isActive ? ' active' : '')
+              }
             title={item.label}
-          >
+            >
             {item.icon}
-          </NavLink>
+            </NavLink>
         ))}
       </nav>
     </aside>
