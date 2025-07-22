@@ -753,7 +753,7 @@
   margin-bottom: 1rem;
 }
 .activity-modal-icon.cancel {
-  color: #ef4444;
+  color: #1a3665;
 }
 .activity-modal-icon.complete {
   color: #10b981;
@@ -771,12 +771,12 @@
   transition: color 0.2s;
 }
 .activity-modal-close-btn:hover {
-  color: #ef4444;
+  color: #1a3665;
 }
 .activity-modal-textarea, .activity-modal-input {
   width: 100%;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #1a3665;
   padding: 0.75rem 1rem;
   margin: 0.5rem 0 1rem 0;
   font-size: 1rem;
@@ -784,7 +784,7 @@
   transition: border 0.2s;
 }
 .activity-modal-textarea:focus, .activity-modal-input:focus {
-  border-color: #059669;
+  border-color: #1a3665;
   outline: none;
   background: #fff;
 }
