@@ -39,9 +39,6 @@ const AdminSidebar = () => {
             {item.icon}
           </NavLink>
         ))}
-        <button className="modern-sidebar-logout" onClick={handleLogout} title="Logout">
-          <FaSignOutAlt />
-        </button>
       </nav>
     </aside>
   );
