@@ -94,7 +94,7 @@ export default function About() {
       <div className="aboutus-stat-label">Happy Customers</div>
     </div>
     <div className="aboutus-stat">
-      <div className="aboutus-stat-value" style={{color: '#2d5fff'}}>50+</div>
+      <div className="aboutus-stat-value" style={{color: '#1a3665'}}>50+</div>
       <div className="aboutus-stat-label">Verified Service Providers</div>
     </div>
     <div className="aboutus-stat">
