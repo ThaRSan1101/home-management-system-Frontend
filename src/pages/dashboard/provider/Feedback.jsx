@@ -10,7 +10,7 @@ const feedbackData = [
     comment: 'Excellent work! Very professional and friendly.',
     date: '2024-06-01',
     service: 'Home Cleaning',
-    amount: 120,
+    amount: 1200,
     serviceType: 'Service Booking',
   },
   {
@@ -20,7 +20,7 @@ const feedbackData = [
     comment: 'Good service, but arrived a bit late.',
     date: '2024-05-28',
     service: 'Plumbing',
-    amount: 80,
+    amount: 1100,
     serviceType: 'Service Booking',
   },
   {
@@ -30,7 +30,7 @@ const feedbackData = [
     comment: 'Outstanding! Will book again.',
     date: '2024-05-20',
     service: 'Electrical Repair',
-    amount: 95,
+    amount: 1500,
     serviceType: 'Service Booking',
   },
   {
@@ -40,7 +40,7 @@ const feedbackData = [
     comment: 'Service was okay, but could be faster.',
     date: '2024-05-15',
     service: 'Carpet Cleaning',
-    amount: 60,
+    amount: 1300,
     serviceType: 'Subscription Booking',
   },
 ];
@@ -92,7 +92,7 @@ export default function ProviderFeedback() {
                   </div>
                 </div>
                 <div className="table-cell amount-cell">
-                  <span className="amount">${feedback.amount?.toFixed(2) ?? '-'}</span>
+                  <span className="amount">Rs {feedback.amount?.toFixed(2) ?? '-'}</span>
                 </div>
                 <div className="table-cell rating-cell">
                   <div className="rating-stars">
