@@ -270,7 +270,7 @@
 
 .amount-cell .amount {
   font-weight: 600;
-  color: #007a65;
+  color: #1a3665 !important;
   font-size: 1rem;
 }
 
