@@ -218,8 +218,8 @@ const ServiceBooking = () => {
                     </label>
                   </div>
                   <div className="customer-modal-form-group">
-                    <label> Date
-                      <input name="date" value={editForm.date} onChange={handleEditChange} placeholder="Date" type="text" />
+                    <label> Service Date
+                      <input name="serviceDate" value={editForm.serviceDate} onChange={handleEditChange} placeholder="Service Date" type="date" />
                     </label>
                   </div>
                   <div className="customer-modal-form-group">
