@@ -16,6 +16,7 @@ const samplePlans = [
     startDate: '2024-05-01',
     endDate: '2025-05-01',
     status: 'subscribed',
+    unsubscribeReason: '',
   },
   {
     id: 2,
@@ -23,6 +24,7 @@ const samplePlans = [
     startDate: '-',
     endDate: '-',
     status: 'unsubscribed',
+    unsubscribeReason: 'No longer needed',
   },
   {
     id: 3,
@@ -30,6 +32,7 @@ const samplePlans = [
     startDate: '-',
     endDate: '-',
     status: 'unsubscribed',
+    unsubscribeReason: 'Too expensive',
   },
   {
     id: 4,
@@ -37,6 +40,7 @@ const samplePlans = [
     startDate: '2024-01-10',
     endDate: '2025-01-10',
     status: 'subscribed',
+    unsubscribeReason: '',
   },
 ];
 
@@ -47,6 +51,8 @@ export default function Subscription() {
   const [form, setForm] = useState({ name: '', address: '', phone: '', date: '', time: '' });
   const [payment, setPayment] = useState({ method: '', card: '', expiry: '', cvv: '' });
   const [errors, setErrors] = useState({});
+  const [unsubscribeModalId, setUnsubscribeModalId] = useState(null);
+  const [unsubscribeReason, setUnsubscribeReason] = useState('');
 
   const todayStr = new Date().toISOString().split('T')[0];
 
@@ -107,11 +113,17 @@ export default function Subscription() {
   };
 
   const handleUnsubscribe = (id) => {
+    setUnsubscribeModalId(id);
+    setUnsubscribeReason('');
+  };
+  const handleUnsubscribeSubmit = () => {
     setPlans((prev) =>
       prev.map((p) =>
-        p.id === id ? { ...p, status: 'unsubscribed', startDate: '-', endDate: '-' } : p
+        p.id === unsubscribeModalId ? { ...p, status: 'unsubscribed', startDate: '-', endDate: '-', unsubscribeReason } : p
       )
     );
+    setUnsubscribeModalId(null);
+    setUnsubscribeReason('');
     toast.success('Unsubscription successful!');
   };
 
@@ -242,6 +254,7 @@ export default function Subscription() {
                 <th>Start Date</th>
                 <th>End Date</th>
                 {activeTab === 'subscribed' && <th>Action</th>}
+                {activeTab === 'unsubscribed' && <th>Unsubscribe Reason</th>}
               </tr>
             </thead>
             <tbody>
@@ -257,6 +270,9 @@ export default function Subscription() {
                       </button>
                     </td>
                   )}
+                  {activeTab === 'unsubscribed' && (
+                    <td>{plan.unsubscribeReason || '-'}</td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -264,6 +280,30 @@ export default function Subscription() {
         </div>
       </div>
       {renderModal()}
+      {/* Unsubscribe Modal */}
+      {unsubscribeModalId && (
+        <div className="customer-activity-modal-overlay">
+          <div className="customer-activity-modal playful-modal cancel-modal">
+            <h3>Unsubscribe Service</h3>
+            <textarea
+              className="cancel-reason-textarea"
+              placeholder="Enter reason for unsubscription..."
+              value={unsubscribeReason}
+              onChange={e => setUnsubscribeReason(e.target.value)}
+              rows={3}
+              style={{width:'100%',marginBottom:'1.2rem',borderRadius:'8px',padding:'1rem',border:'1.5px solid #bfc8e2',fontSize:'1.08rem',background:'#f5f8fd'}}
+            />
+            <div className="customer-activity-modal-actions">
+              <button className="customer-activity-modal-cancel-btn" style={{background:'#f5f8fd',color:'#1a3665',border:'none',borderRadius:'8px',padding:'0.7rem 2.2rem',fontWeight:600,fontSize:'1.08rem',marginRight:'1rem'}} onClick={()=>setUnsubscribeModalId(null)}>
+                Close
+              </button>
+              <button className="customer-activity-modal-submit-btn" style={{background:'#16305a',color:'#fff',border:'none',borderRadius:'8px',padding:'0.7rem 2.2rem',fontWeight:600,fontSize:'1.08rem'}} onClick={handleUnsubscribeSubmit} disabled={!unsubscribeReason.trim()}>
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 
