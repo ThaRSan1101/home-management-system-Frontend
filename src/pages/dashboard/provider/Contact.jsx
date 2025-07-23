@@ -19,10 +19,30 @@ const ProviderContact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success('Message sent successfully!');
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    try {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/contact_us.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone_number: formData.phone,
+          subject: formData.subject,
+          message: formData.message
+        })
+      });
+      const result = await response.json();
+      if (result.success) {
+        toast.success('Message sent successfully!');
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else {
+        toast.error(result.error || 'Failed to send message.');
+      }
+    } catch (error) {
+      toast.error('Server error, please try again later.');
+    }
   };
 
   // Google Maps settings
