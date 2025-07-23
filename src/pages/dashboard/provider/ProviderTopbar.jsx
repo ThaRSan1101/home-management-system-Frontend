@@ -172,23 +172,17 @@ const ProviderTopbarContent = () => {
                     cursor: 'pointer',
                     userSelect: 'none',
                     position: 'relative',
-                    width: 100,
-                    height: 40,
+                    width: 44,
+                    height: 22,
                   }}
                 >
                   <div
                     className="provider-status-switch-label"
                     style={{
                       background: online ? '#10b981' : '#d32f2f',
-                      color: '#fff',
                       borderRadius: 999,
-                      padding: '0.3rem 1.8rem 0.3rem 2rem',
-                      fontSize: '1.2rem',
-                     
-                      fontWeight: 400,
-                      minWidth: 90,
-                      width: 90,
-                      height: 40,
+                      width: 44,
+                      height: 22,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: online ? 'flex-end' : 'flex-start',
@@ -197,23 +191,22 @@ const ProviderTopbarContent = () => {
                       transition: 'background 0.3s',
                     }}
                   >
-                    {online ? 'Online' : 'Offline'}
+                    {/* No text, just the switch */}
                   </div>
                   <div
                     className="provider-status-switch-circle"
                     style={{
-                      width: 36,
-                      height: 36,
+                      width: 18,
+                      height: 18,
                       borderRadius: '50%',
                       background: '#e5e5e5',
                       border: '3px solid #f3f3f3',
                       boxShadow: '0 2px 4px rgba(0,0,0,0.10)',
                       position: 'absolute',
-                      left: online ? 90 : 4,
+                      left: online ? 24 : 4,
                       top: 2,
                       transition: 'left 0.3s',
                       zIndex: 2,
-                      marginLeft: online ? '-2rem' : '-0.5rem',
                     }}
                   />
                 </div>
