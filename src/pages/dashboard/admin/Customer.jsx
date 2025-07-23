@@ -1,33 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Customer.css';
-
-const initialCustomers = [
-  {
-    id: 1,
-    name: 'Alice Green',
-    email: 'alice.green@example.com',
-    password: 'customer123',
-    phone: '0771234567',
-    address: '12 Lake Rd, Colombo',
-    nic: '920123456V',
-    disabled: false,
-    registered: '2024-05-20',
-  },
-  {
-    id: 2,
-    name: 'Bob Brown',
-    email: 'bob.brown@example.com',
-    password: 'customer456',
-    phone: '0782345678',
-    address: '34 Hill St, Galle',
-    nic: '910987654V',
-    disabled: true,
-    registered: '2024-06-02',
-  },
-];
+import { toast, Toaster } from 'sonner';
 
 const Customer = () => {
-  const [customers, setCustomers] = useState(initialCustomers);
+  const [customers, setCustomers] = useState([]);
   const [editModal, setEditModal] = useState(null); // customer object or null
   const [viewModal, setViewModal] = useState(null); // customer object or null
   const [editForm, setEditForm] = useState({});
@@ -43,9 +19,66 @@ const Customer = () => {
     setEditForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
   const handleEditSave = () => {
-    setCustomers((prev) => prev.map((c) => c.id === editForm.id ? { ...editForm } : c));
-    closeModals();
+    // Prepare data for backend
+    const payload = {
+      user_id: editForm.id,
+      name: editForm.name,
+      email: editForm.email,
+      phone_number: editForm.phone,
+      address: editForm.address,
+      nic: editForm.nic,
+      disable_status: editForm.disabled ? 1 : 0,
+    };
+    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_update_customer.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          setCustomers((prev) => prev.map((c) => c.id === editForm.id ? { ...editForm } : c));
+          closeModals();
+          toast.success('Customer updated successfully!');
+        } else {
+          toast.error(data.message || 'Failed to update customer.');
+        }
+      })
+      .catch(() => {
+        toast.error('Network or server error.');
+      });
   };
+
+
+  useEffect(() => {
+    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_customers.php')
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(data => {
+        if (data.status === 'success' && Array.isArray(data.data)) {
+          // Map backend fields to frontend fields
+          const mapped = data.data.map(c => ({
+            id: c.user_id,
+            name: c.name,
+            email: c.email,
+            phone: c.phone_number,
+            address: c.address,
+            nic: c.NIC,
+            disabled: !!c.disable_status,
+            registered: c.registered_date ? c.registered_date.split('T')[0] : '',
+          }));
+          setCustomers(mapped);
+        } else {
+          setCustomers([]);
+        }
+      })
+      .catch(err => {
+        setCustomers([]);
+        console.error('Failed to fetch customers:', err);
+      });
+  }, []);
 
   return (
     <div>
@@ -80,7 +113,7 @@ const Customer = () => {
                 <tr className="customer-table-row" key={c.id}>
                   <td className="customer-table-cell">{c.name}</td>
                   <td className="customer-table-cell">{c.email}</td>
-                  <td className="customer-table-cell">{c.password}</td>
+                  <td className="customer-table-cell">***</td>
                   <td className="customer-table-cell">{c.phone}</td>
                   <td className="customer-table-cell">{c.address}</td>
                   <td className="customer-table-cell">{c.nic}</td>
@@ -118,7 +151,7 @@ const Customer = () => {
               </div>
               <div className="customer-modal-form-group">
                 <label> Password
-                  <input name="password" type="password" value={editForm.password || ''} onChange={handleEditChange} placeholder="Password" />
+                  <input name="password" type="password" value={"***"} readOnly placeholder="Password" />
                 </label>
               </div>
               <div className="customer-modal-form-group">
@@ -138,7 +171,7 @@ const Customer = () => {
               </div>
               <div className="customer-modal-form-group">
                 <label> Disable Status
-                  <input type="checkbox" name="disabled" checked={editForm.disabled} onChange={handleEditChange} style={{marginLeft:'0.5rem'}} /> Disabled
+                  <input type="checkbox" name="disabled" checked={editForm.disabled} onChange={handleEditChange} style={{marginLeft:'0.5rem'}} />
                 </label>
               </div>
               <div className="customer-modal-form-group">
@@ -164,7 +197,7 @@ const Customer = () => {
             <div className="customer-modal-details">
               <div><b>Name:</b> {viewModal.name}</div>
               <div><b>Email:</b> {viewModal.email}</div>
-              <div><b>Password:</b> {viewModal.password}</div>
+              <div><b>Password:</b> ***</div>
               <div><b>Phone Number:</b> {viewModal.phone}</div>
               <div><b>Address:</b> {viewModal.address}</div>
               <div><b>NIC:</b> {viewModal.nic}</div>
