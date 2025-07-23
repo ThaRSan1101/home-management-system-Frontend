@@ -34,6 +34,8 @@ const Monitoring = () => {
       if (result.status === 'success') {
         // Store user details in localStorage (same as Login.jsx)
         if (result.user_type === 'customer' && result.user_details) {
+          localStorage.setItem('customer_id', result.user_id || '');
+          localStorage.setItem('customer_user_id', result.user_id || ''); // Ensure compatibility
           localStorage.setItem('customer_fullName', result.user_details.fullName || '');
           localStorage.setItem('customer_address', result.user_details.address || '');
           localStorage.setItem('customer_phone', result.user_details.phone || '');
@@ -42,6 +44,8 @@ const Monitoring = () => {
           localStorage.setItem('customer_nic', result.user_details.nic || '');
           navigate(`/customer/dashboard/${result.user_id}/home`); // push
         } else if (result.user_type === 'provider' && result.user_details) {
+          localStorage.setItem('provider_id', result.user_id || '');
+          localStorage.setItem('provider_user_id', result.user_id || ''); // Ensure compatibility
           localStorage.setItem('provider_fullName', result.user_details.fullName || '');
           localStorage.setItem('provider_address', result.user_details.address || '');
           localStorage.setItem('provider_phone', result.user_details.phone || '');
