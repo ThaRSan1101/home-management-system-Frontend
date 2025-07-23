@@ -9,6 +9,7 @@ const DashboardHome = () => {
   const customers = Array.from({ length: 3 }, (_, i) => ({ name: `Customer ${i + 1}` }));
   const providers = Array.from({ length: 3 }, (_, i) => ({ name: `Provider ${i + 1}` }));
   const bookings = Array.from({ length: 3 }, (_, i) => ({ detail: `Booking #${i + 1}` }));
+  const subscriptions = Array.from({ length: 3 }, (_, i) => ({ detail: `Subscription #${i + 1}` }));
 
   return (
     <div className="dashboard-home-wrapper">
@@ -48,7 +49,18 @@ const DashboardHome = () => {
             {bookings.map((b, i) => (
               <li key={i} className="dashboard-list-item">
                 <span>{b.detail}</span>
-                <button className="dashboard-view-btn" onClick={() => {/* TODO: Add booking view logic */}}>View</button>
+                <button className="dashboard-view-btn" onClick={() => navigate('/admin/dashboard/:userId/service-booking')}>View</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="dashboard-fullwidth-box">
+          <div className="dashboard-fullwidth-title">Latest Subscription Bookings</div>
+          <ul className="dashboard-list">
+            {subscriptions.map((s, i) => (
+              <li key={i} className="dashboard-list-item">
+                <span>{s.detail}</span>
+                <button className="dashboard-view-btn" onClick={() => navigate('/admin/dashboard/:userId/subscription-booking')}>View</button>
               </li>
             ))}
           </ul>

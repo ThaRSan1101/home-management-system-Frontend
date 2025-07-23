@@ -145,60 +145,40 @@ const ServiceBooking = () => {
           <div className="service-booking-modal service-booking-edit-modal">
             {editMode ? (
               <>
-                <div className="service-booking-edit-modal-header">Edit Booking</div>
+                <div className="service-booking-edit-modal-header" style={{background:'#1a3665',color:'#fff',padding:'1.2rem 2rem',borderTopLeftRadius:'12px',borderTopRightRadius:'12px',fontSize:'2rem',fontWeight:800,margin:'-2.2rem -2.5rem 2.2rem -2.5rem'}}>Edit Booking</div>
                 <form className="service-booking-edit-form-grid2col">
-                  <div>
-                    <label>Service
-                      <input name="service" value={editForm.service} onChange={handleEditChange} placeholder="Service" />
-                    </label>
-                  </div>
-                  <div>
-                    <label>Customer Name
-                      <input name="customer" value={editForm.customer} onChange={handleEditChange} placeholder="Customer Name" />
-                    </label>
-                  </div>
-                  {activeTab !== 'pending' && (
-                    <div>
-                      <label>Provider Name
-                        <input name="provider" value={editForm.provider} onChange={handleEditChange} placeholder="Provider Name" />
-                      </label>
-                    </div>
-                  )}
-                  <div>
-                    <label>Date
-                      <input name="date" value={editForm.date} onChange={handleEditChange} placeholder="Date" />
-                    </label>
-                  </div>
-                  <div>
-                    <label>Time
-                      <input name="time" value={editForm.time} onChange={handleEditChange} placeholder="Time" />
-                    </label>
-                  </div>
-                  <div>
-                    <label>Address
-                      <input name="address" value={editForm.address} onChange={handleEditChange} placeholder="Address" />
-                    </label>
-                  </div>
+                  <label>Service
+                    <input name="service" value={editForm.service} onChange={handleEditChange} placeholder="Service" />
+                  </label>
+                  <label>Customer Name
+                    <input name="customer" value={editForm.customer} onChange={handleEditChange} placeholder="Customer Name" />
+                  </label>
+                  <label>Provider Name
+                    <input name="provider" value={editForm.provider || ''} onChange={handleEditChange} placeholder="Provider Name" />
+                  </label>
+                  <label>Date
+                    <input name="date" value={editForm.date} onChange={handleEditChange} placeholder="Date" />
+                  </label>
+                  <label>Time
+                    <input name="time" value={editForm.time} onChange={handleEditChange} placeholder="Time" />
+                  </label>
+                  <label>Address
+                    <input name="address" value={editForm.address} onChange={handleEditChange} placeholder="Address" />
+                  </label>
                   {activeTab === 'cancel' && (
-                    <div>
-                      <label>Reason
-                        <input name="reason" value={editForm.reason} onChange={handleEditChange} placeholder="Reason" />
-                      </label>
-                    </div>
+                    <label>Reason
+                      <input name="reason" value={editForm.reason} onChange={handleEditChange} placeholder="Reason" />
+                    </label>
                   )}
                   {activeTab === 'complete' && (
-                    <div>
-                      <label>Amount
-                        <input name="amount" value={editForm.amount} onChange={handleEditChange} placeholder="Amount" />
-                      </label>
-                    </div>
-                  )}
-                  <div style={{gridColumn:'1/3'}}>
-                    <label>Details
-                      <input name="details" value={editForm.details} onChange={handleEditChange} placeholder="Details" />
+                    <label>Amount
+                      <input name="amount" value={editForm.amount} onChange={handleEditChange} placeholder="Amount" />
                     </label>
-                  </div>
-                  <div className="service-booking-edit-btn-row">
+                  )}
+                  <label style={{gridColumn:'1/3'}}>Details
+                    <input name="details" value={editForm.details} onChange={handleEditChange} placeholder="Details" />
+                  </label>
+                  <div className="service-booking-edit-btn-row" style={{gridColumn:'1/3',marginTop:'1.5rem'}}>
                     <button type="button" className="service-booking-edit-btn cancel" onClick={handleEditCancel}>Cancel</button>
                     <button type="button" className="service-booking-edit-btn save" onClick={handleEditSave}>Save</button>
                   </div>
