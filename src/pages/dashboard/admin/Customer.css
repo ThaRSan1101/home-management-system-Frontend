@@ -224,7 +224,7 @@
   transition: background 0.18s, color 0.18s, box-shadow 0.18s;
   box-shadow: 0 2px 8px rgba(26,54,101,0.10);
   letter-spacing: 0.5px;
-  margin-top: -3rem;
+  /* margin-top: -3rem; */
 }
 .customer-modal-actions button:first-child {
   background: #1a3665;
