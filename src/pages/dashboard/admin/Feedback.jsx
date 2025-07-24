@@ -7,7 +7,7 @@ const feedbackData = [
     service: 'House Cleaning',
     customerName: 'Sarah Johnson',
     providerName: 'CleanPro Services',
-    amount: 120,
+    amount: 1500,
     rating: 5,
     comment: 'Excellent service! The team was professional and thorough. My house looks spotless.',
     date: '2024-01-15',
@@ -18,7 +18,7 @@ const feedbackData = [
     service: 'Electrical Repair',
     customerName: 'Michael Chen',
     providerName: 'ElectroFix Solutions',
-    amount: 80,
+    amount: 1500,
     rating: 4,
     comment: 'Good work on fixing the electrical issues. Arrived on time and completed the job efficiently.',
     date: '2024-01-12',
@@ -29,7 +29,7 @@ const feedbackData = [
     service: 'Plumbing',
     customerName: 'Emily Rodriguez',
     providerName: 'PlumbRight Co.',
-    amount: 95,
+    amount: 1500,
     rating: 5,
     comment: 'Outstanding service! Fixed the leak quickly and explained everything clearly.',
     date: '2024-01-10',
@@ -53,8 +53,8 @@ const AdminFeedback = () => (
       <div className="admin-feedback-table">
         <div className="admin-feedback-table-header">
           <div className="header-cell">Service</div>
-          <div className="header-cell">Customer Name</div>
           <div className="header-cell">Provider Name</div>
+          <div className="header-cell">Customer Name</div>
           <div className="header-cell">Amount</div>
           <div className="header-cell">Rating</div>
           <div className="header-cell">Comment</div>
@@ -67,19 +67,18 @@ const AdminFeedback = () => (
               <div className="table-cell service-cell">
                 <span className="service-name">{feedback.service}</span>
               </div>
-              <div className="table-cell customer-cell">
-                <span>{feedback.customerName}</span>
-              </div>
               <div className="table-cell provider-cell">
                 <span>{feedback.providerName}</span>
               </div>
+              <div className="table-cell customer-cell">
+                <span>{feedback.customerName}</span>
+              </div>
               <div className="table-cell amount-cell">
-                <span className="amount">${feedback.amount.toFixed(2)}</span>
+                <span className="amount">Rs {feedback.amount.toFixed(2)}</span>
               </div>
               <div className="table-cell rating-cell">
                 <div className="rating-stars">
                   {renderStars(feedback.rating)}
-                  <span className="rating-text">{feedback.rating}/5</span>
                 </div>
               </div>
               <div className="table-cell comment-cell">

@@ -19,10 +19,53 @@ const ProviderContact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success('Message sent successfully!');
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    // Custom validation
+    if (!formData.name.trim()) {
+      toast.error('Please enter your name.');
+      return;
+    }
+    if (!formData.email.trim()) {
+      toast.error('Please enter your email address.');
+      return;
+    }
+    // Simple email format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error('Please enter a valid email address.');
+      return;
+    }
+    if (formData.phone.trim() && !/^\d{10}$/.test(formData.phone.trim())) {
+      toast.error('Please enter a valid 10-digit phone number.');
+      return;
+    }
+    if (!formData.message.trim()) {
+      toast.error('Please enter your message.');
+      return;
+    }
+    try {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/contact_us.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone_number: formData.phone,
+          subject: formData.subject,
+          message: formData.message
+        })
+      });
+      const result = await response.json();
+      if (result.success) {
+        toast.success('Message sent successfully!');
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else {
+        toast.error(result.error || 'Failed to send message.');
+      }
+    } catch (error) {
+      toast.error('Server error, please try again later.');
+    }
   };
 
   // Google Maps settings
@@ -51,12 +94,12 @@ const ProviderContact = () => {
       <div className="contactus-split-container">
         <div className="contactus-left">
           <h1 className="contactus-header">Contact Us</h1>
-          <form className="contactus-form" onSubmit={handleSubmit}>
+          <form className="contactus-form" onSubmit={handleSubmit} noValidate>
             <div className="contactus-form-group">
-              <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
+              <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} />
             </div>
             <div className="contactus-form-group">
-              <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
+              <input type="email" name="email" placeholder="Email Address" value={formData.email} onChange={handleChange} />
             </div>
             <div className="contactus-form-group">
               <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} />
@@ -65,7 +108,7 @@ const ProviderContact = () => {
               <input type="text" name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} />
             </div>
             <div className="contactus-form-group">
-              <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} required />
+              <textarea name="message" placeholder="Enter your message..." value={formData.message} onChange={handleChange} rows={3} />
             </div>
             <button type="submit" className="contactus-send-btn">Send Message</button>
           </form>

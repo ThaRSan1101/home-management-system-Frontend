@@ -10,18 +10,18 @@ const STATUS_TABS = [
 ];
 
 const sampleActivities = [
-  { id: 1, service: 'House Cleaning', provider: 'CleanPro Services', charge: 2500, date: '2024-06-01', time: '10:00 AM', status: 'pending' },
-  { id: 2, service: 'Plumbing', provider: 'PlumbRight Co.', charge: 1800, date: '2024-05-28', time: '2:00 PM', status: 'processing' },
-  { id: 3, service: 'Electrical Repair', provider: 'ElectroFix Solutions', charge: 3200, date: '2024-05-20', time: '11:30 AM', status: 'complete' },
-  { id: 4, service: 'Carpet Cleaning', provider: 'FreshCarpet Pro', charge: 2100, date: '2024-05-15', time: '9:00 AM', status: 'cancel' },
-  { id: 5, service: 'Garden Maintenance', provider: 'GreenThumb Services', charge: 1500, date: '2024-06-02', time: '8:00 AM', status: 'pending' },
-  { id: 6, service: 'AC Service', provider: 'CoolAir Experts', charge: 3500, date: '2024-05-30', time: '4:00 PM', status: 'processing' },
-  { id: 7, service: 'Window Cleaning', provider: 'ShineBright', charge: 1200, date: '2024-06-10', time: '3:00 PM', status: 'complete' },
-  { id: 8, service: 'Pest Control', provider: 'BugFree Co.', charge: 2800, date: '2024-06-12', time: '11:00 AM', status: 'complete' },
-  { id: 9, service: 'Sofa Shampoo', provider: 'Upholstery Pros', charge: 2000, date: '2024-06-14', time: '1:30 PM', status: 'complete' },
-  { id: 10, service: 'Deep Cleaning', provider: 'CleanPro Services', charge: 4000, date: '2024-06-16', time: '9:00 AM', status: 'complete' },
-  { id: 11, service: 'Painting', provider: 'ColorSplash', charge: 5000, date: '2024-06-18', time: '10:00 AM', status: 'complete' },
-  { id: 12, service: 'Curtain Washing', provider: 'FreshCurtains', charge: 900, date: '2024-06-20', time: '2:00 PM', status: 'complete' },
+  { id: 1, service: 'House Cleaning', provider: 'CleanPro Services', charge: 2500, date: '2024-06-01', time: '10:00 AM', status: 'pending', cancelReason: '' },
+  { id: 2, service: 'Plumbing', provider: 'PlumbRight Co.', charge: 1800, date: '2024-05-28', time: '2:00 PM', status: 'processing', cancelReason: '' },
+  { id: 3, service: 'Electrical Repair', provider: 'ElectroFix Solutions', charge: 3200, date: '2024-05-20', time: '11:30 AM', status: 'complete', cancelReason: '' },
+  { id: 4, service: 'Carpet Cleaning', provider: 'FreshCarpet Pro', charge: 2100, date: '2024-05-15', time: '9:00 AM', status: 'cancel', cancelReason: 'Customer changed plans' },
+  { id: 5, service: 'Garden Maintenance', provider: 'GreenThumb Services', charge: 1500, date: '2024-06-02', time: '8:00 AM', status: 'pending', cancelReason: '' },
+  { id: 6, service: 'AC Service', provider: 'CoolAir Experts', charge: 3500, date: '2024-05-30', time: '4:00 PM', status: 'processing', cancelReason: '' },
+  { id: 7, service: 'Window Cleaning', provider: 'ShineBright', charge: 1200, date: '2024-06-10', time: '3:00 PM', status: 'complete', cancelReason: '' },
+  { id: 8, service: 'Pest Control', provider: 'BugFree Co.', charge: 2800, date: '2024-06-12', time: '11:00 AM', status: 'complete', cancelReason: '' },
+  { id: 9, service: 'Sofa Shampoo', provider: 'Upholstery Pros', charge: 2000, date: '2024-06-14', time: '1:30 PM', status: 'complete', cancelReason: '' },
+  { id: 10, service: 'Deep Cleaning', provider: 'CleanPro Services', charge: 4000, date: '2024-06-16', time: '9:00 AM', status: 'complete', cancelReason: '' },
+  { id: 11, service: 'Painting', provider: 'ColorSplash', charge: 5000, date: '2024-06-18', time: '10:00 AM', status: 'complete', cancelReason: '' },
+  { id: 12, service: 'Curtain Washing', provider: 'FreshCurtains', charge: 900, date: '2024-06-20', time: '2:00 PM', status: 'complete', cancelReason: '' },
 ];
 
 const FEEDBACK_KEY = 'customer_feedback_data';
@@ -42,6 +42,8 @@ export default function Activity() {
   const [feedbackData, setFeedbackData] = useState({ rating: 0, comment: '' });
   const [currentBill, setCurrentBill] = useState(null);
   const [ratedServiceIds, setRatedServiceIds] = useState(getRatedServiceIds());
+  const [cancelModalId, setCancelModalId] = useState(null);
+  const [cancelReason, setCancelReason] = useState('');
 
   useEffect(() => {
     setRatedServiceIds(getRatedServiceIds());
@@ -52,11 +54,17 @@ export default function Activity() {
   );
 
   const handleCancel = (id) => {
+    setCancelModalId(id);
+    setCancelReason('');
+  };
+  const handleCancelSubmit = () => {
     setActivities((prev) =>
       prev.map((a) =>
-        a.id === id ? { ...a, status: 'cancel' } : a
+        a.id === cancelModalId ? { ...a, status: 'cancel', cancelReason } : a
       )
     );
+    setCancelModalId(null);
+    setCancelReason('');
   };
 
   // Bill modal submit
@@ -141,6 +149,7 @@ export default function Activity() {
                     <th>Status</th>
                     {activeTab === 'pending' && <th>Action</th>}
                     {activeTab === 'complete' && <th>Action</th>}
+                    {activeTab === 'cancel' && <th>Cancel Reason</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -176,6 +185,9 @@ export default function Activity() {
                               View Details
                             </button>
                           </td>
+                        )}
+                        {activeTab === 'cancel' && (
+                          <td>{activity.cancelReason || '-'}</td>
                         )}
                       </tr>
                     );
@@ -241,6 +253,30 @@ export default function Activity() {
               <div className="customer-activity-modal-actions">
                 <button className="customer-activity-modal-submit-btn playful-btn" onClick={handleFeedbackSubmit} disabled={feedbackData.rating === 0 || !feedbackData.comment.trim()}>
                   Submit Review
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* Cancel Modal */}
+        {cancelModalId && (
+          <div className="customer-activity-modal-overlay">
+            <div className="customer-activity-modal playful-modal cancel-modal">
+              <h3>Cancel Service</h3>
+              <textarea
+                className="cancel-reason-textarea"
+                placeholder="Enter reason for cancellation..."
+                value={cancelReason}
+                onChange={e => setCancelReason(e.target.value)}
+                rows={3}
+                style={{width:'100%',marginBottom:'1.2rem',borderRadius:'8px',padding:'1rem',border:'1.5px solid #bfc8e2',fontSize:'1.08rem',background:'#f5f8fd'}}
+              />
+              <div className="customer-activity-modal-actions">
+                <button className="customer-activity-modal-cancel-btn" style={{background:'#f5f8fd',color:'#1a3665',border:'none',borderRadius:'8px',padding:'0.7rem 2.2rem',fontWeight:600,fontSize:'1.08rem',marginRight:'1rem'}} onClick={()=>setCancelModalId(null)}>
+                  Close
+                </button>
+                <button className="customer-activity-modal-submit-btn" style={{background:'#16305a',color:'#fff',border:'none',borderRadius:'8px',padding:'0.7rem 2.2rem',fontWeight:600,fontSize:'1.08rem'}} onClick={handleCancelSubmit} disabled={!cancelReason.trim()}>
+                  Submit
                 </button>
               </div>
             </div>

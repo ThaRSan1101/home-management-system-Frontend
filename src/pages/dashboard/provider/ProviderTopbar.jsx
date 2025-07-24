@@ -162,13 +162,54 @@ const ProviderTopbarContent = () => {
               <div className="profile-card-row"><span>NIC:</span> {profileData.nic}</div>
               <div className="profile-card-row" style={{marginTop: '0.7rem', marginBottom: '0.7rem'}}>
                 <span>Status:</span>
-                <button
-                  className={`provider-status-toggle ${online ? 'online' : 'offline'}`}
+                <div
+                  className={`provider-status-switch ${online ? 'online' : 'offline'}`}
                   onClick={handleToggleOnline}
-                  style={{marginLeft: '0.7rem', padding: '0.3rem 1.2rem', borderRadius: '18px', border: 'none', fontWeight: 600, background: online ? '#007a65' : '#640f1c', color: '#fff', cursor: 'pointer', transition: 'background 0.2s'}}
+                  style={{
+                    marginLeft: '0.2rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    position: 'relative',
+                    width: 44,
+                    height: 22,
+                  }}
                 >
-                  {online ? 'Online' : 'Offline'}
-                </button>
+                  <div
+                    className="provider-status-switch-label"
+                    style={{
+                      background: online ? '#10b981' : '#d32f2f',
+                      borderRadius: 999,
+                      width: 44,
+                      height: 22,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: online ? 'flex-end' : 'flex-start',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.10)',
+                      position: 'relative',
+                      transition: 'background 0.3s',
+                    }}
+                  >
+                    {/* No text, just the switch */}
+                  </div>
+                  <div
+                    className="provider-status-switch-circle"
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: '50%',
+                      background: '#e5e5e5',
+                      border: '3px solid #f3f3f3',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.10)',
+                      position: 'absolute',
+                      left: online ? 24 : 4,
+                      top: 2,
+                      transition: 'left 0.3s',
+                      zIndex: 2,
+                    }}
+                  />
+                </div>
               </div>
               <button className="profile-edit-btn" style={{marginTop: '0.7rem'}} onClick={() => setEditOpen(true)}>
                 Edit Profile
