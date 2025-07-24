@@ -2248,11 +2248,12 @@ body, .provider-dashboard-home {
 }
 .provider-action-btn.decline {
   background: #f5f8fd;
-  color: #1a3665;
-  border: 1.5px solid #1a3665;
+  color: #d32f2f;
+  border: 1.5px solid #d32f2f;
 }
 .provider-action-btn.decline:hover {
-  background: #f5f8fd;
-  color: #1a3665 !important;
-  border-color: #1a3665 !important;
+  background: #ffeaea;
+  color: #b71c1c;
+  border-color: #b71c1c;
+
 } 
