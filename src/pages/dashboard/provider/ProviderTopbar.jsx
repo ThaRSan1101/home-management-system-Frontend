@@ -96,7 +96,7 @@ const ProviderTopbarContent = () => {
       email: editData.email,
       phone_number: editData.phone,
       address: editData.address,
-      nic: editData.nic,
+
     };
     try {
       const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_provider_profile.php', {
@@ -110,7 +110,7 @@ const ProviderTopbarContent = () => {
         localStorage.setItem('provider_address', editData.address);
         localStorage.setItem('provider_phone', editData.phone);
         localStorage.setItem('provider_email', editData.email);
-        localStorage.setItem('provider_nic', editData.nic);
+  
         setProfileData((prev) => ({ ...prev, ...editData }));
         setEditOpen(false);
         toast.success('Your profile was updated successfully.');
@@ -158,8 +158,8 @@ const ProviderTopbarContent = () => {
               <div className="profile-card-row"><span>Address:</span> {profileData.address}</div>
               <div className="profile-card-row"><span>Phone:</span> {profileData.phone}</div>
               <div className="profile-card-row"><span>Email:</span> {profileData.email}</div>
-              <div className="profile-card-row"><span>Joined:</span> {profileData.joined}</div>
               <div className="profile-card-row"><span>NIC:</span> {profileData.nic}</div>
+              <div className="profile-card-row"><span>Joined:</span> {profileData.joined}</div>
               <div className="profile-card-row" style={{marginTop: '0.7rem', marginBottom: '0.7rem'}}>
                 <span>Status:</span>
                 <div
@@ -235,12 +235,7 @@ const ProviderTopbarContent = () => {
               <label>Phone
                 <input name="phone" value={editData.phone} onChange={handleEditChange} required />
               </label>
-              <label>Email
-                <input name="email" value={editData.email} onChange={handleEditChange} required type="email" />
-              </label>
-              <label>NIC
-                <input name="nic" value={editData.nic} onChange={handleEditChange} required />
-              </label>
+              
               <div className="profile-edit-modal-actions">
                 <button type="button" className="activity-modal-cancel-btn" onClick={() => setEditOpen(false)}>Cancel</button>
                 <button type="submit" className="activity-modal-submit-btn">Save</button>

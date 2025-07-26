@@ -16,10 +16,19 @@ const AdminDashboard = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!localStorage.getItem('admin_fullName')) {
+    const adminFullName = localStorage.getItem('admin_fullName');
+    const adminUserId = localStorage.getItem('admin_user_id');
+    // If not logged in as admin, or userId mismatch, or customer/provider data exists, redirect
+    if (
+      !adminFullName ||
+      !adminUserId ||
+      adminUserId !== userId ||
+      localStorage.getItem('customer_fullName') ||
+      localStorage.getItem('provider_fullName')
+    ) {
       navigate('/login', { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, userId]);
   return (
     <div className="admin-dashboard-layout">
       <AdminSidebar userId={userId} />

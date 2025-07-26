@@ -16,10 +16,19 @@ const CustomerDashboard = ({ userName: propUserName }) => {
   const { userId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!localStorage.getItem('customer_fullName')) {
+    const customerFullName = localStorage.getItem('customer_fullName');
+    const customerUserId = localStorage.getItem('customer_user_id');
+    // If not logged in as customer, or userId mismatch, or provider/admin data exists, redirect
+    if (
+      !customerFullName ||
+      !customerUserId ||
+      customerUserId !== userId ||
+      localStorage.getItem('provider_fullName') ||
+      localStorage.getItem('admin_fullName')
+    ) {
       navigate('/login', { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, userId]);
   // Try to get full name from localStorage (set this after login/registration)
   const storedFullName = localStorage.getItem('customer_fullName');
   const userName = storedFullName || propUserName || '';

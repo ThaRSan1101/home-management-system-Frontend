@@ -36,9 +36,10 @@ const Register = () => {
     }
 
     if (name === 'email') {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      // Allow all domains, only valid format (letters, numbers, periods, underscores before @)
+      const emailRegex = /^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(value)) {
-        setErrors({ ...errors, [name]: 'Enter a valid email' });
+        setErrors({ ...errors, [name]: 'Enter a valid email address (only letters, numbers, periods, underscores before @, and a valid domain)' });
       }
     }
 
@@ -46,6 +47,14 @@ const Register = () => {
       const phoneRegex = /^\d{10}$/;
       if (!phoneRegex.test(value)) {
         setErrors({ ...errors, [name]: 'Phone must be 10 digits' });
+      }
+    }
+
+    if (name === 'fullName') {
+      // Only allow letters and spaces
+      const nameRegex = /^[A-Za-z ]+$/;
+      if (!nameRegex.test(value)) {
+        setErrors({ ...errors, [name]: 'Full name can only contain letters and spaces' });
       }
     }
 
@@ -104,7 +113,12 @@ const Register = () => {
   // 🔗 Step 1: Send Data to Backend (register.php)
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      // Show all errors in a toast alert
+      const errorList = Object.values(errors).flat().join('\n');
+      toast.error(errorList || 'Please fix the errors in the form.');
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/register.php', {
@@ -185,9 +199,8 @@ const Register = () => {
               <InputField icon={<FaEnvelope />} type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} error={errors.email} />
               <InputField icon={<FaPhone />} type="tel" name="phone" placeholder="Phone" value={formData.phone} onChange={handleChange} error={errors.phone} />
               <InputField icon={<FaUser />} type="text" name="address" placeholder="City & District" value={formData.address} onChange={handleChange} error={errors.address} />
-              <InputField icon={<FaIdCard />} type="text" name="nic" placeholder="NIC (Optional)" value={formData.nic} onChange={handleChange} error={errors.nic} />
 
-              {/* Password Field */}
+              {/* Password (moved up) */}
               <div className="auth-field-container">
                 <div className="auth-input-group">
                   <FaLock className="auth-input-icon" />
@@ -201,7 +214,7 @@ const Register = () => {
                 )}
               </div>
 
-              {/* Confirm Password */}
+              {/* Confirm Password (now after Password) */}
               <div className="auth-field-container">
                 <div className="auth-input-group">
                   <FaLock className="auth-input-icon" />
@@ -210,6 +223,8 @@ const Register = () => {
                 </div>
                 {errors.confirmPassword && <span className="auth-error">{errors.confirmPassword}</span>}
               </div>
+
+              <InputField icon={<FaIdCard />} type="text" name="nic" placeholder="NIC (Optional)" value={formData.nic} onChange={handleChange} error={errors.nic} />
 
               <button type="submit" className="auth-submit-btn">Register as Customer</button>
             </form>
