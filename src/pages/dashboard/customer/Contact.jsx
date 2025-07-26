@@ -150,17 +150,17 @@ const DashboardContact = () => {
               <div className="customer-dashboard-contactus-info-item">
                 <FaMapMarkerAlt className="customer-dashboard-contactus-info-icon" />
                 <span className="customer-dashboard-contactus-info-label">Address:</span>
-                <span className="customer-dashboard-contactus-info-value">25, Kensington Garden, Colombo 00400</span>
+                <span className="customer-dashboard-contactus-info-value">07,Main Street Road,Jaffna</span>
               </div>
               <div className="customer-dashboard-contactus-info-item">
                 <FaPhone className="customer-dashboard-contactus-info-icon" />
                 <span className="customer-dashboard-contactus-info-label">Phone:</span>
-                <span className="customer-dashboard-contactus-info-value">(+94) 77 442 2448</span>
+                <span className="customer-dashboard-contactus-info-value">+94 778 200 752</span>
               </div>
               <div className="customer-dashboard-contactus-info-item">
                 <FaEnvelope className="customer-dashboard-contactus-info-icon" />
                 <span className="customer-dashboard-contactus-info-label">Email:</span>
-                <span className="customer-dashboard-contactus-info-value">info@homeservice.com</span>
+                <span className="customer-dashboard-contactus-info-value">ServiceHub@gmail.com</span>
               </div>
             </div>
           </div>

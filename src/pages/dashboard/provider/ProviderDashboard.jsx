@@ -12,10 +12,19 @@ const ProviderDashboard = ({ userName: propUserName }) => {
   const { userId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!localStorage.getItem('provider_fullName')) {
+    const providerFullName = localStorage.getItem('provider_fullName');
+    const providerUserId = localStorage.getItem('provider_user_id');
+    // If not logged in as provider, or userId mismatch, or customer/admin data exists, redirect
+    if (
+      !providerFullName ||
+      !providerUserId ||
+      providerUserId !== userId ||
+      localStorage.getItem('customer_fullName') ||
+      localStorage.getItem('admin_fullName')
+    ) {
       navigate('/login', { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, userId]);
   const userName = propUserName || '';
   return (
     <div className="provider-dashboard-layout">

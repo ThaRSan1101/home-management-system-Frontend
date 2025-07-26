@@ -143,17 +143,17 @@ const Contact = () => {
               <div className="contactus-info-item">
                 <FaMapMarkerAlt className="contactus-info-icon" />
                 <span className="contactus-info-label">Address:</span>
-                <span className="contactus-info-value">25, Kensington Garden, Colombo 00400</span>
+                <span className="contactus-info-value">07,Main Street Road,Jaffna</span>
               </div>
               <div className="contactus-info-item">
                 <FaPhone className="contactus-info-icon" />
                 <span className="contactus-info-label">Phone :</span>
-                <span className="contactus-info-value">(+94) 77 442 2448</span>
+                <span className="contactus-info-value">+94 778 200 752</span>
               </div>
               <div className="contactus-info-item">
                 <FaEnvelope className="contactus-info-icon" />
                 <span className="contactus-info-label">Email :</span>
-                <span className="contactus-info-value">info@homeservice.com</span>
+                <span className="contactus-info-value">ServiceHub@gmail.com</span>
               </div>
             </div>
           </div>

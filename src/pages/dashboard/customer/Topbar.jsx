@@ -83,7 +83,7 @@ const Topbar = () => {
       email: editData.email,
       phone_number: editData.phone,
       address: editData.address,
-      nic: editData.nic,
+
     };
     try {
       const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_customer_profile.php', {
@@ -97,7 +97,7 @@ const Topbar = () => {
         localStorage.setItem('customer_address', editData.address);
         localStorage.setItem('customer_phone', editData.phone);
         localStorage.setItem('customer_email', editData.email);
-        localStorage.setItem('customer_nic', editData.nic);
+  
         setCustomerData((prev) => ({ ...prev, ...editData }));
         setEditOpen(false);
         toast.success('Your profile was updated successfully.');
@@ -152,8 +152,8 @@ const Topbar = () => {
               <div className="profile-card-row"><span>Address:</span> {customerData.address}</div>
               <div className="profile-card-row"><span>Phone:</span> {customerData.phone}</div>
               <div className="profile-card-row"><span>Email:</span> {customerData.email}</div>
-              <div className="profile-card-row"><span>Joined:</span> {customerData.joined}</div>
               <div className="profile-card-row"><span>NIC:</span> {customerData.nic}</div>
+              <div className="profile-card-row"><span>Joined:</span> {customerData.joined}</div>
               <button className="customer-sidebar-edit-btn" onClick={handleEditProfile}>
                 Edit Profile
               </button>
@@ -178,12 +178,7 @@ const Topbar = () => {
               <label>Phone
                 <input name="phone" value={editData.phone} onChange={handleEditChange} required />
               </label>
-              <label>Email
-                <input name="email" value={editData.email} onChange={handleEditChange} required type="email" />
-              </label>
-              <label>NIC
-                <input name="nic" value={editData.nic} onChange={handleEditChange} required />
-              </label>
+              
               <div className="customer-edit-modal-actions">
                 <button type="button" className="customer-edit-cancel-btn" onClick={() => setEditOpen(false)}>Cancel</button>
                 <button type="submit" className="customer-edit-save-btn">Save</button>

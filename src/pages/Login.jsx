@@ -58,31 +58,56 @@ const Login = () => {
       );
       const result = response.data;
       if (result.status === 'success') {
+        // Clear all user type data before setting new login
+        localStorage.removeItem('customer_user_id');
+        localStorage.removeItem('customer_fullName');
+        localStorage.removeItem('customer_address');
+        localStorage.removeItem('customer_phone');
+        localStorage.removeItem('customer_email');
+        localStorage.removeItem('customer_joined');
+        localStorage.removeItem('customer_nic');
+        localStorage.removeItem('provider_user_id');
+        localStorage.removeItem('provider_fullName');
+        localStorage.removeItem('provider_address');
+        localStorage.removeItem('provider_phone');
+        localStorage.removeItem('provider_email');
+        localStorage.removeItem('provider_joined');
+        localStorage.removeItem('provider_nic');
+        localStorage.removeItem('admin_user_id');
+        localStorage.removeItem('admin_fullName');
+        localStorage.removeItem('admin_email');
 
         // Store customer details in localStorage for dashboard/profile use
-        if (result.user_type === 'customer' && result.user_details) {
+        if (result.user_type === 'customer') {
           localStorage.setItem('customer_user_id', result.user_id);
-          localStorage.setItem('customer_fullName', result.user_details.fullName || '');
-          localStorage.setItem('customer_address', result.user_details.address || '');
-          localStorage.setItem('customer_phone', result.user_details.phone || '');
-          localStorage.setItem('customer_email', result.user_details.email || '');
-          localStorage.setItem('customer_joined', result.user_details.joined || '');
-          localStorage.setItem('customer_nic', result.user_details.nic || '');
+          if (result.user_details) {
+            localStorage.setItem('customer_fullName', result.user_details.fullName || '');
+            localStorage.setItem('customer_address', result.user_details.address || '');
+            localStorage.setItem('customer_phone', result.user_details.phone || '');
+            localStorage.setItem('customer_email', result.user_details.email || '');
+            localStorage.setItem('customer_joined', result.user_details.joined || '');
+            localStorage.setItem('customer_nic', result.user_details.nic || '');
+          }
         }
         // Store provider details in localStorage for dashboard/profile use
-        if (result.user_type === 'provider' && result.user_details) {
+        if (result.user_type === 'provider') {
           localStorage.setItem('provider_user_id', result.user_id);
-          localStorage.setItem('provider_fullName', result.user_details.fullName || '');
-          localStorage.setItem('provider_address', result.user_details.address || '');
-          localStorage.setItem('provider_phone', result.user_details.phone || '');
-          localStorage.setItem('provider_email', result.user_details.email || '');
-          localStorage.setItem('provider_joined', result.user_details.joined || '');
-          localStorage.setItem('provider_nic', result.user_details.nic || '');
+          if (result.user_details) {
+            localStorage.setItem('provider_fullName', result.user_details.fullName || '');
+            localStorage.setItem('provider_address', result.user_details.address || '');
+            localStorage.setItem('provider_phone', result.user_details.phone || '');
+            localStorage.setItem('provider_email', result.user_details.email || '');
+            localStorage.setItem('provider_joined', result.user_details.joined || '');
+            localStorage.setItem('provider_nic', result.user_details.nic || '');
+          }
         }
         // Store admin details in localStorage for dashboard/profile use
-        if (result.user_type === 'admin' && result.user_details) {
-          localStorage.setItem('admin_fullName', result.user_details.fullName || '');
-          localStorage.setItem('admin_email', result.user_details.email || '');
+        if (result.user_type === 'admin') {
+          localStorage.setItem('admin_user_id', result.user_id);
+          if (result.user_details) {
+            localStorage.setItem('admin_fullName', result.user_details.fullName || '');
+            localStorage.setItem('admin_email', result.user_details.email || '');
+          }
         }
 
         // Redirect based on user type and user id
