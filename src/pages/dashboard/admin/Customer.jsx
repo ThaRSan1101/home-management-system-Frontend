@@ -92,7 +92,7 @@ const Customer = () => {
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Password</th>
+              
               <th>Phone Number</th>
               <th>Address</th>
               <th>NIC</th>
@@ -113,7 +113,7 @@ const Customer = () => {
                 <tr className="customer-table-row" key={c.id}>
                   <td className="customer-table-cell">{c.name}</td>
                   <td className="customer-table-cell">{c.email}</td>
-                  <td className="customer-table-cell">***</td>
+                  
                   <td className="customer-table-cell">{c.phone}</td>
                   <td className="customer-table-cell">{c.address}</td>
                   <td className="customer-table-cell">{c.nic}</td>
@@ -149,11 +149,7 @@ const Customer = () => {
                   <input name="email" value={editForm.email} onChange={handleEditChange} placeholder="E-mail Address" type="text" />
                 </label>
               </div>
-              <div className="customer-modal-form-group">
-                <label> Password
-                  <input name="password" type="password" value={"***"} readOnly placeholder="Password" />
-                </label>
-              </div>
+              
               <div className="customer-modal-form-group">
                 <label> Phone Number
                   <input name="phone" value={editForm.phone} onChange={handleEditChange} placeholder="Phone Number" type="text" />
@@ -174,11 +170,6 @@ const Customer = () => {
                   <input type="checkbox" name="disabled" checked={editForm.disabled} onChange={handleEditChange} style={{marginLeft:'0.5rem'}} />
                 </label>
               </div>
-              <div className="customer-modal-form-group">
-                <label> Registered Date
-                  <input name="registered" value={editForm.registered} onChange={handleEditChange} placeholder="Registered Date" type="text" />
-                </label>
-            </div>
             </form>
             <div className="customer-modal-actions">
               <button onClick={closeModals}>Cancel</button>
@@ -197,12 +188,12 @@ const Customer = () => {
             <div className="customer-modal-details">
               <div><b>Name:</b> {viewModal.name}</div>
               <div><b>Email:</b> {viewModal.email}</div>
-              <div><b>Password:</b> ***</div>
+              
               <div><b>Phone Number:</b> {viewModal.phone}</div>
               <div><b>Address:</b> {viewModal.address}</div>
               <div><b>NIC:</b> {viewModal.nic}</div>
               <div><b>Disable Status:</b> {viewModal.disabled ? 'Disabled' : 'Active'}</div>
-              <div><b>Registered Date:</b> {viewModal.registered}</div>
+              
             </div>
             <div className="customer-modal-actions">
               <button onClick={closeModals}>Close</button>
