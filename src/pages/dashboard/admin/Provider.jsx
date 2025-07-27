@@ -1,9 +1,24 @@
 import React, { useState, useEffect } from 'react';
+
+const DISTRICTS = [
+  'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya', 'Galle', 'Matara', 'Hambantota',
+  'Jaffna', 'Kilinochchi', 'Mannar', 'Vavuniya', 'Mullaitivu', 'Batticaloa', 'Ampara', 'Trincomalee',
+  'Kurunegala', 'Puttalam', 'Anuradhapura', 'Polonnaruwa', 'Badulla', 'Monaragala', 'Ratnapura', 'Kegalle'
+];
+
+const STATUSES = ['Active', 'Inactive'];
+
 import './Provider.css';
 import { toast } from 'sonner';
 
 const Provider = () => {
+  // Filter state
+  const [filterAddress, setFilterAddress] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+  const [filterDescription, setFilterDescription] = useState('');
+
   const [providers, setProviders] = useState([]);
+  const [filteredProviders, setFilteredProviders] = useState([]);
   const [editModal, setEditModal] = useState(null); // provider object or null
   const [viewModal, setViewModal] = useState(null); // provider object or null
   const [editForm, setEditForm] = useState({});
@@ -11,7 +26,6 @@ const Provider = () => {
   const [addForm, setAddForm] = useState({
     name: '',
     email: '',
-    password: '',
     phone: '',
     address: '',
     nic: '',
@@ -32,6 +46,33 @@ const Provider = () => {
     } catch (err) {
       toast.error('Error fetching providers.');
     }
+  };
+
+  // Filtering logic
+  useEffect(() => {
+    let filtered = providers;
+    if (filterAddress) {
+      filtered = filtered.filter((p) => p.address === filterAddress);
+    }
+    if (filterStatus) {
+      filtered = filtered.filter((p) => {
+        if (filterStatus === 'Active') return p.status === 'active';
+        if (filterStatus === 'Inactive') return p.status === 'inactive';
+        return true;
+      });
+    }
+    if (filterDescription) {
+      filtered = filtered.filter((p) =>
+        (p.description || '').toLowerCase().includes(filterDescription.toLowerCase())
+      );
+    }
+    setFilteredProviders(filtered);
+  }, [providers, filterAddress, filterStatus, filterDescription]);
+
+  const handleResetFilters = () => {
+    setFilterAddress('');
+    setFilterStatus('');
+    setFilterDescription('');
   };
 
   useEffect(() => {
@@ -88,7 +129,7 @@ const Provider = () => {
   };
   const handleAddProvider = async (e) => {
     e.preventDefault();
-    if (!addForm.name || !addForm.email || !addForm.password || !addForm.phone || !addForm.address || !addForm.nic) {
+    if (!addForm.name || !addForm.email || !addForm.phone || !addForm.address || !addForm.nic) {
       toast.error('Please fill in all required fields.');
       return;
     }
@@ -101,7 +142,7 @@ const Provider = () => {
       const result = await res.json();
       if (result.status === 'success') {
         toast.success('Provider account created and email sent.');
-        setAddForm({ name: '', email: '', password: '', phone: '', address: '', nic: '', description: '', qualification: '' });
+        setAddForm({ name: '', email: '', phone: '', address: '', nic: '', description: '', qualification: '' });
         setAddModal(false);
         fetchProviders();
       } else {
@@ -115,11 +156,102 @@ const Provider = () => {
     }
   };
 
+  // Inline styles for filter section
+  const filterSectionStyle = {
+    display: 'flex',
+    gap: '1.5rem',
+    alignItems: 'center',
+    margin: '1.3rem 0 1.8rem 0',
+    background: '#f4f8fb',
+    borderRadius: '12px',
+    padding: '1.1rem 2.2rem',
+    boxShadow: '0 2px 12px rgba(26,54,101,0.07)',
+    border: '1.5px solid #e0e7ef',
+  };
+  const filterGroupStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.2rem',
+    minWidth: '160px',
+  };
+  const filterLabelStyle = {
+    fontWeight: 600,
+    color: '#1a3665',
+    fontSize: '1.05rem',
+  };
+  const filterSelectStyle = {
+    marginTop: '0.25rem',
+    padding: '0.48rem 0.9rem',
+    borderRadius: '7px',
+    border: '1.5px solid #b6c5df',
+    background: '#fff',
+    color: '#1a3665',
+    fontSize: '1.04rem',
+    fontWeight: 500,
+    outline: 'none',
+    transition: 'border 0.18s',
+  };
+  const resetBtnStyle = {
+    marginLeft: 'auto',
+    padding: '0.48rem 1.3rem',
+    background: '#1a3665',
+    color: '#fff',
+    fontWeight: 700,
+    border: 'none',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontSize: '1.04rem',
+    boxShadow: '0 1px 4px rgba(26,54,101,0.07)',
+    transition: 'background 0.18s, color 0.18s, box-shadow 0.18s',
+  };
+
   return (
     <div className="user-suggestion-wrapper">
       <h2 className="user-suggestion-heading">Provider Management</h2>
       <div className="provider-management-subtitle">Manage and review all registered Service Providers</div>
       <button className="add-provider-btn" onClick={() => setAddModal(true)}>Add New Provider</button>
+      {/* Filter Controls (inline style) */}
+      <div style={filterSectionStyle}>
+        <div style={filterGroupStyle}>
+          <label style={filterLabelStyle}>Address
+            <select style={filterSelectStyle} value={filterAddress} onChange={e => setFilterAddress(e.target.value)}>
+              <option value="">All Districts</option>
+              {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </label>
+        </div>
+        <div style={filterGroupStyle}>
+          <label style={filterLabelStyle}>Status
+            <select style={filterSelectStyle} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+              <option value="">All</option>
+              {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </label>
+        </div>
+        <div style={filterGroupStyle}>
+          <label style={filterLabelStyle}>Description
+            <input
+              type="text"
+              style={{
+                marginTop: '0.25rem',
+                padding: '0.48rem 0.9rem',
+                borderRadius: '7px',
+                border: '1.5px solid #b6c5df',
+                background: '#fff',
+                color: '#1a3665',
+                fontSize: '1.04rem',
+                fontWeight: 500,
+                outline: 'none',
+                transition: 'border 0.18s',
+              }}
+              placeholder="Search description..."
+              value={filterDescription}
+              onChange={e => setFilterDescription(e.target.value)}
+            />
+          </label>
+        </div>
+        <button style={resetBtnStyle} onClick={handleResetFilters}>Reset Filters</button>
+      </div> 
       <div className="user-suggestion-table-container">
         <table className="user-suggestion-table">
           <thead>
@@ -129,30 +261,30 @@ const Provider = () => {
               <th>Phone Number</th>
               <th>Address</th>
               <th>NIC</th>
+              <th>Description</th>
               <th>Status</th>
               <th>Disable Status</th>
-              <th>Registered Date</th>
               <th>Action</th>
-            </tr>
+            </tr> 
           </thead>
           <tbody>
-            {providers.length === 0 ? (
+            {filteredProviders.length === 0 ? (
               <tr>
-                <td colSpan={8} style={{ textAlign: 'center', color: '#888', padding: '2rem 0' }}>
+                <td colSpan={9} style={{ textAlign: 'center', color: '#888', padding: '2rem 0' }}>
                   No providers found.
                 </td>
               </tr>
             ) : (
-              providers.map((p) => (
+              filteredProviders.map((p) => (
                 <tr key={p.provider_id}>
                   <td>{p.name}</td>
                   <td>{p.email}</td>
                   <td>{p.phone_number}</td>
                   <td>{p.address}</td>
                   <td>{p.NIC}</td>
+                  <td>{p.description || '-'}</td>
                   <td>{p.status === 'active' ? 'Active' : 'Inactive'}</td>
                   <td>{p.disable_status ? 'Disabled' : 'Active'}</td>
-                  <td>{p.registered_date ? p.registered_date.substring(0, 10) : ''}</td>
                   <td>
                     <div className="provider-action-btn-group">
                       <button className="provider-action-btn edit-btn" onClick={() => openEdit(p)}>Edit</button>
@@ -182,11 +314,7 @@ const Provider = () => {
                   <input name="email" value={addForm.email} onChange={handleAddChange} placeholder="E-mail Address" type="email" required />
                 </label>
               </div>
-              <div className="provider-modal-form-group">
-                <label>Password
-                  <input name="password" type="password" value={addForm.password} onChange={handleAddChange} placeholder="Password" required />
-                </label>
-              </div>
+
               <div className="provider-modal-form-group">
                 <label>Phone Number
                   <input name="phone" value={addForm.phone} onChange={handleAddChange} placeholder="Phone Number" type="text" required />
