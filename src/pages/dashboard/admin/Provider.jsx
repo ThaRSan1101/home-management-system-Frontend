@@ -106,7 +106,7 @@ const Provider = () => {
         status: editForm.status,
         disable_status: !!editForm.disable_status ? 1 : 0
       };
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_provider_profile.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_update_provider.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
