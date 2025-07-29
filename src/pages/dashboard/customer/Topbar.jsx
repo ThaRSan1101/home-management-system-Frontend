@@ -28,7 +28,6 @@ const Topbar = () => {
     address: '',
     phone: '',
     email: '',
-    nic: '',
   });
   const [customerData, setCustomerData] = useState({
     fullName: localStorage.getItem('customer_fullName') || '',
@@ -36,8 +35,10 @@ const Topbar = () => {
     phone: localStorage.getItem('customer_phone') || '',
     email: localStorage.getItem('customer_email') || '',
     joined: localStorage.getItem('customer_joined') || '',
-    nic: localStorage.getItem('customer_nic') || '',
   });
+  const [otpModalOpen, setOtpModalOpen] = useState(false);
+  const [pendingProfile, setPendingProfile] = useState(null);
+  const [otp, setOtp] = useState('');
   const profileRef = useRef();
   const notifRef = useRef();
   const navigate = useNavigate();
@@ -53,7 +54,6 @@ const Topbar = () => {
       address: customerData.address,
       phone: customerData.phone,
       email: customerData.email,
-      nic: customerData.nic,
     });
     setEditOpen(true);
     setProfileOpen(false);
@@ -83,26 +83,55 @@ const Topbar = () => {
       email: editData.email,
       phone_number: editData.phone,
       address: editData.address,
-
     };
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_customer_profile.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/request_customer_profile_update.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
       const result = await res.json();
       if (result.status === 'success') {
-        localStorage.setItem('customer_fullName', editData.fullName);
-        localStorage.setItem('customer_address', editData.address);
-        localStorage.setItem('customer_phone', editData.phone);
-        localStorage.setItem('customer_email', editData.email);
-  
-        setCustomerData((prev) => ({ ...prev, ...editData }));
+        setPendingProfile(payload);
+        setOtpModalOpen(true);
         setEditOpen(false);
+        toast.success('OTP sent to your email. Please enter it to confirm.');
+      } else {
+        toast.error(result.message || 'Failed to request profile update.');
+      }
+    } catch (err) {
+      toast.error(err.message || 'Unknown error occurred.');
+    }
+  };
+
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    if (!pendingProfile) return;
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_customer_profile.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: pendingProfile.user_id, otp })
+      });
+      const result = await res.json();
+      if (result.status === 'success') {
+        localStorage.setItem('customer_fullName', pendingProfile.name);
+        localStorage.setItem('customer_address', pendingProfile.address);
+        localStorage.setItem('customer_phone', pendingProfile.phone_number);
+        localStorage.setItem('customer_email', pendingProfile.email);
+        setCustomerData((prev) => ({
+          ...prev,
+          fullName: pendingProfile.name,
+          address: pendingProfile.address,
+          phone: pendingProfile.phone_number,
+          email: pendingProfile.email,
+        }));
+        setOtpModalOpen(false);
+        setOtp('');
+        setPendingProfile(null);
         toast.success('Your profile was updated successfully.');
       } else {
-        toast.error(result.message || 'Failed to update profile.');
+        toast.error(result.message || 'Failed to verify OTP.');
       }
     } catch (err) {
       toast.error(err.message || 'Unknown error occurred.');
@@ -152,7 +181,7 @@ const Topbar = () => {
               <div className="profile-card-row"><span>Address:</span> {customerData.address}</div>
               <div className="profile-card-row"><span>Phone:</span> {customerData.phone}</div>
               <div className="profile-card-row"><span>Email:</span> {customerData.email}</div>
-              <div className="profile-card-row"><span>NIC:</span> {customerData.nic}</div>
+          
               <div className="profile-card-row"><span>Joined:</span> {customerData.joined}</div>
               <button className="customer-sidebar-edit-btn" onClick={handleEditProfile}>
                 Edit Profile
@@ -178,10 +207,36 @@ const Topbar = () => {
               <label>Phone
                 <input name="phone" value={editData.phone} onChange={handleEditChange} required />
               </label>
-              
+              <label>Email
+                <input name="email" type="email" value={editData.email} onChange={handleEditChange} required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" autoComplete="email"/>
+              </label>
               <div className="customer-edit-modal-actions">
                 <button type="button" className="customer-edit-cancel-btn" onClick={() => setEditOpen(false)}>Cancel</button>
                 <button type="submit" className="customer-edit-save-btn">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {otpModalOpen && (
+        <div className="otp-modal-overlay themed">
+          <div className="otp-modal-card themed">
+            <h3 className="otp-modal-title themed">Verify Profile Update</h3>
+            <p className="otp-modal-desc themed">Enter the 6-digit OTP sent to your email to confirm your profile changes.</p>
+            <form onSubmit={handleOtpSubmit} className="otp-modal-form themed">
+              <input
+                type="text"
+                value={otp}
+                onChange={e => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
+                maxLength={6}
+                required
+                autoFocus
+                className="otp-input themed"
+                placeholder="Enter OTP"
+              />
+              <div className="otp-modal-actions themed">
+                <button type="submit" className="otp-submit-btn themed">Verify</button>
+                <button type="button" className="otp-cancel-btn themed" onClick={() => setOtpModalOpen(false)}>Cancel</button>
               </div>
             </form>
           </div>

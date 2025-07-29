@@ -28,17 +28,18 @@ const ProviderTopbarContent = () => {
     address: provider.address,
     phone: provider.phone,
     email: provider.email,
-    nic: localStorage.getItem('provider_nic') || '',
   });
   const [profileData, setProfileData] = useState({
     ...provider,
-    nic: localStorage.getItem('provider_nic') || '',
   });
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const profileRef = useRef();
   const notifRef = useRef();
   const [online, setOnline] = useState(localStorage.getItem('provider_online') === 'true');
+  const [otpModalOpen, setOtpModalOpen] = useState(false);
+  const [pendingProfile, setPendingProfile] = useState(null);
+  const [otp, setOtp] = useState('');
 
   // Ensure profile data is loaded from localStorage on mount (fixes missing details after login)
   useEffect(() => {
@@ -49,14 +50,12 @@ const ProviderTopbarContent = () => {
       email: localStorage.getItem('provider_email') || '',
       joined: localStorage.getItem('provider_joined') || '',
       avatar: '/src/assets/man.png',
-      nic: localStorage.getItem('provider_nic') || '',
     });
     setEditData({
       fullName: localStorage.getItem('provider_fullName') || '',
       address: localStorage.getItem('provider_address') || '',
       phone: localStorage.getItem('provider_phone') || '',
       email: localStorage.getItem('provider_email') || '',
-      nic: localStorage.getItem('provider_nic') || '',
     });
   }, []);
 
@@ -96,26 +95,55 @@ const ProviderTopbarContent = () => {
       email: editData.email,
       phone_number: editData.phone,
       address: editData.address,
-
     };
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_provider_profile.php', {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/request_provider_profile_update.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
       const result = await res.json();
       if (result.status === 'success') {
-        localStorage.setItem('provider_fullName', editData.fullName);
-        localStorage.setItem('provider_address', editData.address);
-        localStorage.setItem('provider_phone', editData.phone);
-        localStorage.setItem('provider_email', editData.email);
-  
-        setProfileData((prev) => ({ ...prev, ...editData }));
+        setPendingProfile(payload);
+        setOtpModalOpen(true);
         setEditOpen(false);
+        toast.success('OTP sent to your email. Please enter it to confirm.');
+      } else {
+        toast.error(result.message || 'Failed to request profile update.');
+      }
+    } catch (err) {
+      toast.error(err.message || 'Unknown error occurred.');
+    }
+  };
+
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    if (!pendingProfile) return;
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_provider_profile.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: pendingProfile.user_id, otp })
+      });
+      const result = await res.json();
+      if (result.status === 'success') {
+        localStorage.setItem('provider_fullName', pendingProfile.name);
+        localStorage.setItem('provider_address', pendingProfile.address);
+        localStorage.setItem('provider_phone', pendingProfile.phone_number);
+        localStorage.setItem('provider_email', pendingProfile.email);
+        setProfileData((prev) => ({
+          ...prev,
+          fullName: pendingProfile.name,
+          address: pendingProfile.address,
+          phone: pendingProfile.phone_number,
+          email: pendingProfile.email,
+        }));
+        setOtpModalOpen(false);
+        setOtp('');
+        setPendingProfile(null);
         toast.success('Your profile was updated successfully.');
       } else {
-        toast.error(result.message || 'Failed to update profile.');
+        toast.error(result.message || 'Failed to verify OTP.');
       }
     } catch (err) {
       toast.error(err.message || 'Unknown error occurred.');
@@ -158,7 +186,7 @@ const ProviderTopbarContent = () => {
               <div className="profile-card-row"><span>Address:</span> {profileData.address}</div>
               <div className="profile-card-row"><span>Phone:</span> {profileData.phone}</div>
               <div className="profile-card-row"><span>Email:</span> {profileData.email}</div>
-              <div className="profile-card-row"><span>NIC:</span> {profileData.nic}</div>
+          
               <div className="profile-card-row"><span>Joined:</span> {profileData.joined}</div>
               <div className="profile-card-row" style={{marginTop: '0.7rem', marginBottom: '0.7rem'}}>
                 <span>Status:</span>
@@ -235,10 +263,36 @@ const ProviderTopbarContent = () => {
               <label>Phone
                 <input name="phone" value={editData.phone} onChange={handleEditChange} required />
               </label>
-              
+              <label>Email
+                <input name="email" type="email" value={editData.email} onChange={handleEditChange} required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" autoComplete="email"/>
+              </label>
               <div className="profile-edit-modal-actions">
                 <button type="button" className="activity-modal-cancel-btn" onClick={() => setEditOpen(false)}>Cancel</button>
                 <button type="submit" className="activity-modal-submit-btn">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {otpModalOpen && (
+        <div className="otp-modal-overlay themed">
+          <div className="otp-modal-card themed">
+            <h3 className="otp-modal-title themed">Verify Profile Update</h3>
+            <p className="otp-modal-desc themed">Enter the 6-digit OTP sent to your email to confirm your profile changes.</p>
+            <form onSubmit={handleOtpSubmit} className="otp-modal-form themed">
+              <input
+                type="text"
+                value={otp}
+                onChange={e => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
+                maxLength={6}
+                required
+                autoFocus
+                className="otp-input themed"
+                placeholder="Enter OTP"
+              />
+              <div className="otp-modal-actions themed">
+                <button type="submit" className="otp-submit-btn themed">Verify</button>
+                <button type="button" className="otp-cancel-btn themed" onClick={() => setOtpModalOpen(false)}>Cancel</button>
               </div>
             </form>
           </div>
