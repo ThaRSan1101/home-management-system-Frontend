@@ -421,3 +421,93 @@
   z-index: 4000;
   animation: modalFadeIn 0.2s;
 } 
+.otp-modal-overlay.themed {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(30, 41, 59, 0.55); /* dark overlay */
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.otp-modal-card.themed {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(30,41,59,0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 340px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInOtpModal 0.2s;
+}
+@keyframes fadeInOtpModal {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.otp-modal-title.themed {
+  color: #2a4365;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.otp-modal-desc.themed {
+  color: #475569;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+.otp-modal-form.themed {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.otp-input.themed {
+  font-size: 1.3rem;
+  padding: 0.7rem 1.2rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  margin-bottom: 1.2rem;
+  width: 180px;
+  text-align: center;
+  letter-spacing: 0.25em;
+  transition: border 0.2s;
+}
+.otp-input.themed:focus {
+  border: 1.5px solid #2a4365;
+  background: #f1f5f9;
+}
+.otp-modal-actions.themed {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+.otp-submit-btn.themed, .otp-cancel-btn.themed {
+  padding: 0.6rem 1.5rem;
+  border-radius: 7px;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.otp-submit-btn.themed {
+  background: #2a4365;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(42,67,101,0.08);
+}
+.otp-submit-btn.themed:hover {
+  background: #1e293b;
+}
+.otp-cancel-btn.themed {
+  background: #e2e8f0;
+  color: #2a4365;
+}
+.otp-cancel-btn.themed:hover {
+  background: #cbd5e1;
+  color: #1e293b;
+} 

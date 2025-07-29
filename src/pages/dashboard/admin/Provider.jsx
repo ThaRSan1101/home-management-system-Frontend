@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import './Provider.css';
+import { toast } from 'sonner';
 
 const DISTRICTS = [
   'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya', 'Galle', 'Matara', 'Hambantota',
@@ -8,8 +10,6 @@ const DISTRICTS = [
 
 const STATUSES = ['Active', 'Inactive'];
 
-import './Provider.css';
-import { toast } from 'sonner';
 
 const Provider = () => {
   // Filter state
@@ -259,7 +259,7 @@ const Provider = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Phone Number</th>
-              <th>Address</th>
+              <th>District</th>
               <th>NIC</th>
               <th>Description</th>
               <th>Status</th>
@@ -321,7 +321,7 @@ const Provider = () => {
                 </label>
               </div>
               <div className="provider-modal-form-group">
-                <label>Address
+                <label>District
                   <input name="address" value={addForm.address} onChange={handleAddChange} placeholder="Address" type="text" required />
                 </label>
               </div>
@@ -373,7 +373,7 @@ const Provider = () => {
                 </label>
               </div>
               <div className="provider-modal-form-group">
-                <label>Address
+                <label>District
                   <input name="address" value={editForm.address} onChange={handleEditChange} placeholder="Address" type="text" />
                 </label>
               </div>
@@ -417,7 +417,7 @@ const Provider = () => {
               <div><b>Name:</b> {viewModal.name}</div>
               <div><b>Email:</b> {viewModal.email}</div>
               <div><b>Phone:</b> {viewModal.phone_number}</div>
-              <div><b>Address:</b> {viewModal.address}</div>
+              <div><b>District:</b> {viewModal.address}</div>
               <div><b>NIC:</b> {viewModal.NIC}</div>
               <div><b>Status:</b> {viewModal.status === 'active' ? 'Active' : 'Inactive'}</div>
               <div><b>Registered Date:</b> {viewModal.registered_date ? viewModal.registered_date.substring(0, 10) : ''}</div>
