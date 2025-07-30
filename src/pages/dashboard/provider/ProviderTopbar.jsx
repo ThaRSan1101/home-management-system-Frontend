@@ -84,13 +84,7 @@ const ProviderTopbarContent = () => {
   };
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-    const user_id = localStorage.getItem('provider_user_id');
-    if (!user_id) {
-      toast.error('User ID not found. Please log in again.');
-      return;
-    }
     const payload = {
-      user_id,
       name: editData.fullName,
       email: editData.email,
       phone_number: editData.phone,
@@ -100,7 +94,8 @@ const ProviderTopbarContent = () => {
       const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/request_provider_profile_update.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        credentials: 'include',
       });
       const result = await res.json();
       if (result.status === 'success') {
@@ -123,7 +118,8 @@ const ProviderTopbarContent = () => {
       const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_provider_profile.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: pendingProfile.user_id, otp })
+        body: JSON.stringify({ otp }),
+        credentials: 'include',
       });
       const result = await res.json();
       if (result.status === 'success') {
@@ -242,7 +238,11 @@ const ProviderTopbarContent = () => {
               <button className="profile-edit-btn" style={{marginTop: '0.7rem'}} onClick={() => setEditOpen(true)}>
                 Edit Profile
               </button>
-              <button className="provider-sidebar-logout-btn-bottom" style={{marginTop: '1.2rem'}} onClick={() => { localStorage.clear(); window.location.href='/login'; }}>
+              <button className="provider-sidebar-logout-btn-bottom" style={{marginTop: '1.2rem'}} onClick={async () => {
+                await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/logout.php', { method: 'POST', credentials: 'include' });
+                localStorage.clear();
+                window.location.href='/login';
+              }}>
                 Logout
               </button>
             </div>

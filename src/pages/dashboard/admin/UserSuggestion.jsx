@@ -5,9 +5,11 @@ const UserSuggestion = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_messages.php')
+    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_messages.php', {
+      credentials: 'include'
+    })
       .then(res => res.json())
-      .then(data => setSuggestions(data.messages || []))
+      .then(data => setSuggestions(data.data || []))
       .catch(() => setSuggestions([]));
   }, []);
 

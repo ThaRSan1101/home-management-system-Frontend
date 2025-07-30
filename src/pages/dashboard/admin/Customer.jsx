@@ -33,6 +33,7 @@ const Customer = () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+      credentials: 'include',
     })
       .then(res => res.json())
       .then(data => {
@@ -51,7 +52,9 @@ const Customer = () => {
 
 
   useEffect(() => {
-    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_customers.php')
+    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_customers.php', {
+      credentials: 'include',
+    })
       .then(res => {
         if (!res.ok) throw new Error('Network response was not ok');
         return res.json();

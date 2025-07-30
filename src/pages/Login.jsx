@@ -7,15 +7,12 @@ import axios from 'axios';
 import { toast } from 'sonner';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState('');
   const [showForgot, setShowForgot] = useState(false);
-  const [forgotStep, setForgotStep] = useState(1); // 1: email, 2: otp, 3: reset
+  const [forgotStep, setForgotStep] = useState(1);
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotOtp, setForgotOtp] = useState('');
   const [forgotNewPassword, setForgotNewPassword] = useState('');
@@ -27,18 +24,19 @@ const Login = () => {
 
   useEffect(() => {
     setFormData({ email: '', password: '' });
-  }, []); // Clear fields on mount
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    if (errors[name]) setErrors({ ...errors, [name]: '' });
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
     setLoginError('');
   };
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.email) newErrors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email format';
     if (!formData.password) newErrors.password = 'Password is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -47,81 +45,58 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+
     try {
       const response = await axios.post(
         'http://localhost/project-root/backend/home-management-system-Backend/api/login.php',
         {
-          email: formData.email,
-          password: formData.password
+          email: formData.email.trim().toLowerCase(),
+          password: formData.password,
         },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
+
       const result = response.data;
+
       if (result.status === 'success') {
-        // Clear all user type data before setting new login
-        localStorage.removeItem('customer_user_id');
-        localStorage.removeItem('customer_fullName');
-        localStorage.removeItem('customer_address');
-        localStorage.removeItem('customer_phone');
-        localStorage.removeItem('customer_email');
-        localStorage.removeItem('customer_joined');
-        localStorage.removeItem('customer_nic');
-        localStorage.removeItem('provider_user_id');
-        localStorage.removeItem('provider_fullName');
-        localStorage.removeItem('provider_address');
-        localStorage.removeItem('provider_phone');
-        localStorage.removeItem('provider_email');
-        localStorage.removeItem('provider_joined');
-        localStorage.removeItem('provider_nic');
-        localStorage.removeItem('admin_user_id');
-        localStorage.removeItem('admin_fullName');
-        localStorage.removeItem('admin_email');
+        // Clear all user data
+        ['customer', 'provider', 'admin'].forEach((type) => {
+          localStorage.removeItem(`${type}_user_id`);
+          localStorage.removeItem(`${type}_fullName`);
+          localStorage.removeItem(`${type}_address`);
+          localStorage.removeItem(`${type}_phone`);
+          localStorage.removeItem(`${type}_email`);
+          localStorage.removeItem(`${type}_joined`);
+          localStorage.removeItem(`${type}_nic`);
+        });
 
-        // Store customer details in localStorage for dashboard/profile use
-        if (result.user_type === 'customer') {
-          localStorage.setItem('customer_user_id', result.user_id);
-          if (result.user_details) {
-            localStorage.setItem('customer_fullName', result.user_details.fullName || '');
-            localStorage.setItem('customer_address', result.user_details.address || '');
-            localStorage.setItem('customer_phone', result.user_details.phone || '');
-            localStorage.setItem('customer_email', result.user_details.email || '');
-            localStorage.setItem('customer_joined', result.user_details.joined || '');
-            localStorage.setItem('customer_nic', result.user_details.nic || '');
-          }
-        }
-        // Store provider details in localStorage for dashboard/profile use
-        if (result.user_type === 'provider') {
-          localStorage.setItem('provider_user_id', result.user_id);
-          if (result.user_details) {
-            localStorage.setItem('provider_fullName', result.user_details.fullName || '');
-            localStorage.setItem('provider_address', result.user_details.address || '');
-            localStorage.setItem('provider_phone', result.user_details.phone || '');
-            localStorage.setItem('provider_email', result.user_details.email || '');
-            localStorage.setItem('provider_joined', result.user_details.joined || '');
-            localStorage.setItem('provider_nic', result.user_details.nic || '');
-          }
-        }
-        // Store admin details in localStorage for dashboard/profile use
-        if (result.user_type === 'admin') {
-          localStorage.setItem('admin_user_id', result.user_id);
-          if (result.user_details) {
-            localStorage.setItem('admin_fullName', result.user_details.fullName || '');
-            localStorage.setItem('admin_email', result.user_details.email || '');
-          }
+        // Store based on user type
+        const { user_type, user_id, user_details } = result;
+        if (user_details) {
+          localStorage.setItem(`${user_type}_user_id`, user_id);
+          localStorage.setItem(`${user_type}_fullName`, user_details.fullName || '');
+          localStorage.setItem(`${user_type}_address`, user_details.address || '');
+          localStorage.setItem(`${user_type}_phone`, user_details.phone || '');
+          localStorage.setItem(`${user_type}_email`, user_details.email || '');
+          localStorage.setItem(`${user_type}_joined`, user_details.joined || '');
+          localStorage.setItem(`${user_type}_nic`, user_details.nic || '');
         }
 
-        // Redirect based on user type and user id
-        if (result.user_type === 'admin') {
-          navigate(`/admin/dashboard/${result.user_id}`);
-        } else if (result.user_type === 'provider') {
-          navigate(`/provider/dashboard/${result.user_id}`);
-        } else {
-          navigate(`/customer/dashboard/${result.user_id}`);
-        }
+        // Navigate accordingly
+        if (user_type === 'admin') navigate(`/admin/dashboard/${user_id}`);
+        else if (user_type === 'provider') navigate(`/provider/dashboard/${user_id}`);
+        else navigate(`/customer/dashboard/${user_id}`);
       } else {
         toast.error(result.message || 'Invalid email or password.');
       }
     } catch (err) {
+      // Log full error for debugging (remove console.log in prod)
+      console.error('Login error:', err.response || err.message || err);
       toast.error('Server error. Please try again later.');
     }
   };
@@ -147,7 +122,7 @@ const Login = () => {
         setForgotStep(2);
         toast.success('OTP sent to your email.');
       } else {
-        toast.error(result.message);
+        toast.error(result.message || 'Failed to send OTP.');
       }
     } catch (err) {
       toast.error('Server error.');
@@ -170,14 +145,12 @@ const Login = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail.trim().toLowerCase(), code: forgotOtp.trim() })
       });
-      
       const result = await res.json();
-      console.log(result.status);
       if (result.status === 'success') {
         setForgotStep(3);
         toast.success('OTP verified. Please enter your new password.');
       } else {
-        toast.error(result.message);
+        toast.error(result.message || 'OTP verification failed.');
       }
     } catch (err) {
       toast.error('Server error.');
@@ -218,7 +191,7 @@ const Login = () => {
         setForgotConfirmPassword('');
         setShowForgot(false);
       } else {
-        toast.error(result.message);
+        toast.error(result.message || 'Failed to reset password.');
       }
     } catch (err) {
       toast.error('Server error.');
@@ -262,7 +235,9 @@ const Login = () => {
                 className={errors.password ? 'error' : ''}
                 autoComplete="current-password"
               />
-              <button type="button" className="auth-eye" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FaEyeSlash /> : <FaEye />}</button>
+              <button type="button" className="auth-eye" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
             {errors.password && <span className="auth-error">{errors.password}</span>}
             {loginError && <span className="auth-error">{loginError}</span>}
@@ -314,3 +289,4 @@ const Login = () => {
 };
 
 export default Login;
+ 

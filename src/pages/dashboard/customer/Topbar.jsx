@@ -43,7 +43,8 @@ const Topbar = () => {
   const notifRef = useRef();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/logout.php', { method: 'POST', credentials: 'include' });
     localStorage.clear();
     navigate('/login');
   };
@@ -72,13 +73,7 @@ const Topbar = () => {
 
   const handleEditSubmit = async (e) => {
     e.preventDefault();
-    const user_id = localStorage.getItem('customer_user_id');
-    if (!user_id) {
-      toast.error('User ID not found. Please log in again.');
-      return;
-    }
     const payload = {
-      user_id,
       name: editData.fullName,
       email: editData.email,
       phone_number: editData.phone,
@@ -88,7 +83,8 @@ const Topbar = () => {
       const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/request_customer_profile_update.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        credentials: 'include',
       });
       const result = await res.json();
       if (result.status === 'success') {
@@ -111,7 +107,8 @@ const Topbar = () => {
       const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/update_customer_profile.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: pendingProfile.user_id, otp })
+        body: JSON.stringify({ otp }),
+        credentials: 'include',
       });
       const result = await res.json();
       if (result.status === 'success') {
