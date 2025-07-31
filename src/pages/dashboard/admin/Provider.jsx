@@ -141,7 +141,6 @@ const Provider = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(addForm),
-        credentials: 'include' // Ensure cookies/JWT are sent
       });
       const result = await res.json();
       if (result.status === 'success') {
