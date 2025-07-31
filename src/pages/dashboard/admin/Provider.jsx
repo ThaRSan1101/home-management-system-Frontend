@@ -36,7 +36,8 @@ const Provider = () => {
   // Fetch providers from backend
   const fetchProviders = async () => {
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/get_providers.php', { credentials: 'include' });
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/get_providers.php', {
+      credentials: 'include' });
       const result = await res.json();
       if (result.status === 'success') {
         setProviders(result.providers);
@@ -136,6 +137,7 @@ const Provider = () => {
     }
     try {
       const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/add_provider.php', {
+      credentials: 'include',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(addForm),

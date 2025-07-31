@@ -27,8 +27,8 @@ const AdminTopbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Get admin email from localStorage or use default
-  const adminEmail = localStorage.getItem('admin_email') || 'admin@servicehub.com';
+  // Get admin email from backend or props/context (default fallback shown)
+  const adminEmail = 'admin@servicehub.com';
   const adminRole = 'Admin';
 
   return (
@@ -59,7 +59,7 @@ const AdminTopbar = () => {
               <div className="admin-profile-header">Admin Profile</div>
               <div className="admin-profile-row"><span>Role:</span> {adminRole}</div>
               <div className="admin-profile-row"><span>Email:</span> {adminEmail}</div>
-              <button className="admin-profile-logout-btn" style={{marginTop: '1.2rem'}} onClick={async () => { await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/logout.php', { method: 'POST', credentials: 'include' }); localStorage.clear(); window.location.href='/login'; }}> Logout</button>
+              <button className="admin-profile-logout-btn" style={{marginTop: '1.2rem'}} onClick={async () => { await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/logout.php', { method: 'POST', credentials: 'include' }); window.location.href='/login'; }}> Logout</button>
           </div>
         )}
         </div>

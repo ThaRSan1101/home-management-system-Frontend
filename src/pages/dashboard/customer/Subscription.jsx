@@ -210,10 +210,9 @@ export default function Subscription() {
     }
     if (modalStep === 'success') {
       useEffect(() => {
-        const subs = Number(localStorage.getItem('customer_subscriptions') || 0) + 1;
-        const services = Number(localStorage.getItem('customer_services') || 0) + 1;
-        localStorage.setItem('customer_subscriptions', subs);
-        localStorage.setItem('customer_services', services);
+        // Optionally increment subscription/service counts in state here if needed
+        // For persistent counts, fetch and update from backend API
+        // Example: setSubscriptionCount(prev => prev + 1); setServiceCount(prev => prev + 1);
         toast.success('Booking successful!');
       }, [modalStep]);
       return (

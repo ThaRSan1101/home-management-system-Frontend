@@ -14,42 +14,36 @@ const initialRequests = [
   { id: 3, service: 'AC Service', customer: 'Raj Perera', date: '2024-07-12', time: '4:30 PM', location: 'Mount Lavinia' },
 ];
 
-const ServiceProviderDashboard = () => {
+const ServiceProviderDashboard = ({ providerName = '' }) => {
   const [stats, setStats] = useState({
     bookings: 0,
     subscriptions: 0,
     feedback: 0,
     services: 0,
   });
-  const [requests, setRequests] = useState(() => {
-    const stored = localStorage.getItem('provider_new_requests');
-    return stored ? JSON.parse(stored) : initialRequests;
-  });
+  const [requests, setRequests] = useState(initialRequests);
   const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [declineReason, setDeclineReason] = useState('');
   const [declineRequest, setDeclineRequest] = useState(null);
 
   useEffect(() => {
-    setStats({
-      bookings: Number(localStorage.getItem('provider_bookings') || 0),
-      subscriptions: Number(localStorage.getItem('provider_subscriptions') || 0),
-      feedback: Number(localStorage.getItem('provider_feedback') || 0),
-      services: Number(localStorage.getItem('provider_services') || 0),
-    });
+    // Fetch stats from backend API here
+    // Example:
+    // fetch('/api/provider_dashboard.php', { credentials: 'include' })
+    //   .then(res => res.json())
+    //   .then(data => setStats(data.stats));
+    // For now, use default values
+    setStats({ bookings: 0, subscriptions: 0, feedback: 0, services: 0 });
   }, []);
 
-  // Get provider name from localStorage
-  const providerName = localStorage.getItem('provider_fullName') || '';
+
 
   const handleAccept = (req) => {
     // Remove from new requests
     const updatedRequests = requests.filter(r => r.id !== req.id);
     setRequests(updatedRequests);
-    localStorage.setItem('provider_new_requests', JSON.stringify(updatedRequests));
-    // Add to processing in activity page
-    const activities = JSON.parse(localStorage.getItem('provider_service_activities') || '[]');
-    activities.push({ ...req, status: 'processing' });
-    localStorage.setItem('provider_service_activities', JSON.stringify(activities));
+    // Optionally, update backend or context with new requests/activities
+    // setRequests and setActivities only, no localStorage
   };
 
   const handleDecline = (req) => {
@@ -63,19 +57,17 @@ const ServiceProviderDashboard = () => {
     // Remove from new requests
     const updatedRequests = requests.filter(r => r.id !== declineRequest.id);
     setRequests(updatedRequests);
-    localStorage.setItem('provider_new_requests', JSON.stringify(updatedRequests));
-    // Add to cancel in activity page
-    const activities = JSON.parse(localStorage.getItem('provider_service_activities') || '[]');
-    activities.push({ ...declineRequest, status: 'cancel', cancelReason: declineReason });
-    localStorage.setItem('provider_service_activities', JSON.stringify(activities));
+    // Optionally, update backend or context with new requests/activities
+    // setRequests and setActivities only, no localStorage
     setShowDeclineModal(false);
     setDeclineRequest(null);
     setDeclineReason('');
   };
 
-  useEffect(() => {
-    localStorage.setItem('provider_new_requests', JSON.stringify(requests));
-  }, [requests]);
+  // Optionally, sync requests to backend if needed
+  // useEffect(() => {
+  //   // sync requests to backend
+  // }, [requests]);
 
   return (
     <div className="provider-home">

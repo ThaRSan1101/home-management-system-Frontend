@@ -19,7 +19,7 @@ const notifications = [
   { id: 3, message: 'Plumbing service completed.', time: '3 days ago' },
 ];
 
-const Topbar = () => {
+const Topbar = ({ currentUser }) => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
@@ -30,11 +30,11 @@ const Topbar = () => {
     email: '',
   });
   const [customerData, setCustomerData] = useState({
-    fullName: localStorage.getItem('customer_fullName') || '',
-    address: localStorage.getItem('customer_address') || '',
-    phone: localStorage.getItem('customer_phone') || '',
-    email: localStorage.getItem('customer_email') || '',
-    joined: localStorage.getItem('customer_joined') || '',
+    fullName: (currentUser && currentUser.fullName) || '',
+    address: (currentUser && currentUser.address) || '',
+    phone: (currentUser && currentUser.phone) || '',
+    email: (currentUser && currentUser.email) || '',
+    joined: (currentUser && currentUser.joined) || '',
   });
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [pendingProfile, setPendingProfile] = useState(null);
@@ -44,8 +44,9 @@ const Topbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/logout.php', { method: 'POST', credentials: 'include' });
-    localStorage.clear();
+    await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/logout.php', { 
+      method: 'POST',
+      credentials: 'include' });
     navigate('/login');
   };
 
@@ -112,10 +113,6 @@ const Topbar = () => {
       });
       const result = await res.json();
       if (result.status === 'success') {
-        localStorage.setItem('customer_fullName', pendingProfile.name);
-        localStorage.setItem('customer_address', pendingProfile.address);
-        localStorage.setItem('customer_phone', pendingProfile.phone_number);
-        localStorage.setItem('customer_email', pendingProfile.email);
         setCustomerData((prev) => ({
           ...prev,
           fullName: pendingProfile.name,
@@ -134,6 +131,20 @@ const Topbar = () => {
       toast.error(err.message || 'Unknown error occurred.');
     }
   };
+
+  // Update customerData state if currentUser prop changes
+  useEffect(() => {
+    if (currentUser) {
+      setCustomerData(prev => ({
+        ...prev,
+        fullName: currentUser.fullName || '',
+        address: currentUser.address || '',
+        phone: currentUser.phone || '',
+        email: currentUser.email || '',
+        joined: currentUser.joined || '',
+      }));
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     function handleClickOutside(event) {

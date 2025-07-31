@@ -30,7 +30,7 @@ const AdminSidebar = () => {
         {navItems.map((item) => (
           <NavLink
             key={item.path}
-            to={`/admin/dashboard/${userId}/${item.path}`}
+            to={`/admin/dashboard/${item.path}`}
             className={({ isActive }) =>
               'modern-sidebar-link' + (isActive ? ' active' : '')
             }

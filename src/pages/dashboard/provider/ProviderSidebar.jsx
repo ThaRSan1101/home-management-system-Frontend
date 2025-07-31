@@ -14,7 +14,7 @@ const ProviderSidebar = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
   const handleLogout = () => {
-    localStorage.removeItem('userType');
+    // Optionally call backend logout API if needed
     navigate('/login');
   };
 
@@ -27,7 +27,7 @@ const ProviderSidebar = () => {
         {navItems.map((item) => (
             <NavLink
               key={item.path}
-              to={`/provider/dashboard/${userId}/${item.path}`}
+              to={`/provider/dashboard/${item.path}`}
               className={({ isActive }) =>
                 'sidebar-link' + (isActive ? ' active' : '')
               }
