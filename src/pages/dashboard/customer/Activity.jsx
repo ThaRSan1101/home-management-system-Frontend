@@ -24,13 +24,8 @@ const sampleActivities = [
   { id: 12, service: 'Curtain Washing', provider: 'FreshCurtains', charge: 900, date: '2024-06-20', time: '2:00 PM', status: 'complete', cancelReason: '' },
 ];
 
-const FEEDBACK_KEY = 'customer_feedback_data';
-function saveFeedback(feedback) {
-  const prev = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '[]');
-  localStorage.setItem(FEEDBACK_KEY, JSON.stringify([...prev, feedback]));
-}
-function getRatedServiceIds() {
-  const feedbacks = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || '[]');
+// Feedback and rated services are managed in React state only
+function getRatedServiceIdsFromState(feedbacks) {
   return feedbacks.map(fb => fb.service + '_' + fb.date + '_' + fb.provider);
 }
 
@@ -41,13 +36,14 @@ export default function Activity() {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [feedbackData, setFeedbackData] = useState({ rating: 0, comment: '' });
   const [currentBill, setCurrentBill] = useState(null);
-  const [ratedServiceIds, setRatedServiceIds] = useState(getRatedServiceIds());
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [ratedServiceIds, setRatedServiceIds] = useState([]);
   const [cancelModalId, setCancelModalId] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
 
   useEffect(() => {
-    setRatedServiceIds(getRatedServiceIds());
-  }, []);
+    setRatedServiceIds(getRatedServiceIdsFromState(feedbacks));
+  }, [feedbacks]);
 
   const filteredActivities = activities.filter(
     (activity) => activity.status === activeTab
@@ -85,22 +81,13 @@ export default function Activity() {
 
   // Feedback modal submit
   const handleFeedbackSubmit = () => {
-    if (!currentBill) return;
-    const feedback = {
-      id: Date.now(),
-      provider: currentBill.provider,
-      service: currentBill.service,
-      amount: currentBill.charge,
-      date: currentBill.date,
-      rating: feedbackData.rating,
-      comment: feedbackData.comment,
-    };
-    saveFeedback(feedback);
+    if (feedbackData.rating === 0 || !feedbackData.comment.trim()) return;
+    const uniqueId = currentBill.service + '_' + currentBill.date + '_' + currentBill.provider;
+    setFeedbacks(prev => [...prev, { ...currentBill, ...feedbackData }]);
     setShowFeedbackModal(false);
     setFeedbackData({ rating: 0, comment: '' });
     setCurrentBill(null);
-    // Update ratedServiceIds
-    setRatedServiceIds(getRatedServiceIds());
+    setRatedServiceIds(getRatedServiceIdsFromState([...feedbacks, { ...currentBill, ...feedbackData }]));
   };
 
   const renderStars = (rating, setRating) => (

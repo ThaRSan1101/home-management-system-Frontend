@@ -18,15 +18,17 @@ const Dashboard = () => {
   const [upcoming, setUpcoming] = useState([]);
 
   useEffect(() => {
+    // Use static placeholder data for now
     setStats({
-      bookings: Number(localStorage.getItem('customer_bookings') || 0),
-      subscriptions: Number(localStorage.getItem('customer_subscriptions') || 0),
-      feedback: Number(localStorage.getItem('customer_feedback') || 0),
-      services: Number(localStorage.getItem('customer_services') || 0),
+      bookings: 2,
+      subscriptions: 1,
+      feedback: 3,
+      services: 4,
     });
-    // Load bookings from localStorage
-    const allBookings = JSON.parse(localStorage.getItem('customer_service_bookings') || '[]');
-    setUpcoming(allBookings.filter(b => b.status === 'Pending' || b.status === 'Processing'));
+    setUpcoming([
+      { id: 1, service: 'Plumbing', date: '2025-08-05', time: '10:00 AM', status: 'Pending' },
+      { id: 2, service: 'Cleaning', date: '2025-08-07', time: '2:00 PM', status: 'Confirmed' }
+    ]);
   }, []);
 
   return (

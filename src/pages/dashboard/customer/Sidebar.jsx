@@ -30,7 +30,7 @@ const Sidebar = () => {
         {navItems.map((item) => (
           <NavLink
             key={item.path}
-            to={`/customer/dashboard/${userId}/${item.path}`}
+            to={`/customer/dashboard/${item.path}`}
             className={({ isActive }) =>
               'modern-sidebar-link' + (isActive ? ' active' : '')
             }

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import ProviderSidebar from './ProviderSidebar';
 import ProviderTopbar from './ProviderTopbar';
 import ServiceProviderDashboard from './ServiceProviderDashboard';
@@ -7,39 +7,54 @@ import ProviderActivity from './Services';
 import Feedback from './Feedback';
 import Contact from './Contact';
 import './ServiceProviderDashboard.css';
+import axios from 'axios';
 
-const ProviderDashboard = ({ userName: propUserName }) => {
-  const { userId } = useParams();
+const ProviderDashboard = () => {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const providerFullName = localStorage.getItem('provider_fullName');
-    const providerUserId = localStorage.getItem('provider_user_id');
-    // If not logged in as provider, or userId mismatch, or customer/admin data exists, redirect
-    if (
-      !providerFullName ||
-      !providerUserId ||
-      providerUserId !== userId ||
-      localStorage.getItem('customer_fullName') ||
-      localStorage.getItem('admin_fullName')
-    ) {
+    axios.get('http://localhost/project-root/backend/home-management-system-Backend/api/me.php', {
+      withCredentials: true
+    })
+    .then(async res => {
+      if (res.data && res.data.status === 'success' && res.data.user_type === 'provider') {
+        const userId = res.data.user_id;
+        try {
+          const profileRes = await axios.get('http://localhost/project-root/backend/home-management-system-Backend/api/get_provider_profile.php', { withCredentials: true });
+          if (profileRes.data && profileRes.data.data && profileRes.data.data.fullName) {
+            setCurrentUser(profileRes.data.data);
+          } else {
+            setCurrentUser({ fullName: res.data.name || '', email: res.data.email || '' });
+          }
+        } catch (e) {
+          setCurrentUser({ fullName: res.data.name || '', email: res.data.email || '' });
+        }
+        setLoading(false);
+      } else {
+        navigate('/login', { replace: true });
+      }
+    })
+    .catch(() => {
       navigate('/login', { replace: true });
-    }
-  }, [navigate, userId]);
-  const userName = propUserName || '';
+    });
+  }, [navigate]);
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <div className="provider-dashboard-layout">
-      <ProviderSidebar userId={userId} />
+      <ProviderSidebar />
       <main className="provider-dashboard-main">
-        <ProviderTopbar userId={userId} />
-        <div style={{margin: '2rem 0 1rem 2rem', fontSize: '2rem', fontWeight: 700, color: '#007a65', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.7rem'}}>
-          {userName && <span style={{color: '#005f4b'}}>{userName} !</span>}
-        </div>
+        <ProviderTopbar currentUser={currentUser} />
+        
         <Routes>
-          <Route path="dashboard" element={<ServiceProviderDashboard userId={userId} />} />
-          <Route path="activity/services" element={<ProviderActivity userId={userId} />} />
-          <Route path="feedback" element={<Feedback userId={userId} />} />
-          <Route path="contact" element={<Contact userId={userId} />} />
-          <Route path="*" element={<Navigate to={`/provider/dashboard/${userId}/dashboard`} />} />
+          <Route path="dashboard" element={<ServiceProviderDashboard providerName={currentUser?.fullName || currentUser?.name || ''} />} />
+          <Route path="activity/services" element={<ProviderActivity />} />
+          <Route path="feedback" element={<Feedback />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="*" element={<Navigate to="/provider/dashboard/dashboard" replace />} />
         </Routes>
       </main>
     </div>

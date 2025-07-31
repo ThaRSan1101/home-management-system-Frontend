@@ -46,6 +46,7 @@ const ProviderContact = () => {
     }
     try {
       const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/contact_us.php', {
+      credentials: 'include',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -103,20 +103,13 @@ const Service = () => {
   const [form, setForm] = useState({ name: '', address: '', phone: '', date: '', time: '' });
   const [payment, setPayment] = useState({ method: '', card: '', expiry: '', cvv: '' });
   const [errors, setErrors] = useState({});
+  const [bookings, setBookings] = useState([]); // For persistent bookings, fetch from backend API
+  const [bookingsCount, setBookingsCount] = useState(0);
+  const [servicesCount, setServicesCount] = useState(0);
 
   // Helper for today date in yyyy-mm-dd
   const todayStr = new Date().toISOString().split('T')[0];
 
-  // Booking state machine
-  const [bookings, setBookings] = useState(() => {
-    const saved = localStorage.getItem('customer_service_bookings');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  // Save bookings to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('customer_service_bookings', JSON.stringify(bookings));
-  }, [bookings]);
 
   // Add booking on success
   const addBooking = (service, form) => {
@@ -202,11 +195,11 @@ const Service = () => {
   const [lastModalStep, setLastModalStep] = useState(null);
   useEffect(() => {
     if (lastModalStep !== 'success' && modalStep === 'success' && bookingType === 'service') {
-      const bookingsCount = Number(localStorage.getItem('customer_bookings') || 0) + 1;
-      const services = Number(localStorage.getItem('customer_services') || 0) + 1;
-      localStorage.setItem('customer_bookings', bookingsCount);
-      localStorage.setItem('customer_services', services);
+      setBookingsCount(count => count + 1);
+      setServicesCount(count => count + 1);
       addBooking(selectedService, form);
+      toast.success('Booking successful!');
+      // TODO: Persist booking and counts to backend API if needed
     }
     setLastModalStep(modalStep);
   }, [modalStep, lastModalStep, bookingType, selectedService, form]);

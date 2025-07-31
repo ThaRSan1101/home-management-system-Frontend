@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
 import Service from './Service';
@@ -11,50 +11,67 @@ import About from './About';
 import Contact from './Contact';
 import './CustomerDashboard.css';
 import Topbar from './Topbar';
+import axios from 'axios';
 
-const CustomerDashboard = ({ userName: propUserName }) => {
-  const { userId } = useParams();
+const CustomerDashboard = () => {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const customerFullName = localStorage.getItem('customer_fullName');
-    const customerUserId = localStorage.getItem('customer_user_id');
-    // If not logged in as customer, or userId mismatch, or provider/admin data exists, redirect
-    if (
-      !customerFullName ||
-      !customerUserId ||
-      customerUserId !== userId ||
-      localStorage.getItem('provider_fullName') ||
-      localStorage.getItem('admin_fullName')
-    ) {
+    axios.get('http://localhost/project-root/backend/home-management-system-Backend/api/me.php', {
+      withCredentials: true
+    })
+    .then(async res => {
+      if (res.data && res.data.status === 'success' && res.data.user_type === 'customer') {
+        const userId = res.data.user_id;
+        // Fetch full profile
+        try {
+          const profileRes = await axios.get(`http://localhost/project-root/backend/home-management-system-Backend/api/get_customer_profile.php?user_id=${userId}`, { withCredentials: true });
+          if (profileRes.data && profileRes.data.fullName) {
+            setCurrentUser(profileRes.data);
+          } else {
+            // fallback: set at least the name
+            setCurrentUser({ fullName: res.data.name || '', email: res.data.email || '' });
+          }
+        } catch (e) {
+          setCurrentUser({ fullName: res.data.name || '', email: res.data.email || '' });
+        }
+        setLoading(false);
+      } else {
+        navigate('/login', { replace: true });
+      }
+    })
+    .catch(() => {
       navigate('/login', { replace: true });
-    }
-  }, [navigate, userId]);
-  // Try to get full name from localStorage (set this after login/registration)
-  const storedFullName = localStorage.getItem('customer_fullName');
-  const userName = storedFullName || propUserName || '';
+    });
+  }, [navigate]);
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <div className="customer-dashboard-layout">
-      <Sidebar userId={userId} />
+      <Sidebar />
       <main className="customer-dashboard-main">
-        <Topbar userId={userId} />
+        <Topbar currentUser={currentUser} />
         <Routes>
-          <Route path="/home" element={
+          <Route path="home" element={
             <>
               <div className="customer-dashboard-welcome-msg">
                 <span>Welcome back</span>
-                {userName && <span className="customer-dashboard-welcome-username">{userName} !</span>}
+                {currentUser?.fullName && <span className="customer-dashboard-welcome-username">{currentUser.fullName} !</span>}
               </div>
-              <Dashboard userId={userId} />
+              <Dashboard />
             </>
           } />
-          <Route path="/service" element={<Service userId={userId} />} />
-          <Route path="/activity" element={<Activity userId={userId} />} />
-          <Route path="/subscription" element={<Subscription userId={userId} />} />
-          <Route path="/feedback" element={<Feedback userId={userId} />} />
-          <Route path="/how-it-works" element={<HowItWorks userId={userId} />} />
-          <Route path="/about" element={<About userId={userId} />} />
-          <Route path="/contact" element={<Contact userId={userId} />} />
-          <Route path="*" element={<Navigate to={`/customer/dashboard/${userId}/home`} />} />
+          <Route path="service" element={<Service />} />
+          <Route path="activity" element={<Activity />} />
+          <Route path="subscription" element={<Subscription />} />
+          <Route path="feedback" element={<Feedback />} />
+          <Route path="how-it-works" element={<HowItWorks />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="*" element={<Navigate to="/customer/dashboard/home" replace />} />
         </Routes>
       </main>
     </div>

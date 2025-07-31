@@ -4,11 +4,11 @@ import './ProviderTopbar.css';
 import { toast } from 'sonner';
 
 const provider = {
-  fullName: localStorage.getItem('provider_fullName') || '',
-  address: localStorage.getItem('provider_address') || '',
-  phone: localStorage.getItem('provider_phone') || '',
-  email: localStorage.getItem('provider_email') || '',
-  joined: localStorage.getItem('provider_joined') || '',
+  fullName: '',
+  address: '',
+  phone: '',
+  email: '',
+  joined: '',
   avatar: '/src/assets/man.png',
 };
 
@@ -19,45 +19,52 @@ const notifications = [
   { id: 4, type: 'system', message: 'Your subscription was renewed successfully', time: '2 days ago', read: true },
 ];
 
-const ProviderTopbarContent = () => {
+const ProviderTopbarContent = ({ currentUser }) => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [editData, setEditData] = useState({
-    fullName: provider.fullName,
-    address: provider.address,
-    phone: provider.phone,
-    email: provider.email,
+    fullName: (currentUser && currentUser.fullName) || provider.fullName,
+    address: (currentUser && currentUser.address) || provider.address,
+    phone: (currentUser && currentUser.phone) || provider.phone,
+    email: (currentUser && currentUser.email) || provider.email,
   });
   const [profileData, setProfileData] = useState({
-    ...provider,
+    fullName: (currentUser && currentUser.fullName) || provider.fullName,
+    address: (currentUser && currentUser.address) || provider.address,
+    phone: (currentUser && currentUser.phone) || provider.phone,
+    email: (currentUser && currentUser.email) || provider.email,
+    joined: (currentUser && currentUser.joined) || provider.joined,
+    avatar: (currentUser && currentUser.avatar) || provider.avatar,
   });
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const profileRef = useRef();
   const notifRef = useRef();
-  const [online, setOnline] = useState(localStorage.getItem('provider_online') === 'true');
+  const [online, setOnline] = useState(false); // Set default or fetch from backend if needed
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [pendingProfile, setPendingProfile] = useState(null);
   const [otp, setOtp] = useState('');
 
-  // Ensure profile data is loaded from localStorage on mount (fixes missing details after login)
+  // Sync with currentUser prop if it changes
   useEffect(() => {
-    setProfileData({
-      fullName: localStorage.getItem('provider_fullName') || '',
-      address: localStorage.getItem('provider_address') || '',
-      phone: localStorage.getItem('provider_phone') || '',
-      email: localStorage.getItem('provider_email') || '',
-      joined: localStorage.getItem('provider_joined') || '',
-      avatar: '/src/assets/man.png',
-    });
-    setEditData({
-      fullName: localStorage.getItem('provider_fullName') || '',
-      address: localStorage.getItem('provider_address') || '',
-      phone: localStorage.getItem('provider_phone') || '',
-      email: localStorage.getItem('provider_email') || '',
-    });
-  }, []);
+    if (currentUser !== undefined && currentUser !== null) {
+      setProfileData({
+        fullName: currentUser.fullName || '',
+        address: currentUser.address || '',
+        phone: currentUser.phone || '',
+        email: currentUser.email || '',
+        joined: currentUser.joined || '',
+        avatar: currentUser.avatar || provider.avatar,
+      });
+      setEditData({
+        fullName: currentUser.fullName || '',
+        address: currentUser.address || '',
+        phone: currentUser.phone || '',
+        email: currentUser.email || '',
+      });
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -123,10 +130,6 @@ const ProviderTopbarContent = () => {
       });
       const result = await res.json();
       if (result.status === 'success') {
-        localStorage.setItem('provider_fullName', pendingProfile.name);
-        localStorage.setItem('provider_address', pendingProfile.address);
-        localStorage.setItem('provider_phone', pendingProfile.phone_number);
-        localStorage.setItem('provider_email', pendingProfile.email);
         setProfileData((prev) => ({
           ...prev,
           fullName: pendingProfile.name,
@@ -149,7 +152,7 @@ const ProviderTopbarContent = () => {
   const handleToggleOnline = () => {
     const newStatus = !online;
     setOnline(newStatus);
-    localStorage.setItem('provider_online', newStatus);
+    
   };
 
   return (
@@ -178,12 +181,17 @@ const ProviderTopbarContent = () => {
           {profileOpen && (
             <div className="profile-card-dropdown">
               <div className="profile-card-header">Provider Profile</div>
-              <div className="profile-card-row"><span>Full Name:</span> {profileData.fullName}</div>
-              <div className="profile-card-row"><span>Address:</span> {profileData.address}</div>
-              <div className="profile-card-row"><span>Phone:</span> {profileData.phone}</div>
-              <div className="profile-card-row"><span>Email:</span> {profileData.email}</div>
-          
-              <div className="profile-card-row"><span>Joined:</span> {profileData.joined}</div>
+              {(!profileData.fullName && !profileData.email) ? (
+                <div className="profile-card-row">Loading profile...</div>
+              ) : (
+                <>
+                  <div className="profile-card-row"><span>Full Name:</span> {profileData.fullName}</div>
+                  <div className="profile-card-row"><span>Address:</span> {profileData.address}</div>
+                  <div className="profile-card-row"><span>Phone:</span> {profileData.phone}</div>
+                  <div className="profile-card-row"><span>Email:</span> {profileData.email}</div>
+                  <div className="profile-card-row"><span>Joined:</span> {profileData.joined}</div>
+                </>
+              )}
               <div className="profile-card-row" style={{marginTop: '0.7rem', marginBottom: '0.7rem'}}>
                 <span>Status:</span>
                 <div
@@ -240,7 +248,6 @@ const ProviderTopbarContent = () => {
               </button>
               <button className="provider-sidebar-logout-btn-bottom" style={{marginTop: '1.2rem'}} onClick={async () => {
                 await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/logout.php', { method: 'POST', credentials: 'include' });
-                localStorage.clear();
                 window.location.href='/login';
               }}>
                 Logout

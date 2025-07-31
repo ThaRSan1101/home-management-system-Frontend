@@ -22,9 +22,29 @@ const Login = () => {
   const [forgotLoading, setForgotLoading] = useState(false);
   const navigate = useNavigate();
 
+  // On mount, check if user is already authenticated and redirect away from login
   useEffect(() => {
     setFormData({ email: '', password: '' });
-  }, []);
+    axios.get('http://localhost/project-root/backend/home-management-system-Backend/api/me.php', { withCredentials: true })
+      .then(res => {
+        if (res.data && res.data.status === 'success') {
+          // Redirect based on user type
+          if (res.data.user_type === 'admin') navigate('/admin/dashboard', { replace: true });
+          else if (res.data.user_type === 'customer') navigate('/customer/dashboard', { replace: true });
+          else if (res.data.user_type === 'provider') navigate('/provider/dashboard', { replace: true });
+        }
+      })
+      .catch(err => {
+        if (err.response && err.response.status === 401) {
+          // Not authenticated, expected after logout. Do not log error.
+          // Return a resolved promise to suppress 'Uncaught (in promise)'
+          return Promise.resolve();
+        } else if (err) {
+          // Only log unexpected errors
+          console.error('Session check error:', err.response || err.message || err);
+        }
+      });
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,32 +85,15 @@ const Login = () => {
 
       if (result.status === 'success') {
         // Clear all user data
-        ['customer', 'provider', 'admin'].forEach((type) => {
-          localStorage.removeItem(`${type}_user_id`);
-          localStorage.removeItem(`${type}_fullName`);
-          localStorage.removeItem(`${type}_address`);
-          localStorage.removeItem(`${type}_phone`);
-          localStorage.removeItem(`${type}_email`);
-          localStorage.removeItem(`${type}_joined`);
-          localStorage.removeItem(`${type}_nic`);
-        });
-
-        // Store based on user type
+        
         const { user_type, user_id, user_details } = result;
-        if (user_details) {
-          localStorage.setItem(`${user_type}_user_id`, user_id);
-          localStorage.setItem(`${user_type}_fullName`, user_details.fullName || '');
-          localStorage.setItem(`${user_type}_address`, user_details.address || '');
-          localStorage.setItem(`${user_type}_phone`, user_details.phone || '');
-          localStorage.setItem(`${user_type}_email`, user_details.email || '');
-          localStorage.setItem(`${user_type}_joined`, user_details.joined || '');
-          localStorage.setItem(`${user_type}_nic`, user_details.nic || '');
-        }
+        // No longer store user_id in localStorage for auth
+        
 
         // Navigate accordingly
-        if (user_type === 'admin') navigate(`/admin/dashboard/${user_id}`);
-        else if (user_type === 'provider') navigate(`/provider/dashboard/${user_id}`);
-        else navigate(`/customer/dashboard/${user_id}`);
+        if (user_type === 'admin') navigate(`/admin/dashboard`, { replace: true });
+        else if (user_type === 'provider') navigate(`/provider/dashboard`, { replace: true });
+        else navigate(`/customer/dashboard/home`, { replace: true });
       } else {
         toast.error(result.message || 'Invalid email or password.');
       }

@@ -66,17 +66,7 @@ const initialSubscriptionActivities = [
 export default function ProviderActivity() {
   const [topTab, setTopTab] = useState('service');
   const [activeTab, setActiveTab] = useState('processing');
-  const [serviceActivities, setServiceActivities] = useState(() => {
-    // Merge new requests from localStorage if any
-    const stored = localStorage.getItem('provider_service_activities');
-    let activities = stored ? JSON.parse(stored) : initialServiceActivities;
-    const newRequests = JSON.parse(localStorage.getItem('provider_new_requests') || '[]');
-    // Only add requests not already present
-    const existingIds = new Set(activities.map(a => a.id));
-    const merged = [...activities, ...newRequests.filter(r => !existingIds.has(r.id)).map(r => ({ ...r, status: 'processing' }))];
-    localStorage.setItem('provider_service_activities', JSON.stringify(merged));
-    return merged;
-  });
+  const [serviceActivities, setServiceActivities] = useState(initialServiceActivities);
   const [subscriptionActivities, setSubscriptionActivities] = useState(initialSubscriptionActivities);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
