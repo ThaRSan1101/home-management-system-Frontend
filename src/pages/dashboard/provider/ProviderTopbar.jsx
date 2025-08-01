@@ -41,7 +41,19 @@ const ProviderTopbarContent = ({ currentUser }) => {
   const [errorMsg, setErrorMsg] = useState('');
   const profileRef = useRef();
   const notifRef = useRef();
-  const [online, setOnline] = useState(false); // Set default or fetch from backend if needed
+  const [online, setOnline] = useState(false); // Controlled by backend status
+
+  // Fetch provider status from backend on mount or when currentUser changes
+  useEffect(() => {
+    if (!currentUser?.user_id) return;
+    fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/provider_status.php?provider_id=${currentUser.user_id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          setOnline(data.provider_status === "active");
+        }
+      });
+  }, [currentUser]);
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [pendingProfile, setPendingProfile] = useState(null);
   const [otp, setOtp] = useState('');
@@ -149,11 +161,35 @@ const ProviderTopbarContent = ({ currentUser }) => {
     }
   };
 
-  const handleToggleOnline = () => {
-    const newStatus = !online;
-    setOnline(newStatus);
-    
+  const handleToggleOnline = async () => {
+    if (!currentUser?.user_id) {
+      toast.error("User ID not loaded, please reload the page.");
+      return;
+    }
+    console.log("currentUser", currentUser); // Debug log
+    const newStatus = !online ? "active" : "inactive";
+    setOnline(!online); // Optimistic UI update
+    try {
+      const res = await fetch("http://localhost/project-root/backend/home-management-system-Backend/api/provider_status.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          provider_id: currentUser.user_id,
+          new_status: newStatus,
+        }),
+      });
+      const data = await res.json();
+      if (data.status !== "success") {
+        setOnline(online); // revert if error
+        toast.error(data.message || "Failed to update status");
+      }
+    } catch (e) {
+      setOnline(online); // revert if error
+      toast.error("Network error, please try again.");
+    }
   };
+
+
 
   return (
     <div className="provider-topbar">
@@ -224,6 +260,14 @@ const ProviderTopbarContent = ({ currentUser }) => {
                     }}
                   >
                     {/* No text, just the switch */}
+<input
+  type="checkbox"
+  checked={online}
+  onChange={handleToggleOnline}
+  disabled={!currentUser?.user_id}
+  style={{ display: 'none' }}
+/>
+
                   </div>
                   <div
                     className="provider-status-switch-circle"
