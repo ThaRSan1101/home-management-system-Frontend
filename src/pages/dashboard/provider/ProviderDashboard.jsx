@@ -24,9 +24,16 @@ const ProviderDashboard = () => {
         try {
           const profileRes = await axios.get('http://localhost/project-root/backend/home-management-system-Backend/api/get_provider_profile.php', { withCredentials: true });
           if (profileRes.data && profileRes.data.data && profileRes.data.data.fullName) {
-            setCurrentUser(profileRes.data.data);
+            setCurrentUser({
+              ...profileRes.data.data,
+              user_id: userId // Always include user_id
+            });
           } else {
-            setCurrentUser({ fullName: res.data.name || '', email: res.data.email || '' });
+            setCurrentUser({
+              fullName: res.data.name || '',
+              email: res.data.email || '',
+              user_id: userId // Always include user_id
+            });
           }
         } catch (e) {
           setCurrentUser({ fullName: res.data.name || '', email: res.data.email || '' });
