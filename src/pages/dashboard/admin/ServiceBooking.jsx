@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ServiceBooking.css';
 import { toast } from 'sonner';
 
@@ -72,6 +72,13 @@ const sampleBookings = [
   },
 ];
 
+const DISTRICTS = [
+  'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya', 'Galle', 'Matara', 'Hambantota',
+  'Jaffna', 'Kilinochchi', 'Mannar', 'Vavuniya', 'Mullaitivu', 'Batticaloa', 'Ampara', 'Trincomalee',
+  'Kurunegala', 'Puttalam', 'Anuradhapura', 'Polonnaruwa', 'Badulla', 'Monaragala', 'Ratnapura', 'Kegalle'
+];
+const STATUSES = ['Active', 'Inactive'];
+
 const ServiceBooking = () => {
   const [activeTab, setActiveTab] = useState('pending');
   const [viewModal, setViewModal] = useState(null);
@@ -81,12 +88,63 @@ const ServiceBooking = () => {
   const [moveModal, setMoveModal] = useState(null);
   const [moveProvider, setMoveProvider] = useState('');
 
+  // Provider table/filter state for Move modal
+  const [providerList, setProviderList] = useState([]);
+  const [filteredProviders, setFilteredProviders] = useState([]);
+  const [filterDistrict, setFilterDistrict] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+  const [filterDescription, setFilterDescription] = useState('');
+  const [providerLoading, setProviderLoading] = useState(false);
+
+  // Fetch providers on modal open
+  useEffect(() => {
+    if (moveModal) {
+      setProviderLoading(true);
+      fetch('http://localhost/project-root/backend/home-management-system-Backend/api/get_providers.php', { credentials: 'include' })
+        .then(res => res.json())
+        .then(result => {
+          if (result.status === 'success') {
+            setProviderList(result.providers);
+          } else {
+            toast.error(result.message || 'Failed to fetch providers.');
+          }
+          setProviderLoading(false);
+        })
+        .catch(() => { toast.error('Error fetching providers.'); setProviderLoading(false); });
+    }
+  }, [moveModal]);
+
+  // Filtering logic for provider table
+  useEffect(() => {
+    let filtered = providerList;
+    if (filterDistrict) {
+      filtered = filtered.filter((p) => p.address === filterDistrict);
+    }
+    if (filterStatus) {
+      filtered = filtered.filter((p) => {
+        if (filterStatus === 'Active') return p.status === 'active';
+        if (filterStatus === 'Inactive') return p.status === 'inactive';
+        return true;
+      });
+    }
+    if (filterDescription) {
+      filtered = filtered.filter((p) => (p.description || '').toLowerCase().includes(filterDescription.toLowerCase()));
+    }
+    setFilteredProviders(filtered);
+  }, [providerList, filterDistrict, filterStatus, filterDescription]);
+
+  const handleResetProviderFilters = () => {
+    setFilterDistrict('');
+    setFilterStatus('');
+    setFilterDescription('');
+  };
+
   const filtered = bookings.filter(b => {
-  if (activeTab === 'pending') {
-    return b.status === 'pending' || b.status === 'waiting';
-  }
-  return b.status === activeTab;
-});
+    if (activeTab === 'pending') {
+      return b.status === 'pending' || b.status === 'waiting';
+    }
+    return b.status === activeTab;
+  });
 
   const handleEdit = () => {
     setEditForm(viewModal);
@@ -171,10 +229,74 @@ const ServiceBooking = () => {
       </div>
       {moveModal && (
         <div className="customer-modal-overlay">
-          <div className="customer-modal" style={{minWidth:'350px',maxWidth:'400px'}}>
+          <div className="customer-modal" style={{minWidth:'350px',maxWidth:'1000px'}}>
             <div className="customer-modal-title">Move to the Provider</div>
             <button className="customer-modal-close" onClick={() => setMoveModal(null)} title="Close">&times;</button>
-            <form className="customer-modal-form-grid" style={{marginTop:'1.2rem'}} onSubmit={e => {
+            {/* Provider Table & Filters */}
+            <div className="service-booking-move-modal-content">
+              {/* Filters */}
+              <div className="service-booking-move-modal-filters">
+                <div className="service-booking-move-modal-filter-group">
+                  <label className="service-booking-move-modal-label">District
+                    <select className="service-booking-move-modal-select" value={filterDistrict} onChange={e => setFilterDistrict(e.target.value)}>
+                      <option value="">All Districts</option>
+                      {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+                    </select>
+                  </label>
+                </div>
+                <div className="service-booking-move-modal-filter-group" style={{minWidth:'120px'}}>
+                  <label className="service-booking-move-modal-label">Status
+                    <select className="service-booking-move-modal-select" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+                      <option value="">All</option>
+                      {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  </label>
+                </div>
+                <div className="service-booking-move-modal-filter-group" style={{minWidth:'160px'}}>
+                  <label className="service-booking-move-modal-label">Description
+                    <input type="text" className="service-booking-move-modal-input" placeholder="Search description..." value={filterDescription} onChange={e => setFilterDescription(e.target.value)} />
+                  </label>
+                </div>
+                <button type="button" className="service-booking-move-modal-reset-btn" onClick={handleResetProviderFilters}>Reset</button>
+              </div>
+              {/* Provider Table */}
+              <div className="service-booking-move-modal-provider-table-container">
+                <table className="service-booking-move-modal-provider-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th>District</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {providerLoading ? (
+                      <tr><td colSpan={6} style={{textAlign:'center', color:'#888', padding:'1.2rem'}}>Loading...</td></tr>
+                    ) : filteredProviders.length === 0 ? (
+                      <tr><td colSpan={6} style={{textAlign:'center', color:'#888', padding:'1.2rem'}}>No providers found.</td></tr>
+                    ) : (
+                      filteredProviders.map(p => (
+                        <tr key={p.provider_id}>
+                          <td>{p.provider_id}</td>
+                          <td>{p.name}</td>
+                          <td>{p.description || '-'}</td>
+                          <td>{p.status === 'active' ? 'Active' : 'Inactive'}</td>
+                          <td>{p.address}</td>
+                          <td>
+                            <button type="button" className="service-booking-move-modal-select-btn" onClick={() => setMoveProvider(p.provider_id)}>Select</button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            {/* Provider ID input */}
+            <form className="customer-modal-form-grid" style={{marginTop:'0.5rem'}} onSubmit={e => {
               e.preventDefault();
               toast.success('Waiting for Provider Accept');
               setBookings(prev => prev.map(b => b.id === moveModal.id ? { ...b, status: 'waiting', provider: moveProvider } : b));
@@ -183,7 +305,7 @@ const ServiceBooking = () => {
             }}>
               <div className="customer-modal-form-group" style={{gridColumn:'1/-1'}}>
                 <label>Enter Provider
-                  <input type="text" value={moveProvider} onChange={e => setMoveProvider(e.target.value)} placeholder="Provider Name or ID" required />
+                  <input type="text" value={moveProvider} onChange={e => setMoveProvider(e.target.value)} placeholder="Provider ID or Name" required />
                 </label>
               </div>
               <div className="customer-modal-actions">
