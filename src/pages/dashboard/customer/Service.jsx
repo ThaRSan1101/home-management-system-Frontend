@@ -19,6 +19,7 @@ const services = [
     category: 'Pipes, Leaks & Water Flow',
     title: 'Plumbing Services',
     description: 'Fixing leaks, clogs, and water flow issues. Bathroom and kitchen plumbing made simple. Quick response for urgent plumbing problems.',
+    price: 2500,
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ const services = [
     category: 'Woodwork & Furniture',
     title: 'Carpentry Services',
     description: 'Expert repairs for doors, windows, and furniture. Custom woodwork made easy and affordable. Fast fixes and installations for all wood-related needs.',
+    price: 1800,
   },
   {
     id: 3,
@@ -33,6 +35,7 @@ const services = [
     category: 'Wiring, Lights & Power',
     title: 'Electrical Services',
     description: 'Safe installation of lights, fans, and switches. Quick repairs for power issues and wiring. Certified electricians for hassle-free service.',
+    price: 3200,
   },
   {
     id: 4,
@@ -40,6 +43,7 @@ const services = [
     category: 'Walls & Surfaces',
     title: 'Painting Services',
     description: 'Clean, smooth wall painting with lasting results. Choose your colors we handle the rest. Interior or exterior, big or small we paint it all.',
+    price: 5000,
   },
   {
     id: 5,
@@ -47,6 +51,7 @@ const services = [
     category: 'Home Appliances',
     title: 'Electronic Services',
     description: 'Get your home appliances fixed fast. We service TVs, fridges, ovens, washers & more. Quality repairs with genuine spare parts.',
+    price: 3500,
   },
   {
     id: 6,
@@ -54,6 +59,7 @@ const services = [
     category: 'Home & Kitchen Cleaning',
     title: 'Cleaning Service',
     description: 'Deep cleaning for every space in your home. Kitchen, bathroom, and full-house cleaning. Trained staff using safe, effective products.',
+    price: 2100,
   },
 ];
 
@@ -96,7 +102,7 @@ const subscriptionPlans = [
   },
 ];
 
-const Service = () => {
+const Service = ({ currentUser }) => {
   const [modalStep, setModalStep] = useState(null); // null | 'form' | 'payment' | 'confirm' | 'success'
   const [bookingType, setBookingType] = useState(null); // 'service' | 'subscription'
   const [selectedService, setSelectedService] = useState(null);
@@ -110,20 +116,35 @@ const Service = () => {
   // Helper for today date in yyyy-mm-dd
   const todayStr = new Date().toISOString().split('T')[0];
 
-
-  // Add booking on success
-  const addBooking = (service, form) => {
-    setBookings(prev => [
-      ...prev,
-      {
-        id: Date.now(),
-        service: service.title,
-        date: form.date,
-        time: form.time,
-        status: 'Pending',
-        details: { ...form },
-      },
-    ]);
+  // Add booking on success (integrated with backend)
+  const addBooking = async (service, form) => {
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          user_id: currentUser?.user_id, // must be passed via props/context
+          customer_name: form.name,
+          service_category_id: service.id,
+          service_name: service.title,
+          service_date: form.date,
+          service_time: form.time,
+          service_address: form.address,
+          phoneNo: form.phone,
+          amount: service.price || 0 // or get from UI if available
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        setBookings(prev => [ ...prev, data.booking ]); // or refetch all bookings
+        toast.success('Booking successful!');
+      } else {
+        toast.error(data.message || 'Booking failed.');
+      }
+    } catch (err) {
+      toast.error('Network error. Please try again.');
+    }
   };
 
   // Booking actions
@@ -198,7 +219,7 @@ const Service = () => {
       setBookingsCount(count => count + 1);
       setServicesCount(count => count + 1);
       addBooking(selectedService, form);
-      toast.success('Booking successful!');
+      // toast.success removed here to avoid double alert
       // TODO: Persist booking and counts to backend API if needed
     }
     setLastModalStep(modalStep);
@@ -226,7 +247,12 @@ const Service = () => {
             {errors.phone && <div className="modal-err">{errors.phone}</div>}
             <input type="date" min={todayStr} value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
             {errors.date && <div className="modal-err">{errors.date}</div>}
-            <input placeholder="Available time (e.g. 2:00 PM)" value={form.time} onChange={e => setForm(f => ({ ...f, time: e.target.value }))} />
+            <input placeholder="Available time (e.g. 14:30)" type="time" value={form.time.length === 8 ? form.time.substring(0,5) : form.time} onChange={e => {
+            let val = e.target.value;
+            // If user enters HH:mm, convert to HH:mm:00
+            if (/^\d{2}:\d{2}$/.test(val)) val = val + ':00';
+            setForm(f => ({ ...f, time: val }));
+            }} />
             {errors.time && <div className="modal-err">{errors.time}</div>}
             <div className="modal-btn-row">
               <button type="button" onClick={closeModal} className="modal-cancel-btn">Cancel</button>
@@ -245,7 +271,7 @@ const Service = () => {
             <div><b>Address:</b> {form.address}</div>
             <div><b>Phone:</b> {form.phone}</div>
             <div><b>Date:</b> {form.date}</div>
-            <div><b>Time:</b> {form.time}</div>
+            <div><b>Time:</b> {form.time ? (form.time.length === 5 ? form.time + ':00' : form.time) : ''}</div>
           </div>
           <div className="modal-payment-methods">
             <label>
@@ -287,21 +313,19 @@ const Service = () => {
           <h2>Confirm your booking</h2>
           <div className="modal-btn-row">
             <button type="button" onClick={()=>setModalStep('payment')} className="modal-cancel-btn">Cancel</button>
-            <button type="button" className="modal-next-btn" onClick={()=>setModalStep('success')}>Confirm</button>
+            <button type="button" className="modal-next-btn" onClick={async ()=>{
+              // Prevent duplicate booking on rapid clicks
+              if (window.__bookingInProgress) return;
+              window.__bookingInProgress = true;
+              await addBooking(selectedService, form);
+              window.__bookingInProgress = false;
+              closeModal();
+            }}>Confirm</button>
           </div>
         </div>
       );
     }
-    if (modalStep === 'success') {
-      return (
-        <div className="booking-modal-success">
-          <h2>Your booking is successful</h2>
-          <div className="modal-btn-row">
-            <button type="button" className="modal-next-btn" onClick={closeModal}>OK</button>
-          </div>
-        </div>
-      );
-    }
+    
     return null;
   };
 

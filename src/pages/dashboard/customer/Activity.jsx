@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import './Activity.css';
 import { FaClock, FaSpinner, FaCheckCircle, FaTimesCircle, FaStar } from 'react-icons/fa';
 
@@ -9,29 +10,17 @@ const STATUS_TABS = [
   { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
 ];
 
-const sampleActivities = [
-  { id: 1, service: 'House Cleaning', provider: 'CleanPro Services', charge: 2500, date: '2024-06-01', time: '10:00 AM', status: 'pending', cancelReason: '' },
-  { id: 2, service: 'Plumbing', provider: 'PlumbRight Co.', charge: 1800, date: '2024-05-28', time: '2:00 PM', status: 'processing', cancelReason: '' },
-  { id: 3, service: 'Electrical Repair', provider: 'ElectroFix Solutions', charge: 3200, date: '2024-05-20', time: '11:30 AM', status: 'complete', cancelReason: '' },
-  { id: 4, service: 'Carpet Cleaning', provider: 'FreshCarpet Pro', charge: 2100, date: '2024-05-15', time: '9:00 AM', status: 'cancel', cancelReason: 'Customer changed plans' },
-  { id: 5, service: 'Garden Maintenance', provider: 'GreenThumb Services', charge: 1500, date: '2024-06-02', time: '8:00 AM', status: 'pending', cancelReason: '' },
-  { id: 6, service: 'AC Service', provider: 'CoolAir Experts', charge: 3500, date: '2024-05-30', time: '4:00 PM', status: 'processing', cancelReason: '' },
-  { id: 7, service: 'Window Cleaning', provider: 'ShineBright', charge: 1200, date: '2024-06-10', time: '3:00 PM', status: 'complete', cancelReason: '' },
-  { id: 8, service: 'Pest Control', provider: 'BugFree Co.', charge: 2800, date: '2024-06-12', time: '11:00 AM', status: 'complete', cancelReason: '' },
-  { id: 9, service: 'Sofa Shampoo', provider: 'Upholstery Pros', charge: 2000, date: '2024-06-14', time: '1:30 PM', status: 'complete', cancelReason: '' },
-  { id: 10, service: 'Deep Cleaning', provider: 'CleanPro Services', charge: 4000, date: '2024-06-16', time: '9:00 AM', status: 'complete', cancelReason: '' },
-  { id: 11, service: 'Painting', provider: 'ColorSplash', charge: 5000, date: '2024-06-18', time: '10:00 AM', status: 'complete', cancelReason: '' },
-  { id: 12, service: 'Curtain Washing', provider: 'FreshCurtains', charge: 900, date: '2024-06-20', time: '2:00 PM', status: 'complete', cancelReason: '' },
-];
+
 
 // Feedback and rated services are managed in React state only
 function getRatedServiceIdsFromState(feedbacks) {
   return feedbacks.map(fb => fb.service + '_' + fb.date + '_' + fb.provider);
 }
 
-export default function Activity() {
+export default function Activity({ currentUser }) {
+  // State hooks
   const [activeTab, setActiveTab] = useState('pending');
-  const [activities, setActivities] = useState(sampleActivities);
+  const [activities, setActivities] = useState([]);
   const [viewDetailsId, setViewDetailsId] = useState(null);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [feedbackData, setFeedbackData] = useState({ rating: 0, comment: '' });
@@ -41,6 +30,43 @@ export default function Activity() {
   const [cancelModalId, setCancelModalId] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
 
+  // Fetch bookings from backend on mount or when dependencies change
+  useEffect(() => {
+    async function fetchBookings() {
+      if (!currentUser?.user_id) return;
+      const apiUrl = `http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?user_id=${currentUser.user_id}&status=${activeTab}`;
+      try {
+        const res = await fetch(apiUrl, { credentials: 'include' });
+        const data = await res.json();
+        if (data.status === 'success') {
+          // Service categoryId to title mapping (copy from Service.jsx)
+      const SERVICE_CATEGORY_MAP = {
+        1: 'Plumbing Services',
+        2: 'Carpentry Services',
+        3: 'Electrical Services',
+        4: 'Painting Services',
+        5: 'Electronic Services',
+        6: 'Cleaning Service',
+      };
+      const mapped = (data.data || []).map(b => ({
+        id: b.service_book_id,
+        serviceName: SERVICE_CATEGORY_MAP[b.service_category_id] || `Service #${b.service_category_id}`,
+        date: b.service_date,
+        time: b.service_time,
+        status: b.serbooking_status ? b.serbooking_status.toLowerCase() : '',
+      }));
+          setActivities(mapped);
+        } else {
+          toast.error(data.message || 'Failed to fetch bookings.');
+        }
+      } catch (err) {
+        toast.error('Network error.');
+      }
+    }
+    fetchBookings();
+  }, [currentUser, activeTab]);
+
+  // Update ratedServiceIds when feedbacks change
   useEffect(() => {
     setRatedServiceIds(getRatedServiceIdsFromState(feedbacks));
   }, [feedbacks]);
@@ -53,15 +79,30 @@ export default function Activity() {
     setCancelModalId(id);
     setCancelReason('');
   };
-  const handleCancelSubmit = () => {
-    setActivities((prev) =>
-      prev.map((a) =>
-        a.id === cancelModalId ? { ...a, status: 'cancel', cancelReason } : a
-      )
-    );
-    setCancelModalId(null);
-    setCancelReason('');
-  };
+  const handleCancelSubmit = async () => {
+  if (!cancelModalId || !cancelReason.trim()) return;
+  try {
+    const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ service_book_id: cancelModalId, cancel_reason: cancelReason }),
+      credentials: 'include',
+    });
+    const data = await res.json();
+    if (data.status === 'success') {
+      toast.success('Booking cancelled successfully.');
+      setCancelModalId(null);
+      setCancelReason('');
+      // Refetch bookings to update UI
+      if (typeof fetchBookings === 'function') fetchBookings();
+      else window.location.reload();
+    } else {
+      toast.error(data.message || 'Failed to cancel booking.');
+    }
+  } catch (e) {
+    toast.error('Network error.');
+  }
+};
 
   // Bill modal submit
   const handleBillSubmit = () => {
@@ -130,55 +171,30 @@ export default function Activity() {
               <table className="customer-activity-table">
                 <thead>
                   <tr>
-                    <th>Service</th>
+                    <th>Service Name</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Status</th>
                     {activeTab === 'pending' && <th>Action</th>}
-                    {activeTab === 'complete' && <th>Action</th>}
-                    {activeTab === 'cancel' && <th>Cancel Reason</th>}
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredActivities.map((activity) => {
-                    const uniqueId = activity.service + '_' + activity.date + '_' + activity.provider;
-                    return (
-                      <tr key={activity.id}>
-                        <td>{activity.service}</td>
-                        <td>{activity.date}</td>
-                        <td>{activity.time}</td>
+                  {filteredActivities.map((activity) => (
+                    <tr key={activity.id}>
+                      <td>{activity.serviceName}</td>
+                      <td>{activity.date}</td>
+                      <td>{activity.time}</td>
+                      {activeTab === 'pending' && (
                         <td>
-                          <span className={`customer-activity-status-badge ${activity.status}`}>
-                            {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
-                          </span>
+                          <button
+                            className="customer-activity-cancel-btn"
+                            onClick={() => handleCancel(activity.id)}
+                          >
+                            Cancel
+                          </button>
                         </td>
-                        {activeTab === 'pending' && (
-                          <td>
-                            <button
-                              className="customer-activity-cancel-btn"
-                              onClick={() => handleCancel(activity.id)}
-                            >
-                              Cancel
-                            </button>
-                          </td>
-                        )}
-                        {activeTab === 'complete' && (
-                          <td>
-                            <button
-                              className={`customer-activity-view-details-btn${ratedServiceIds.includes(uniqueId) ? ' rated' : ''}`}
-                              onClick={() => setViewDetailsId(activity.id)}
-                              title={ratedServiceIds.includes(uniqueId) ? 'You have already rated this service' : 'View Details'}
-                            >
-                              View Details
-                            </button>
-                          </td>
-                        )}
-                        {activeTab === 'cancel' && (
-                          <td>{activity.cancelReason || '-'}</td>
-                        )}
-                      </tr>
-                    );
-                  })}
+                      )}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -193,23 +209,18 @@ export default function Activity() {
               {(() => {
                 const activity = activities.find(a => a.id === viewDetailsId);
                 if (!activity) return null;
-                const uniqueId = activity.service + '_' + activity.date + '_' + activity.provider;
                 return (
                   <div className="bill-details">
-                    <div><b>Service Name:</b> {activity.service}</div>
-                    <div><b>Provider Name:</b> {activity.provider}</div>
+                    <div><b>Category ID:</b> {activity.categoryId}</div>
+                    <div><b>Customer:</b> {activity.customer}</div>
+                    <div><b>Address:</b> {activity.address}</div>
                     <div><b>Amount:</b> LKR {activity.charge}</div>
                     <div><b>Date & Time:</b> {activity.date} {activity.time}</div>
                     <div className="customer-activity-modal-actions">
-                      {!ratedServiceIds.includes(uniqueId) && (
-                        <button className="customer-activity-modal-submit-btn playful-btn" onClick={handleBillSubmit}>
-                          Submit
-                        </button>
-                      )}
+                      <button className="customer-activity-modal-submit-btn playful-btn" onClick={handleBillSubmit}>
+                        Submit
+                      </button>
                     </div>
-                    {ratedServiceIds.includes(uniqueId) && (
-                      <div className="already-rated-msg">You have already rated this service.</div>
-                    )}
                   </div>
                 );
               })()}
