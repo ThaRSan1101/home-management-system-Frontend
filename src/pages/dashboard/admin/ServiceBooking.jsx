@@ -83,12 +83,47 @@ const ServiceBooking = () => {
   const [activeTab, setActiveTab] = useState('pending');
   const [viewModal, setViewModal] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [bookings, setBookings] = useState(sampleBookings);
+  const [bookings, setBookings] = useState([]);
   const [editForm, setEditForm] = useState({});
   const [moveModal, setMoveModal] = useState(null);
   const [moveProvider, setMoveProvider] = useState('');
 
-  // Provider table/filter state for Move modal
+  // Fetch bookings from backend on mount
+  useEffect(() => {
+    async function fetchBookings() {
+      try {
+        const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+          credentials: 'include',
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          const mapped = (data.data || []).map(b => ({
+            id: b.service_book_id,
+            service: b.service_name || 'Service',
+            customer: b.customer_name || '',
+            provider: b.provider_name || '',
+            bookingDate: b.serbooking_date,
+            serviceDate: b.service_date,
+            time: b.service_time,
+            address: b.service_address,
+            phone: b.phoneNo,
+            amount: b.amount,
+            status: b.serbooking_status,
+            reason: b.cancel_reason || ''
+          }));
+          setBookings(mapped);
+        
+        } else {
+          toast.error(data.message || 'Failed to fetch bookings.');
+        }
+      } catch (err) {
+        toast.error('Network error.');
+      }
+    }
+    fetchBookings();
+  }, []);
+
+// Provider table/filter state for Move modal
   const [providerList, setProviderList] = useState([]);
   const [filteredProviders, setFilteredProviders] = useState([]);
   const [filterDistrict, setFilterDistrict] = useState('');
@@ -397,7 +432,7 @@ const ServiceBooking = () => {
                   {activeTab === 'complete' && <div><b>Details:</b> {viewModal.details}</div>}
                 </div>
                 <div className="customer-modal-actions">
-                  <button onClick={handleEdit}>Edit</button>
+                  {activeTab !== 'pending' && <button onClick={handleEdit}>Edit</button>}
                   <button onClick={() => setViewModal(null)}>Close</button>
                 </div>
               </>

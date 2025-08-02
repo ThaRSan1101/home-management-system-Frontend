@@ -29,7 +29,7 @@ const CustomerDashboard = () => {
         try {
           const profileRes = await axios.get(`http://localhost/project-root/backend/home-management-system-Backend/api/get_customer_profile.php?user_id=${userId}`, { withCredentials: true });
           if (profileRes.data && profileRes.data.fullName) {
-            setCurrentUser(profileRes.data);
+            setCurrentUser({ ...profileRes.data, user_id: userId });
           } else {
             // fallback: set at least the name
             setCurrentUser({ fullName: res.data.name || '', email: res.data.email || '' });
@@ -64,8 +64,8 @@ const CustomerDashboard = () => {
               <Dashboard />
             </>
           } />
-          <Route path="service" element={<Service />} />
-          <Route path="activity" element={<Activity />} />
+          <Route path="service" element={<Service currentUser={currentUser} />} />
+          <Route path="activity" element={<Activity currentUser={currentUser} />} />
           <Route path="subscription" element={<Subscription />} />
           <Route path="feedback" element={<Feedback />} />
           <Route path="how-it-works" element={<HowItWorks />} />
