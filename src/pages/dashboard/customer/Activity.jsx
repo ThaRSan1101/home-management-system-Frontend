@@ -5,7 +5,7 @@ import { FaClock, FaSpinner, FaCheckCircle, FaTimesCircle, FaStar } from 'react-
 
 const STATUS_TABS = [
   { key: 'pending', label: 'Pending', icon: <FaClock /> },
-  { key: 'processing', label: 'Processing', icon: <FaSpinner /> },
+  { key: 'process', label: 'Processing', icon: <FaSpinner /> },
   { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
   { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
 ];
@@ -50,7 +50,7 @@ export default function Activity({ currentUser }) {
       };
       const mapped = (data.data || []).map(b => ({
         id: b.service_book_id,
-        serviceName: SERVICE_CATEGORY_MAP[b.service_category_id] || `Service #${b.service_category_id}`,
+        serviceName: b.service_name || SERVICE_CATEGORY_MAP[b.service_category_id] || `Service #${b.service_category_id}`,
         date: b.service_date,
         time: b.service_time,
         status: b.serbooking_status ? b.serbooking_status.toLowerCase() : '',

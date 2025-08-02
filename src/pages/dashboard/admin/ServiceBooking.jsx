@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 
 const TABS = [
   { key: 'pending', label: 'Pending' },
-  { key: 'processing', label: 'Processing' },
+  { key: 'process', label: 'Processing' },
   { key: 'complete', label: 'Complete' },
   { key: 'cancel', label: 'Cancel' },
 ];
@@ -35,7 +35,7 @@ const sampleBookings = [
     time: '2:00 PM',
     address: '456 Park Ave, Kandy',
     phone: '0779876543',
-    status: 'processing',
+    status: 'process',
     reason: '',
     details: 'Install new ceiling fan.',
     amount: '3800',
@@ -92,7 +92,7 @@ const ServiceBooking = () => {
   useEffect(() => {
     async function fetchBookings() {
       try {
-        const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+        const res = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?status=${activeTab}`, {
           credentials: 'include',
         });
         const data = await res.json();
@@ -106,13 +106,12 @@ const ServiceBooking = () => {
             serviceDate: b.service_date,
             time: b.service_time,
             address: b.service_address,
-            phone: b.phoneNo,
+            phone: b.phoneNo || b.customer_phone || '',
             amount: b.amount,
             status: b.serbooking_status,
             reason: b.cancel_reason || ''
           }));
           setBookings(mapped);
-        
         } else {
           toast.error(data.message || 'Failed to fetch bookings.');
         }
@@ -121,7 +120,7 @@ const ServiceBooking = () => {
       }
     }
     fetchBookings();
-  }, []);
+  }, [activeTab]);
 
 // Provider table/filter state for Move modal
   const [providerList, setProviderList] = useState([]);
@@ -331,12 +330,47 @@ const ServiceBooking = () => {
               </div>
             </div>
             {/* Provider ID input */}
-            <form className="customer-modal-form-grid" style={{marginTop:'0.5rem'}} onSubmit={e => {
+            <form className="customer-modal-form-grid" style={{marginTop:'0.5rem'}} onSubmit={async e => {
               e.preventDefault();
-              toast.success('Waiting for Provider Accept');
-              setBookings(prev => prev.map(b => b.id === moveModal.id ? { ...b, status: 'waiting', provider: moveProvider } : b));
-              setMoveModal(null);
-              setMoveProvider('');
+              if (!moveProvider) return toast.error('Please select a provider.');
+              try {
+                const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  credentials: 'include',
+                  body: JSON.stringify({ action: 'move', service_book_id: moveModal.id, provider_id: moveProvider })
+                });
+                const data = await res.json();
+                if (data.status === 'success') {
+                  toast.success('Booking moved. Waiting for provider accept.');
+                  // Optionally reload bookings from backend:
+                  const res2 = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', { credentials: 'include' });
+                  const data2 = await res2.json();
+                  if (data2.status === 'success') {
+                    const mapped = (data2.data || []).map(b => ({
+                      id: b.service_book_id,
+                      service: b.service_name || 'Service',
+                      customer: b.customer_name || '',
+                      provider: b.provider_name || '',
+                      bookingDate: b.serbooking_date,
+                      serviceDate: b.service_date,
+                      time: b.service_time,
+                      address: b.service_address,
+                      phone: b.phoneNo,
+                      amount: b.amount,
+                      status: b.serbooking_status,
+                      reason: b.cancel_reason || ''
+                    }));
+                    setBookings(mapped);
+                  }
+                  setMoveModal(null);
+                  setMoveProvider('');
+                } else {
+                  toast.error(data.message || 'Move failed.');
+                }
+              } catch (err) {
+                toast.error('Network error.');
+              }
             }}>
               <div className="customer-modal-form-group" style={{gridColumn:'1/-1'}}>
                 <label>Enter Provider
