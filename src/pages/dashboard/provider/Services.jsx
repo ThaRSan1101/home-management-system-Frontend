@@ -50,12 +50,6 @@ const initialServiceActivities = [
   { id: 4, service: 'Electrical Repair', customer: 'Alice Brown', date: '2024-07-04', time: '10:30 AM', location: 'Colombo 01', status: 'processing' },
   { id: 5, service: 'Carpet Cleaning', customer: 'Tom Clark', date: '2024-07-05', time: '1:00 PM', location: 'Colombo 02', status: 'processing' },
   { id: 6, service: 'Plumbing', customer: 'Sara White', date: '2024-07-06', time: '3:30 PM', location: 'Colombo 03', status: 'processing' },
-  { id: 7, service: 'Window Cleaning', customer: 'Mike Green', date: '2024-06-28', time: '9:00 AM', location: 'Colombo 04', status: 'complete', charge: '3500' },
-  { id: 8, service: 'AC Service', customer: 'Linda Blue', date: '2024-06-27', time: '12:00 PM', location: 'Colombo 05', status: 'complete', charge: '2500' },
-  { id: 9, service: 'Electrical Repair', customer: 'Chris Red', date: '2024-06-26', time: '4:00 PM', location: 'Colombo 06', status: 'complete', charge: '1800' },
-  { id: 10, service: 'Carpet Cleaning', customer: 'Nina Violet', date: '2024-06-25', time: '10:00 AM', location: 'Colombo 07', status: 'cancel', cancelReason: 'Customer not at home' },
-  { id: 11, service: 'Plumbing', customer: 'Oscar Black', date: '2024-06-24', time: '2:00 PM', location: 'Colombo 08', status: 'cancel', cancelReason: 'Emergency, unable to attend' },
-  { id: 12, service: 'AC Service', customer: 'Pam Orange', date: '2024-06-23', time: '11:00 AM', location: 'Colombo 09', status: 'cancel', cancelReason: 'Rescheduled by customer' },
 ];
 const initialSubscriptionActivities = [
   { id: 1, service: 'Monthly Cleaning', customer: 'John Doe', date: '2024-07-10', time: '10:00 AM', location: 'Colombo 10', status: 'processing' },
@@ -76,8 +70,73 @@ export default function ProviderActivity() {
   const [completeServiceName, setCompleteServiceName] = useState('');
   const [waitingForCustomer, setWaitingForCustomer] = useState(false);
   const [pendingCompleteId, setPendingCompleteId] = useState(null);
+  const [providerId, setProviderId] = useState(null);
+  const [loadingProcessing, setLoadingProcessing] = useState(false);
+  const [processingError, setProcessingError] = useState(null);
 
   const TABS = topTab === 'service' ? SERVICE_TABS : SUBSCRIPTION_TABS;
+
+  // Fetch providerId and processing bookings on mount
+  useEffect(() => {
+    // Fetch providerId
+    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/provider_profile.php', {
+      credentials: 'include',
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          setProviderId(data.provider_id);
+        }
+      });
+  }, []);
+
+  // Fetch processing bookings when providerId is available and topTab is 'service'
+  useEffect(() => {
+    if (!providerId || topTab !== 'service') return;
+    setLoadingProcessing(true);
+    setProcessingError(null);
+    fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?status=process&provider_id=${providerId}`,
+      { credentials: 'include' }
+    )
+      .then(res => res.json())
+      .then(data => {
+        console.log('[Processing Bookings API Response]', data); // Debug log
+        let bookingsArr = [];
+        if (Array.isArray(data)) {
+          bookingsArr = data;
+        } else if (data && data.status === 'success' && Array.isArray(data.data)) {
+          bookingsArr = data.data;
+        }
+        if (bookingsArr.length > 0) {
+          // Map backend fields to frontend expected fields
+          const mapped = bookingsArr.map(b => ({
+            id: b.service_book_id || b.id,
+            service: b.service_name || b.service, // fallback
+            customer: b.customer_name || b.customer,
+            date: b.service_date || b.date,
+            time: b.service_time || b.time,
+            location: b.service_address || b.location,
+            status: 'processing',
+          }));
+          setServiceActivities(prev => {
+            // Only replace the 'processing' activities, keep others
+            return [
+              ...mapped,
+              ...prev.filter(a => a.status !== 'processing')
+            ];
+          });
+        } else {
+          setServiceActivities(prev => prev.filter(a => a.status !== 'processing'));
+        }
+        setLoadingProcessing(false);
+      })
+      .catch(err => {
+        console.error('[Processing Bookings API Error]', err); // Debug log
+        setProcessingError('Failed to fetch processing bookings.');
+        setLoadingProcessing(false);
+      });
+  }, [providerId, topTab]);
+
   const activities = topTab === 'service' ? serviceActivities : subscriptionActivities;
   const filteredActivities = activities.filter((activity) => activity.status === activeTab);
 
@@ -201,8 +260,8 @@ export default function ProviderActivity() {
                   </td>
               </tr>
             ) : (
-              filteredActivities.map((activity) => (
-                <tr key={activity.id}>
+              filteredActivities.map((activity, idx) => (
+                <tr key={activity.id || idx}>
                   <td>{activity.service}</td>
                   <td>{activity.customer}</td>
                   <td>{activity.date}</td>

@@ -15,13 +15,64 @@ const initialRequests = [
 ];
 
 const ServiceProviderDashboard = ({ providerName = '' }) => {
+  const [providerId, setProviderId] = useState(null);
+  const [requests, setRequests] = useState([]);
   const [stats, setStats] = useState({
     bookings: 0,
     subscriptions: 0,
     feedback: 0,
     services: 0,
   });
-  const [requests, setRequests] = useState(initialRequests);
+
+// Fetch provider_id on mount
+useEffect(() => {
+  fetch('http://localhost/project-root/backend/home-management-system-Backend/api/provider_profile.php', {
+    credentials: 'include',
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        setProviderId(data.provider_id);
+      } else {
+        console.error('Provider profile fetch error:', data.message);
+      }
+    })
+    .catch(err => {
+      console.error('Provider profile fetch error:', err);
+    });
+}, []);
+
+// Fetch new requests for this provider
+useEffect(() => {
+  if (!providerId) return;
+  fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?provider_requests=1&provider_id=${providerId}`, {
+    credentials: 'include',
+  })
+    .then(async res => {
+      let text = await res.text();
+      try {
+        const data = JSON.parse(text);
+        if (data.status === 'success') {
+          const mapped = (data.data || []).map(b => ({
+            id: b.service_book_id,
+            service: b.category_name || 'Service',
+            customer: b.customer_name || '',
+            date: b.service_date,
+            time: b.service_time,
+            location: b.service_address,
+          }));
+          setRequests(mapped);
+        } else {
+          console.error('Provider Requests API Error:', data.message);
+        }
+      } catch (e) {
+        console.error('Provider Requests API Invalid JSON:', text);
+      }
+    })
+    .catch(err => {
+      console.error('Provider Requests API Fetch Error:', err);
+    });
+}, [providerId]);
   const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [declineReason, setDeclineReason] = useState('');
   const [declineRequest, setDeclineRequest] = useState(null);
@@ -36,14 +87,23 @@ const ServiceProviderDashboard = ({ providerName = '' }) => {
     setStats({ bookings: 0, subscriptions: 0, feedback: 0, services: 0 });
   }, []);
 
-
-
-  const handleAccept = (req) => {
-    // Remove from new requests
-    const updatedRequests = requests.filter(r => r.id !== req.id);
-    setRequests(updatedRequests);
-    // Optionally, update backend or context with new requests/activities
-    // setRequests and setActivities only, no localStorage
+  const handleAccept = async (req) => {
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ action: 'accept', service_book_id: req.id, provider_id: providerId })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        setRequests(requests.filter(r => r.id !== req.id));
+      } else {
+        alert(data.message || 'Failed to accept request');
+      }
+    } catch (err) {
+      alert('Network error');
+    }
   };
 
   const handleDecline = (req) => {
@@ -52,10 +112,27 @@ const ServiceProviderDashboard = ({ providerName = '' }) => {
     setDeclineReason('');
   };
 
-  const handleDeclineSubmit = () => {
-    if (!declineReason.trim()) return;
-    // Remove from new requests
-    const updatedRequests = requests.filter(r => r.id !== declineRequest.id);
+  const handleDeclineSubmit = async () => {
+    if (!declineRequest) return;
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ action: 'decline', service_book_id: declineRequest.id, provider_id: providerId })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        setRequests(requests.filter(r => r.id !== declineRequest.id));
+        setShowDeclineModal(false);
+        setDeclineRequest(null);
+        setDeclineReason('');
+      } else {
+        alert(data.message || 'Failed to decline request');
+      }
+    } catch (err) {
+      alert('Network error');
+    }
     setRequests(updatedRequests);
     // Optionally, update backend or context with new requests/activities
     // setRequests and setActivities only, no localStorage
@@ -119,6 +196,7 @@ const ServiceProviderDashboard = ({ providerName = '' }) => {
           </table>
         </div>
       </div>
+
       {showDeclineModal && (
         <div className="activity-modal-overlay">
           <div className="activity-modal">
@@ -135,10 +213,10 @@ const ServiceProviderDashboard = ({ providerName = '' }) => {
               <button className="activity-modal-submit-btn" onClick={handleDeclineSubmit} disabled={!declineReason.trim()}>Submit</button>
             </div>
           </div>
-      </div>
+        </div>
       )}
     </div>
   );
 };
 
-export default ServiceProviderDashboard; 
+export default ServiceProviderDashboard;
