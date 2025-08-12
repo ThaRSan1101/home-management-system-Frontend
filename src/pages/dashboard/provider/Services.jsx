@@ -60,7 +60,11 @@ const initialSubscriptionActivities = [
 export default function ProviderActivity() {
   const [topTab, setTopTab] = useState('service');
   const [activeTab, setActiveTab] = useState('processing');
-  const [serviceActivities, setServiceActivities] = useState(initialServiceActivities);
+  const [serviceActivities, setServiceActivities] = useState({
+  processing: [],
+  complete: [],
+  cancel: []
+});
   const [subscriptionActivities, setSubscriptionActivities] = useState(initialSubscriptionActivities);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
@@ -90,55 +94,51 @@ export default function ProviderActivity() {
       });
   }, []);
 
-  // Fetch processing bookings when providerId is available and topTab is 'service'
+  // Fetch bookings for each status tab when providerId or activeTab changes
   useEffect(() => {
     if (!providerId || topTab !== 'service') return;
+    const statusKey = activeTab;
+    let backendStatus = statusKey;
+    if (statusKey === 'processing') backendStatus = 'process';
+    // For 'complete', 'cancel', use as is
     setLoadingProcessing(true);
     setProcessingError(null);
-    fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?status=process&provider_id=${providerId}`,
+    fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?provider_requests=1&provider_id=${providerId}&status=${backendStatus}`,
       { credentials: 'include' }
     )
       .then(res => res.json())
       .then(data => {
-        console.log('[Processing Bookings API Response]', data); // Debug log
         let bookingsArr = [];
         if (Array.isArray(data)) {
           bookingsArr = data;
         } else if (data && data.status === 'success' && Array.isArray(data.data)) {
           bookingsArr = data.data;
         }
-        if (bookingsArr.length > 0) {
-          // Map backend fields to frontend expected fields
-          const mapped = bookingsArr.map(b => ({
-            id: b.service_book_id || b.id,
-            service: b.service_name || b.service, // fallback
-            customer: b.customer_name || b.customer,
-            date: b.service_date || b.date,
-            time: b.service_time || b.time,
-            location: b.service_address || b.location,
-            status: 'processing',
-          }));
-          setServiceActivities(prev => {
-            // Only replace the 'processing' activities, keep others
-            return [
-              ...mapped,
-              ...prev.filter(a => a.status !== 'processing')
-            ];
-          });
-        } else {
-          setServiceActivities(prev => prev.filter(a => a.status !== 'processing'));
-        }
+        const mapped = bookingsArr.map(b => ({
+          id: b.service_book_id || b.id,
+          service: b.service_name || b.service, // fallback
+          customer: b.customer_name || b.customer,
+          date: b.service_date || b.date,
+          time: b.service_time || b.time,
+          location: b.service_address || b.location,
+          status: statusKey,
+          charge: b.charge,
+          cancelReason: b.cancel_reason || b.cancelReason
+        }));
+        setServiceActivities(prev => ({
+          ...prev,
+          [statusKey]: mapped
+        }));
         setLoadingProcessing(false);
       })
       .catch(err => {
-        console.error('[Processing Bookings API Error]', err); // Debug log
-        setProcessingError('Failed to fetch processing bookings.');
+        setProcessingError('Failed to fetch bookings.');
         setLoadingProcessing(false);
       });
-  }, [providerId, topTab]);
+  }, [providerId, topTab, activeTab]);
 
-  const activities = topTab === 'service' ? serviceActivities : subscriptionActivities;
-  const filteredActivities = activities.filter((activity) => activity.status === activeTab);
+  const activities = topTab === 'service' ? serviceActivities[activeTab] || [] : subscriptionActivities.filter((activity) => activity.status === activeTab);
+  const filteredActivities = activities;
 
   const activityTabs = [
     { key: 'service', label: 'Service', icon: FaTools },
