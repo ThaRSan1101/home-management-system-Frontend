@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 
 const TABS = [
   { key: 'pending', label: 'Pending' },
+  { key: 'waiting', label: 'Waiting' },
   { key: 'process', label: 'Processing' },
   { key: 'complete', label: 'Complete' },
   { key: 'cancel', label: 'Cancel' },

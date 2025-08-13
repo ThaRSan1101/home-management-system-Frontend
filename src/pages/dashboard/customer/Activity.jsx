@@ -5,6 +5,7 @@ import { FaClock, FaSpinner, FaCheckCircle, FaTimesCircle, FaStar } from 'react-
 
 const STATUS_TABS = [
   { key: 'pending', label: 'Pending', icon: <FaClock /> },
+  { key: 'waiting', label: 'Waiting', icon: <FaSpinner /> },
   { key: 'process', label: 'Processing', icon: <FaSpinner /> },
   { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
   { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
@@ -54,6 +55,13 @@ export default function Activity({ currentUser }) {
         date: b.service_date,
         time: b.service_time,
         status: b.serbooking_status ? b.serbooking_status.toLowerCase() : '',
+        address: b.service_address,
+        amount: b.amount,
+        customer: b.customer_name,
+        phone: b.phoneNo,
+        cancelReason: b.cancel_reason,
+        provider: b.provider_name || '', // if available from backend join
+        categoryId: b.service_category_id,
       }));
           setActivities(mapped);
         } else {
@@ -174,7 +182,11 @@ export default function Activity({ currentUser }) {
                     <th>Service Name</th>
                     <th>Date</th>
                     <th>Time</th>
+                    <th>Address</th>
+                    <th>Customer</th>
+                    <th>Phone</th>
                     {activeTab === 'pending' && <th>Action</th>}
+                    {activeTab === 'cancel' && <th>Cancel Reason</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -183,6 +195,9 @@ export default function Activity({ currentUser }) {
                       <td>{activity.serviceName}</td>
                       <td>{activity.date}</td>
                       <td>{activity.time}</td>
+                      <td>{activity.address}</td>
+                      <td>{activity.customer}</td>
+                      <td>{activity.phone}</td>
                       {activeTab === 'pending' && (
                         <td>
                           <button
@@ -192,6 +207,9 @@ export default function Activity({ currentUser }) {
                             Cancel
                           </button>
                         </td>
+                      )}
+                      {activeTab === 'cancel' && (
+                        <td>{activity.cancelReason}</td>
                       )}
                     </tr>
                   ))}
@@ -212,10 +230,15 @@ export default function Activity({ currentUser }) {
                 return (
                   <div className="bill-details">
                     <div><b>Category ID:</b> {activity.categoryId}</div>
+                    <div><b>Service Name:</b> {activity.serviceName}</div>
                     <div><b>Customer:</b> {activity.customer}</div>
+                    <div><b>Provider:</b> {activity.provider}</div>
                     <div><b>Address:</b> {activity.address}</div>
-                    <div><b>Amount:</b> LKR {activity.charge}</div>
+                    <div><b>Phone:</b> {activity.phone}</div>
+                    <div><b>Amount:</b> LKR {activity.amount}</div>
                     <div><b>Date & Time:</b> {activity.date} {activity.time}</div>
+                    <div><b>Status:</b> {activity.status}</div>
+                    <div><b>Cancel Reason:</b> {activity.cancelReason}</div>
                     <div className="customer-activity-modal-actions">
                       <button className="customer-activity-modal-submit-btn playful-btn" onClick={handleBillSubmit}>
                         Submit

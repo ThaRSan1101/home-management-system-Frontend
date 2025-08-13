@@ -151,25 +151,31 @@ export default function ProviderActivity() {
     setShowCancelModal(true);
     setCancelReason('');
   };
-  const handleCancelSubmit = () => {
+  const handleCancelSubmit = async () => {
     if (!cancelReason.trim()) return;
-    if (topTab === 'service') {
-      setServiceActivities((prev) =>
-        prev.map((a) =>
-          a.id === modalActivity.id ? { ...a, status: 'cancel', cancelReason } : a
-        )
-      );
-    } else {
-      setSubscriptionActivities((prev) =>
-        prev.map((a) =>
-          a.id === modalActivity.id ? { ...a, status: 'cancel', cancelReason } : a
-        )
-      );
+    if (!modalActivity?.id) return;
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          service_book_id: modalActivity.id,
+          cancel_reason: cancelReason
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        setShowCancelModal(false);
+        setModalActivity(null);
+        setCancelReason('');
+        setActiveTab('cancel'); // Switch to cancel tab, which will trigger bookings reload
+      } else {
+        alert(data.message || 'Failed to cancel booking.');
+      }
+    } catch (err) {
+      alert('Network error.');
     }
-    setShowCancelModal(false);
-    setModalActivity(null);
-    setCancelReason('');
-    setActiveTab('cancel');
   };
 
   // Complete logic
