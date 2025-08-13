@@ -38,6 +38,7 @@ function getTabIcon(tab, isActive) {
 
 const SERVICE_TABS = [
   { key: 'processing', label: 'Processing' },
+  { key: 'request', label: 'Request' },
   { key: 'complete', label: 'Complete' },
   { key: 'cancel', label: 'Cancel' },
 ];
@@ -185,12 +186,35 @@ export default function ProviderActivity() {
     setCompleteServiceName(activity.service || '');
     setCompleteCharge('');
   };
-  const handleCompleteSubmit = () => {
+  const handleCompleteSubmit = async () => {
     if (!completeServiceName.trim() || !completeCharge.trim()) return;
     setShowCompleteModal(false);
     setWaitingForCustomer(true);
     setPendingCompleteId(modalActivity.id);
+
+    // PATCH API call to backend
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          action: 'provider_complete',
+          service_book_id: modalActivity.id,
+          service_amount: completeCharge
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        setActiveTab('request');
+      } else {
+        alert(data.message || 'Failed to complete service.');
+      }
+    } catch (err) {
+      alert('Network error.');
+    }
   };
+
   const handleCustomerAccept = () => {
     setServiceActivities((prev) =>
       prev.map((a) =>

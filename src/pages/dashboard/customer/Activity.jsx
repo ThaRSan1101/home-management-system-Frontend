@@ -7,6 +7,7 @@ const STATUS_TABS = [
   { key: 'pending', label: 'Pending', icon: <FaClock /> },
   { key: 'waiting', label: 'Waiting', icon: <FaSpinner /> },
   { key: 'process', label: 'Processing', icon: <FaSpinner /> },
+  { key: 'request', label: 'Request', icon: <FaSpinner /> },
   { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
   { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
 ];
@@ -30,6 +31,45 @@ export default function Activity({ currentUser }) {
   const [ratedServiceIds, setRatedServiceIds] = useState([]);
   const [cancelModalId, setCancelModalId] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
+
+  // For Accept Bill modal in 'request' tab
+  const [showBillModal, setShowBillModal] = useState(false);
+  const [selectedBookingId, setSelectedBookingId] = useState(null);
+
+  const handleAccept = (bookingId) => {
+    setSelectedBookingId(bookingId);
+    setShowBillModal(true);
+  };
+  const closeBillModal = () => {
+    setShowBillModal(false);
+    setSelectedBookingId(null);
+  };
+
+  // Confirm Accept: Customer accepts bill, PATCH API call
+  const confirmAccept = async (bookingId) => {
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          action: 'customer_accept',
+          service_book_id: bookingId
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        closeBillModal();
+        // Optionally reload bookings or move to complete tab
+        setActiveTab('complete');
+      } else {
+        alert(data.message || 'Failed to accept bill.');
+      }
+    } catch (err) {
+      alert('Network error.');
+    }
+  };
+
 
   // Fetch bookings from backend on mount or when dependencies change
   useEffect(() => {
@@ -57,6 +97,7 @@ export default function Activity({ currentUser }) {
         status: b.serbooking_status ? b.serbooking_status.toLowerCase() : '',
         address: b.service_address,
         amount: b.amount,
+        serviceAmount: b.service_amount,
         customer: b.customer_name,
         phone: b.phoneNo,
         cancelReason: b.cancel_reason,
@@ -186,6 +227,8 @@ export default function Activity({ currentUser }) {
                     <th>Customer</th>
                     <th>Phone</th>
                     {activeTab === 'pending' && <th>Action</th>}
+                    {activeTab === 'request' && <th>Action</th>}
+                    {activeTab === 'complete' && <th>Action</th>}
                     {activeTab === 'cancel' && <th>Cancel Reason</th>}
                   </tr>
                 </thead>
@@ -198,6 +241,33 @@ export default function Activity({ currentUser }) {
                       <td>{activity.address}</td>
                       <td>{activity.customer}</td>
                       <td>{activity.phone}</td>
+                      {activeTab === 'request' && (
+                        <td>
+                          <button
+                            onClick={() => handleAccept(activity.id)}
+                            className="accept-btn"
+                          >
+                            Accept
+                          </button>
+                          {showBillModal && selectedBookingId === activity.id && (
+                            <div className="customer-activity-modal-overlay">
+                              <div className="customer-activity-modal bill-modal playful-modal">
+                                <button type="button" className="customer-activity-modal-close-btn" onClick={closeBillModal}>&times;</button>
+                                <h3 style={{color:'#1a3665',marginBottom:'1.3rem'}}>Service Bill</h3>
+                                <div style={{marginBottom:'0.7rem'}}><b>Service Name:</b> {activity.serviceName}</div>
+                                <div style={{marginBottom:'0.7rem'}}><b>Amount:</b> {activity.amount}</div>
+                                <div style={{marginBottom:'1.2rem'}}><b>Date/Time:</b> {activity.date} {activity.time}</div>
+                                <button
+                                  onClick={() => confirmAccept(activity.id)}
+                                  className="confirm-btn"
+                                >
+                                  Confirm & Accept
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </td>
+                      )}
                       {activeTab === 'pending' && (
                         <td>
                           <button
@@ -205,6 +275,27 @@ export default function Activity({ currentUser }) {
                             onClick={() => handleCancel(activity.id)}
                           >
                             Cancel
+                          </button>
+                        </td>
+                      )}
+                      {activeTab === 'complete' && (
+                        <td>
+                          <button
+                            className="view-details-btn" style={{background:'#1a3665',color:'#fff',border:'none',borderRadius:'8px',padding:'0.5rem 1.5rem',fontWeight:600,cursor:'pointer'}}
+                            onClick={() => setViewDetailsId(activity.id)}
+                          >
+                            View Details
+                          </button>
+                          <button
+                            className="submit-review-btn"
+                            style={{background:'#1a3665',color:'#fff',border:'none',borderRadius:'8px',padding:'0.5rem 1.5rem',fontWeight:600,cursor:'pointer',marginLeft:'0.6rem',opacity:ratedServiceIds.includes(activity.serviceName + '_' + activity.date + '_' + activity.provider)?0.6:1}}
+                            onClick={() => {
+                              setCurrentBill(activity);
+                              setShowFeedbackModal(true);
+                            }}
+                            disabled={ratedServiceIds.includes(activity.serviceName + '_' + activity.date + '_' + activity.provider)}
+                          >
+                            Submit Review
                           </button>
                         </td>
                       )}
@@ -223,27 +314,21 @@ export default function Activity({ currentUser }) {
           <div className="customer-activity-modal-overlay">
             <div className="customer-activity-modal playful-modal bill-modal">
               <button type="button" className="customer-activity-modal-close-btn" onClick={() => setViewDetailsId(null)}>&times;</button>
-              <h3>Service Bill</h3>
+              <h3 style={{color:'#1a3665',marginBottom:'1.3rem'}}>Booking Details</h3>
               {(() => {
                 const activity = activities.find(a => a.id === viewDetailsId);
                 if (!activity) return null;
                 return (
                   <div className="bill-details">
-                    <div><b>Category ID:</b> {activity.categoryId}</div>
                     <div><b>Service Name:</b> {activity.serviceName}</div>
                     <div><b>Customer:</b> {activity.customer}</div>
                     <div><b>Provider:</b> {activity.provider}</div>
                     <div><b>Address:</b> {activity.address}</div>
                     <div><b>Phone:</b> {activity.phone}</div>
                     <div><b>Amount:</b> LKR {activity.amount}</div>
+                    <div><b>Service Amount:</b> LKR {activity.serviceAmount || activity.service_amount}</div>
                     <div><b>Date & Time:</b> {activity.date} {activity.time}</div>
                     <div><b>Status:</b> {activity.status}</div>
-                    <div><b>Cancel Reason:</b> {activity.cancelReason}</div>
-                    <div className="customer-activity-modal-actions">
-                      <button className="customer-activity-modal-submit-btn playful-btn" onClick={handleBillSubmit}>
-                        Submit
-                      </button>
-                    </div>
                   </div>
                 );
               })()}
@@ -257,8 +342,8 @@ export default function Activity({ currentUser }) {
               <h3>Rate Your Service</h3>
               <div className="feedback-details">
                 <div><b>Provider Name:</b> {currentBill.provider}</div>
-                <div><b>Service Name:</b> {currentBill.service}</div>
-                <div><b>Amount:</b> LKR {currentBill.charge}</div>
+                <div><b>Service Name:</b> {currentBill.serviceName || currentBill.service}</div>
+                <div><b>Amount:</b>  {currentBill.serviceAmount || currentBill.amount || currentBill.charge} LKR</div>
               </div>
               <div className="feedback-rating-row">
                 <span><b>Rating:</b></span>
