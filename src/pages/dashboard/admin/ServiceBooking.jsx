@@ -468,7 +468,7 @@ const ServiceBooking = () => {
                   <div><b>Address:</b> {viewModal.address}</div>
                   <div><b>Amount:</b> LKR {viewModal.amount}</div>
                   {activeTab === 'cancel' && <div><b>Reason:</b> {viewModal.reason}</div>}
-                  {activeTab === 'complete' && <div><b>Details:</b> {viewModal.details}</div>}
+                  
                 </div>
                 <div className="customer-modal-actions">
                   {activeTab !== 'pending' && <button onClick={handleEdit}>Edit</button>}

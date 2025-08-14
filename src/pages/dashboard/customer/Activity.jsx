@@ -59,8 +59,11 @@ export default function Activity({ currentUser }) {
       });
       const data = await res.json();
       if (data.status === 'success') {
+        // Find the activity for this booking
+        const activity = activities.find(a => a.id === bookingId);
+        setCurrentBill(activity);
+        setShowFeedbackModal(true);
         closeBillModal();
-        // Optionally reload bookings or move to complete tab
         setActiveTab('complete');
       } else {
         alert(data.message || 'Failed to accept bill.');
@@ -255,7 +258,7 @@ export default function Activity({ currentUser }) {
                                 <button type="button" className="customer-activity-modal-close-btn" onClick={closeBillModal}>&times;</button>
                                 <h3 style={{color:'#1a3665',marginBottom:'1.3rem'}}>Service Bill</h3>
                                 <div style={{marginBottom:'0.7rem'}}><b>Service Name:</b> {activity.serviceName}</div>
-                                <div style={{marginBottom:'0.7rem'}}><b>Amount:</b> {activity.amount}</div>
+                                <div style={{marginBottom:'0.7rem'}}><b>Amount:</b> {activity.serviceAmount || activity.service_amount || activity.amount}</div>
                                 <div style={{marginBottom:'1.2rem'}}><b>Date/Time:</b> {activity.date} {activity.time}</div>
                                 <button
                                   onClick={() => confirmAccept(activity.id)}
