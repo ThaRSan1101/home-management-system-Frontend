@@ -173,14 +173,45 @@ export default function Activity({ currentUser }) {
   };
 
   // Feedback modal submit
-  const handleFeedbackSubmit = () => {
+  const handleFeedbackSubmit = async () => {
     if (feedbackData.rating === 0 || !feedbackData.comment.trim()) return;
-    const uniqueId = currentBill.service + '_' + currentBill.date + '_' + currentBill.provider;
-    setFeedbacks(prev => [...prev, { ...currentBill, ...feedbackData }]);
+    
+    try {
+      const reviewData = {
+        service_book_id: currentBill.id,
+        provider_name: currentBill.provider,
+        service_name: currentBill.serviceName,
+        amount: currentBill.serviceAmount || currentBill.amount,
+        rating: feedbackData.rating,
+        feedback_text: feedbackData.comment
+      };
+
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_review.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(reviewData)
+      });
+
+      const data = await res.json();
+      
+      if (data.status === 'success') {
+        toast.success('Review submitted successfully!');
+        // Update local state for UI consistency
+        const uniqueId = currentBill.service + '_' + currentBill.date + '_' + currentBill.provider;
+        setFeedbacks(prev => [...prev, { ...currentBill, ...feedbackData }]);
+        setRatedServiceIds(getRatedServiceIdsFromState([...feedbacks, { ...currentBill, ...feedbackData }]));
+      } else {
+        toast.error(data.message || 'Failed to submit review.');
+      }
+    } catch (err) {
+      console.error('Review submission error:', err);
+      toast.error('Network error. Please try again.');
+    }
+    
     setShowFeedbackModal(false);
     setFeedbackData({ rating: 0, comment: '' });
     setCurrentBill(null);
-    setRatedServiceIds(getRatedServiceIdsFromState([...feedbacks, { ...currentBill, ...feedbackData }]));
   };
 
   const renderStars = (rating, setRating) => (

@@ -67,7 +67,7 @@ const CustomerDashboard = () => {
           <Route path="service" element={<Service currentUser={currentUser} />} />
           <Route path="activity" element={<Activity currentUser={currentUser} />} />
           <Route path="subscription" element={<Subscription />} />
-          <Route path="feedback" element={<Feedback />} />
+          <Route path="feedback" element={<Feedback currentUser={currentUser} />} />
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
