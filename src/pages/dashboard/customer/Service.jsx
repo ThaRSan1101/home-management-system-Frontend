@@ -27,7 +27,7 @@ const services = [
     category: 'Woodwork & Furniture',
     title: 'Carpentry Services',
     description: 'Expert repairs for doors, windows, and furniture. Custom woodwork made easy and affordable. Fast fixes and installations for all wood-related needs.',
-    price: 1800,
+    price: 500,
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ const services = [
     category: 'Wiring, Lights & Power',
     title: 'Electrical Services',
     description: 'Safe installation of lights, fans, and switches. Quick repairs for power issues and wiring. Certified electricians for hassle-free service.',
-    price: 3200,
+    price: 500,
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ const services = [
     category: 'Walls & Surfaces',
     title: 'Painting Services',
     description: 'Clean, smooth wall painting with lasting results. Choose your colors we handle the rest. Interior or exterior, big or small we paint it all.',
-    price: 5000,
+    price: 500,
   },
   {
     id: 5,
@@ -51,7 +51,7 @@ const services = [
     category: 'Home Appliances',
     title: 'Electronic Services',
     description: 'Get your home appliances fixed fast. We service TVs, fridges, ovens, washers & more. Quality repairs with genuine spare parts.',
-    price: 3500,
+    price: 500,
   },
   {
     id: 6,
@@ -59,7 +59,7 @@ const services = [
     category: 'Home & Kitchen Cleaning',
     title: 'Cleaning Service',
     description: 'Deep cleaning for every space in your home. Kitchen, bathroom, and full-house cleaning. Trained staff using safe, effective products.',
-    price: 2100,
+    price: 500,
   },
 ];
 

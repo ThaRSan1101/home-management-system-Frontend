@@ -38,6 +38,7 @@ function getTabIcon(tab, isActive) {
 
 const SERVICE_TABS = [
   { key: 'processing', label: 'Processing' },
+  { key: 'request', label: 'Request' },
   { key: 'complete', label: 'Complete' },
   { key: 'cancel', label: 'Cancel' },
 ];
@@ -151,25 +152,31 @@ export default function ProviderActivity() {
     setShowCancelModal(true);
     setCancelReason('');
   };
-  const handleCancelSubmit = () => {
+  const handleCancelSubmit = async () => {
     if (!cancelReason.trim()) return;
-    if (topTab === 'service') {
-      setServiceActivities((prev) =>
-        prev.map((a) =>
-          a.id === modalActivity.id ? { ...a, status: 'cancel', cancelReason } : a
-        )
-      );
-    } else {
-      setSubscriptionActivities((prev) =>
-        prev.map((a) =>
-          a.id === modalActivity.id ? { ...a, status: 'cancel', cancelReason } : a
-        )
-      );
+    if (!modalActivity?.id) return;
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          service_book_id: modalActivity.id,
+          cancel_reason: cancelReason
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        setShowCancelModal(false);
+        setModalActivity(null);
+        setCancelReason('');
+        setActiveTab('cancel'); // Switch to cancel tab, which will trigger bookings reload
+      } else {
+        alert(data.message || 'Failed to cancel booking.');
+      }
+    } catch (err) {
+      alert('Network error.');
     }
-    setShowCancelModal(false);
-    setModalActivity(null);
-    setCancelReason('');
-    setActiveTab('cancel');
   };
 
   // Complete logic
@@ -179,12 +186,35 @@ export default function ProviderActivity() {
     setCompleteServiceName(activity.service || '');
     setCompleteCharge('');
   };
-  const handleCompleteSubmit = () => {
+  const handleCompleteSubmit = async () => {
     if (!completeServiceName.trim() || !completeCharge.trim()) return;
     setShowCompleteModal(false);
     setWaitingForCustomer(true);
     setPendingCompleteId(modalActivity.id);
+
+    // PATCH API call to backend
+    try {
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          action: 'provider_complete',
+          service_book_id: modalActivity.id,
+          service_amount: completeCharge
+        })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        setActiveTab('request');
+      } else {
+        alert(data.message || 'Failed to complete service.');
+      }
+    } catch (err) {
+      alert('Network error.');
+    }
   };
+
   const handleCustomerAccept = () => {
     setServiceActivities((prev) =>
       prev.map((a) =>

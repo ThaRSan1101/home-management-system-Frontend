@@ -4,7 +4,9 @@ import { toast } from 'sonner';
 
 const TABS = [
   { key: 'pending', label: 'Pending' },
+  { key: 'waiting', label: 'Waiting' },
   { key: 'process', label: 'Processing' },
+  { key: 'request', label: 'Request' },
   { key: 'complete', label: 'Complete' },
   { key: 'cancel', label: 'Cancel' },
 ];
@@ -108,6 +110,7 @@ const ServiceBooking = () => {
             address: b.service_address,
             phone: b.phoneNo || b.customer_phone || '',
             amount: b.amount,
+            serviceAmount: b.service_amount,
             status: b.serbooking_status,
             reason: b.cancel_reason || ''
           }));
@@ -219,6 +222,7 @@ const ServiceBooking = () => {
               <th>Service</th>
               <th>Customer Name</th>
               {activeTab !== 'pending' && <th>Provider Name</th>}
+{(activeTab === 'request' || activeTab === 'complete') && <th>Service Amount</th>}
               <th>Booking Date</th>
               <th>Service Date</th>
               <th>Time</th>
@@ -238,6 +242,7 @@ const ServiceBooking = () => {
                   <td>{b.service}</td>
                   <td>{b.customer}</td>
                   {activeTab !== 'pending' && <td>{b.provider}</td>}
+{(activeTab === 'request' || activeTab === 'complete') && <td>{b.serviceAmount}</td>}
                   <td>{b.bookingDate}</td>
                   <td>{b.serviceDate}</td>
                   <td>{b.time}</td>
