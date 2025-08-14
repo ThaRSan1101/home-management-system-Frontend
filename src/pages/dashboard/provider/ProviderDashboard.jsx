@@ -24,16 +24,30 @@ const ProviderDashboard = () => {
         try {
           const profileRes = await axios.get('http://localhost/project-root/backend/home-management-system-Backend/api/get_provider_profile.php', { withCredentials: true });
           if (profileRes.data && profileRes.data.data && profileRes.data.data.fullName) {
-            setCurrentUser({
+            let userObj = {
               ...profileRes.data.data,
               user_id: userId // Always include user_id
-            });
+            };
+            try {
+              const providerIdRes = await axios.get('http://localhost/project-root/backend/home-management-system-Backend/api/provider_profile.php', { withCredentials: true });
+              if (providerIdRes.data && providerIdRes.data.status === 'success') {
+                userObj.provider_id = providerIdRes.data.provider_id;
+              }
+            } catch (e) {}
+            setCurrentUser(userObj);
           } else {
-            setCurrentUser({
+            let userObj = {
               fullName: res.data.name || '',
               email: res.data.email || '',
               user_id: userId // Always include user_id
-            });
+            };
+            try {
+              const providerIdRes = await axios.get('http://localhost/project-root/backend/home-management-system-Backend/api/provider_profile.php', { withCredentials: true });
+              if (providerIdRes.data && providerIdRes.data.status === 'success') {
+                userObj.provider_id = providerIdRes.data.provider_id;
+              }
+            } catch (e) {}
+            setCurrentUser(userObj);
           }
         } catch (e) {
           setCurrentUser({ fullName: res.data.name || '', email: res.data.email || '' });
@@ -59,7 +73,7 @@ const ProviderDashboard = () => {
         <Routes>
           <Route path="dashboard" element={<ServiceProviderDashboard providerName={currentUser?.fullName || currentUser?.name || ''} />} />
           <Route path="activity/services" element={<ProviderActivity />} />
-          <Route path="feedback" element={<Feedback />} />
+          <Route path="feedback" element={<Feedback currentUser={currentUser} />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<Navigate to="/provider/dashboard/dashboard" replace />} />
         </Routes>

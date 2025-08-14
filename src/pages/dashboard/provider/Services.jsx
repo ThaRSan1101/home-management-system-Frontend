@@ -123,7 +123,7 @@ export default function ProviderActivity() {
           time: b.service_time || b.time,
           location: b.service_address || b.location,
           status: statusKey,
-          charge: b.charge,
+          charge: b.service_amount || b.charge || b.amount,
           cancelReason: b.cancel_reason || b.cancelReason
         }));
         setServiceActivities(prev => ({

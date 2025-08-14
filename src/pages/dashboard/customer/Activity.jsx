@@ -59,8 +59,11 @@ export default function Activity({ currentUser }) {
       });
       const data = await res.json();
       if (data.status === 'success') {
+        // Find the activity for this booking
+        const activity = activities.find(a => a.id === bookingId);
+        setCurrentBill(activity);
+        setShowFeedbackModal(true);
         closeBillModal();
-        // Optionally reload bookings or move to complete tab
         setActiveTab('complete');
       } else {
         alert(data.message || 'Failed to accept bill.');
@@ -170,14 +173,45 @@ export default function Activity({ currentUser }) {
   };
 
   // Feedback modal submit
-  const handleFeedbackSubmit = () => {
+  const handleFeedbackSubmit = async () => {
     if (feedbackData.rating === 0 || !feedbackData.comment.trim()) return;
-    const uniqueId = currentBill.service + '_' + currentBill.date + '_' + currentBill.provider;
-    setFeedbacks(prev => [...prev, { ...currentBill, ...feedbackData }]);
+    
+    try {
+      const reviewData = {
+        service_book_id: currentBill.id,
+        provider_name: currentBill.provider,
+        service_name: currentBill.serviceName,
+        amount: currentBill.serviceAmount || currentBill.amount,
+        rating: feedbackData.rating,
+        feedback_text: feedbackData.comment
+      };
+
+      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_review.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(reviewData)
+      });
+
+      const data = await res.json();
+      
+      if (data.status === 'success') {
+        toast.success('Review submitted successfully!');
+        // Update local state for UI consistency
+        const uniqueId = currentBill.service + '_' + currentBill.date + '_' + currentBill.provider;
+        setFeedbacks(prev => [...prev, { ...currentBill, ...feedbackData }]);
+        setRatedServiceIds(getRatedServiceIdsFromState([...feedbacks, { ...currentBill, ...feedbackData }]));
+      } else {
+        toast.error(data.message || 'Failed to submit review.');
+      }
+    } catch (err) {
+      console.error('Review submission error:', err);
+      toast.error('Network error. Please try again.');
+    }
+    
     setShowFeedbackModal(false);
     setFeedbackData({ rating: 0, comment: '' });
     setCurrentBill(null);
-    setRatedServiceIds(getRatedServiceIdsFromState([...feedbacks, { ...currentBill, ...feedbackData }]));
   };
 
   const renderStars = (rating, setRating) => (
@@ -255,7 +289,7 @@ export default function Activity({ currentUser }) {
                                 <button type="button" className="customer-activity-modal-close-btn" onClick={closeBillModal}>&times;</button>
                                 <h3 style={{color:'#1a3665',marginBottom:'1.3rem'}}>Service Bill</h3>
                                 <div style={{marginBottom:'0.7rem'}}><b>Service Name:</b> {activity.serviceName}</div>
-                                <div style={{marginBottom:'0.7rem'}}><b>Amount:</b> {activity.amount}</div>
+                                <div style={{marginBottom:'0.7rem'}}><b>Amount:</b> {activity.serviceAmount || activity.service_amount || activity.amount}</div>
                                 <div style={{marginBottom:'1.2rem'}}><b>Date/Time:</b> {activity.date} {activity.time}</div>
                                 <button
                                   onClick={() => confirmAccept(activity.id)}
