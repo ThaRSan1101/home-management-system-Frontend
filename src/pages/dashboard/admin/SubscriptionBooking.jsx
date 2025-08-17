@@ -3,72 +3,14 @@ import './SubscriptionBooking.css';
 
 const TABS = [
   { key: 'pending', label: 'Pending' },
-  { key: 'processing', label: 'Processing' },
+  { key: 'waiting', label: 'Waiting' },
+  { key: 'process', label: 'Processing' },
   { key: 'cancel', label: 'Cancel' },
 ];
 
-const sampleSubscriptions = [
-  {
-    id: 100,
-    plan: 'Bi-Weekly Plan',
-    customer: 'Alice Wonder',
-    provider: '',
-    bookingDate: '2025-07-23',
-    serviceDate: '2025-07-25',
-    time: '11:00 AM',
-    address: '101 River Rd, Matara',
-    phone: '0701122334',
-    amount: '2500',
-    status: 'pending',
-    reason: '',
-    details: 'Bi-weekly window cleaning.'
-  },
-  {
-    id: 1,
-    plan: 'Weekly Plan',
-    customer: 'John Doe',
-    provider: 'Provider A',
-    bookingDate: '2024-07-18',
-    serviceDate: '2024-07-21',
-    time: '10:00 AM',
-    address: '123 Main St, Colombo',
-    phone: '0771234567',
-    amount: '1500',
-    status: 'processing',
-    reason: '',
-    details: 'Weekly cleaning service.'
-  },
-  {
-    id: 2,
-    plan: 'Monthly Plan',
-    customer: 'Jane Smith',
-    provider: 'Provider B',
-    bookingDate: '2024-07-19',
-    serviceDate: '2024-07-22',
-    time: '2:00 PM',
-    address: '456 Park Ave, Kandy',
-    phone: '0779876543',
-    amount: '5000',
-    status: 'processing',
-    reason: '',
-    details: 'Monthly gardening.'
-  },
-  {
-    id: 3,
-    plan: 'Yearly Plan',
-    customer: 'Bob Brown',
-    provider: 'Provider C',
-    bookingDate: '2024-07-17',
-    serviceDate: '2024-07-20',
-    time: '9:00 AM',
-    address: '789 Lake Rd, Galle',
-    phone: '0712345678',
-    amount: '12000',
-    status: 'cancel',
-    reason: 'Customer requested cancellation',
-    details: 'Yearly pest control.'
-  },
-];
+// API integration: fetch bookings from backend
+const API_URL = 'http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php';
+
 
 import { toast } from 'sonner';
 
@@ -91,6 +33,47 @@ const SubscriptionBooking = () => {
   const [filterStatus, setFilterStatus] = useState('');
   const [filterDescription, setFilterDescription] = useState('');
   const [providerLoading, setProviderLoading] = useState(false);
+
+  // API state for bookings
+  const [subs, setSubs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
+  const [activeTab, setActiveTab] = useState('pending');
+
+  // Fetch bookings from API
+  const fetchSubs = React.useCallback(() => {
+    setLoading(true);
+    setApiError(null);
+    let status = activeTab;
+    fetch(`${API_URL}?status=${status}`, { credentials: 'include' })
+      .then(res => res.json())
+      .then(result => {
+        if (result.status === 'success') {
+          // Map the API response to the expected format
+          const mappedSubs = (result.data || []).map(sub => ({
+            id: sub.subbook_id,
+            plan: sub.plan_name || sub.category,
+            customer: sub.customer_name,
+            provider: sub.provider_name || 'Not Assigned',
+            bookingDate: new Date(sub.subbooking_date).toLocaleDateString(),
+            serviceDate: sub.sub_date,
+            time: sub.sub_time,
+            phone: sub.phoneNo,
+            address: sub.sub_address,
+            amount: sub.amount,
+            status: sub.subbooking_status,
+            reason: sub.cancel_reason
+          }));
+          setSubs(mappedSubs);
+        } else {
+          setApiError(result.message || 'Failed to fetch bookings.');
+        }
+        setLoading(false);
+      })
+      .catch(() => { setApiError('Error fetching bookings.'); setLoading(false); });
+  }, [activeTab]);
+
+  React.useEffect(() => { fetchSubs(); }, [fetchSubs]);
 
   // Fetch providers on modal open
   React.useEffect(() => {
@@ -136,15 +119,17 @@ const SubscriptionBooking = () => {
     setFilterDescription('');
   };
 
-  const [activeTab, setActiveTab] = useState('pending');
   const [viewModal, setViewModal] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [subs, setSubs] = useState(sampleSubscriptions);
+  // Already declared above. Remove duplicate.
   const [editForm, setEditForm] = useState({});
 
   const filtered = subs.filter(b => {
     if (activeTab === 'pending') {
       return b.status === 'pending' || b.status === 'waiting';
+    }
+    if (activeTab === 'waiting') {
+      return b.status === 'waiting';
     }
     return b.status === activeTab;
   });
@@ -299,12 +284,37 @@ const SubscriptionBooking = () => {
               </div>
             </div>
             {/* Provider ID input and submit */}
-            <form className="customer-modal-form-grid" style={{marginTop:'1.2rem'}} onSubmit={e => {
+            <form className="customer-modal-form-grid" style={{marginTop:'1.2rem'}} onSubmit={async (e) => {
               e.preventDefault();
-              toast.success('Waiting for Provider Accept');
-              setSubs(prev => prev.map(b => b.id === moveModal.id ? { ...b, status: 'waiting', provider: moveProvider } : b));
-              setMoveModal(null);
-              setMoveProvider('');
+              if (!moveProvider) {
+                toast.error('Please select a provider');
+                return;
+              }
+              
+              try {
+                const response = await fetch(`${API_URL}`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  credentials: 'include',
+                  body: JSON.stringify({
+                    action: 'move',
+                    subbook_id: moveModal.id,
+                    provider_id: moveProvider
+                  })
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                  toast.success('Booking moved. Waiting for provider accept.');
+                  fetchSubs(); // Refresh the data
+                  setMoveModal(null);
+                  setMoveProvider('');
+                } else {
+                  toast.error(result.message || 'Failed to move booking');
+                }
+              } catch (error) {
+                toast.error('Network error occurred');
+              }
             }}>
               <div className="customer-modal-form-group" style={{gridColumn:'1/-1'}}>
                 <label>Provider ID

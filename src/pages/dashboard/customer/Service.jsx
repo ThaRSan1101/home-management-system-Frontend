@@ -65,6 +65,7 @@ const services = [
 
 const subscriptionPlans = [
   {
+    id: 1,
     plan: 'Weekly Plan',
     title: 'Vehicle Wash',
     features: [
@@ -77,6 +78,7 @@ const subscriptionPlans = [
     ],
   },
   {
+    id: 2,
     plan: 'Monthly Plan',
     title: 'Deep Cleaning',
     features: [
@@ -89,6 +91,7 @@ const subscriptionPlans = [
     ],
   },
   {
+    id: 3,
     plan: 'Yearly Plan',
     title: 'Utility Check',
     features: [
@@ -119,12 +122,26 @@ const Service = ({ currentUser }) => {
   // Add booking on success (integrated with backend)
   const addBooking = async (service, form) => {
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          user_id: currentUser?.user_id, // must be passed via props/context
+      let apiUrl, requestBody;
+      
+      if (bookingType === 'subscription') {
+        // Use subscription booking API for subscription plans
+        apiUrl = 'http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php';
+        requestBody = {
+          user_id: currentUser?.user_id,
+          sub_id: service.id, // Now properly mapped to database sub_id
+          customer_name: form.name,
+          sub_date: form.date,
+          sub_time: form.time,
+          sub_address: form.address,
+          phoneNo: form.phone,
+          amount: 1000 // Subscription fee as shown in UI
+        };
+      } else {
+        // Use service booking API for regular services
+        apiUrl = 'http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php';
+        requestBody = {
+          user_id: currentUser?.user_id,
           customer_name: form.name,
           service_category_id: service.id,
           service_name: service.title,
@@ -132,13 +149,21 @@ const Service = ({ currentUser }) => {
           service_time: form.time,
           service_address: form.address,
           phoneNo: form.phone,
-          amount: service.price || 0 // or get from UI if available
-        })
+          amount: service.price || 0
+        };
+      }
+
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(requestBody)
       });
+      
       const data = await res.json();
       if (data.status === 'success') {
         setBookings(prev => [ ...prev, data.booking ]); // or refetch all bookings
-        toast.success('Booking successful!');
+        toast.success(bookingType === 'subscription' ? 'Subscription booked successfully!' : 'Service booked successfully!');
       } else {
         toast.error(data.message || 'Booking failed.');
       }

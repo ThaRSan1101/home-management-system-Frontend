@@ -42,35 +42,68 @@ useEffect(() => {
     });
 }, []);
 
-// Fetch new requests for this provider
+// Fetch new requests for this provider (both service and subscription)
 useEffect(() => {
   if (!providerId) return;
-  fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?provider_requests=1&provider_id=${providerId}`, {
+  
+  // Fetch service requests
+  const fetchServiceRequests = fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?provider_requests=1&provider_id=${providerId}`, {
     credentials: 'include',
-  })
-    .then(async res => {
-      let text = await res.text();
-      try {
-        const data = JSON.parse(text);
-        if (data.status === 'success') {
-          const mapped = (data.data || []).map(b => ({
-            id: b.service_book_id,
-            service: b.category_name || 'Service',
-            customer: b.customer_name || '',
-            date: b.service_date,
-            time: b.service_time,
-            location: b.service_address,
-          }));
-          setRequests(mapped);
-        } else {
-          console.error('Provider Requests API Error:', data.message);
-        }
-      } catch (e) {
-        console.error('Provider Requests API Invalid JSON:', text);
+  }).then(async res => {
+    let text = await res.text();
+    try {
+      const data = JSON.parse(text);
+      if (data.status === 'success') {
+        return (data.data || []).map(b => ({
+          id: b.service_book_id,
+          type: 'service',
+          service: b.category_name || 'Service',
+          customer: b.customer_name || '',
+          date: b.service_date,
+          time: b.service_time,
+          location: b.service_address,
+        }));
       }
-    })
-    .catch(err => {
-      console.error('Provider Requests API Fetch Error:', err);
+    } catch (e) {
+      console.error('Service Requests API Invalid JSON:', text);
+    }
+    return [];
+  }).catch(err => {
+    console.error('Service Requests API Fetch Error:', err);
+    return [];
+  });
+
+  // Fetch subscription requests
+  const fetchSubscriptionRequests = fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?provider_requests=1&provider_id=${providerId}`, {
+    credentials: 'include',
+  }).then(async res => {
+    let text = await res.text();
+    try {
+      const data = JSON.parse(text);
+      if (data.status === 'success') {
+        return (data.data || []).map(b => ({
+          id: b.subbook_id,
+          type: 'subscription',
+          service: b.category || 'Subscription',
+          customer: b.customer_name || '',
+          date: b.sub_date,
+          time: b.sub_time,
+          location: b.sub_address,
+        }));
+      }
+    } catch (e) {
+      console.error('Subscription Requests API Invalid JSON:', text);
+    }
+    return [];
+  }).catch(err => {
+    console.error('Subscription Requests API Fetch Error:', err);
+    return [];
+  });
+
+  // Combine both request types
+  Promise.all([fetchServiceRequests, fetchSubscriptionRequests])
+    .then(([serviceReqs, subscriptionReqs]) => {
+      setRequests([...serviceReqs, ...subscriptionReqs]);
     });
 }, [providerId]);
   const [showDeclineModal, setShowDeclineModal] = useState(false);
@@ -89,11 +122,19 @@ useEffect(() => {
 
   const handleAccept = async (req) => {
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+      const apiUrl = req.type === 'service' 
+        ? 'http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php'
+        : 'http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php';
+      
+      const bodyData = req.type === 'service' 
+        ? { action: 'accept', service_book_id: req.id, provider_id: providerId }
+        : { action: 'accept', subbook_id: req.id, provider_id: providerId };
+      
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ action: 'accept', service_book_id: req.id, provider_id: providerId })
+        body: JSON.stringify(bodyData)
       });
       const data = await res.json();
       if (data.status === 'success') {
@@ -115,11 +156,19 @@ useEffect(() => {
   const handleDeclineSubmit = async () => {
     if (!declineRequest) return;
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+      const apiUrl = declineRequest.type === 'service' 
+        ? 'http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php'
+        : 'http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php';
+      
+      const bodyData = declineRequest.type === 'service' 
+        ? { action: 'decline', service_book_id: declineRequest.id, provider_id: providerId }
+        : { action: 'decline', subbook_id: declineRequest.id, provider_id: providerId };
+      
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ action: 'decline', service_book_id: declineRequest.id, provider_id: providerId })
+        body: JSON.stringify(bodyData)
       });
       const data = await res.json();
       if (data.status === 'success') {
@@ -133,12 +182,6 @@ useEffect(() => {
     } catch (err) {
       alert('Network error');
     }
-    setRequests(updatedRequests);
-    // Optionally, update backend or context with new requests/activities
-    // setRequests and setActivities only, no localStorage
-    setShowDeclineModal(false);
-    setDeclineRequest(null);
-    setDeclineReason('');
   };
 
   // Optionally, sync requests to backend if needed

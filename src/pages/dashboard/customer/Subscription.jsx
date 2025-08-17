@@ -1,233 +1,158 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import visaImg from '../../../assets/visa.png';
-import mcImg from '../../../assets/master.png';
 import './Subscription.css';
 
 const TABS = [
-  { key: 'subscribed', label: 'Subscription Service' },
-  { key: 'unsubscribed', label: 'Unsubscription Service' },
+  { key: 'pending', label: 'Pending' },
+  { key: 'waiting', label: 'Waiting' },
+  { key: 'process', label: 'Processing' },
+  { key: 'cancel', label: 'Cancel' },
 ];
 
-const samplePlans = [
-  {
-    id: 1,
-    plan: 'Premium Home Care',
-    startDate: '2024-05-01',
-    endDate: '2025-05-01',
-    status: 'subscribed',
-    unsubscribeReason: '',
-  },
-  {
-    id: 2,
-    plan: 'Basic Maintenance',
-    startDate: '-',
-    endDate: '-',
-    status: 'unsubscribed',
-    unsubscribeReason: 'No longer needed',
-  },
-  {
-    id: 3,
-    plan: 'Garden Plus',
-    startDate: '-',
-    endDate: '-',
-    status: 'unsubscribed',
-    unsubscribeReason: 'Too expensive',
-  },
-  {
-    id: 4,
-    plan: 'AC Annual Care',
-    startDate: '2024-01-10',
-    endDate: '2025-01-10',
-    status: 'subscribed',
-    unsubscribeReason: '',
-  },
-];
-
-export default function Subscription() {
-  const [plans, setPlans] = useState(samplePlans);
-  const [activeTab, setActiveTab] = useState('subscribed');
-  const [selectedPlan, setSelectedPlan] = useState(null);
-  const [form, setForm] = useState({ name: '', address: '', phone: '', date: '', time: '' });
-  const [payment, setPayment] = useState({ method: '', card: '', expiry: '', cvv: '' });
-  const [errors, setErrors] = useState({});
+export default function Subscription({ currentUser }) {
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
+  const [activeTab, setActiveTab] = useState('pending');
+  
+  // Cancel modal states
   const [unsubscribeModalId, setUnsubscribeModalId] = useState(null);
   const [unsubscribeReason, setUnsubscribeReason] = useState('');
+  
+  // Review modal states
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewData, setReviewData] = useState(null);
+  const [reviewForm, setReviewForm] = useState({
+    rating: 5,
+    feedback: ''
+  });
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  // Fetch bookings from API
+  const fetchPlans = React.useCallback(() => {
+    if (!currentUser?.user_id) return;
+    
+    setLoading(true);
+    setApiError(null);
+    let status = activeTab;
+    // Map tab to API status
+    if (status === 'waiting') status = 'waiting';
+    else if (status === 'pending') status = 'pending';
+    else if (status === 'process') status = 'process';
+    else if (status === 'cancel') status = 'cancel';
+    
+    const url = `http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?status=${status}&user_id=${currentUser.user_id}`;
+    fetch(url, { credentials: 'include' })
+      .then(res => res.json())
+      .then(result => {
+        if (result.status === 'success') {
+          setPlans(result.data || []);
+        } else {
+          setApiError(result.message || 'Failed to fetch subscriptions.');
+        }
+        setLoading(false);
+      })
+      .catch(() => { setApiError('Error fetching subscriptions.'); setLoading(false); });
+  }, [activeTab, currentUser]);
 
-  const openBooking = (plan) => {
-    setSelectedPlan(plan);
-    setForm({ name: '', address: '', phone: '', date: '', time: '' });
-    setPayment({ method: '', card: '', expiry: '', cvv: '' });
-    setErrors({});
-    toast.info(`Booking for ${plan.plan}`, {
-      description: "Please fill in the details and proceed to payment.",
-    });
-  };
-
-  const validateForm = () => {
-    const errs = {};
-    if (!form.name.trim()) errs.name = 'Name required';
-    if (!form.address.trim()) errs.address = 'Address required';
-    if (!/^\d{10}$/.test(form.phone)) errs.phone = '10-digit phone required';
-    if (!form.date) errs.date = 'Date required';
-    if (!form.time) errs.time = 'Time required';
-    setErrors(errs);
-    if (Object.keys(errs).length > 0) {
-      toast.error('Please fill in all required fields.', {
-        description: Object.values(errs).join(' '),
-      });
-    }
-    return Object.keys(errs).length === 0;
-  };
-  const validatePayment = () => {
-    const errs = {};
-    if (!payment.method) errs.method = 'Select card type';
-    if (!/^\d{4} \d{4} \d{4} \d{4}$/.test(payment.card)) errs.card = '16-digit card required';
-    if (!/^\d{2}\/\d{2}$/.test(payment.expiry)) errs.expiry = 'MM/YY required';
-    else {
-      const [mm, yy] = payment.expiry.split('/').map(Number);
-      const year = 2000 + yy;
-      if (mm < 1 || mm > 12) errs.expiry = 'Invalid month';
-      if (year <= 2025) errs.expiry = 'Year must be after 2025';
-    }
-    if (!/^\d{3}$/.test(payment.cvv)) errs.cvv = '3-digit CVV required';
-    setErrors(errs);
-    if (Object.keys(errs).length > 0) {
-      toast.error('Please fill in all payment details.', {
-        description: Object.values(errs).join(' '),
-      });
-    }
-    return Object.keys(errs).length === 0;
-  };
-  const handleCardInput = (e) => {
-    let val = e.target.value.replace(/\D/g, '').slice(0, 16);
-    val = val.replace(/(.{4})/g, '$1 ').trim();
-    setPayment(p => ({ ...p, card: val }));
-  };
-  const handleExpiryInput = (e) => {
-    let val = e.target.value.replace(/\D/g, '').slice(0, 4);
-    if (val.length > 2) val = val.slice(0,2) + '/' + val.slice(2);
-    setPayment(p => ({ ...p, expiry: val }));
-  };
+  React.useEffect(() => { fetchPlans(); }, [fetchPlans]);
 
   const handleUnsubscribe = (id) => {
     setUnsubscribeModalId(id);
-    setUnsubscribeReason('');
   };
+
   const handleUnsubscribeSubmit = () => {
-    setPlans((prev) =>
-      prev.map((p) =>
-        p.id === unsubscribeModalId ? { ...p, status: 'unsubscribed', startDate: '-', endDate: '-', unsubscribeReason } : p
-      )
-    );
-    setUnsubscribeModalId(null);
-    setUnsubscribeReason('');
-    toast.success('Unsubscription successful!');
+    if (!unsubscribeReason.trim()) {
+      toast.error('Please provide a reason for cancellation');
+      return;
+    }
+    
+    setLoading(true);
+    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ 
+        subbook_id: unsubscribeModalId, 
+        action: 'cancel', 
+        cancel_reason: unsubscribeReason 
+      })
+    })
+      .then(res => res.json())
+      .then(result => {
+        setLoading(false);
+        if (result.status === 'success') {
+          // Find the cancelled plan details for review
+          const cancelledPlan = plans.find(p => p.subbook_id === unsubscribeModalId);
+          setReviewData({
+            subbook_id: unsubscribeModalId,
+            plan_name: cancelledPlan?.plan_name || cancelledPlan?.category || 'Subscription',
+            provider_name: cancelledPlan?.provider_name || 'Provider',
+            amount: cancelledPlan?.amount || '0'
+          });
+          
+          setUnsubscribeModalId(null);
+          setUnsubscribeReason('');
+          fetchPlans();
+          toast.success('Subscription cancelled successfully!');
+          
+          // Show review modal
+          setShowReviewModal(true);
+        } else {
+          setApiError(result.message || 'Failed to cancel subscription.');
+          toast.error(result.message || 'Failed to cancel subscription.');
+        }
+      })
+      .catch(() => { 
+        setApiError('Error cancelling subscription.'); 
+        setLoading(false); 
+        toast.error('Network error occurred.');
+      });
   };
 
-  const renderModal = () => {
-    if (selectedPlan === null) return null;
+  const handleReviewSubmit = () => {
+    if (!reviewForm.feedback.trim()) {
+      toast.error('Please provide feedback');
+      return;
+    }
 
-    if (modalStep === 'form') {
-      return (
-        <div className="customer-booking-modal-form">
-          <h2>Book Subscription: {selectedPlan?.plan}</h2>
-          <form onSubmit={e => { e.preventDefault(); if (validateForm()) setModalStep('payment'); }}>
-            <input placeholder="Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
-            {errors.name && <div className="customer-modal-err">{errors.name}</div>}
-            <input placeholder="Address" value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} />
-            {errors.address && <div className="customer-modal-err">{errors.address}</div>}
-            <input placeholder="Phone Number" value={form.phone} maxLength={10} onChange={e => setForm(f => ({ ...f, phone: e.target.value.replace(/\D/g, '') }))} />
-            {errors.phone && <div className="customer-modal-err">{errors.phone}</div>}
-            <input type="date" min={todayStr} value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
-            {errors.date && <div className="customer-modal-err">{errors.date}</div>}
-            <input placeholder="Available time (e.g. 2:00 PM)" value={form.time} onChange={e => setForm(f => ({ ...f, time: e.target.value }))} />
-            {errors.time && <div className="customer-modal-err">{errors.time}</div>}
-            <div className="customer-modal-btn-row">
-              <button type="button" onClick={closeModal} className="customer-modal-cancel-btn">Cancel</button>
-              <button type="submit" className="customer-modal-next-btn">Next</button>
-            </div>
-          </form>
-        </div>
-      );
-    }
-    if (modalStep === 'payment') {
-      return (
-        <div className="customer-booking-modal-payment">
-          <h2>Confirm Details & Payment</h2>
-          <div className="customer-modal-summary">
-            <div><b>Name:</b> {form.name}</div>
-            <div><b>Address:</b> {form.address}</div>
-            <div><b>Phone:</b> {form.phone}</div>
-            <div><b>Date:</b> {form.date}</div>
-            <div><b>Time:</b> {form.time}</div>
-          </div>
-          <div className="customer-modal-payment-methods">
-            <label>
-              <input type="radio" name="paymethod" checked={payment.method==='visa'} onChange={()=>setPayment(p=>({...p,method:'visa'}))} /> Visa
-            </label>
-            <label>
-              <input type="radio" name="paymethod" checked={payment.method==='mc'} onChange={()=>setPayment(p=>({...p,method:'mc'}))} /> MasterCard
-            </label>
-            <span className="customer-modal-charge">Booking charge: <b>Rs. 100</b></span>
-          </div>
-          {errors.method && <div className="customer-modal-err">{errors.method}</div>}
-          {payment.method && (
-            <div className="customer-modal-card-fields">
-              <div className="customer-modal-card-inputs">
-                <input placeholder="Card Number" value={payment.card} maxLength={19} onChange={handleCardInput} />
-                {errors.card && <div className="customer-modal-err">{errors.card}</div>}
-                <input placeholder="MM/YY" value={payment.expiry} maxLength={5} onChange={handleExpiryInput} />
-                {errors.expiry && <div className="customer-modal-err">{errors.expiry}</div>}
-                <input placeholder="CVV" value={payment.cvv} maxLength={3} onChange={e => setPayment(p => ({ ...p, cvv: e.target.value.replace(/\D/g, '') }))} />
-                {errors.cvv && <div className="customer-modal-err">{errors.cvv}</div>}
-              </div>
-              <div className="customer-modal-card-img">
-                {payment.method==='visa' && <img src={visaImg} alt="Visa" height={36} />}
-                {payment.method==='mc' && <img src={mcImg} alt="MasterCard" height={36} />}
-              </div>
-            </div>
-          )}
-          <div className="customer-modal-btn-row">
-            <button type="button" onClick={closeModal} className="customer-modal-cancel-btn">Cancel</button>
-            <button type="button" className="customer-modal-next-btn" onClick={()=>{ if(validatePayment()) setModalStep('confirm'); }}>Pay Now</button>
-          </div>
-        </div>
-      );
-    }
-    if (modalStep === 'confirm') {
-      return (
-        <div className="customer-booking-modal-confirm">
-          <h2>Confirm your booking</h2>
-          <div className="customer-modal-btn-row">
-            <button type="button" onClick={()=>setModalStep('payment')} className="customer-modal-cancel-btn">Cancel</button>
-            <button type="button" className="customer-modal-next-btn" onClick={()=>setModalStep('success')}>Confirm</button>
-          </div>
-        </div>
-      );
-    }
-    if (modalStep === 'success') {
-      useEffect(() => {
-        // Optionally increment subscription/service counts in state here if needed
-        // For persistent counts, fetch and update from backend API
-        // Example: setSubscriptionCount(prev => prev + 1); setServiceCount(prev => prev + 1);
-        toast.success('Booking successful!');
-      }, [modalStep]);
-      return (
-        <div className="customer-booking-modal-success">
-          <h2>Your booking is successful</h2>
-          <div className="customer-modal-btn-row">
-            <button type="button" className="customer-modal-next-btn" onClick={closeModal}>OK</button>
-          </div>
-        </div>
-      );
-    }
-    return null;
+    setLoading(true);
+    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/subscription_review.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        subbook_id: reviewData.subbook_id,
+        provider_name: reviewData.provider_name,
+        service_name: reviewData.plan_name,
+        amount: reviewData.amount,
+        rating: reviewForm.rating,
+        feedback_text: reviewForm.feedback
+      })
+    })
+      .then(res => res.json())
+      .then(result => {
+        setLoading(false);
+        if (result.status === 'success') {
+          setShowReviewModal(false);
+          setReviewForm({ rating: 5, feedback: '' });
+          setReviewData(null);
+          toast.success('Review submitted successfully!');
+        } else {
+          toast.error(result.message || 'Failed to submit review.');
+        }
+      })
+      .catch(() => {
+        setLoading(false);
+        toast.error('Network error occurred.');
+      });
   };
 
-  const filteredPlans = plans.filter((plan) => plan.status === activeTab);
+  const filteredPlans = plans.filter((plan) => {
+    if (['pending', 'waiting', 'process', 'cancel'].includes(activeTab)) {
+      return plan.subbooking_status === activeTab;
+    }
+    return plan.subbooking_status === activeTab;
+  });
 
   return (
     <div className="customer-dashboard-subscription-super">
@@ -244,60 +169,163 @@ export default function Subscription() {
           ))}
         </div>
       </div>
+      
+      {loading && <div style={{textAlign: 'center', padding: '2rem'}}>Loading...</div>}
+      {apiError && <div style={{textAlign: 'center', padding: '2rem', color: 'red'}}>{apiError}</div>}
+      
       <div className="customer-subscription-table-container">
         <div className="customer-subscription-table-scroll">
           <table className="customer-subscription-table">
             <thead>
               <tr>
                 <th>Plan</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                {activeTab === 'subscribed' && <th>Action</th>}
-                {activeTab === 'unsubscribed' && <th>Unsubscribe Reason</th>}
+                <th>Customer Name</th>
+                <th>Booking Date</th>
+                <th>Service Date</th>
+                <th>Time</th>
+                <th>Address</th>
+                <th>Phone</th>
+                {activeTab === 'cancel' && <th>Cancel Reason</th>}
+                {(activeTab === 'pending' || activeTab === 'process') && <th>Action</th>}
               </tr>
             </thead>
             <tbody>
-              {filteredPlans.map((plan) => (
-                <tr key={plan.id}>
-                  <td>{plan.plan}</td>
-                  <td>{plan.startDate}</td>
-                  <td>{plan.endDate}</td>
-                  {activeTab === 'subscribed' && (
-                    <td>
-                      <button className="customer-subscription-unsubscribe-btn" onClick={() => handleUnsubscribe(plan.id)}>
-                        Unsubscribe
-                      </button>
-                    </td>
-                  )}
-                  {activeTab === 'unsubscribed' && (
-                    <td>{plan.unsubscribeReason || '-'}</td>
-                  )}
+              {filteredPlans.length === 0 ? (
+                <tr>
+                  <td colSpan={activeTab === 'cancel' ? 8 : ((activeTab === 'pending' || activeTab === 'process') ? 8 : 7)} style={{textAlign:'center',color:'#888',padding:'2rem 0'}}>
+                    No subscriptions found.
+                  </td>
                 </tr>
-              ))}
+              ) : (
+                filteredPlans.map((plan) => (
+                  <tr key={plan.subbook_id}>
+                    <td>{plan.plan_name || plan.category}</td>
+                    <td>{plan.customer_name}</td>
+                    <td>{new Date(plan.subbooking_date).toLocaleDateString()}</td>
+                    <td>{plan.sub_date}</td>
+                    <td>{plan.sub_time}</td>
+                    <td>{plan.sub_address}</td>
+                    <td>{plan.phoneNo}</td>
+                    {activeTab === 'cancel' && <td>{plan.cancel_reason || '-'}</td>}
+                    {activeTab === 'pending' && (
+                      <td>
+                        <button
+                          className="customer-subscription-unsubscribe-btn"
+                          onClick={() => setUnsubscribeModalId(plan.subbook_id)}
+                          style={{background: '#16305a', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer'}}
+                        >
+                          Cancel
+                        </button>
+                      </td>
+                    )}
+                    {activeTab === 'process' && (
+                      <td>
+                        <button
+                          className="customer-subscription-unsubscribe-btn"
+                          onClick={() => setUnsubscribeModalId(plan.subbook_id)}
+                          style={{background: '#16305a', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer'}}
+                        >
+                          Unsubscribe
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </div>
-      {renderModal()}
-      {/* Unsubscribe Modal */}
+
+      {/* Cancel Modal */}
       {unsubscribeModalId && (
-        <div className="customer-activity-modal-overlay">
-          <div className="customer-activity-modal playful-modal cancel-modal">
-            <h3>Unsubscribe Service</h3>
-            <textarea
-              className="cancel-reason-textarea"
-              placeholder="Enter reason for unsubscription..."
-              value={unsubscribeReason}
-              onChange={e => setUnsubscribeReason(e.target.value)}
-              rows={3}
-              style={{width:'100%',marginBottom:'1.2rem',borderRadius:'8px',padding:'1rem',border:'1.5px solid #bfc8e2',fontSize:'1.08rem',background:'#f5f8fd'}}
-            />
-            <div className="customer-activity-modal-actions">
-              <button className="customer-activity-modal-cancel-btn" style={{background:'#f5f8fd',color:'#1a3665',border:'none',borderRadius:'8px',padding:'0.7rem 2.2rem',fontWeight:600,fontSize:'1.08rem',marginRight:'1rem'}} onClick={()=>setUnsubscribeModalId(null)}>
-                Close
+        <div className="customer-modal-overlay" style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000}}>
+          <div className="customer-modal" style={{background: 'white', padding: '2rem', borderRadius: '8px', width: '90%', maxWidth: '500px'}}>
+            <h3>Cancel Subscription</h3>
+            <div style={{marginBottom: '1rem'}}>
+              <label style={{display: 'block', marginBottom: '0.5rem'}}>Reason for cancellation:</label>
+              <textarea
+                value={unsubscribeReason}
+                onChange={(e) => setUnsubscribeReason(e.target.value)}
+                placeholder="Please provide a reason for cancellation..."
+                style={{width: '100%', minHeight: '100px', padding: '0.5rem', border: '1px solid #ddd', borderRadius: '4px'}}
+              />
+            </div>
+            <div style={{display: 'flex', gap: '1rem', justifyContent: 'flex-end'}}>
+              <button
+                onClick={() => {setUnsubscribeModalId(null); setUnsubscribeReason('');}}
+                style={{padding: '0.5rem 1rem', border: '1px solid #ddd', background: 'white', borderRadius: '4px', cursor: 'pointer'}}
+                disabled={loading}
+              >
+                Cancel
               </button>
-              <button className="customer-activity-modal-submit-btn" style={{background:'#16305a',color:'#fff',border:'none',borderRadius:'8px',padding:'0.7rem 2.2rem',fontWeight:600,fontSize:'1.08rem'}} onClick={handleUnsubscribeSubmit} disabled={!unsubscribeReason.trim()}>
-                Submit
+              <button
+                onClick={handleUnsubscribeSubmit}
+                style={{padding: '0.5rem 1rem', background: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer'}}
+                disabled={loading || !unsubscribeReason.trim()}
+              >
+                {loading ? 'Cancelling...' : 'Confirm Cancel'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Review Modal */}
+      {showReviewModal && reviewData && (
+        <div className="customer-modal-overlay" style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000}}>
+          <div className="customer-modal" style={{background: 'white', padding: '2rem', borderRadius: '8px', width: '90%', maxWidth: '500px'}}>
+            <h3>Rate & Review Subscription</h3>
+            <div style={{marginBottom: '1rem'}}>
+              <p><strong>Plan:</strong> {reviewData.plan_name}</p>
+              <p><strong>Provider:</strong> {reviewData.provider_name}</p>
+            </div>
+            
+            <div style={{marginBottom: '1rem'}}>
+              <label style={{display: 'block', marginBottom: '0.5rem'}}>Rating:</label>
+              <div style={{display: 'flex', gap: '0.5rem', marginBottom: '1rem'}}>
+                {[1, 2, 3, 4, 5].map(star => (
+                  <button
+                    key={star}
+                    onClick={() => setReviewForm(prev => ({...prev, rating: star}))}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      fontSize: '1.5rem',
+                      cursor: 'pointer',
+                      color: star <= reviewForm.rating ? '#ffd700' : '#ddd'
+                    }}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{marginBottom: '1rem'}}>
+              <label style={{display: 'block', marginBottom: '0.5rem'}}>Feedback:</label>
+              <textarea
+                value={reviewForm.feedback}
+                onChange={(e) => setReviewForm(prev => ({...prev, feedback: e.target.value}))}
+                placeholder="Please share your experience with this subscription service..."
+                style={{width: '100%', minHeight: '100px', padding: '0.5rem', border: '1px solid #ddd', borderRadius: '4px'}}
+              />
+            </div>
+
+            <div style={{display: 'flex', gap: '1rem', justifyContent: 'flex-end'}}>
+              <button
+                onClick={() => {setShowReviewModal(false); setReviewForm({rating: 5, feedback: ''}); setReviewData(null);}}
+                style={{padding: '0.5rem 1rem', border: '1px solid #ddd', background: 'white', borderRadius: '4px', cursor: 'pointer'}}
+                disabled={loading}
+              >
+                Skip Review
+              </button>
+              <button
+                onClick={handleReviewSubmit}
+                style={{padding: '0.5rem 1rem', background: '#16305a', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer'}}
+                disabled={loading || !reviewForm.feedback.trim()}
+              >
+                {loading ? 'Submitting...' : 'Submit Review'}
               </button>
             </div>
           </div>
@@ -305,4 +333,4 @@ export default function Subscription() {
       )}
     </div>
   );
-} 
+}

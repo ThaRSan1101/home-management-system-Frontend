@@ -66,7 +66,10 @@ export default function ProviderActivity() {
   complete: [],
   cancel: []
 });
-  const [subscriptionActivities, setSubscriptionActivities] = useState(initialSubscriptionActivities);
+  const [subscriptionActivities, setSubscriptionActivities] = useState({
+    processing: [],
+    cancel: []
+  });
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [modalActivity, setModalActivity] = useState(null);
@@ -97,48 +100,89 @@ export default function ProviderActivity() {
 
   // Fetch bookings for each status tab when providerId or activeTab changes
   useEffect(() => {
-    if (!providerId || topTab !== 'service') return;
-    const statusKey = activeTab;
-    let backendStatus = statusKey;
-    if (statusKey === 'processing') backendStatus = 'process';
-    // For 'complete', 'cancel', use as is
-    setLoadingProcessing(true);
-    setProcessingError(null);
-    fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?provider_requests=1&provider_id=${providerId}&status=${backendStatus}`,
-      { credentials: 'include' }
-    )
-      .then(res => res.json())
-      .then(data => {
-        let bookingsArr = [];
-        if (Array.isArray(data)) {
-          bookingsArr = data;
-        } else if (data && data.status === 'success' && Array.isArray(data.data)) {
-          bookingsArr = data.data;
-        }
-        const mapped = bookingsArr.map(b => ({
-          id: b.service_book_id || b.id,
-          service: b.service_name || b.service, // fallback
-          customer: b.customer_name || b.customer,
-          date: b.service_date || b.date,
-          time: b.service_time || b.time,
-          location: b.service_address || b.location,
-          status: statusKey,
-          charge: b.service_amount || b.charge || b.amount,
-          cancelReason: b.cancel_reason || b.cancelReason
-        }));
-        setServiceActivities(prev => ({
-          ...prev,
-          [statusKey]: mapped
-        }));
-        setLoadingProcessing(false);
-      })
-      .catch(err => {
-        setProcessingError('Failed to fetch bookings.');
-        setLoadingProcessing(false);
-      });
+    if (!providerId) return;
+    
+    if (topTab === 'service') {
+      const statusKey = activeTab;
+      let backendStatus = statusKey;
+      if (statusKey === 'processing') backendStatus = 'process';
+      // For 'complete', 'cancel', use as is
+      setLoadingProcessing(true);
+      setProcessingError(null);
+      fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?provider_requests=1&provider_id=${providerId}&status=${backendStatus}`,
+        { credentials: 'include' }
+      )
+        .then(res => res.json())
+        .then(data => {
+          let bookingsArr = [];
+          if (Array.isArray(data)) {
+            bookingsArr = data;
+          } else if (data && data.status === 'success' && Array.isArray(data.data)) {
+            bookingsArr = data.data;
+          }
+          const mapped = bookingsArr.map(b => ({
+            id: b.service_book_id || b.id,
+            service: b.service_name || b.service, // fallback
+            customer: b.customer_name || b.customer,
+            date: b.service_date || b.date,
+            time: b.service_time || b.time,
+            location: b.service_address || b.location,
+            status: statusKey,
+            charge: b.service_amount || b.charge || b.amount,
+            cancelReason: b.cancel_reason || b.cancelReason
+          }));
+          setServiceActivities(prev => ({
+            ...prev,
+            [statusKey]: mapped
+          }));
+          setLoadingProcessing(false);
+        })
+        .catch(err => {
+          setProcessingError('Failed to fetch bookings.');
+          setLoadingProcessing(false);
+        });
+    } else if (topTab === 'subscription') {
+      const statusKey = activeTab;
+      let backendStatus = statusKey;
+      if (statusKey === 'processing') backendStatus = 'process';
+      // For 'cancel', use as is
+      setLoadingProcessing(true);
+      setProcessingError(null);
+      fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?provider_requests=1&provider_id=${providerId}&status=${backendStatus}`,
+        { credentials: 'include' }
+      )
+        .then(res => res.json())
+        .then(data => {
+          let bookingsArr = [];
+          if (Array.isArray(data)) {
+            bookingsArr = data;
+          } else if (data && data.status === 'success' && Array.isArray(data.data)) {
+            bookingsArr = data.data;
+          }
+          const mapped = bookingsArr.map(b => ({
+            id: b.subbook_id || b.id,
+            service: b.category || b.service,
+            customer: b.customer_name || b.customer,
+            date: b.sub_date || b.date,
+            time: b.sub_time || b.time,
+            location: b.sub_address || b.location,
+            status: statusKey,
+            cancelReason: b.cancel_reason || b.cancelReason
+          }));
+          setSubscriptionActivities(prev => ({
+            ...prev,
+            [statusKey]: mapped
+          }));
+          setLoadingProcessing(false);
+        })
+        .catch(err => {
+          setProcessingError('Failed to fetch subscription bookings.');
+          setLoadingProcessing(false);
+        });
+    }
   }, [providerId, topTab, activeTab]);
 
-  const activities = topTab === 'service' ? serviceActivities[activeTab] || [] : subscriptionActivities.filter((activity) => activity.status === activeTab);
+  const activities = topTab === 'service' ? serviceActivities[activeTab] || [] : subscriptionActivities[activeTab] || [];
   const filteredActivities = activities;
 
   const activityTabs = [
@@ -156,14 +200,19 @@ export default function ProviderActivity() {
     if (!cancelReason.trim()) return;
     if (!modalActivity?.id) return;
     try {
-      const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
+      const apiUrl = topTab === 'service' 
+        ? 'http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php'
+        : 'http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php';
+      
+      const bodyData = topTab === 'service' 
+        ? { service_book_id: modalActivity.id, cancel_reason: cancelReason }
+        : { action: 'cancel', subbook_id: modalActivity.id, cancel_reason: cancelReason };
+      
+      const res = await fetch(apiUrl, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({
-          service_book_id: modalActivity.id,
-          cancel_reason: cancelReason
-        })
+        body: JSON.stringify(bodyData)
       });
       const data = await res.json();
       if (data.status === 'success') {
@@ -241,7 +290,10 @@ export default function ProviderActivity() {
             <button
               key={tab.key}
               className={`activity-large-icon-tab${isActive ? ' active' : ''}`}
-              onClick={() => { setTopTab(tab.key); setActiveTab('processing'); }}
+              onClick={() => { 
+                setTopTab(tab.key); 
+                setActiveTab('processing'); 
+              }}
               type="button"
             >
               <span className="activity-large-icon-tab-icon">
@@ -277,7 +329,7 @@ export default function ProviderActivity() {
                 <th>Date</th>
                 <th>Time</th>
               <th>Location</th>
-                {activeTab === 'processing' && <th>Action</th>}
+                {(activeTab === 'processing' && topTab === 'service') && <th>Action</th>}
                 {activeTab === 'cancel' && <th>Reason</th>}
               {activeTab === 'complete' && topTab === 'service' && <th>Charge</th>}
               </tr>
@@ -285,7 +337,7 @@ export default function ProviderActivity() {
             <tbody>
             {filteredActivities.length === 0 ? (
               <tr>
-                <td colSpan={5 + (activeTab === 'processing' ? 1 : 0) + (activeTab === 'cancel' ? 1 : 0) + (activeTab === 'complete' && topTab === 'service' ? 1 : 0)} style={{ textAlign: 'center', color: '#888', padding: '2rem 0' }}>
+                <td colSpan={5 + ((activeTab === 'processing' && topTab === 'service') ? 1 : 0) + (activeTab === 'cancel' ? 1 : 0) + (activeTab === 'complete' && topTab === 'service' ? 1 : 0)} style={{ textAlign: 'center', color: '#888', padding: '2rem 0' }}>
                   No activities found for this status.
                   </td>
               </tr>
@@ -301,13 +353,15 @@ export default function ProviderActivity() {
                     <td>
                       <div className="activity-action-btn-group">
                         {topTab === 'service' && (
-                          <button className="activity-complete-btn" onClick={() => openCompleteModal(activity)}>
-                            Complete
-                          </button>
+                          <>
+                            <button className="activity-complete-btn" onClick={() => openCompleteModal(activity)}>
+                              Complete
+                            </button>
+                            <button className="activity-cancel-btn" onClick={() => openCancelModal(activity)}>
+                              Cancel
+                            </button>
+                          </>
                         )}
-                        <button className="activity-cancel-btn" onClick={() => openCancelModal(activity)}>
-                          Cancel
-                        </button>
                       </div>
                     </td>
                   )}

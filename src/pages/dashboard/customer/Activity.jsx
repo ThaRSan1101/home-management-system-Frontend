@@ -23,6 +23,10 @@ export default function Activity({ currentUser }) {
   // State hooks
   const [activeTab, setActiveTab] = useState('pending');
   const [activities, setActivities] = useState([]);
+  const [showSubModal, setShowSubModal] = useState(false);
+  const [subForm, setSubForm] = useState({ plan: '', name: '', address: '', phone: '', date: '', time: '' });
+  const [subErrors, setSubErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
   const [viewDetailsId, setViewDetailsId] = useState(null);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [feedbackData, setFeedbackData] = useState({ rating: 0, comment: '' });
@@ -243,6 +247,7 @@ export default function Activity({ currentUser }) {
         </div>
       </div>
       <div className="customer-activity-content">
+
         {filteredActivities.length === 0 ? (
           <div className="customer-activity-empty">
             <span className="empty-icon">🗒️</span>

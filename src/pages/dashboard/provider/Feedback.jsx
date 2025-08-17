@@ -2,27 +2,38 @@ import React, { useEffect, useState } from 'react';
 import './Feedback.css';
 
 const ProviderFeedback = ({ currentUser }) => {
-  const [feedbackData, setFeedbackData] = useState([]);
+  const [serviceReviews, setServiceReviews] = useState([]);
+  const [subscriptionReviews, setSubscriptionReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!currentUser?.provider_id) return;
+    
     setLoading(true);
-    fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_review.php?provider_id=${currentUser.provider_id}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') {
-          setFeedbackData(data.data || []);
-        } else {
-          setFeedbackData([]);
-        }
-        setLoading(false);
-      })
-      .catch(() => {
-        setFeedbackData([]);
-        setLoading(false);
-      });
+    
+    // Fetch both service and subscription reviews
+    Promise.all([
+      fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_review.php?provider_id=${currentUser.provider_id}`),
+      fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/subscription_review.php?provider_id=${currentUser.provider_id}`)
+    ])
+    .then(responses => Promise.all(responses.map(res => res.json())))
+    .then(([serviceData, subscriptionData]) => {
+      setServiceReviews(serviceData.status === 'success' ? (serviceData.data || []) : []);
+      setSubscriptionReviews(subscriptionData.status === 'success' ? (subscriptionData.data || []) : []);
+      setLoading(false);
+    })
+    .catch(() => {
+      setServiceReviews([]);
+      setSubscriptionReviews([]);
+      setLoading(false);
+    });
   }, [currentUser]);
+
+  // Combine and sort all reviews by date
+  const allReviews = [
+    ...serviceReviews.map(review => ({ ...review, service_type: 'Service Booking' })),
+    ...subscriptionReviews.map(review => ({ ...review, service_type: 'Subscription Booking' }))
+  ].sort((a, b) => new Date(b.reviewed_at) - new Date(a.reviewed_at));
 
   return (
     <div className="customer-dashboard-feedback-super">
@@ -44,8 +55,8 @@ const ProviderFeedback = ({ currentUser }) => {
           <div className="customer-dashboard-feedback-table-body">
             {loading ? (
               <div style={{ padding: '2rem', textAlign: 'center', width: '100%' }}>Loading...</div>
-            ) : feedbackData.length > 0 ? feedbackData.map(feedback => (
-              <div key={feedback.review_id} className="customer-dashboard-feedback-table-row">
+            ) : allReviews.length > 0 ? allReviews.map(feedback => (
+              <div key={`${feedback.service_type}-${feedback.review_id}`} className="customer-dashboard-feedback-table-row">
                 <div className="table-cell service-cell">
                   <span>{feedback.service_name}</span>
                 </div>
@@ -65,7 +76,7 @@ const ProviderFeedback = ({ currentUser }) => {
                   <span>{new Date(feedback.reviewed_at).toLocaleDateString()}</span>
                 </div>
                 <div className="table-cell service-type-cell">
-                  <span>Service Booking</span>
+                  <span>{feedback.service_type}</span>
                 </div>
               </div>
             )) : (
