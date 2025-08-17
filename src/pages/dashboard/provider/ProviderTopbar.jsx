@@ -166,7 +166,6 @@ const ProviderTopbarContent = ({ currentUser }) => {
       toast.error("User ID not loaded, please reload the page.");
       return;
     }
-    console.log("currentUser", currentUser); // Debug log
     const newStatus = !online ? "active" : "inactive";
     setOnline(!online); // Optimistic UI update
     try {

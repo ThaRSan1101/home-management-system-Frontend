@@ -98,7 +98,6 @@ const Login = () => {
         toast.error(result.message || 'Invalid email or password.');
       }
     } catch (err) {
-      // Log full error for debugging (remove console.log in prod)
       console.error('Login error:', err.response || err.message || err);
       toast.error('Server error. Please try again later.');
     }
