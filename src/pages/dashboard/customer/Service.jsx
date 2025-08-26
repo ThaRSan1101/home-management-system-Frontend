@@ -197,28 +197,54 @@ const Service = ({ currentUser }) => {
   // Form validation
   const validateForm = () => {
     const errs = {};
+    // Name: required, only letters and spaces
     if (!form.name.trim()) errs.name = 'Name required';
+    else if (!/^[A-Za-z ]+$/.test(form.name.trim())) errs.name = 'Name must contain only letters and spaces';
+    // Address: required, min 4 chars
     if (!form.address.trim()) errs.address = 'Address required';
-    if (!/^\d{10}$/.test(form.phone)) errs.phone = '10-digit phone required';
+    else if (form.address.trim().length < 4) errs.address = 'Address too short';
+    // Phone: required, exactly 10 digits
+    if (!/^\d{10}$/.test(form.phone)) errs.phone = 'Phone must be 10 digits';
+    // Date: required, not in the past
     if (!form.date) errs.date = 'Date required';
+    else {
+      const today = new Date();
+      const selected = new Date(form.date);
+      today.setHours(0,0,0,0);
+      if (selected < today) errs.date = 'Date cannot be in the past';
+    }
+    // Time: required, valid 24-hour (HH:mm or HH:mm:00)
     if (!form.time) errs.time = 'Time required';
+    else if (!/^\d{2}:\d{2}(:\d{2})?$/.test(form.time)) errs.time = 'Time must be HH:mm';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
 
   // Payment validation
+  const luhnCheck = (num) => {
+    // Luhn algorithm for card validation
+    let arr = (num + '').split('').reverse().map(x => parseInt(x));
+    let sum = arr.reduce((acc, val, idx) => acc + (idx % 2 ? ((val *= 2) > 9 ? val - 9 : val) : val), 0);
+    return sum % 10 === 0;
+  };
   const validatePayment = () => {
     const errs = {};
     if (!payment.method) errs.method = 'Select card type';
-    if (!/^\d{4} \d{4} \d{4} \d{4}$/.test(payment.card)) errs.card = '16-digit card required';
+    // Card: 16 digits, Luhn check
+    const cardNum = payment.card.replace(/\s/g, '');
+    if (!/^\d{16}$/.test(cardNum)) errs.card = 'Card must be 16 digits';
+
+    // Expiry: MM/YY, not past
     if (!/^\d{2}\/\d{2}$/.test(payment.expiry)) errs.expiry = 'MM/YY required';
     else {
       const [mm, yy] = payment.expiry.split('/').map(Number);
-      const year = 2000 + yy;
+      const now = new Date();
+      const exp = new Date(2000 + yy, mm - 1, 1);
       if (mm < 1 || mm > 12) errs.expiry = 'Invalid month';
-      if (year <= 2025) errs.expiry = 'Year must be after 2025';
+      else if (exp < new Date(now.getFullYear(), now.getMonth(), 1)) errs.expiry = 'Card expired';
     }
-    if (!/^\d{3}$/.test(payment.cvv)) errs.cvv = '3-digit CVV required';
+    // CVV: 3 digits
+    if (!/^\d{3}$/.test(payment.cvv)) errs.cvv = 'CVV must be 3 digits';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
