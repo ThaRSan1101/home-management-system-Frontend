@@ -40,6 +40,11 @@ const SubscriptionBooking = () => {
   const [apiError, setApiError] = useState(null);
   const [activeTab, setActiveTab] = useState('pending');
 
+  // Expose a function to programmatically switch tabs
+  const handleTabSwitch = (tabKey) => {
+    setActiveTab(tabKey);
+  };
+
   // Fetch bookings from API
   const fetchSubs = React.useCallback(() => {
     setLoading(true);
@@ -170,18 +175,18 @@ const SubscriptionBooking = () => {
         <table className="subscription-booking-table">
           <thead>
             <tr>
-              <th>Subscription Plan</th>
-              <th>Customer Name</th>
-              {activeTab !== 'pending' && <th>Provider Name</th>}
-              <th>Booking Date</th>
-              <th>Service Date</th>
-              <th>Time</th>
-              <th>Phone</th>
-              <th>Address</th>
-              {activeTab !== 'cancel' && <th>Amount</th>}
-              {activeTab === 'cancel' && <th>Cancel Reason</th>}
-              <th>Action</th>
-            </tr>
+  <th>Subscription Plan</th>
+  <th>Customer Name</th>
+  {activeTab !== 'pending' && <th>Provider Name</th>}
+  <th>Booking Date</th>
+  <th>Service Date</th>
+  <th>Time</th>
+  <th>Phone</th>
+  <th>Address</th>
+  {activeTab !== 'cancel' && <th>Amount</th>}
+  {activeTab === 'cancel' && <th>Cancel Reason</th>}
+  {activeTab === 'pending' && <th>Action</th>}
+</tr>
           </thead>
           <tbody>
             {filtered.length === 0 ? (
@@ -199,16 +204,18 @@ const SubscriptionBooking = () => {
                   <td>{b.address}</td>
                   {activeTab !== 'cancel' && <td>{b.amount}</td>}
                   {activeTab === 'cancel' && <td>{b.reason}</td>}
-                  <td>
-                    <span style={{display:'flex',alignItems:'center'}}>
-                      <button className="subscription-booking-view-btn" onClick={() => { setViewModal(b); setEditMode(false); }}>View</button>
-                      {activeTab === 'pending' && (b.status !== 'waiting' ? (
-                        <button className="subscription-booking-move-btn" style={{marginLeft:'0.5rem'}} onClick={() => { setMoveModal(b); }}>Move</button>
-                      ) : (
-                        <span style={{marginLeft:'0.7rem', color:'#1a3665', fontWeight:700}}>Waiting</span>
-                      ))}
-                    </span>
-                  </td>
+                  {activeTab === 'pending' && (
+  <td>
+    <span style={{display:'flex',alignItems:'center'}}>
+      
+      {b.status !== 'waiting' ? (
+        <button className="subscription-booking-move-btn" style={{marginLeft:'0.5rem'}} onClick={() => { setMoveModal(b); }}>Move</button>
+      ) : (
+        <span style={{marginLeft:'0.7rem', color:'#1a3665', fontWeight:700}}>Waiting</span>
+      )}
+    </span>
+  </td>
+)}
                 </tr>
               ))
             )}
@@ -223,7 +230,7 @@ const SubscriptionBooking = () => {
             {/* Provider Table & Filters */}
             <div className="service-booking-move-modal-content">
               {/* Filters */}
-              <div className="service-booking-move-modal-filters">
+              {/*<div className="service-booking-move-modal-filters">
                 <div className="service-booking-move-modal-filter-group">
                   <label className="service-booking-move-modal-label">District
                     <select className="service-booking-move-modal-select" value={filterDistrict} onChange={e => setFilterDistrict(e.target.value)}>
@@ -242,8 +249,57 @@ const SubscriptionBooking = () => {
                 </div>
                 <div className="service-booking-move-modal-filter-group" style={{minWidth:'160px'}}>
                   <label className="service-booking-move-modal-label">Description
-                    <input type="text" className="service-booking-move-modal-input" placeholder="Search description..." value={filterDescription} onChange={e => setFilterDescription(e.target.value)} />
-                  </label>
+                    <select className="service-booking-move-modal-input" value={filterDescription} onChange={e => setFilterDescription(e.target.value)}>
+  <option value="">All Descriptions</option>
+  <option value="plumbing">Plumbing</option>
+  <option value="cleaning">Cleaning</option>
+  <option value="carpentary">Carpentary</option>
+  <option value="electricity">Electricity</option>
+  <option value="electronic">Electronic</option>
+  <option value="painting">Painting</option>
+  <option value="vehicle wash">Vehicle Wash</option>
+  <option value="deep cleaning">Deep Cleaning</option>
+  <option value="utility check">Utility Check</option>
+</select>
+                  </label>*/}
+                   <div className="service-booking-move-modal-filters">
+                <div className="service-booking-move-modal-filter-group">
+                  <label className="service-booking-move-modal-label">District
+  <span style={{ marginLeft: '10px' }}>
+    <select className="service-booking-move-modal-select" value={filterDistrict} onChange={e => setFilterDistrict(e.target.value)}>
+      <option value="">All Districts</option>
+      {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+    </select>
+  </span>
+</label>
+                </div>
+                <div className="service-booking-move-modal-filter-group" style={{minWidth:'120px'}}>
+                  <label className="service-booking-move-modal-label">Status
+  <span style={{ marginLeft: '10px' }}>
+    <select className="service-booking-move-modal-select" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+      <option value="">All</option>
+      {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+    </select>
+  </span>
+</label>
+                </div>
+                <div className="service-booking-move-modal-filter-group" style={{minWidth:'160px'}}>
+                  <label className="service-booking-move-modal-label">Description
+  <span style={{ marginLeft: '10px' }}>
+    <select className="service-booking-move-modal-input" value={filterDescription} onChange={e => setFilterDescription(e.target.value)}>
+      <option value="">All Descriptions</option>
+      <option value="plumbing">Plumbing</option>
+      <option value="cleaning">Cleaning</option>
+      <option value="carpentary">Carpentary</option>
+      <option value="electricity">Electricity</option>
+      <option value="electronic">Electronic</option>
+      <option value="painting">Painting</option>
+      <option value="vehicle wash">Vehicle Wash</option>
+      <option value="deep cleaning">Deep Cleaning</option>
+      <option value="utility check">Utility Check</option>
+    </select>
+  </span>
+</label>
                 </div>
                 <button type="button" className="service-booking-move-modal-reset-btn" onClick={handleResetProviderFilters}>Reset</button>
               </div>

@@ -47,9 +47,13 @@ const AdminDashboard = () => {
           <Routes>
             <Route path="dashboard" element={<DashboardHome />} />
             <Route path="service-booking" element={<ServiceBooking />} />
+            <Route path="service-booking/:serviceBookId" element={<ServiceBooking />} />
             <Route path="subscription-booking" element={<SubscriptionBooking />} />
+            <Route path="subscription-booking/:subBookId" element={<SubscriptionBooking />} />
             <Route path="customer" element={<Customer />} />
+            <Route path="customer/:userId" element={<Customer />} />
             <Route path="provider" element={<Provider />} />
+            <Route path="provider/:userId" element={<Provider />} />
             <Route path="feedback" element={<Feedback />} />
             <Route path="user-suggestion" element={<UserSuggestion />} />
             <Route path="monitoring" element={<Monitoring />} />

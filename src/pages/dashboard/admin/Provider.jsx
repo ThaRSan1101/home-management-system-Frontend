@@ -32,6 +32,33 @@ const Provider = () => {
     description: '',
     qualification: '',
   });
+  const [loadingId, setLoadingId] = useState(null);
+
+  // Disable provider handler
+  const handleDisable = (provider) => {
+    if (provider.disable_status || loadingId === provider.user_id) return;
+    setLoadingId(provider.user_id);
+    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_update_provider.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: provider.user_id, disable_status: 1 }),
+      credentials: 'include',
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          toast.success('Provider disabled successfully!');
+          fetchProviders();
+        } else {
+          toast.error(data.message || 'Failed to disable provider.');
+          setLoadingId(null);
+        }
+      })
+      .catch(() => {
+        toast.error('Network or server error.');
+        setLoadingId(null);
+      });
+  };
 
   // Fetch providers from backend
   const fetchProviders = async () => {
@@ -64,7 +91,7 @@ const Provider = () => {
     }
     if (filterDescription) {
       filtered = filtered.filter((p) =>
-        (p.description || '').toLowerCase().includes(filterDescription.toLowerCase())
+        (p.description || '').toLowerCase() === filterDescription.toLowerCase()
       );
     }
     setFilteredProviders(filtered);
@@ -131,8 +158,48 @@ const Provider = () => {
   };
   const handleAddProvider = async (e) => {
     e.preventDefault();
-    if (!addForm.name || !addForm.email || !addForm.phone || !addForm.address || !addForm.nic) {
-      toast.error('Please fill in all required fields.');
+    // Frontend validation
+    const nameRegex = /^[A-Za-z ]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10}$/;
+    const nicRegex = /^[0-9Vv]{10,12}$/;
+    if (!addForm.name || !nameRegex.test(addForm.name)) {
+      toast.error('Enter a valid name (letters and spaces only).');
+      return;
+    }
+    if (!addForm.email || !emailRegex.test(addForm.email)) {
+      toast.error('Enter a valid email address.');
+      return;
+    }
+    if (!addForm.phone || !phoneRegex.test(addForm.phone)) {
+      toast.error('Enter a valid phone number (10 digits).');
+      return;
+    }
+    if (!addForm.address || addForm.address.length < 3) {
+      toast.error('Enter a valid address.');
+      return;
+    }
+    if (!addForm.nic || !nicRegex.test(addForm.nic)) {
+      toast.error('Enter a valid NIC.');
+      return;
+    }
+    const descriptionOptions = [
+      'plumbing',
+      'cleaning',
+      'carpentary',
+      'electricity',
+      'electronic',
+      'painting',
+      'vehicle wash',
+      'deep cleaning',
+      'utility check',
+    ];
+    if (!addForm.description || !descriptionOptions.includes(addForm.description)) {
+      toast.error('Select a valid description.');
+      return;
+    }
+    if (!addForm.qualification || addForm.qualification.length < 2) {
+      toast.error('Enter qualification.');
       return;
     }
     try {
@@ -216,7 +283,7 @@ const Provider = () => {
       {/* Filter Controls (inline style) */}
       <div style={filterSectionStyle}>
         <div style={filterGroupStyle}>
-          <label style={filterLabelStyle}>Address
+          <label style={{...filterLabelStyle, display: 'flex', alignItems: 'center', gap: '0.5rem'}}>Location
             <select style={filterSelectStyle} value={filterAddress} onChange={e => setFilterAddress(e.target.value)}>
               <option value="">All Districts</option>
               {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
@@ -224,7 +291,7 @@ const Provider = () => {
           </label>
         </div>
         <div style={filterGroupStyle}>
-          <label style={filterLabelStyle}>Status
+          <label style={{...filterLabelStyle, display: 'flex', alignItems: 'center', gap: '0.5rem'}}>Status
             <select style={filterSelectStyle} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
               <option value="">All</option>
               {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
@@ -232,25 +299,23 @@ const Provider = () => {
           </label>
         </div>
         <div style={filterGroupStyle}>
-          <label style={filterLabelStyle}>Description
-            <input
-              type="text"
-              style={{
-                marginTop: '0.25rem',
-                padding: '0.48rem 0.9rem',
-                borderRadius: '7px',
-                border: '1.5px solid #b6c5df',
-                background: '#fff',
-                color: '#1a3665',
-                fontSize: '1.04rem',
-                fontWeight: 500,
-                outline: 'none',
-                transition: 'border 0.18s',
-              }}
-              placeholder="Search description..."
+          <label style={{...filterLabelStyle, display: 'flex', alignItems: 'center', gap: '0.5rem'}}>Description
+            <select
+              style={filterSelectStyle}
               value={filterDescription}
               onChange={e => setFilterDescription(e.target.value)}
-            />
+            >
+              <option value="">All Services</option>
+              <option value="plumbing">Plumbing</option>
+              <option value="cleaning">Cleaning</option>
+              <option value="carpentary">Carpentary</option>
+              <option value="electricity">Electricity</option>
+              <option value="electronic">Electronic</option>
+              <option value="painting">Painting</option>
+              <option value="vehicle wash">Vehicle Wash</option>
+              <option value="deep cleaning">Deep Cleaning</option>
+              <option value="utility check">Utility Check</option>
+            </select>
           </label>
         </div>
         <button style={resetBtnStyle} onClick={handleResetFilters}>Reset Filters</button>
@@ -290,7 +355,13 @@ const Provider = () => {
                   <td>{p.disable_status ? 'Disabled' : 'Active'}</td>
                   <td>
                     <div className="provider-action-btn-group">
-                      <button className="provider-action-btn edit-btn" onClick={() => openEdit(p)}>Edit</button>
+                      <button
+                        className="provider-action-btn disable-btn"
+                        onClick={() => handleDisable(p)}
+                        disabled={!!p.disable_status || loadingId === p.user_id}
+                      >
+                        {p.disable_status ? 'Disabled' : (loadingId === p.user_id ? 'Disabling...' : 'Disable')}
+                      </button>
                       <button className="provider-action-btn view-btn" onClick={() => openView(p)}>View</button>
                     </div>
                   </td>
@@ -335,7 +406,18 @@ const Provider = () => {
               </div>
               <div className="provider-modal-form-group">
                 <label>Description
-                  <input name="description" value={addForm.description} onChange={handleAddChange} placeholder="Description" type="text" />
+                  <select name="description" value={addForm.description} onChange={handleAddChange} required className="provider-filter-dropdown">
+                    <option value="">Select Description</option>
+                    <option value="plumbing">Plumbing</option>
+                    <option value="cleaning">Cleaning</option>
+                    <option value="carpentary">Carpentary</option>
+                    <option value="electricity">Electricity</option>
+                    <option value="electronic">Electronic</option>
+                    <option value="painting">Painting</option>
+                    <option value="vehicle wash">Vehicle Wash</option>
+                    <option value="deep cleaning">Deep Cleaning</option>
+                    <option value="utility check">Utility Check</option>
+                  </select>
                 </label>
               </div>
               <div className="provider-modal-form-group">

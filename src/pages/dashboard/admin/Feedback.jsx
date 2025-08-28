@@ -56,7 +56,7 @@ const renderStars = (rating) => {
             <div className="header-cell">Rating</div>
             <div className="header-cell">Comment</div>
             <div className="header-cell">Date</div>
-            <div className="header-cell">Service Type</div>
+            
           </div>
           <div className="admin-feedback-table-body">
             {loading ? (
@@ -87,9 +87,6 @@ const renderStars = (rating) => {
                 </div>
                 <div className="table-cell date-cell">
                   <span>{new Date(feedback.reviewed_at).toLocaleDateString()}</span>
-                </div>
-                <div className="table-cell service-type-cell">
-                  <span className="service-type-badge">{feedback.service_type}</span>
                 </div>
               </div>
             )) : (

@@ -114,7 +114,13 @@
 .subscription-booking-modal-overlay,
 .subscription-booking-modal,
 .subscription-booking-edit-modal,
-.subscription-booking-edit-modal-header,
+.subscription-booking-move-modal-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #1a3665;
+}
 .subscription-booking-edit-form-grid2col,
 .subscription-booking-edit-btn-row,
 .subscription-booking-edit-btn,
