@@ -139,7 +139,7 @@
   transition: background 0.18s, color 0.18s, box-shadow 0.18s;
   outline: none;
 }
-.provider-action-btn.edit-btn {
+.provider-action-btn.disable-btn {
   /*background: #1a3665;
   color: #fff;
   box-shadow: 0 1px 4px rgba(26,54,101,0.07);*/
@@ -147,7 +147,21 @@
   color: #1a3665;
   border: 1.5px solid #1a3665;
 }
-.provider-action-btn.edit-btn:hover {
+.provider-action-btn.disable-btn:disabled {
+  background: #f5f8fd;
+  color: #aaa;
+  border-color: #ccc;
+  cursor: not-allowed;
+  opacity: 1;
+  pointer-events: none;
+}
+.provider-action-btn.disable-btn:hover:disabled,
+.provider-action-btn.disable-btn:focus:disabled {
+  background: #f5f8fd;
+  color: #aaa;
+  border-color: #ccc;
+}
+.provider-action-btn.disable-btn:hover {
   /*background: #224b8b;*/
   background: #e6eafd;
   color: #16305a;

@@ -7,48 +7,72 @@ const Customer = () => {
   const [editModal, setEditModal] = useState(null); // customer object or null
   const [viewModal, setViewModal] = useState(null); // customer object or null
   const [editForm, setEditForm] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const openEdit = (customer) => {
-    setEditForm({ ...customer });
-    setEditModal(customer);
+  // Fetch customers utility
+  const fetchCustomers = () => {
+    setLoading(true);
+    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_customers.php', {
+      credentials: 'include',
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(data => {
+        if (data.status === 'success' && Array.isArray(data.data)) {
+          const mapped = data.data.map(c => ({
+            id: c.user_id,
+            name: c.name,
+            email: c.email,
+            phone: c.phone_number,
+            address: c.address,
+            nic: c.NIC,
+            disabled: !!c.disable_status,
+            registered: c.registered_date ? c.registered_date.split('T')[0] : '',
+          }));
+          setCustomers(mapped);
+        } else {
+          setCustomers([]);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        setCustomers([]);
+        setLoading(false);
+        console.error('Failed to fetch customers:', err);
+      });
   };
-  const openView = (customer) => setViewModal(customer);
-  const closeModals = () => { setEditModal(null); setViewModal(null); };
-  const handleEditChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setEditForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-  };
-  const handleEditSave = () => {
-    // Prepare data for backend
-    const payload = {
-      user_id: editForm.id,
-      name: editForm.name,
-      email: editForm.email,
-      phone_number: editForm.phone,
-      address: editForm.address,
-      nic: editForm.nic,
-      disable_status: editForm.disabled ? 1 : 0,
-    };
+
+  // Disable customer handler
+  const handleDisable = (customer) => {
+    if (customer.disabled || loading) return;
+    setLoading(true);
     fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_update_customer.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ user_id: customer.id, disable_status: 1 }),
       credentials: 'include',
     })
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success') {
-          setCustomers((prev) => prev.map((c) => c.id === editForm.id ? { ...editForm } : c));
-          closeModals();
-          toast.success('Customer updated successfully!');
+          toast.success('Customer disabled successfully!');
+          fetchCustomers();
         } else {
-          toast.error(data.message || 'Failed to update customer.');
+          toast.error(data.message || 'Failed to disable customer.');
+          setLoading(false);
         }
       })
       .catch(() => {
         toast.error('Network or server error.');
+        setLoading(false);
       });
   };
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
 
 
   useEffect(() => {
@@ -124,8 +148,7 @@ const Customer = () => {
                   <td className="customer-table-cell">{c.registered}</td>
                   <td className="customer-table-cell">
                     <div className="customer-action-btn-group">
-                      <button className="customer-action-btn edit-btn" onClick={() => openEdit(c)}>Edit</button>
-                      <button className="customer-action-btn view-btn" onClick={() => openView(c)}>View</button>
+                      <button className="customer-action-btn disable-btn" disabled={c.disabled} onClick={() => handleDisable(c)}>{c.disabled ? 'Disabled' : 'Disable'}</button>
                     </div>
                   </td>
                 </tr>
