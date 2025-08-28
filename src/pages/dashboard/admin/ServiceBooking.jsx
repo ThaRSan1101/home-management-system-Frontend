@@ -256,17 +256,18 @@ const ServiceBooking = () => {
                   <td>{b.amount}</td>
                   {activeTab === 'cancel' && <td>{b.reason}</td>}
                   {activeTab === 'pending' && (
-                    <td>
-                      <span style={{display:'flex',alignItems:'center'}}>
-                        
-                        {b.status !== 'waiting' ? (
-                          <button className="service-booking-move-btn" style={{marginLeft:'0.5rem'}} onClick={() => { setMoveModal(b); }}>Move</button>
-                        ) : (
-                          <span style={{marginLeft:'0.7rem', color:'#1a3665', fontWeight:700}}>Waiting</span>
-                        )}
-                      </span>
-                    </td>
-                  )}
+  <td>
+    <span style={{display:'flex',alignItems:'center'}}>
+      {b.status !== 'waiting' ? (
+        <>
+          <button className="service-booking-move-btn" style={{marginLeft:'0.5rem'}} onClick={() => { setMoveModal(b); }}>Move</button>
+        </>
+      ) : (
+        <span style={{marginLeft:'0.7rem', color:'#1a3665', fontWeight:700}}>Waiting</span>
+      )}
+    </span>
+  </td>
+)}
                 </tr>
               ))
             )}

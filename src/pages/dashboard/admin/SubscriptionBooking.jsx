@@ -205,17 +205,40 @@ const SubscriptionBooking = () => {
                   {activeTab !== 'cancel' && <td>{b.amount}</td>}
                   {activeTab === 'cancel' && <td>{b.reason}</td>}
                   {activeTab === 'pending' && (
-  <td>
-    <span style={{display:'flex',alignItems:'center'}}>
-      
-      {b.status !== 'waiting' ? (
-        <button className="subscription-booking-move-btn" style={{marginLeft:'0.5rem'}} onClick={() => { setMoveModal(b); }}>Move</button>
-      ) : (
-        <span style={{marginLeft:'0.7rem', color:'#1a3665', fontWeight:700}}>Waiting</span>
-      )}
-    </span>
-  </td>
-)}
+                    <td>
+                      <span style={{display:'flex',alignItems:'center'}}>
+                        {b.status !== 'waiting' ? (
+                          <>
+                            <button className="subscription-booking-move-btn" style={{marginLeft:'0.5rem'}} onClick={() => { setMoveModal(b); }}>Move</button>
+                            <button className="subscription-booking-decline-btn" style={{marginLeft:'0.5rem', background:'#e74c3c', color:'#fff'}} onClick={async () => {
+                              const reason = window.prompt('Enter reason for declining this booking:');
+                              if (!reason) return;
+                              try {
+                                const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php', {
+                                  method: 'PATCH',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  credentials: 'include',
+                                  body: JSON.stringify({ action: 'cancel', subbook_id: b.id, cancel_reason: reason })
+                                });
+                                const data = await res.json();
+                                if (data.status === 'success') {
+                                  toast.success('Booking declined and moved to cancel.');
+                                  setActiveTab('cancel');
+                                  fetchSubs();
+                                } else {
+                                  toast.error(data.message || 'Failed to decline booking.');
+                                }
+                              } catch (err) {
+                                toast.error('Network error.');
+                              }
+                            }}>Decline</button>
+                          </>
+                        ) : (
+                          <span style={{marginLeft:'0.7rem', color:'#1a3665', fontWeight:700}}>Waiting</span>
+                        )}
+                      </span>
+                    </td>
+                  )}
                 </tr>
               ))
             )}
