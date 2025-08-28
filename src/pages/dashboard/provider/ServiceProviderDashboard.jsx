@@ -57,7 +57,7 @@ useEffect(() => {
         return (data.data || []).map(b => ({
           id: b.service_book_id,
           type: 'service',
-          service: b.category_name || 'Service',
+          service: b.service_name,
           customer: b.customer_name || '',
           date: b.service_date,
           time: b.service_time,

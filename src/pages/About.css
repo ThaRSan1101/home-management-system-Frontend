@@ -15,11 +15,7 @@ h1, h2, h3 {
   background: linear-gradient(120deg, #fff 80%, #e6f4f1 100%);
   backdrop-filter: blur(2px);
 }
-.aboutus-card:hover, .core-value-card:hover, .team-card-super:hover, .our-story-card:hover {
-  /* box-shadow: 0 8px 32px rgba(0,122,101,0.18); */
-  /* transform: translateY(-6px) scale(1.03); */
-  /* background: linear-gradient(120deg, #f8fafc 60%, #e6f4f1 100%); */
-}
+
 .about-cta-btn, .about-cta-btn.secondary {
   transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
 }
