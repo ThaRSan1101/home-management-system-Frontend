@@ -205,7 +205,7 @@ export default function ProviderActivity() {
         : 'http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php';
       
       const bodyData = topTab === 'service' 
-        ? { service_book_id: modalActivity.id, cancel_reason: cancelReason }
+        ? { action: 'cancel', service_book_id: modalActivity.id, cancel_reason: cancelReason }
         : { action: 'cancel', subbook_id: modalActivity.id, cancel_reason: cancelReason };
       
       const res = await fetch(apiUrl, {
