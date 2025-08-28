@@ -141,7 +141,11 @@ export default function Activity({ currentUser }) {
     const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ service_book_id: cancelModalId, cancel_reason: cancelReason }),
+      body: JSON.stringify({ 
+        action: 'cancel',
+        service_book_id: cancelModalId, 
+        cancel_reason: cancelReason 
+      }),
       credentials: 'include',
     });
     const data = await res.json();
