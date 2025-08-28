@@ -233,9 +233,11 @@ export default function Activity({ currentUser }) {
       ))}
     </div>
   );
+  
 
   return (
     <div className="customer-dashboard-activity-super">
+      <h2 style={{ margin: '0 0 1.5rem 0', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center' }}>Service Booking</h2>
       <div className="customer-activity-tabs-bg">
         <div className="customer-activity-tabs">
           {STATUS_TABS.map((tab) => (
@@ -329,17 +331,7 @@ export default function Activity({ currentUser }) {
                           >
                             View Details
                           </button>
-                          <button
-                            className="submit-review-btn"
-                            style={{background:'#1a3665',color:'#fff',border:'none',borderRadius:'8px',padding:'0.5rem 1.5rem',fontWeight:600,cursor:'pointer',marginLeft:'0.6rem',opacity:ratedServiceIds.includes(activity.serviceName + '_' + activity.date + '_' + activity.provider)?0.6:1}}
-                            onClick={() => {
-                              setCurrentBill(activity);
-                              setShowFeedbackModal(true);
-                            }}
-                            disabled={ratedServiceIds.includes(activity.serviceName + '_' + activity.date + '_' + activity.provider)}
-                          >
-                            Submit Review
-                          </button>
+                          
                         </td>
                       )}
                       {activeTab === 'cancel' && (

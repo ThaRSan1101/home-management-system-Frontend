@@ -19,7 +19,7 @@ const services = [
     category: 'Pipes, Leaks & Water Flow',
     title: 'Plumbing Services',
     description: 'Fixing leaks, clogs, and water flow issues. Bathroom and kitchen plumbing made simple. Quick response for urgent plumbing problems.',
-    price: 2500,
+    price: 500,
   },
   {
     id: 2,
