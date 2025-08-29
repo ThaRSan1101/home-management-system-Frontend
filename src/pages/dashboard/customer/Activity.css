@@ -383,7 +383,7 @@
   transition: background 0.18s, color 0.18s, box-shadow 0.18s;
 }
 .accept-btn:hover, .accept-btn:focus {
-  background: #1e3763 !important;
+  background:#1e3763;
   color: #fff;
 }
 

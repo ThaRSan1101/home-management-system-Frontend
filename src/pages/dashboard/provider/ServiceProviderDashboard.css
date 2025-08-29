@@ -1374,14 +1374,8 @@ body, .provider-dashboard-home {
 .provider-dashboard-main {
   background: #f7f8fa !important;
 }
-.quick-action-btn, .period-btn.active, .details-btn, .accept-btn, .provider-dashboard-request-card .action-btn {
-  background: linear-gradient(90deg, #10b981 0%, #059669 100%) !important;
-  color: #fff !important;
-  border: none !important;
-}
-.quick-action-btn:hover, .period-btn.active:hover, .details-btn:hover, .accept-btn:hover, .provider-dashboard-request-card .action-btn:hover {
-  background: #059669 !important;
-}
+
+
 @media (max-width: 900px) {
   .provider-dashboard-header,
   .provider-dashboard-section,

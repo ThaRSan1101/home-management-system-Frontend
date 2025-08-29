@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { FaClock, FaSpinner, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import './Subscription.css';
 
 const TABS = [
-  { key: 'pending', label: 'Pending' },
-  { key: 'waiting', label: 'Waiting' },
-  { key: 'process', label: 'Processing' },
-  { key: 'cancel', label: 'Cancel' },
+  { key: 'pending', label: 'Pending', icon: <FaClock /> },
+  { key: 'waiting', label: 'Waiting', icon: <FaSpinner /> },
+  { key: 'process', label: 'Processing', icon: <FaSpinner /> },
+  { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
 ];
 
 export default function Subscription({ currentUser }) {
@@ -156,6 +157,7 @@ export default function Subscription({ currentUser }) {
 
   return (
     <div className="customer-dashboard-subscription-super">
+      <h2 style={{ margin: '0rem 0 1.5rem 0rem', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center'}}>Subscription Booking</h2>
       <div className="customer-subscription-tabs-bg">
         <div className="customer-subscription-tabs">
           {TABS.map((tab) => (
@@ -164,6 +166,7 @@ export default function Subscription({ currentUser }) {
               className={`customer-subscription-tab-btn${activeTab === tab.key ? ' active' : ''}`}
               onClick={() => setActiveTab(tab.key)}
             >
+              <span style={{ marginRight: '8px' }}>{tab.icon}</span>
               {tab.label}
             </button>
           ))}
@@ -261,7 +264,7 @@ export default function Subscription({ currentUser }) {
               </button>
               <button
                 onClick={handleUnsubscribeSubmit}
-                style={{padding: '0.5rem 1rem', background: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer'}}
+                style={{padding: '0.5rem 1rem', background: '#1a3665', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer'}}
                 disabled={loading || !unsubscribeReason.trim()}
               >
                 {loading ? 'Cancelling...' : 'Confirm Cancel'}

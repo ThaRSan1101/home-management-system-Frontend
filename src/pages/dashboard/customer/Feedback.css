@@ -91,7 +91,7 @@
 
 .customer-dashboard-feedback-table-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1fr ;
   background: #f5f8fd;
   border-bottom: 2px solid #e0e7ef;
   padding: 1rem 0;
@@ -99,22 +99,24 @@
 }
 
 .header-cell {
-  padding: 1rem 1.5rem;
+  padding: 1rem 1rem;
   font-weight: 700;
   color: #1a3665;
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  text-align: center;
 }
 
 .customer-dashboard-feedback-table-body {
   max-height: 600px;
   overflow-y: auto;
+  text-align: center;
 }
 
 .customer-dashboard-feedback-table-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr 1fr ;
   border-bottom: 1px solid #f1f5f9;
   transition: background-color 0.2s ease;
 }

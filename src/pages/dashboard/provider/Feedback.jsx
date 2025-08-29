@@ -31,8 +31,8 @@ const ProviderFeedback = ({ currentUser }) => {
 
   // Combine and sort all reviews by date
   const allReviews = [
-    ...serviceReviews.map(review => ({ ...review, service_type: 'Service Booking' })),
-    ...subscriptionReviews.map(review => ({ ...review, service_type: 'Subscription Booking' }))
+    ...serviceReviews,
+    ...subscriptionReviews
   ].sort((a, b) => new Date(b.reviewed_at) - new Date(a.reviewed_at));
 
   return (
@@ -50,13 +50,12 @@ const ProviderFeedback = ({ currentUser }) => {
             <div className="header-cell">Rating</div>
             <div className="header-cell">Comment</div>
             <div className="header-cell">Date</div>
-            <div className="header-cell">Service Type</div>
           </div>
           <div className="customer-dashboard-feedback-table-body">
             {loading ? (
               <div style={{ padding: '2rem', textAlign: 'center', width: '100%' }}>Loading...</div>
             ) : allReviews.length > 0 ? allReviews.map(feedback => (
-              <div key={`${feedback.service_type}-${feedback.review_id}`} className="customer-dashboard-feedback-table-row">
+              <div key={`${feedback.service_name}-${feedback.review_id}`} className="customer-dashboard-feedback-table-row">
                 <div className="table-cell service-cell">
                   <span>{feedback.service_name}</span>
                 </div>
@@ -74,9 +73,6 @@ const ProviderFeedback = ({ currentUser }) => {
                 </div>
                 <div className="table-cell date-cell">
                   <span>{new Date(feedback.reviewed_at).toLocaleDateString()}</span>
-                </div>
-                <div className="table-cell service-type-cell">
-                  <span>{feedback.service_type}</span>
                 </div>
               </div>
             )) : (
