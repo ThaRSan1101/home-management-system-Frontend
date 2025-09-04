@@ -41,27 +41,34 @@ const ProviderTopbarContent = ({ currentUser }) => {
   const [notificationCount, setNotificationCount] = useState(0);
   const [providerId, setProviderId] = useState(null);
 
-  // Fetch provider notifications
+  // Fetch provider notifications (service request + canceled booking) and details
   const fetchProviderNotifications = async () => {
     if (!providerId) return;
     
     try {
-      const response = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_service_request_count&provider_id=${providerId}`);
-      const data = await response.json();
-      
-      if (data.status === 'success') {
-        setNotificationCount(data.count);
-        
-        // Create notification items for display
-        if (data.count > 0) {
-          const notificationItems = Array(data.count).fill(null).map((_, index) => ({
-            id: index + 1,
-            message: 'You have a new service request'
-          }));
-          setNotifications(notificationItems);
-        } else {
-          setNotifications([]);
-        }
+      const [reqRes, cancelRes] = await Promise.all([
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_service_request_count&provider_id=${providerId}`),
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_canceled_service_count&provider_id=${providerId}`)
+      ]);
+      const dataReq = await reqRes.json();
+      const dataCancel = await cancelRes.json();
+
+      const countReq = dataReq.status === 'success' ? dataReq.count : 0;
+      const countCancel = dataCancel.status === 'success' ? dataCancel.count : 0;
+      const total = countReq + countCancel;
+      setNotificationCount(total);
+
+      // Load detailed active notifications for provider
+      const detailRes = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_active_notifications&provider_id=${providerId}`);
+      const detailData = await detailRes.json();
+      if (detailData.status === 'success' && Array.isArray(detailData.data)) {
+        const items = detailData.data.map(n => ({ id: n.notification_id, message: n.description }));
+        setNotifications(items);
+      } else {
+        const fallback = [];
+        for (let i = 0; i < countReq; i++) fallback.push({ id: `req-${i+1}`, message: 'You have a new service request' });
+        for (let i = 0; i < countCancel; i++) fallback.push({ id: `cancel-${i+1}`, message: 'Service booking is canceled' });
+        setNotifications(fallback);
       }
     } catch (error) {
       console.error('Error fetching provider notifications:', error);
@@ -244,7 +251,10 @@ const ProviderTopbarContent = ({ currentUser }) => {
     if (!providerId) return;
     
     try {
-      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=mark_single_provider_service_request_hidden&provider_id=${providerId}`, {
+      // Decide which stream to hide based on id prefix
+      const isCancel = String(notificationId).startsWith('cancel-');
+      const action = isCancel ? 'hide_single_provider_canceled_service' : 'mark_single_provider_service_request_hidden';
+      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=${action}&provider_id=${providerId}`, {
         method: 'GET',
         credentials: 'include',
       });

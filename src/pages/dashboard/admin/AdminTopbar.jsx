@@ -8,42 +8,47 @@ const AdminTopbar = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [newServiceBookingCount, setNewServiceBookingCount] = useState(0);
+  const [canceledServiceBookingCount, setCanceledServiceBookingCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const profileRef = useRef();
   const notifRef = useRef();
 
-  // Fetch new service booking notifications
-  const fetchNewServiceBookingNotifications = async () => {
+  // Fetch counts and active notification details
+  const fetchAdminNotifications = async () => {
     try {
-      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_new_service_booking_count');
-      const data = await response.json();
-      
-      if (data.status === 'success') {
-        setNewServiceBookingCount(data.count);
-        
-        // Create notification items for display
-        if (data.count > 0) {
-          const notificationItems = Array(data.count).fill(null).map((_, index) => ({
-            id: index + 1,
-            message: 'New service booking'
-          }));
-          setNotifications(notificationItems);
-        } else {
-          setNotifications([]);
-        }
+      const [newRes, canceledRes] = await Promise.all([
+        fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_new_service_booking_count'),
+        fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_canceled_service_count')
+      ]);
+      const newData = await newRes.json();
+      const canceledData = await canceledRes.json();
+
+      const newCount = newData.status === 'success' ? newData.count : 0;
+      const canceledCount = canceledData.status === 'success' ? canceledData.count : 0;
+      setNewServiceBookingCount(newCount);
+      setCanceledServiceBookingCount(canceledCount);
+
+      // Load actual active notification details for dropdown
+      const detailRes = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_active_notifications');
+      const detailData = await detailRes.json();
+      if (detailData.status === 'success' && Array.isArray(detailData.data)) {
+        const items = detailData.data.map(n => ({ id: n.notification_id, message: n.description }));
+        setNotifications(items);
+      } else {
+        const items = [];
+        for (let i = 0; i < newCount; i++) items.push({ id: `new-${i+1}`, message: 'New service booking' });
+        for (let i = 0; i < canceledCount; i++) items.push({ id: `cancel-${i+1}`, message: 'Service booking is canceled' });
+        setNotifications(items);
       }
     } catch (error) {
-      console.error('Error fetching new service booking notifications:', error);
+      console.error('Error fetching admin notifications:', error);
     }
   };
 
 
   useEffect(() => {
-    fetchNewServiceBookingNotifications();
-    
-    // Refresh notifications every 30 seconds
-    const interval = setInterval(fetchNewServiceBookingNotifications, 30000);
-    
+    fetchAdminNotifications();
+    const interval = setInterval(fetchAdminNotifications, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -63,14 +68,16 @@ const AdminTopbar = () => {
   // Handle individual notification click - hide specific notification
   const handleNotificationItemClick = async (notificationId) => {
     try {
-      await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=mark_single_service_booking_hidden', {
+      const isCanceled = String(notificationId).startsWith('cancel-');
+      const action = isCanceled ? 'hide_single_admin_canceled_service' : 'mark_single_service_booking_hidden';
+      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=${action}`, {
         method: 'GET',
         credentials: 'include',
       });
       // Refresh notifications after hiding one
-      fetchNewServiceBookingNotifications();
+      fetchAdminNotifications();
     } catch (error) {
-      console.error('Error hiding service booking notification:', error);
+      console.error('Error hiding admin notification:', error);
     }
   };
 
@@ -85,8 +92,8 @@ const AdminTopbar = () => {
         <div className="admin-topbar-notification-section" ref={notifRef}>
           <div className="notification-icon-container">
             <FaBell className="admin-topbar-icon" size={26} onClick={() => setNotifOpen((o) => !o)} />
-            {newServiceBookingCount > 0 && (
-              <span className="notification-badge-topbar">{newServiceBookingCount}</span>
+            {newServiceBookingCount + canceledServiceBookingCount > 0 && (
+              <span className="notification-badge-topbar">{newServiceBookingCount + canceledServiceBookingCount}</span>
             )}
           </div>
           {notifOpen && (

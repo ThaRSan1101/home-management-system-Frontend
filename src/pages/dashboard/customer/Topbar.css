@@ -43,6 +43,27 @@
 .topbar-profile-icon:hover {
   box-shadow: 0 4px 16px rgba(26,54,101,0.18);
 }
+/* Notification badge styles */
+.notification-icon-container { position: relative; display: inline-block; }
+.notification-badge-topbar {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4444;
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e6faf5;
+  min-width: 20px;
+  line-height: 1;
+  z-index: 10;
+}
 .topbar-profile-icon.solid {
   background: #e6faf5;
   color: #1a3665;

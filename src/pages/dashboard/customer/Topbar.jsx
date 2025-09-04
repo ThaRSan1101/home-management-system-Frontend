@@ -13,11 +13,7 @@ const customer = {
   joined: '2023-01-15',
 };
 
-const notifications = [
-  { id: 1, message: 'Your booking for Home Cleaning is confirmed.', time: '2 hours ago' },
-  { id: 2, message: 'Subscription payment received.', time: '1 day ago' },
-  { id: 3, message: 'Plumbing service completed.', time: '3 days ago' },
-];
+// Dynamic notifications from backend
 
 const Topbar = ({ currentUser }) => {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -42,12 +38,55 @@ const Topbar = ({ currentUser }) => {
   const profileRef = useRef();
   const notifRef = useRef();
   const navigate = useNavigate();
+  const [notifications, setNotifications] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   const handleLogout = async () => {
     await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/logout.php', { 
       method: 'POST',
       credentials: 'include' });
     navigate('/login');
+  };
+  // Fetch canceled service booking notifications for this customer
+  const fetchCanceledNotifications = async () => {
+    const userId = currentUser?.user_id;
+    if (!userId) return;
+    try {
+      const [countRes, detailRes] = await Promise.all([
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_canceled_service_count&user_id=${userId}`),
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_active_notifications&user_id=${userId}`)
+      ]);
+      const countData = await countRes.json();
+      const detailData = await detailRes.json();
+      const count = countData.status === 'success' ? countData.count : 0;
+      setNotificationCount(count);
+      if (detailData.status === 'success' && Array.isArray(detailData.data)) {
+        const items = detailData.data.map(n => ({ id: n.notification_id, message: n.description }));
+        setNotifications(items);
+      } else {
+        const items = Array(count).fill(null).map((_, idx) => ({ id: `cancel-${idx+1}`, message: 'Service booking is canceled' }));
+        setNotifications(items);
+      }
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  useEffect(() => {
+    fetchCanceledNotifications();
+    const interval = setInterval(fetchCanceledNotifications, 30000);
+    return () => clearInterval(interval);
+  }, [currentUser]);
+
+  const handleNotificationItemClick = async () => {
+    const userId = currentUser?.user_id;
+    if (!userId) return;
+    try {
+      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=hide_single_customer_canceled_service&user_id=${userId}`, { method: 'GET', credentials: 'include' });
+      fetchCanceledNotifications();
+    } catch (e) {
+      // ignore
+    }
   };
 
   const handleEditProfile = () => {
@@ -163,7 +202,12 @@ const Topbar = ({ currentUser }) => {
     <div className="customer-topbar">
       <div className="topbar-actions">
         <div className="topbar-notification-section" ref={notifRef}>
-          <FaBell className="topbar-notification-icon" size={26} onClick={() => setNotifOpen((o) => !o)} />
+          <div className="notification-icon-container">
+            <FaBell className="topbar-notification-icon" size={26} onClick={() => setNotifOpen((o) => !o)} />
+            {notificationCount > 0 && (
+              <span className="notification-badge-topbar">{notificationCount}</span>
+            )}
+          </div>
           {notifOpen && (
             <div className="notification-dropdown">
               <div className="notification-header">Notifications</div>
@@ -171,9 +215,8 @@ const Topbar = ({ currentUser }) => {
                 <div className="notification-empty">No new notifications</div>
               ) : (
                 notifications.map((notif) => (
-                  <div className="notification-item" key={notif.id}>
+                  <div className="notification-item" key={notif.id} onClick={() => handleNotificationItemClick()} style={{ cursor: 'pointer' }}>
                     <div className="notification-message">{notif.message}</div>
-                    <div className="notification-time">{notif.time}</div>
                   </div>
                 ))
               )}
