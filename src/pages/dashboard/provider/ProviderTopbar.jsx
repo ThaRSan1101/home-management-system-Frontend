@@ -46,22 +46,25 @@ const ProviderTopbarContent = ({ currentUser }) => {
     if (!providerId) return;
     
     try {
-      const [reqRes, reqSubRes, cancelRes, completedRes] = await Promise.all([
+      const [reqRes, reqSubRes, cancelRes, completedRes, subCompletedRes] = await Promise.all([
         fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_service_request_count&provider_id=${providerId}`),
         fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_subscription_request_count&provider_id=${providerId}`),
         fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_canceled_service_count&provider_id=${providerId}`),
-        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_completed_service_count&provider_id=${providerId}`)
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_completed_service_count&provider_id=${providerId}`),
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_subscription_completed_count&provider_id=${providerId}`)
       ]);
       const dataReq = await reqRes.json();
       const dataReqSub = await reqSubRes.json();
       const dataCancel = await cancelRes.json();
       const dataCompleted = await completedRes.json();
+      const dataSubCompleted = await subCompletedRes.json();
 
       const countReq = dataReq.status === 'success' ? dataReq.count : 0;
       const countReqSub = dataReqSub.status === 'success' ? dataReqSub.count : 0;
       const countCancel = dataCancel.status === 'success' ? dataCancel.count : 0;
       const countCompleted = dataCompleted.status === 'success' ? dataCompleted.count : 0;
-      const total = countReq + countReqSub + countCancel + countCompleted;
+      const countSubCompleted = dataSubCompleted.status === 'success' ? dataSubCompleted.count : 0;
+      const total = countReq + countReqSub + countCancel + countCompleted + countSubCompleted;
       setNotificationCount(total);
 
       // Load detailed active notifications for provider
