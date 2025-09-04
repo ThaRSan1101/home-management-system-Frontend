@@ -19,6 +19,8 @@ const AdminSidebar = () => {
   const { userId } = useParams();
   const location = useLocation();
   const [notificationCount, setNotificationCount] = useState(0);
+  const [pendingServiceCount, setPendingServiceCount] = useState(0);
+  const [pendingSubscriptionCount, setPendingSubscriptionCount] = useState(0);
 
   const handleLogout = () => {
     navigate('/login');
@@ -38,18 +40,54 @@ const AdminSidebar = () => {
     }
   };
 
+  // Fetch pending service booking count
+  const fetchPendingServiceCount = async () => {
+    try {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_pending_service_count');
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        setPendingServiceCount(data.count);
+      }
+    } catch (error) {
+      console.error('Error fetching pending service count:', error);
+    }
+  };
+
+  // Fetch pending subscription booking count
+  const fetchPendingSubscriptionCount = async () => {
+    try {
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_pending_subscription_count');
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        setPendingSubscriptionCount(data.count);
+      }
+    } catch (error) {
+      console.error('Error fetching pending subscription count:', error);
+    }
+  };
+
   useEffect(() => {
     fetchNotificationCount();
+    fetchPendingServiceCount();
+    fetchPendingSubscriptionCount();
     
-    // Refresh notification count every 30 seconds
-    const interval = setInterval(fetchNotificationCount, 30000);
+    // Refresh counts every 30 seconds
+    const interval = setInterval(() => {
+      fetchNotificationCount();
+      fetchPendingServiceCount();
+      fetchPendingSubscriptionCount();
+    }, 30000);
     
     return () => clearInterval(interval);
   }, []);
 
-  // Refresh notification count when route changes (especially when visiting customer page)
+  // Refresh counts when route changes
   useEffect(() => {
     fetchNotificationCount();
+    fetchPendingServiceCount();
+    fetchPendingSubscriptionCount();
   }, [location.pathname]);
 
   return (
@@ -70,6 +108,12 @@ const AdminSidebar = () => {
             {item.icon}
             {item.path === 'customer' && notificationCount > 0 && (
               <span className="notification-badge">{notificationCount}</span>
+            )}
+            {item.path === 'service-booking' && pendingServiceCount > 0 && (
+              <span className="notification-badge">{pendingServiceCount}</span>
+            )}
+            {item.path === 'subscription-booking' && pendingSubscriptionCount > 0 && (
+              <span className="notification-badge">{pendingSubscriptionCount}</span>
             )}
           </NavLink>
         ))}
