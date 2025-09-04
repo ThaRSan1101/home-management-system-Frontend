@@ -16,16 +16,19 @@ const AdminTopbar = () => {
   // Fetch counts and active notification details
   const fetchAdminNotifications = async () => {
     try {
-      const [newRes, canceledRes] = await Promise.all([
+      const [newRes, canceledRes, completedRes] = await Promise.all([
         fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_new_service_booking_count'),
-        fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_canceled_service_count')
+        fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_canceled_service_count'),
+        fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_completed_service_count')
       ]);
       const newData = await newRes.json();
       const canceledData = await canceledRes.json();
+      const completedData = await completedRes.json();
 
       const newCount = newData.status === 'success' ? newData.count : 0;
       const canceledCount = canceledData.status === 'success' ? canceledData.count : 0;
-      setNewServiceBookingCount(newCount);
+      const completedCount = completedData.status === 'success' ? completedData.count : 0;
+      setNewServiceBookingCount(newCount + completedCount);
       setCanceledServiceBookingCount(canceledCount);
 
       // Load actual active notification details for dropdown
@@ -68,9 +71,7 @@ const AdminTopbar = () => {
   // Handle individual notification click - hide specific notification
   const handleNotificationItemClick = async (notificationId) => {
     try {
-      const isCanceled = String(notificationId).startsWith('cancel-');
-      const action = isCanceled ? 'hide_single_admin_canceled_service' : 'mark_single_service_booking_hidden';
-      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=${action}`, {
+      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=hide_notification_by_id&notification_id=${notificationId}&role=admin`, {
         method: 'GET',
         credentials: 'include',
       });

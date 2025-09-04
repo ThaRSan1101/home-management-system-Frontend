@@ -52,13 +52,15 @@ const Topbar = ({ currentUser }) => {
     const userId = currentUser?.user_id;
     if (!userId) return;
     try {
-      const [countRes, detailRes] = await Promise.all([
+      const [countCancelRes, countCompletedRes, detailRes] = await Promise.all([
         fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_canceled_service_count&user_id=${userId}`),
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_completed_service_count&user_id=${userId}`),
         fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_active_notifications&user_id=${userId}`)
       ]);
-      const countData = await countRes.json();
+      const countCancelData = await countCancelRes.json();
+      const countCompletedData = await countCompletedRes.json();
       const detailData = await detailRes.json();
-      const count = countData.status === 'success' ? countData.count : 0;
+      const count = (countCancelData.status === 'success' ? countCancelData.count : 0) + (countCompletedData.status === 'success' ? countCompletedData.count : 0);
       setNotificationCount(count);
       if (detailData.status === 'success' && Array.isArray(detailData.data)) {
         const items = detailData.data.map(n => ({ id: n.notification_id, message: n.description }));
@@ -78,11 +80,11 @@ const Topbar = ({ currentUser }) => {
     return () => clearInterval(interval);
   }, [currentUser]);
 
-  const handleNotificationItemClick = async () => {
+  const handleNotificationItemClick = async (notificationId) => {
     const userId = currentUser?.user_id;
     if (!userId) return;
     try {
-      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=hide_single_customer_canceled_service&user_id=${userId}`, { method: 'GET', credentials: 'include' });
+      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=hide_notification_by_id&notification_id=${notificationId}&role=customer`, { method: 'GET', credentials: 'include' });
       fetchCanceledNotifications();
     } catch (e) {
       // ignore
@@ -215,7 +217,7 @@ const Topbar = ({ currentUser }) => {
                 <div className="notification-empty">No new notifications</div>
               ) : (
                 notifications.map((notif) => (
-                  <div className="notification-item" key={notif.id} onClick={() => handleNotificationItemClick()} style={{ cursor: 'pointer' }}>
+                  <div className="notification-item" key={notif.id} onClick={() => handleNotificationItemClick(notif.id)} style={{ cursor: 'pointer' }}>
                     <div className="notification-message">{notif.message}</div>
                   </div>
                 ))
