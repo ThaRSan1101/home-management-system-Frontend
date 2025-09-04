@@ -12,12 +12,7 @@ const provider = {
   avatar: '/src/assets/man.png',
 };
 
-const notifications = [
-  { id: 1, type: 'booking', message: 'New booking request for Plumbing service', time: '1 hour ago', read: false },
-  { id: 2, type: 'payment', message: 'Payment received for AC Service', time: '2 hours ago', read: false },
-  { id: 3, type: 'feedback', message: '5-star review from Sarah Johnson', time: '1 day ago', read: true },
-  { id: 4, type: 'system', message: 'Your subscription was renewed successfully', time: '2 days ago', read: true },
-];
+// Dynamic notifications will be fetched from backend
 
 const ProviderTopbarContent = ({ currentUser }) => {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -42,6 +37,46 @@ const ProviderTopbarContent = ({ currentUser }) => {
   const profileRef = useRef();
   const notifRef = useRef();
   const [online, setOnline] = useState(false); // Controlled by backend status
+  const [notifications, setNotifications] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [providerId, setProviderId] = useState(null);
+
+  // Fetch provider notifications (service request + canceled booking) and details
+  const fetchProviderNotifications = async () => {
+    if (!providerId) return;
+    
+    try {
+      const [reqRes, cancelRes, completedRes] = await Promise.all([
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_service_request_count&provider_id=${providerId}`),
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_canceled_service_count&provider_id=${providerId}`),
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_completed_service_count&provider_id=${providerId}`)
+      ]);
+      const dataReq = await reqRes.json();
+      const dataCancel = await cancelRes.json();
+      const dataCompleted = await completedRes.json();
+
+      const countReq = dataReq.status === 'success' ? dataReq.count : 0;
+      const countCancel = dataCancel.status === 'success' ? dataCancel.count : 0;
+      const countCompleted = dataCompleted.status === 'success' ? dataCompleted.count : 0;
+      const total = countReq + countCancel + countCompleted;
+      setNotificationCount(total);
+
+      // Load detailed active notifications for provider
+      const detailRes = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_active_notifications&provider_id=${providerId}`);
+      const detailData = await detailRes.json();
+      if (detailData.status === 'success' && Array.isArray(detailData.data)) {
+        const items = detailData.data.map(n => ({ id: n.notification_id, message: n.description }));
+        setNotifications(items);
+      } else {
+        const fallback = [];
+        for (let i = 0; i < countReq; i++) fallback.push({ id: `req-${i+1}`, message: 'You have a new service request' });
+        for (let i = 0; i < countCancel; i++) fallback.push({ id: `cancel-${i+1}`, message: 'Service booking is canceled' });
+        setNotifications(fallback);
+      }
+    } catch (error) {
+      console.error('Error fetching provider notifications:', error);
+    }
+  };
 
   // Fetch provider status from backend on mount or when currentUser changes
   useEffect(() => {
@@ -54,6 +89,32 @@ const ProviderTopbarContent = ({ currentUser }) => {
         }
       });
   }, [currentUser]);
+
+  // Resolve providerId from current user on mount/change
+  useEffect(() => {
+    const resolveProviderId = async () => {
+      if (!currentUser?.user_id) return;
+      try {
+        const res = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_id_by_user&user_id=${currentUser.user_id}`);
+        const data = await res.json();
+        if (data.status === 'success' && data.provider_id) {
+          setProviderId(data.provider_id);
+        } else {
+          setProviderId(null);
+        }
+      } catch (_) {
+        setProviderId(null);
+      }
+    };
+    resolveProviderId();
+  }, [currentUser]);
+
+  // Fetch notifications on mount and when providerId changes
+  useEffect(() => {
+    fetchProviderNotifications();
+    const interval = setInterval(fetchProviderNotifications, 30000);
+    return () => clearInterval(interval);
+  }, [providerId]);
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [pendingProfile, setPendingProfile] = useState(null);
   const [otp, setOtp] = useState('');
@@ -188,13 +249,34 @@ const ProviderTopbarContent = ({ currentUser }) => {
     }
   };
 
+  // Handle individual notification click - hide specific notification
+  const handleNotificationItemClick = async (notificationId) => {
+    if (!providerId) return;
+    
+    try {
+      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=hide_notification_by_id&notification_id=${notificationId}&role=provider`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      // Refresh notifications after hiding one
+      fetchProviderNotifications();
+    } catch (error) {
+      console.error('Error hiding provider notification:', error);
+    }
+  };
+
 
 
   return (
     <div className="provider-topbar">
       <div className="topbar-actions">
         <div className="topbar-notification-section" ref={notifRef}>
-          <FaBell className="topbar-notification-icon" size={26} onClick={() => setNotifOpen((o) => !o)} />
+          <div className="notification-icon-container">
+            <FaBell className="topbar-notification-icon" size={26} onClick={() => setNotifOpen((o) => !o)} />
+            {notificationCount > 0 && (
+              <span className="notification-badge">{notificationCount}</span>
+            )}
+          </div>
           {notifOpen && (
             <div className="notification-dropdown">
               <div className="notification-header">Notifications</div>
@@ -202,9 +284,13 @@ const ProviderTopbarContent = ({ currentUser }) => {
                 <div className="notification-empty">No new notifications</div>
               ) : (
                 notifications.map((notif) => (
-                  <div className="notification-item" key={notif.id}>
+                  <div 
+                    className="notification-item" 
+                    key={notif.id}
+                    onClick={() => handleNotificationItemClick(notif.id)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <div className="notification-message">{notif.message}</div>
-                    <div className="notification-time">{notif.time}</div>
                   </div>
                 ))
               )}

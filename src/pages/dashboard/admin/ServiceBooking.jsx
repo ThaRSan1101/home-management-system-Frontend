@@ -95,6 +95,7 @@ const ServiceBooking = () => {
   const [moveModal, setMoveModal] = useState(null);
   const [moveProvider, setMoveProvider] = useState('');
 
+
   // Fetch bookings from backend on mount
   useEffect(() => {
     async function fetchBookings() {

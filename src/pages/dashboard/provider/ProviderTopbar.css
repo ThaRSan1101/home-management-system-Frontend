@@ -61,6 +61,27 @@
   gap: 0.7rem;
   animation: fadeInProfile 0.2s;
 }
+/* Notification badge styles (match admin/customer, red, no blue border) */
+.notification-icon-container { position: relative; display: inline-block; }
+.notification-badge { 
+  position: absolute; 
+  top: -8px; 
+  right: -8px; 
+  background: #ff4444 !important; 
+  color: #fff; 
+  border-radius: 50%; 
+  width: 20px; 
+  height: 20px; 
+  font-size: 11px; 
+  font-weight: 700; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  border: 2px solid #e6faf5; /* match icon bg so no blue rim */
+  min-width: 20px; 
+  line-height: 1; 
+  z-index: 10; 
+}
 .notification-header {
   font-size: 1.08rem;
   font-weight: 800;

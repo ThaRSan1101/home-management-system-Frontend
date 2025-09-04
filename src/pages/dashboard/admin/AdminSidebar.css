@@ -61,6 +61,25 @@
   box-shadow: 0 2px 12px rgba(45,95,255,0.10);
 }
 
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #1a3665;
+  min-width: 18px;
+  line-height: 1;
+}
+
 .modern-sidebar-logout {
   background: #fff;
   color: #1a3665;
@@ -124,5 +143,13 @@
     height: 40px;
     padding: 2px;
     filter: brightness(0) invert(1);
+  }
+  
+  .notification-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 9px;
+    top: -1px;
+    right: -1px;
   }
 } 
