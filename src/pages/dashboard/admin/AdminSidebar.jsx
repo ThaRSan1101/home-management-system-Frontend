@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useParams, useLocation } from 'react-router-dom';
-import { FaHome, FaClipboardList, FaRegCreditCard, FaUsers, FaUserTie, FaCommentDots, FaLightbulb, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { FaHome, FaClipboardList, FaRegCreditCard, FaUsers, FaUserTie, FaCommentDots, FaLightbulb, FaChartBar } from 'react-icons/fa';
 import './AdminSidebar.css';
 
 const navItems = [
@@ -16,9 +16,8 @@ const navItems = [
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
-  const { userId } = useParams();
   const location = useLocation();
-  const [notificationCount, setNotificationCount] = useState(0);
+  const [customerRegistrationCount, setCustomerRegistrationCount] = useState(0);
   const [pendingServiceCount, setPendingServiceCount] = useState(0);
   const [pendingSubscriptionCount, setPendingSubscriptionCount] = useState(0);
 
@@ -26,17 +25,17 @@ const AdminSidebar = () => {
     navigate('/login');
   };
 
-  // Fetch admin notification count
-  const fetchNotificationCount = async () => {
+  // Fetch customer registration notification count
+  const fetchCustomerRegistrationCount = async () => {
     try {
-      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_count');
+      const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_registration_count');
       const data = await response.json();
       
       if (data.status === 'success') {
-        setNotificationCount(data.count);
+        setCustomerRegistrationCount(data.count);
       }
     } catch (error) {
-      console.error('Error fetching notification count:', error);
+      console.error('Error fetching customer registration count:', error);
     }
   };
 
@@ -69,13 +68,13 @@ const AdminSidebar = () => {
   };
 
   useEffect(() => {
-    fetchNotificationCount();
+    fetchCustomerRegistrationCount();
     fetchPendingServiceCount();
     fetchPendingSubscriptionCount();
     
     // Refresh counts every 30 seconds
     const interval = setInterval(() => {
-      fetchNotificationCount();
+      fetchCustomerRegistrationCount();
       fetchPendingServiceCount();
       fetchPendingSubscriptionCount();
     }, 30000);
@@ -85,7 +84,7 @@ const AdminSidebar = () => {
 
   // Refresh counts when route changes
   useEffect(() => {
-    fetchNotificationCount();
+    fetchCustomerRegistrationCount();
     fetchPendingServiceCount();
     fetchPendingSubscriptionCount();
   }, [location.pathname]);
@@ -106,8 +105,8 @@ const AdminSidebar = () => {
             title={item.label}
           >
             {item.icon}
-            {item.path === 'customer' && notificationCount > 0 && (
-              <span className="notification-badge">{notificationCount}</span>
+            {item.path === 'customer' && customerRegistrationCount > 0 && (
+              <span className="notification-badge">{customerRegistrationCount}</span>
             )}
             {item.path === 'service-booking' && pendingServiceCount > 0 && (
               <span className="notification-badge">{pendingServiceCount}</span>

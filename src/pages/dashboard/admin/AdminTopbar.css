@@ -153,4 +153,30 @@
 @keyframes fadeInProfile {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Notification badge styles */
+.notification-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-badge-topbar {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e6faf5;
+  min-width: 20px;
+  line-height: 1;
+  z-index: 10;
 } 

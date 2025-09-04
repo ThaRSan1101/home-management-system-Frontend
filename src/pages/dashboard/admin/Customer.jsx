@@ -70,15 +70,15 @@ const Customer = () => {
       });
   };
 
-  // Mark admin notifications as hidden when visiting customer page
+  // Mark only customer registration notifications as hidden when visiting customer page
   const markNotificationsAsHidden = async () => {
     try {
-      await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=mark_admin_hidden', {
+      await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=mark_customer_registration_hidden', {
         method: 'GET',
         credentials: 'include',
       });
     } catch (error) {
-      console.error('Error marking notifications as hidden:', error);
+      console.error('Error marking customer registration notifications as hidden:', error);
     }
   };
 
