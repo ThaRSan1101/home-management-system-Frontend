@@ -52,15 +52,17 @@ const Topbar = ({ currentUser }) => {
     const userId = currentUser?.user_id;
     if (!userId) return;
     try {
-      const [countCancelRes, countCompletedRes, detailRes] = await Promise.all([
+      const [countCancelRes, countCompletedRes, countSubCompletedRes, detailRes] = await Promise.all([
         fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_canceled_service_count&user_id=${userId}`),
         fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_completed_service_count&user_id=${userId}`),
+        fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_subscription_completed_count&user_id=${userId}`),
         fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_customer_active_notifications&user_id=${userId}`)
       ]);
       const countCancelData = await countCancelRes.json();
       const countCompletedData = await countCompletedRes.json();
+      const countSubCompletedData = await countSubCompletedRes.json();
       const detailData = await detailRes.json();
-      const count = (countCancelData.status === 'success' ? countCancelData.count : 0) + (countCompletedData.status === 'success' ? countCompletedData.count : 0);
+      const count = (countCancelData.status === 'success' ? countCancelData.count : 0) + (countCompletedData.status === 'success' ? countCompletedData.count : 0) + (countSubCompletedData.status === 'success' ? countSubCompletedData.count : 0);
       setNotificationCount(count);
       if (detailData.status === 'success' && Array.isArray(detailData.data)) {
         const items = detailData.data.map(n => ({ id: n.notification_id, message: n.description }));

@@ -16,18 +16,22 @@ const AdminTopbar = () => {
   // Fetch counts and active notification details
   const fetchAdminNotifications = async () => {
     try {
-      const [newRes, canceledRes, completedRes] = await Promise.all([
+      const [newRes, newSubRes, canceledRes, completedRes, subCompletedRes] = await Promise.all([
         fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_new_service_booking_count'),
+        fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_new_subscription_booking_count'),
         fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_canceled_service_count'),
-        fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_completed_service_count')
+        fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_completed_service_count'),
+        fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_admin_subscription_completed_count')
       ]);
       const newData = await newRes.json();
+      const newSubData = await newSubRes.json();
       const canceledData = await canceledRes.json();
       const completedData = await completedRes.json();
+      const subCompletedData = await subCompletedRes.json();
 
-      const newCount = newData.status === 'success' ? newData.count : 0;
+      const newCount = (newData.status === 'success' ? newData.count : 0) + (newSubData.status === 'success' ? newSubData.count : 0);
       const canceledCount = canceledData.status === 'success' ? canceledData.count : 0;
-      const completedCount = completedData.status === 'success' ? completedData.count : 0;
+      const completedCount = (completedData.status === 'success' ? completedData.count : 0) + (subCompletedData.status === 'success' ? subCompletedData.count : 0);
       setNewServiceBookingCount(newCount + completedCount);
       setCanceledServiceBookingCount(canceledCount);
 
