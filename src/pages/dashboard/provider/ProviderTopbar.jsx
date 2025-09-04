@@ -12,12 +12,7 @@ const provider = {
   avatar: '/src/assets/man.png',
 };
 
-const notifications = [
-  { id: 1, type: 'booking', message: 'New booking request for Plumbing service', time: '1 hour ago', read: false },
-  { id: 2, type: 'payment', message: 'Payment received for AC Service', time: '2 hours ago', read: false },
-  { id: 3, type: 'feedback', message: '5-star review from Sarah Johnson', time: '1 day ago', read: true },
-  { id: 4, type: 'system', message: 'Your subscription was renewed successfully', time: '2 days ago', read: true },
-];
+// Dynamic notifications will be fetched from backend
 
 const ProviderTopbarContent = ({ currentUser }) => {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -42,6 +37,36 @@ const ProviderTopbarContent = ({ currentUser }) => {
   const profileRef = useRef();
   const notifRef = useRef();
   const [online, setOnline] = useState(false); // Controlled by backend status
+  const [notifications, setNotifications] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [providerId, setProviderId] = useState(null);
+
+  // Fetch provider notifications
+  const fetchProviderNotifications = async () => {
+    if (!providerId) return;
+    
+    try {
+      const response = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_service_request_count&provider_id=${providerId}`);
+      const data = await response.json();
+      
+      if (data.status === 'success') {
+        setNotificationCount(data.count);
+        
+        // Create notification items for display
+        if (data.count > 0) {
+          const notificationItems = Array(data.count).fill(null).map((_, index) => ({
+            id: index + 1,
+            message: 'You have a new service request'
+          }));
+          setNotifications(notificationItems);
+        } else {
+          setNotifications([]);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching provider notifications:', error);
+    }
+  };
 
   // Fetch provider status from backend on mount or when currentUser changes
   useEffect(() => {
@@ -54,6 +79,32 @@ const ProviderTopbarContent = ({ currentUser }) => {
         }
       });
   }, [currentUser]);
+
+  // Resolve providerId from current user on mount/change
+  useEffect(() => {
+    const resolveProviderId = async () => {
+      if (!currentUser?.user_id) return;
+      try {
+        const res = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=get_provider_id_by_user&user_id=${currentUser.user_id}`);
+        const data = await res.json();
+        if (data.status === 'success' && data.provider_id) {
+          setProviderId(data.provider_id);
+        } else {
+          setProviderId(null);
+        }
+      } catch (_) {
+        setProviderId(null);
+      }
+    };
+    resolveProviderId();
+  }, [currentUser]);
+
+  // Fetch notifications on mount and when providerId changes
+  useEffect(() => {
+    fetchProviderNotifications();
+    const interval = setInterval(fetchProviderNotifications, 30000);
+    return () => clearInterval(interval);
+  }, [providerId]);
   const [otpModalOpen, setOtpModalOpen] = useState(false);
   const [pendingProfile, setPendingProfile] = useState(null);
   const [otp, setOtp] = useState('');
@@ -188,13 +239,34 @@ const ProviderTopbarContent = ({ currentUser }) => {
     }
   };
 
+  // Handle individual notification click - hide specific notification
+  const handleNotificationItemClick = async (notificationId) => {
+    if (!providerId) return;
+    
+    try {
+      await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=mark_single_provider_service_request_hidden&provider_id=${providerId}`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      // Refresh notifications after hiding one
+      fetchProviderNotifications();
+    } catch (error) {
+      console.error('Error hiding provider notification:', error);
+    }
+  };
+
 
 
   return (
     <div className="provider-topbar">
       <div className="topbar-actions">
         <div className="topbar-notification-section" ref={notifRef}>
-          <FaBell className="topbar-notification-icon" size={26} onClick={() => setNotifOpen((o) => !o)} />
+          <div className="notification-icon-container">
+            <FaBell className="topbar-notification-icon" size={26} onClick={() => setNotifOpen((o) => !o)} />
+            {notificationCount > 0 && (
+              <span className="notification-badge">{notificationCount}</span>
+            )}
+          </div>
           {notifOpen && (
             <div className="notification-dropdown">
               <div className="notification-header">Notifications</div>
@@ -202,9 +274,13 @@ const ProviderTopbarContent = ({ currentUser }) => {
                 <div className="notification-empty">No new notifications</div>
               ) : (
                 notifications.map((notif) => (
-                  <div className="notification-item" key={notif.id}>
+                  <div 
+                    className="notification-item" 
+                    key={notif.id}
+                    onClick={() => handleNotificationItemClick(notif.id)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <div className="notification-message">{notif.message}</div>
-                    <div className="notification-time">{notif.time}</div>
                   </div>
                 ))
               )}
