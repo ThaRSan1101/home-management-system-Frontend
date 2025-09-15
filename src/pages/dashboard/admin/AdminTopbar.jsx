@@ -104,20 +104,22 @@ const AdminTopbar = () => {
           {notifOpen && (
             <div className="admin-notification-dropdown">
               <div className="admin-notification-header">Notifications</div>
-              {notifications.length === 0 ? (
-                <div className="admin-notification-empty">No new notifications</div>
-              ) : (
-                notifications.map((notif) => (
-                  <div 
-                    className="admin-notification-item" 
-                    key={notif.id}
-                    onClick={() => handleNotificationItemClick(notif.id)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <div className="admin-notification-message">{notif.message}</div>
-                  </div>
-                ))
-              )}
+              <div className="notification-content">
+                {notifications.length === 0 ? (
+                  <div className="admin-notification-empty">No new notifications</div>
+                ) : (
+                  notifications.map((notif) => (
+                    <div 
+                      className="admin-notification-item" 
+                      key={notif.id}
+                      onClick={() => handleNotificationItemClick(notif.id)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <div className="admin-notification-message">{notif.message}</div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           )}
         </div>

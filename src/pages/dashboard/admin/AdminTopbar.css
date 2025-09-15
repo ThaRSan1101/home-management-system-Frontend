@@ -59,12 +59,52 @@
   border-radius: 14px;
   box-shadow: 0 8px 32px rgba(26,54,101,0.13);
   min-width: 270px;
-  padding: 1.2rem 1.2rem 1.2rem 1.2rem;
-  z-index: 100;
+  max-height: 400px;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  z-index: 100;
   animation: fadeInProfile 0.2s;
+  overflow: hidden;
+}
+
+.admin-notification-header {
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #1a3665;
+  padding: 1.2rem 1.2rem 1rem 1.2rem;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.notification-content {
+  padding: 0 1.2rem 1.2rem 1.2rem;
+  overflow-y: auto;
+  max-height: calc(400px - 60px); /* Subtract header height */
+  scrollbar-width: thin;
+  scrollbar-color: #1a3665 #f0f0f0;
+}
+
+/* Custom scrollbar for WebKit browsers (Chrome, Safari) */
+.admin-notification-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-notification-dropdown::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 3px;
+  margin: 8px 0;
+}
+
+.admin-notification-dropdown::-webkit-scrollbar-thumb {
+  background-color: #1a3665;
+  border-radius: 3px;
+}
+
+.admin-notification-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: #0f2547;
 }
 .admin-notification-header {
   font-size: 1.08rem;
