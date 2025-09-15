@@ -54,12 +54,53 @@
   border-radius: 14px;
   box-shadow: 0 8px 32px rgba(26,54,101,0.13);
   min-width: 270px;
-  padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+  max-height: 400px;
   z-index: 100;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  overflow: hidden;
   animation: fadeInProfile 0.2s;
+}
+
+.notification-header {
+  padding: 1.2rem 1.2rem 0.8rem 1.2rem;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  border-bottom: 1.5px solid #e2e8f0;
+  z-index: 1;
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #1a3665;
+  margin-bottom: 0.5rem;
+}
+
+.notification-content {
+  padding: 0.8rem 1.2rem 1.2rem 1.2rem;
+  overflow-y: auto;
+  max-height: 320px;
+  scrollbar-width: thin;
+  scrollbar-color: #1a3665 #f8fafc;
+}
+
+.notification-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-content::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 3px;
+}
+
+.notification-content::-webkit-scrollbar-thumb {
+  background-color: #1a3665;
+  border-radius: 3px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.notification-content::-webkit-scrollbar-thumb:hover {
+  background-color: #16305a;
 }
 /* Notification badge styles (match admin/customer, red, no blue border) */
 .notification-icon-container { position: relative; display: inline-block; }
