@@ -169,10 +169,10 @@ useEffect(() => {
     }
   };
 
-  const handleDecline = (req) => {
+  const handleDecline = async (req) => {
     setDeclineRequest(req);
-    setShowDeclineModal(true);
-    setDeclineReason('');
+    // Call handleDeclineSubmit directly without showing modal
+    await handleDeclineSubmit();
   };
 
   const handleDeclineSubmit = async () => {
