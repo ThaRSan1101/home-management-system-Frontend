@@ -30,6 +30,7 @@ const Provider = () => {
     address: '',
     nic: '',
     description: '',
+    customDescription: '',
     qualification: '',
   });
   const [loadingId, setLoadingId] = useState(null);
@@ -193,9 +194,14 @@ const Provider = () => {
       'vehicle wash',
       'deep cleaning',
       'utility check',
+      'custom'
     ];
     if (!addForm.description || !descriptionOptions.includes(addForm.description)) {
       toast.error('Select a valid description.');
+      return;
+    }
+    if (addForm.description === 'custom' && (!addForm.customDescription || addForm.customDescription.trim().length < 3)) {
+      toast.error('Please enter a valid custom description (minimum 3 characters).');
       return;
     }
     if (!addForm.qualification || addForm.qualification.length < 2) {
@@ -203,11 +209,15 @@ const Provider = () => {
       return;
     }
     try {
+      const formData = {
+        ...addForm,
+        description: addForm.description === 'custom' ? addForm.customDescription : addForm.description
+      };
       const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/add_provider.php', {
-      credentials: 'include',
+        credentials: 'include',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(addForm),
+        body: JSON.stringify(formData),
       });
       const result = await res.json();
       if (result.status === 'success') {
@@ -404,9 +414,16 @@ const Provider = () => {
                   <input name="nic" value={addForm.nic} onChange={handleAddChange} placeholder="NIC" type="text" required />
                 </label>
               </div>
-              <div className="provider-modal-form-group">
-                <label>Description
-                  <select name="description" value={addForm.description} onChange={handleAddChange} required className="provider-filter-dropdown">
+              <div className="provider-modal-form-group description-group">
+                <label>Description</label>
+                <div className="description-input-container">
+                  <select 
+                    name="description" 
+                    value={addForm.description} 
+                    onChange={handleAddChange} 
+                    required 
+                    className="description-select"
+                  >
                     <option value="">Select Description</option>
                     <option value="plumbing">Plumbing</option>
                     <option value="cleaning">Cleaning</option>
@@ -417,8 +434,20 @@ const Provider = () => {
                     <option value="vehicle wash">Vehicle Wash</option>
                     <option value="deep cleaning">Deep Cleaning</option>
                     <option value="utility check">Utility Check</option>
+                    <option value="custom">Custom Description</option>
                   </select>
-                </label>
+                  {addForm.description === 'custom' && (
+                    <input
+                      type="text"
+                      name="customDescription"
+                      value={addForm.customDescription || ''}
+                      onChange={handleAddChange}
+                      placeholder="Enter custom description"
+                      className="custom-description-input"
+                      required
+                    />
+                  )}
+                </div>
               </div>
               <div className="provider-modal-form-group">
                 <label>Qualification

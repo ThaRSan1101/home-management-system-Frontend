@@ -305,9 +305,48 @@
   height: 1.5rem;
   accent-color: #1a3665;
 }
+
+/* Description field specific styles */
+.description-group {
+  width: 100%;
+}
+
+.description-input-container {
+  width: 100%;
+}
+
+.description-select,
+.custom-description-input {
+  background-color: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 0.48rem 0.9rem;
+  width: 100%;
+  color: #1a3665;
+  font-size: 1.04rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.description-select {
+  margin-bottom: 10px;
+}
+
+.custom-description-input {
+  margin-top: 10px;
+}
+
+.description-select:focus,
+.custom-description-input:focus {
+  border-color: #1a3665;
+  background: #fff;
+}
+
 .provider-modal:not(.add-provider-modal) .provider-modal-actions {
   margin-top: -1rem;
 }
+
 @media (max-width: 700px) {
   .provider-modal-form-grid {
     grid-template-columns: 1fr;
