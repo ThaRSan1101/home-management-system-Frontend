@@ -57,7 +57,7 @@ const Monitoring = () => {
           </div>
           <button
             className="monitoring-btn"
-            onClick={() => handleSwitchAccount('customer', 4)}
+            onClick={() => handleSwitchAccount('customer', 2)}
           >
             Switch as Customer
           </button>
@@ -74,7 +74,7 @@ const Monitoring = () => {
           </div>
           <button
             className="monitoring-btn"
-            onClick={() => handleSwitchAccount('provider', 5)}
+            onClick={() => handleSwitchAccount('provider', 3)}
           >
             Switch as Provider
           </button>
