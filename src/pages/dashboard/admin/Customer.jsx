@@ -44,23 +44,30 @@ const Customer = () => {
       });
   };
 
-  // Disable customer handler
-  const handleDisable = (customer) => {
-    if (customer.disabled || loading) return;
+  // Toggle customer status (enable/disable)
+  const toggleCustomerStatus = (customer) => {
+    if (loading) return;
+    
+    const newStatus = customer.disabled ? 0 : 1;
+    const action = customer.disabled ? 'enable' : 'disable';
+    
     setLoading(true);
     fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_update_customer.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: customer.id, disable_status: 1 }),
+      body: JSON.stringify({ 
+        user_id: customer.id, 
+        disable_status: newStatus 
+      }),
       credentials: 'include',
     })
       .then(res => res.json())
       .then(data => {
         if (data.status === 'success') {
-          toast.success('Customer disabled successfully!');
+          toast.success(`Customer ${action}d successfully!`);
           fetchCustomers();
         } else {
-          toast.error(data.message || 'Failed to disable customer.');
+          toast.error(data.message || `Failed to ${action} customer.`);
           setLoading(false);
         }
       })
@@ -68,6 +75,11 @@ const Customer = () => {
         toast.error('Network or server error.');
         setLoading(false);
       });
+  };
+  
+  // Toggle customer status directly without confirmation
+  const confirmToggleStatus = (customer) => {
+    toggleCustomerStatus(customer);
   };
 
   // Mark only customer registration notifications as hidden when visiting customer page
@@ -99,7 +111,6 @@ const Customer = () => {
             <tr>
               <th>Name</th>
               <th>Email</th>
-              
               <th>Phone Number</th>
               <th>Address</th>
               <th>NIC</th>
@@ -128,7 +139,13 @@ const Customer = () => {
                   <td className="customer-table-cell">{c.registered}</td>
                   <td className="customer-table-cell">
                     <div className="customer-action-btn-group">
-                      <button className="customer-action-btn disable-btn" disabled={c.disabled} onClick={() => handleDisable(c)}>{c.disabled ? 'Disabled' : 'Disable'}</button>
+                      <button 
+                        className={`customer-action-btn ${c.disabled ? 'enable-btn' : 'disable-btn'}`}
+                        onClick={() => confirmToggleStatus(c)}
+                        disabled={loading}
+                      >
+                        {c.disabled ? 'Enable' : 'Disable'}
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -172,8 +189,15 @@ const Customer = () => {
                 </label>
               </div>
               <div className="customer-modal-form-group">
-                <label> Disable Status
-                  <input type="checkbox" name="disabled" checked={editForm.disabled} onChange={handleEditChange} style={{marginLeft:'0.5rem'}} />
+                <label>
+                  <input 
+                    type="checkbox" 
+                    name="disabled" 
+                    checked={editForm.disabled} 
+                    onChange={handleEditChange} 
+                    style={{marginRight:'0.5rem'}} 
+                  />
+                  Disable Account
                 </label>
               </div>
             </form>
@@ -198,6 +222,7 @@ const Customer = () => {
               <div><b>Phone Number:</b> {viewModal.phone}</div>
               <div><b>Address:</b> {viewModal.address}</div>
               <div><b>NIC:</b> {viewModal.nic}</div>
+              <div><b>Status:</b> {viewModal.disabled ? 'Disabled' : 'Active'}</div>
               <div><b>Disable Status:</b> {viewModal.disabled ? 'Disabled' : 'Active'}</div>
               
             </div>

@@ -35,28 +35,61 @@ const Provider = () => {
   });
   const [loadingId, setLoadingId] = useState(null);
 
-  // Disable provider handler
-  const handleDisable = (provider) => {
-    if (provider.disable_status || loadingId === provider.user_id) return;
+  // Toggle provider status (enable/disable)
+  const toggleProviderStatus = (provider) => {
+    if (loadingId === provider.user_id) return;
+    
+    const newStatus = provider.disable_status ? 0 : 1;
     setLoadingId(provider.user_id);
+    
+    // Update the UI immediately
+    setProviders(prevProviders => 
+      prevProviders.map(p => 
+        p.user_id === provider.user_id 
+          ? { ...p, disable_status: newStatus } 
+          : p
+      )
+    );
+    
     fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_update_provider.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: provider.user_id, disable_status: 1 }),
+      body: JSON.stringify({ 
+        user_id: provider.user_id, 
+        disable_status: newStatus 
+      }),
       credentials: 'include',
     })
       .then(res => res.json())
       .then(data => {
-        if (data.status === 'success') {
-          toast.success('Provider disabled successfully!');
-          fetchProviders();
+        if (data.status !== 'success') {
+          // Revert the UI if the API call fails
+          setProviders(prevProviders => 
+            prevProviders.map(p => 
+              p.user_id === provider.user_id 
+                ? { ...p, disable_status: provider.disable_status } 
+                : p
+            )
+          );
+          toast.error(data.message || `Failed to ${newStatus ? 'disable' : 'enable'} provider.`);
         } else {
-          toast.error(data.message || 'Failed to disable provider.');
-          setLoadingId(null);
+          toast.success(`Provider ${newStatus ? 'disabled' : 'enabled'} successfully!`);
+          // Refresh the providers list to ensure data consistency
+          fetchProviders();
         }
       })
       .catch(() => {
+        // Revert the UI on error
+        setProviders(prevProviders => 
+          prevProviders.map(p => 
+            p.user_id === provider.user_id 
+              ? { ...p, disable_status: provider.disable_status } 
+              : p
+          )
+        );
         toast.error('Network or server error.');
+      })
+      .finally(() => {
         setLoadingId(null);
       });
   };
@@ -366,11 +399,11 @@ const Provider = () => {
                   <td>
                     <div className="provider-action-btn-group">
                       <button
-                        className="provider-action-btn disable-btn"
-                        onClick={() => handleDisable(p)}
-                        disabled={!!p.disable_status || loadingId === p.user_id}
+                        className={`provider-action-btn ${p.disable_status ? 'enable-btn' : 'disable-btn'}`}
+                        onClick={() => toggleProviderStatus(p)}
+                        disabled={loadingId === p.user_id}
                       >
-                        {p.disable_status ? 'Disabled' : (loadingId === p.user_id ? 'Disabling...' : 'Disable')}
+                        {p.disable_status ? 'Enable' : 'Disable'}
                       </button>
                       <button className="provider-action-btn view-btn" onClick={() => openView(p)}>View</button>
                     </div>

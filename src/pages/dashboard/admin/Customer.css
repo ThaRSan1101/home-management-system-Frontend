@@ -56,46 +56,52 @@
     cursor: pointer;
     transition: background 0.18s, color 0.18s, box-shadow 0.18s;
     outline: none;
+    min-width: 90px;
+    text-align: center;
 }
 
 .customer-action-btn.disable-btn {
- /* background: #1a3665;
-  color: #fff;
-  box-shadow: 0 1px 4px rgba(26,54,101,0.07);*/
-  background: #f5f8fd;
+  background: #f8fafc;
+  color: #16305a;
+  border: 1.5px solid #16305a;
+}
+
+.customer-action-btn.enable-btn {
+  background: #f8fafc;
   color: #1a3665;
   border: 1.5px solid #1a3665;
+  opacity: 0.8;
 }
-.customer-action-btn.disable-btn:disabled,
-.customer-action-btn.disable-btn:disabled {
-  background: #f5f8fd;
-  color: #aaa;
-  border-color: #ccc;
-  cursor: not-allowed;
-  opacity: 1;
-  pointer-events: none;
-}
-.customer-action-btn.disable-btn:hover:disabled,
-.customer-action-btn.disable-btn:focus:disabled {
-  background: #f5f8fd;
-  color: #aaa;
-  border-color: #ccc;
-}
-.customer-action-btn.disable-btn:disabled,
-.customer-action-btn.disable-btn[disabled] {
-  background: #f5f8fd !important;
-  color: #aaa !important;
-  border-color: #ccc !important;
-  cursor: not-allowed !important;
-  pointer-events: none !important;
-  opacity: 1 !important;
-}
+
 .customer-action-btn.disable-btn:hover:not(:disabled) {
-  /* background: #224b8b;*/
-  background: #e6eafd;
-  color: #16305a;
+  background: #16305a;
+  color: #fff;
   border-color: #16305a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+.customer-action-btn.enable-btn:hover:not(:disabled) {
+  background: #1a3665;
+  color: #fff;
+  border-color: #1a3665;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  opacity: 1;
+}
+
+.customer-action-btn:disabled,
+.customer-action-btn[disabled] {
+  background-color: #f3f4f6 !important;
+  color: #9ca3af !important;
+  border-color: #e5e7eb !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
 .customer-action-btn.view-btn {
   background: #f5f8fd;
   color: #1a3665;
