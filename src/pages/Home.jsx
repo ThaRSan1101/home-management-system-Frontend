@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaTools, FaStar, FaCheckCircle, FaArrowRight } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -20,6 +20,92 @@ import new4nobg from '../assets/new4-nobg.png';
 const Home = () => {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch reviews from API
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/landing_reviews.php?limit=6');
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+          setReviews(data.data);
+        } else {
+          console.error('Failed to fetch reviews:', data.message);
+          // Fallback to dummy data if API fails
+          setReviews(getDummyReviews());
+        }
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        // Fallback to dummy data if API fails
+        setReviews(getDummyReviews());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
+  // Fallback dummy reviews function
+  const getDummyReviews = () => [
+    {
+      id: 1,
+      name: 'Sarah Johnson',
+      rating: 5,
+      comment: 'Absolutely excellent! The team was professional, friendly, and the results were perfect. Highly recommended.',
+      service: 'Plumbing Services',
+      avatar: '👩‍🔧',
+      amount: '$120'
+    },
+    {
+      id: 2,
+      name: 'Michael Chen',
+      rating: 3,
+      comment: 'Service was average. The work was completed, but it took longer than expected and communication could be improved.',
+      service: 'Electrical Services',
+      avatar: '👨‍🔧',
+      amount: '$90'
+    },
+    {
+      id: 3,
+      name: 'Emily Rodriguez',
+      rating: 1,
+      comment: 'Poor experience. The service was delayed and did not meet my expectations.',
+      service: 'Cleaning Services',
+      avatar: '👩‍🦰',
+      amount: '$60'
+    },
+    {
+      id: 4,
+      name: 'David Lee',
+      rating: 4,
+      comment: 'Great job! The team was efficient and friendly. Will use again.',
+      service: 'Painting Services',
+      avatar: '👨‍🎨',
+      amount: '$150'
+    },
+    {
+      id: 5,
+      name: 'Priya Patel',
+      rating: 5,
+      comment: 'Outstanding service and attention to detail. Highly recommend!',
+      service: 'HVAC Services',
+      avatar: '👩‍🔬',
+      amount: '$200'
+    },
+    {
+      id: 6,
+      name: 'Ahmed Hassan',
+      rating: 2,
+      comment: 'Not fully satisfied. Some issues were left unresolved.',
+      service: 'Carpentry Services',
+      avatar: '👨‍🔧',
+      amount: '$80'
+    }
+  ];
 
   const featuredServices = [
     {
@@ -87,62 +173,6 @@ const Home = () => {
     }
   ];
 
-  const reviews = [
-    {
-      id: 1,
-      name: 'Sarah Johnson',
-      rating: 5,
-      comment: 'Absolutely excellent! The team was professional, friendly, and the results were perfect. Highly recommended.',
-      service: 'Plumbing Services',
-      avatar: '👩‍🔧',
-      amount: '$120'
-    },
-    {
-      id: 2,
-      name: 'Michael Chen',
-      rating: 3,
-      comment: 'Service was average. The work was completed, but it took longer than expected and communication could be improved.',
-      service: 'Electrical Services',
-      avatar: '👨‍🔧',
-      amount: '$90'
-    },
-    {
-      id: 3,
-      name: 'Emily Rodriguez',
-      rating: 1,
-      comment: 'Poor experience. The service was delayed and did not meet my expectations.',
-      service: 'Cleaning Services',
-      avatar: '👩‍🦰',
-      amount: '$60'
-    },
-    {
-      id: 4,
-      name: 'David Lee',
-      rating: 4,
-      comment: 'Great job! The team was efficient and friendly. Will use again.',
-      service: 'Painting Services',
-      avatar: '👨‍🎨',
-      amount: '$150'
-    },
-    {
-      id: 5,
-      name: 'Priya Patel',
-      rating: 5,
-      comment: 'Outstanding service and attention to detail. Highly recommend!',
-      service: 'HVAC Services',
-      avatar: '👩‍🔬',
-      amount: '$200'
-    },
-    {
-      id: 6,
-      name: 'Ahmed Hassan',
-      rating: 2,
-      comment: 'Not fully satisfied. Some issues were left unresolved.',
-      service: 'Carpentry Services',
-      avatar: '👨‍🔧',
-      amount: '$80'
-    }
-  ];
 
   const sliderImages = [coverrrr, cover2, cover3];
 
@@ -266,43 +296,50 @@ const Home = () => {
               <div className="section-header">
                 {/* Removed duplicate title and subheading here */}
               </div>
-              <Swiper
-                slidesPerView={3}
-                spaceBetween={24}
-                loop={true}
-                autoplay={{ delay: 3500, disableOnInteraction: false }}
-                modules={[Autoplay, Navigation]}
-                className="reviews-swiper reviews-centered-swiper"
-                pagination={{ clickable: true }}
-                navigation={true}
-                breakpoints={{
-                  0: { slidesPerView: 1, spaceBetween: 0 },
-                  700: { slidesPerView: 2, spaceBetween: 16 },
-                  1024: { slidesPerView: 3, spaceBetween: 24 }
-                }}
-              >
-                {reviews.map((review) => (
-                  <SwiperSlide key={review.id}>
-                    <div className="review-centered-slide">
-                      <div className="review-centered-text">{review.comment}</div>
-                      <div className="review-centered-details">
-                        <div className="review-centered-avatar">{review.avatar}</div>
-                        <div className="review-centered-name">{review.name}</div>
-                        <div className="review-centered-service">{review.service}</div>
-                        <div className="review-centered-amount">{review.amount}</div>
-                        <div className="review-centered-rating">
-                          {[...Array(review.rating)].map((_, i) => (
-                            <span key={i} className="star">★</span>
-                          ))}
-                          {[...Array(5 - review.rating)].map((_, i) => (
-                            <span key={i} className="star inactive">★</span>
-                          ))}
+              
+              {loading ? (
+                <div style={{textAlign: 'center', padding: '2rem'}}>
+                  <div style={{color: '#1a3665', fontSize: '1.1rem'}}>Loading reviews...</div>
+                </div>
+              ) : (
+                <Swiper
+                  slidesPerView={3}
+                  spaceBetween={24}
+                  loop={reviews.length > 3}
+                  autoplay={{ delay: 3500, disableOnInteraction: false }}
+                  modules={[Autoplay, Navigation]}
+                  className="reviews-swiper reviews-centered-swiper"
+                  pagination={{ clickable: true }}
+                  navigation={true}
+                  breakpoints={{
+                    0: { slidesPerView: 1, spaceBetween: 0 },
+                    700: { slidesPerView: 2, spaceBetween: 16 },
+                    1024: { slidesPerView: 3, spaceBetween: 24 }
+                  }}
+                >
+                  {reviews.map((review) => (
+                    <SwiperSlide key={review.id}>
+                      <div className="review-centered-slide">
+                        <div className="review-centered-text">{review.comment}</div>
+                        <div className="review-centered-details">
+                          <div className="review-centered-avatar">{review.avatar}</div>
+                          <div className="review-centered-name">{review.name}</div>
+                          <div className="review-centered-service">{review.service}</div>
+                          <div className="review-centered-amount">{review.amount}</div>
+                          <div className="review-centered-rating">
+                            {[...Array(review.rating)].map((_, i) => (
+                              <span key={i} className="star">★</span>
+                            ))}
+                            {[...Array(5 - review.rating)].map((_, i) => (
+                              <span key={i} className="star inactive">★</span>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
             </div>
           </div>
         </div>
