@@ -215,15 +215,17 @@ const Topbar = ({ currentUser }) => {
           {notifOpen && (
             <div className="notification-dropdown">
               <div className="notification-header">Notifications</div>
-              {notifications.length === 0 ? (
-                <div className="notification-empty">No new notifications</div>
-              ) : (
-                notifications.map((notif) => (
-                  <div className="notification-item" key={notif.id} onClick={() => handleNotificationItemClick(notif.id)} style={{ cursor: 'pointer' }}>
-                    <div className="notification-message">{notif.message}</div>
-                  </div>
-                ))
-              )}
+              <div className="notification-content">
+                {notifications.length === 0 ? (
+                  <div className="notification-empty">No new notifications</div>
+                ) : (
+                  notifications.map((notif) => (
+                    <div className="notification-item" key={notif.id} onClick={() => handleNotificationItemClick(notif.id)} style={{ cursor: 'pointer' }}>
+                      <div className="notification-message">{notif.message}</div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           )}
         </div>
