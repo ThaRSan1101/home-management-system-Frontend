@@ -70,41 +70,21 @@ const Customer = () => {
       });
   };
 
+  // Mark only customer registration notifications as hidden when visiting customer page
+  const markNotificationsAsHidden = async () => {
+    try {
+      await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/notification.php?action=mark_customer_registration_hidden', {
+        method: 'GET',
+        credentials: 'include',
+      });
+    } catch (error) {
+      console.error('Error marking customer registration notifications as hidden:', error);
+    }
+  };
+
   useEffect(() => {
     fetchCustomers();
-  }, []);
-
-
-  useEffect(() => {
-    fetch('http://localhost/project-root/backend/home-management-system-Backend/api/admin_customers.php', {
-      credentials: 'include',
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Network response was not ok');
-        return res.json();
-      })
-      .then(data => {
-        if (data.status === 'success' && Array.isArray(data.data)) {
-          // Map backend fields to frontend fields
-          const mapped = data.data.map(c => ({
-            id: c.user_id,
-            name: c.name,
-            email: c.email,
-            phone: c.phone_number,
-            address: c.address,
-            nic: c.NIC,
-            disabled: !!c.disable_status,
-            registered: c.registered_date ? c.registered_date.split('T')[0] : '',
-          }));
-          setCustomers(mapped);
-        } else {
-          setCustomers([]);
-        }
-      })
-      .catch(err => {
-        setCustomers([]);
-        console.error('Failed to fetch customers:', err);
-      });
+    markNotificationsAsHidden(); // Mark notifications as hidden when page loads
   }, []);
 
   return (

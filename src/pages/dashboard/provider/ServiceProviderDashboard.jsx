@@ -111,13 +111,35 @@ useEffect(() => {
   const [declineRequest, setDeclineRequest] = useState(null);
 
   useEffect(() => {
-    // Fetch stats from backend API here
-    // Example:
-    // fetch('/api/provider_dashboard.php', { credentials: 'include' })
-    //   .then(res => res.json())
-    //   .then(data => setStats(data.stats));
-    // For now, use default values
-    setStats({ bookings: 0, subscriptions: 0, feedback: 0, services: 0 });
+    // Fetch stats from backend API
+    const fetchStats = async () => {
+      try {
+        const res = await fetch('http://localhost/project-root/backend/home-management-system-Backend/api/provider_dashboard.php', {
+          credentials: 'include',
+        });
+        const text = await res.text();
+        try {
+          const data = JSON.parse(text);
+          if (data.status === 'success' && data.data) {
+            setStats({
+              bookings: data.data.bookings || 0,
+              subscriptions: data.data.subscriptions || 0,
+              feedback: data.data.feedback || 0,
+              services: data.data.services || 0,
+            });
+          } else {
+            setStats({ bookings: 0, subscriptions: 0, feedback: 0, services: 0 });
+          }
+        } catch (e) {
+          console.error('Provider dashboard stats invalid JSON:', text);
+          setStats({ bookings: 0, subscriptions: 0, feedback: 0, services: 0 });
+        }
+      } catch (err) {
+        console.error('Provider dashboard stats fetch error:', err);
+        setStats({ bookings: 0, subscriptions: 0, feedback: 0, services: 0 });
+      }
+    };
+    fetchStats();
   }, []);
 
   const handleAccept = async (req) => {

@@ -82,22 +82,23 @@ export default function Subscription({ currentUser }) {
       .then(result => {
         setLoading(false);
         if (result.status === 'success') {
-          // Find the cancelled plan details for review
-          const cancelledPlan = plans.find(p => p.subbook_id === unsubscribeModalId);
-          setReviewData({
-            subbook_id: unsubscribeModalId,
-            plan_name: cancelledPlan?.plan_name || cancelledPlan?.category || 'Subscription',
-            provider_name: cancelledPlan?.provider_name || 'Provider',
-            amount: cancelledPlan?.amount || '0'
-          });
-          
+          // Only prompt review if cancellation happened during processing stage
+          if (activeTab === 'process') {
+            const cancelledPlan = plans.find(p => p.subbook_id === unsubscribeModalId);
+            setReviewData({
+              subbook_id: unsubscribeModalId,
+              plan_name: cancelledPlan?.plan_name || cancelledPlan?.category || 'Subscription',
+              provider_name: cancelledPlan?.provider_name || 'Provider',
+              amount: cancelledPlan?.amount || '0'
+            });
+            // Show review modal for processing cancellations only
+            setShowReviewModal(true);
+          }
+
           setUnsubscribeModalId(null);
           setUnsubscribeReason('');
           fetchPlans();
           toast.success('Subscription cancelled successfully!');
-          
-          // Show review modal
-          setShowReviewModal(true);
         } else {
           setApiError(result.message || 'Failed to cancel subscription.');
           toast.error(result.message || 'Failed to cancel subscription.');
