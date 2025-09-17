@@ -5,7 +5,6 @@ import { FaClock, FaSpinner, FaCheckCircle, FaTimesCircle, FaStar } from 'react-
 
 const STATUS_TABS = [
   { key: 'pending', label: 'Pending', icon: <FaClock /> },
-  { key: 'waiting', label: 'Waiting', icon: <FaSpinner /> },
   { key: 'process', label: 'Processing', icon: <FaSpinner /> },
   { key: 'request', label: 'Request', icon: <FaSpinner /> },
   { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
@@ -82,12 +81,51 @@ export default function Activity({ currentUser }) {
   useEffect(() => {
     async function fetchBookings() {
       if (!currentUser?.user_id) return;
-      const apiUrl = `http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?user_id=${currentUser.user_id}&status=${activeTab}`;
-      try {
-        const res = await fetch(apiUrl, { credentials: 'include' });
-        const data = await res.json();
-        if (data.status === 'success') {
-          // Service categoryId to title mapping (copy from Service.jsx)
+      
+      let apiUrl;
+      let allActivities = [];
+      
+      if (activeTab === 'pending') {
+        // For pending tab, fetch both 'pending' and 'waiting' services
+        try {
+          // Fetch pending services
+          const pendingUrl = `http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?user_id=${currentUser.user_id}&status=pending`;
+          const pendingRes = await fetch(pendingUrl, { credentials: 'include' });
+          const pendingData = await pendingRes.json();
+          
+          // Fetch waiting services
+          const waitingUrl = `http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?user_id=${currentUser.user_id}&status=waiting`;
+          const waitingRes = await fetch(waitingUrl, { credentials: 'include' });
+          const waitingData = await waitingRes.json();
+          
+          // Combine both datasets
+          const pendingServices = pendingData.status === 'success' ? pendingData.data || [] : [];
+          const waitingServices = waitingData.status === 'success' ? waitingData.data || [] : [];
+          
+          allActivities = [...pendingServices, ...waitingServices];
+        } catch (err) {
+          toast.error('Network error.');
+          return;
+        }
+      } else {
+        // For other tabs, fetch normally
+        apiUrl = `http://localhost/project-root/backend/home-management-system-Backend/api/service_booking.php?user_id=${currentUser.user_id}&status=${activeTab}`;
+        try {
+          const res = await fetch(apiUrl, { credentials: 'include' });
+          const data = await res.json();
+          if (data.status === 'success') {
+            allActivities = data.data || [];
+          } else {
+            toast.error(data.message || 'Failed to fetch bookings.');
+            return;
+          }
+        } catch (err) {
+          toast.error('Network error.');
+          return;
+        }
+      }
+      
+      // Service categoryId to title mapping (copy from Service.jsx)
       const SERVICE_CATEGORY_MAP = {
         1: 'Plumbing Services',
         2: 'Carpentry Services',
@@ -96,12 +134,13 @@ export default function Activity({ currentUser }) {
         5: 'Electronic Services',
         6: 'Cleaning Service',
       };
-      const mapped = (data.data || []).map(b => ({
+      
+      const mapped = allActivities.map(b => ({
         id: b.service_book_id,
         serviceName: b.service_name || SERVICE_CATEGORY_MAP[b.service_category_id] || `Service #${b.service_category_id}`,
         date: b.service_date,
         time: b.service_time,
-        status: b.serbooking_status ? b.serbooking_status.toLowerCase() : '',
+        status: (b.serbooking_status && b.serbooking_status.toLowerCase() === 'waiting') ? 'pending' : (b.serbooking_status ? b.serbooking_status.toLowerCase() : ''),
         address: b.service_address,
         amount: b.amount,
         serviceAmount: b.service_amount,
@@ -111,13 +150,7 @@ export default function Activity({ currentUser }) {
         provider: b.provider_name || '', // if available from backend join
         categoryId: b.service_category_id,
       }));
-          setActivities(mapped);
-        } else {
-          toast.error(data.message || 'Failed to fetch bookings.');
-        }
-      } catch (err) {
-        toast.error('Network error.');
-      }
+      setActivities(mapped);
     }
     fetchBookings();
   }, [currentUser, activeTab]);
