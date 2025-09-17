@@ -6,7 +6,7 @@ import { FaClock, FaSpinner, FaCheckCircle, FaTimesCircle, FaStar } from 'react-
 const STATUS_TABS = [
   { key: 'pending', label: 'Pending', icon: <FaClock /> },
   { key: 'process', label: 'Processing', icon: <FaSpinner /> },
-  { key: 'request', label: 'Request', icon: <FaSpinner /> },
+  { key: 'request', label: 'Request to Complete', icon: <FaSpinner /> },
   { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
   { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
 ];
@@ -298,16 +298,25 @@ export default function Activity({ currentUser }) {
       <h2 style={{ margin: '0 0 1.5rem 0', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center' }}>Service Booking</h2>
       <div className="customer-activity-tabs-bg">
         <div className="customer-activity-tabs">
-          {STATUS_TABS.map((tab) => (
-            <button
-              key={tab.key}
-              className={`customer-activity-tab-btn${activeTab === tab.key ? ' active' : ''}`}
-              onClick={() => setActiveTab(tab.key)}
-            >
-              <span className="tab-icon">{tab.icon}</span>
-              <span className="tab-label">{tab.label}</span>
-            </button>
-          ))}
+          {STATUS_TABS.map((tab) => {
+            let tooltip = '';
+            if (tab.key === 'pending') tooltip = 'Your service request is waiting to be processed.';
+            if (tab.key === 'process') tooltip = 'Your service is currently being handled.';
+            if (tab.key === 'request') tooltip = 'Service provider has sent you a bill request.';
+            if (tab.key === 'complete') tooltip = 'Your service has been completed successfully.';
+            if (tab.key === 'cancel') tooltip = 'Your service has been cancelled.';
+            return (
+              <button
+                key={tab.key}
+                className={`customer-activity-tab-btn${activeTab === tab.key ? ' active' : ''}`}
+                onClick={() => setActiveTab(tab.key)}
+                title={tooltip}
+              >
+                <span className="tab-icon">{tab.icon}</span>
+                <span className="tab-label">{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
       <div className="customer-activity-content">

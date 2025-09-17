@@ -220,16 +220,23 @@ export default function Subscription({ currentUser }) {
   <h2 style={{ margin: '0rem 0 1.5rem 0rem', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center'}}>Package Booking</h2>
       <div className="customer-subscription-tabs-bg">
         <div className="customer-subscription-tabs">
-          {TABS.map((tab) => (
-            <button
-              key={tab.key}
-              className={`customer-subscription-tab-btn${activeTab === tab.key ? ' active' : ''}`}
-              onClick={() => setActiveTab(tab.key)}
-            >
-              <span style={{ marginRight: '8px' }}>{tab.icon}</span>
-              {tab.label}
-            </button>
-          ))}
+          {TABS.map((tab) => {
+            let tooltip = '';
+            if (tab.key === 'pending') tooltip = 'Your subscription request is waiting to be processed.';
+            if (tab.key === 'process') tooltip = 'Your subscription is currently being handled.';
+            if (tab.key === 'cancel') tooltip = 'Your subscription has been cancelled.';
+            return (
+              <button
+                key={tab.key}
+                className={`customer-subscription-tab-btn${activeTab === tab.key ? ' active' : ''}`}
+                onClick={() => setActiveTab(tab.key)}
+                title={tooltip}
+              >
+                <span style={{ marginRight: '8px' }}>{tab.icon}</span>
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
       </div>
       
