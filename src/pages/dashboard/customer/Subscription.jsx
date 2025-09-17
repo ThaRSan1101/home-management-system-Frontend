@@ -26,6 +26,8 @@ export default function Subscription({ currentUser }) {
     rating: 5,
     feedback: ''
   });
+  // Track whether a cancelled subscription already has a review
+  const [subReviewedById, setSubReviewedById] = useState({});
 
   // Fetch bookings from API
   const fetchPlans = React.useCallback(async () => {
@@ -82,6 +84,25 @@ export default function Subscription({ currentUser }) {
       }
       
       setPlans(allPlans);
+      // If cancel tab, pre-check review existence for each subscription booking
+      if (activeTab === 'cancel' && allPlans.length > 0) {
+        try {
+          const checks = await Promise.all(allPlans.map(async (p) => {
+            try {
+              const res = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/subscription_review.php?subbook_id=${p.subbook_id}`, { credentials: 'include' });
+              const data = await res.json();
+              return [p.subbook_id, !!(data && data.data)];
+            } catch (_) {
+              return [p.subbook_id, false];
+            }
+          }));
+          const next = {};
+          checks.forEach(([id, has]) => { next[id] = has; });
+          setSubReviewedById(next);
+        } catch (_) {
+          // ignore
+        }
+      }
       setLoading(false);
     } catch (error) {
       setApiError('Error fetching subscriptions.');
@@ -173,6 +194,10 @@ export default function Subscription({ currentUser }) {
           setReviewForm({ rating: 5, feedback: '' });
           setReviewData(null);
           toast.success('Review submitted successfully!');
+          // Mark this subscription booking as reviewed so button hides next render
+          if (reviewData?.subbook_id) {
+            setSubReviewedById(prev => ({ ...prev, [reviewData.subbook_id]: true }));
+          }
         } else {
           toast.error(result.message || 'Failed to submit review.');
         }
@@ -224,6 +249,7 @@ export default function Subscription({ currentUser }) {
                 <th>Address</th>
                 <th>Phone</th>
                 {activeTab === 'cancel' && <th>Cancel Reason</th>}
+                {activeTab === 'cancel' && <th>Action</th>}
                 {(activeTab === 'pending' || activeTab === 'process') && <th>Action</th>}
               </tr>
             </thead>
@@ -245,6 +271,26 @@ export default function Subscription({ currentUser }) {
                     <td>{plan.sub_address}</td>
                     <td>{plan.phoneNo}</td>
                     {activeTab === 'cancel' && <td>{plan.cancel_reason || '-'}</td>}
+                    {activeTab === 'cancel' && (
+                      <td>
+                        {subReviewedById[plan.subbook_id] === false && (
+                          <button
+                            onClick={() => {
+                              setReviewData({
+                                subbook_id: plan.subbook_id,
+                                plan_name: plan.plan_name || plan.category || 'Subscription',
+                                provider_name: plan.provider_name || 'Provider',
+                                amount: plan.amount || '0'
+                              });
+                              setShowReviewModal(true);
+                            }}
+                            style={{background: '#1a3665', color: 'white', border: 'none', padding: '0.45rem 1.1rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 700}}
+                          >
+                            Send Review
+                          </button>
+                        )}
+                      </td>
+                    )}
                     {activeTab === 'pending' && (
                       <td>
                         <button
