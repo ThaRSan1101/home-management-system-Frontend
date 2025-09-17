@@ -187,7 +187,7 @@ export default function ProviderActivity() {
 
   const activityTabs = [
     { key: 'service', label: 'Service', icon: FaTools },
-    { key: 'subscription', label: 'Subscription', icon: FaRegCalendarAlt },
+    { key: 'subscription', label: 'Packages', icon: FaRegCalendarAlt },
   ];
 
   // Cancel logic

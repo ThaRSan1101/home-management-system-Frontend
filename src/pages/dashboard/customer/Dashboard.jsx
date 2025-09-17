@@ -8,7 +8,7 @@ const statLabels = [
   },
   { 
     key: 'subscriptions', 
-    label: 'Active Subscriptions'
+    label: 'Active Packages'
   },
   { 
     key: 'feedback', 

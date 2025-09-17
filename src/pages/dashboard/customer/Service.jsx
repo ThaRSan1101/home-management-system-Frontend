@@ -425,7 +425,7 @@ const Service = ({ currentUser }) => {
 
       {/* Subscription Section Heading */}
       <div className="subscription-section-header" style={{marginTop: '4rem', marginBottom: '2.2rem', textAlign: 'center'}}>
-        <h2 style={{fontSize: '2.5rem', fontWeight: 600, color: '#1a3665', marginBottom: '1.2rem', letterSpacing: '-1px'}}>Choose Your Subscription Plan</h2>
+  <h2 style={{fontSize: '2.5rem', fontWeight: 600, color: '#1a3665', marginBottom: '1.2rem', letterSpacing: '-1px'}}>Discover Our Exclusive Packages</h2>
         <div style={{fontSize: '1.25rem', color: '#1a3665', fontWeight: 400}}>
           Select one of our value-packed plans and enjoy hassle-free home and vehicle care.
         </div>
@@ -436,7 +436,7 @@ const Service = ({ currentUser }) => {
             <div className="customer-subscription-card" key={plan.title}>
               <div className="customer-subscription-header" style={{fontSize: '1.2rem', fontWeight: 600, color: '#1a3665', textAlign: 'center', marginBottom: '0.7rem'}}>{plan.plan}</div>
               <div className="customer-subscription-title" style={{fontSize: '2.1rem', fontWeight: 700, color: '#1a3665', textAlign: 'center', marginBottom: '1.5rem'}}>{plan.title}</div>
-              <div className="customer-subscription-fee" style={{fontWeight: 700, color: '#1a3665', fontSize: '1.13rem', marginBottom: '1.1rem', textAlign: 'center'}}>Subscription Fee: Rs 1000</div>
+              <div className="customer-subscription-fee" style={{fontWeight: 700, color: '#1a3665', fontSize: '1.13rem', marginBottom: '1.1rem', textAlign: 'center'}}>Package Price: Rs 1000</div>
               <ul className="customer-subscription-features" style={{marginBottom: '2.5rem'}}>
                 {plan.features.map((feature, i) => (
                   <li key={i} style={{color: '#1a3665', fontSize: '1.18rem', marginBottom: '0.7rem', display: 'flex', alignItems: 'center', gap: '0.7rem'}}>
@@ -444,7 +444,7 @@ const Service = ({ currentUser }) => {
                   </li>
                 ))}
               </ul>
-              <button className="customer-subscription-btn" onClick={() => openBooking('subscription', plan)}>Subscribe</button>
+              <button className="customer-subscription-btn" onClick={() => openBooking('subscription', plan)}>Activate Plan</button>
             </div>
           ))}
         </div>

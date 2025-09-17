@@ -158,7 +158,7 @@ export default function Subscription({ currentUser }) {
 
   return (
     <div className="customer-dashboard-subscription-super">
-      <h2 style={{ margin: '0rem 0 1.5rem 0rem', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center'}}>Subscription Booking</h2>
+  <h2 style={{ margin: '0rem 0 1.5rem 0rem', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center'}}>Package Booking</h2>
       <div className="customer-subscription-tabs-bg">
         <div className="customer-subscription-tabs">
           {TABS.map((tab) => (
