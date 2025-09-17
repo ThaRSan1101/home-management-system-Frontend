@@ -159,7 +159,7 @@ const SubscriptionBooking = () => {
 
   return (
     <div className="subscription-booking-page">
-      <h2 className="subscription-booking-title">Subscription Booking</h2>
+      <h2 className="subscription-booking-title">Package Booking</h2>
       <div className="subscription-booking-tabs">
         {TABS.map(tab => (
           <button

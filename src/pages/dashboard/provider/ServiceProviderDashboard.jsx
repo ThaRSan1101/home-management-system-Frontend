@@ -3,7 +3,7 @@ import './ServiceProviderDashboard.css';
 
 const statLabels = [
   { key: 'bookings', label: 'Booking Request' },
-  { key: 'subscriptions', label: 'Total Subscriptions' },
+  { key: 'subscriptions', label: 'Total Packages' },
   { key: 'services', label: 'Total Services' },
   { key: 'feedback', label: 'Total Feedback' },
 ];

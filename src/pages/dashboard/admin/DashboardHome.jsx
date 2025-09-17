@@ -102,7 +102,7 @@ const DashboardHome = () => {
           </ul>
         </div>
         <div className="dashboard-fullwidth-box">
-          <div className="dashboard-fullwidth-title">Latest Subscription Bookings</div>
+          <div className="dashboard-fullwidth-title">Latest Package Bookings</div>
           <ul className="dashboard-list">
             {listsLoading ? <li>Loading...</li> : subscriptions.length === 0 ? <li>No subscription bookings</li> : subscriptions.map((s, i) => (
               <li key={s.subbook_id || i} className="dashboard-list-item">

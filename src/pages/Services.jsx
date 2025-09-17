@@ -156,14 +156,14 @@ const Services = () => {
           </div>
           {/* Subscription Plans Section */}
           <section className="subscription-section">
-            <h2 className="subscription-title">Choose Your Subscription Plan</h2>
+            <h2 className="subscription-title">Discover Our Exclusive Packages</h2>
             <p className="subscription-subtitle">Select one of our value-packed plans and enjoy hassle-free home and vehicle care.</p>
             <div className="subscription-plans-grid">
               {/* Weekly Plan */}
               <div className="subscription-card">
                 <div className="subscription-header">Weekly Plan</div>
                 <div className="subscription-price">Vehicle Wash</div>
-                <div style={{fontWeight:'600',color:'#1a3665',margin:'0.2rem 0 0.5rem 0',fontSize:'1.08rem'}}>Subscription Fee: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 1000</span></div>
+                <div style={{fontWeight:'600',color:'#1a3665',margin:'0.2rem 0 0.5rem 0',fontSize:'1.08rem'}}>Package Price: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 1000</span></div>
                 <ul className="subscription-features">
                   <li>✔ Weekly Vehicle Wash</li>
                   <li>✔ Car and bike washing</li>
@@ -172,13 +172,13 @@ const Services = () => {
                   <li>✔ One service every week</li>
                   <li>✔ Doorstep service</li>
                 </ul>
-                <Link to="/register" className="subscription-btn">Subscribe</Link>
+                <Link to="/register" className="subscription-btn">Activate Plan</Link>
               </div>
               {/* Monthly Plan */}
               <div className="subscription-card">
                 <div className="subscription-header">Monthly Plan</div>
                 <div className="subscription-price">Deep Cleaning</div>
-                <div style={{fontWeight:'600',color:'#1a3665',margin:'0.2rem 0 0.5rem 0',fontSize:'1.08rem'}}>Subscription Fee: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 1000</span></div>
+                <div style={{fontWeight:'600',color:'#1a3665',margin:'0.2rem 0 0.5rem 0',fontSize:'1.08rem'}}>Package Price: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 1000</span></div>
                 <ul className="subscription-features">
                   <li>✔ Monthly Deep Cleaning</li>
                   <li>✔ Home, kitchen, bathroom, office, garden</li>
@@ -187,13 +187,13 @@ const Services = () => {
                   <li>✔ One visit per month</li>
                   <li>✔ Trusted professionals</li>
                 </ul>
-                <Link to="/register" className="subscription-btn">Subscribe</Link>
+                <Link to="/register" className="subscription-btn">Activate Plan</Link>
               </div>
               {/* Yearly Plan */}
               <div className="subscription-card">
                 <div className="subscription-header">Yearly Plan</div>
                 <div className="subscription-price">Utility Check</div>
-                <div style={{fontWeight:'600',color:'#1a3665',margin:'0.2rem 0 0.5rem 0',fontSize:'1.08rem'}}>Subscription Fee: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 1000</span></div>
+                <div style={{fontWeight:'600',color:'#1a3665',margin:'0.2rem 0 0.5rem 0',fontSize:'1.08rem'}}>Package Price: <span style={{color:'#1a3665',fontWeight:'700'}}>Rs 1000</span></div>
                 <ul className="subscription-features">
                   <li>✔ Annual Maintenance</li>
                   <li>✔ AC deep cleaning</li>
@@ -202,7 +202,7 @@ const Services = () => {
                   <li>✔ One visit per service yearly</li>
                   <li>✔ Preventive maintenance</li>
                 </ul>
-                <Link to="/register" className="subscription-btn">Subscribe</Link>
+                <Link to="/register" className="subscription-btn">Activate Plan</Link>
               </div>
             </div>
           </section>
