@@ -6,7 +6,7 @@ import { FaClock, FaSpinner, FaCheckCircle, FaTimesCircle, FaStar } from 'react-
 const STATUS_TABS = [
   { key: 'pending', label: 'Pending', icon: <FaClock /> },
   { key: 'process', label: 'Processing', icon: <FaSpinner /> },
-  { key: 'request', label: 'Request', icon: <FaSpinner /> },
+  { key: 'request', label: 'Request to Complete', icon: <FaSpinner /> },
   { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
   { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
 ];
@@ -34,6 +34,9 @@ export default function Activity({ currentUser }) {
   const [ratedServiceIds, setRatedServiceIds] = useState([]);
   const [cancelModalId, setCancelModalId] = useState(null);
   const [cancelReason, setCancelReason] = useState('');
+
+  // Track whether a completed booking already has a review
+  const [reviewedByBookingId, setReviewedByBookingId] = useState({});
 
   // For Accept Bill modal in 'request' tab
   const [showBillModal, setShowBillModal] = useState(false);
@@ -151,6 +154,26 @@ export default function Activity({ currentUser }) {
         categoryId: b.service_category_id,
       }));
       setActivities(mapped);
+
+      // If viewing completed services, pre-check review existence per booking
+      if ((activeTab === 'complete') && mapped.length > 0) {
+        try {
+          const checks = await Promise.all(mapped.map(async (a) => {
+            try {
+              const res = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/service_review.php?booking_id=${a.id}`, { credentials: 'include' });
+              const data = await res.json();
+              return [a.id, !!(data && data.data)];
+            } catch (_) {
+              return [a.id, false];
+            }
+          }));
+          const next = {};
+          checks.forEach(([id, has]) => { next[id] = has; });
+          setReviewedByBookingId(next);
+        } catch (_) {
+          // ignore network issues here
+        }
+      }
     }
     fetchBookings();
   }, [currentUser, activeTab]);
@@ -242,6 +265,8 @@ export default function Activity({ currentUser }) {
         const uniqueId = currentBill.service + '_' + currentBill.date + '_' + currentBill.provider;
         setFeedbacks(prev => [...prev, { ...currentBill, ...feedbackData }]);
         setRatedServiceIds(getRatedServiceIdsFromState([...feedbacks, { ...currentBill, ...feedbackData }]));
+        // Mark this booking as reviewed so the button hides in Complete tab
+        setReviewedByBookingId(prev => ({ ...prev, [currentBill.id]: true }));
       } else {
         toast.error(data.message || 'Failed to submit review.');
       }
@@ -273,16 +298,25 @@ export default function Activity({ currentUser }) {
       <h2 style={{ margin: '0 0 1.5rem 0', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center' }}>Service Booking</h2>
       <div className="customer-activity-tabs-bg">
         <div className="customer-activity-tabs">
-          {STATUS_TABS.map((tab) => (
-            <button
-              key={tab.key}
-              className={`customer-activity-tab-btn${activeTab === tab.key ? ' active' : ''}`}
-              onClick={() => setActiveTab(tab.key)}
-            >
-              <span className="tab-icon">{tab.icon}</span>
-              <span className="tab-label">{tab.label}</span>
-            </button>
-          ))}
+          {STATUS_TABS.map((tab) => {
+            let tooltip = '';
+            if (tab.key === 'pending') tooltip = 'Your service request is waiting to be processed.';
+            if (tab.key === 'process') tooltip = 'Your service is currently being handled.';
+            if (tab.key === 'request') tooltip = 'Service provider has sent you a bill request.';
+            if (tab.key === 'complete') tooltip = 'Your service has been completed successfully.';
+            if (tab.key === 'cancel') tooltip = 'Your service has been cancelled.';
+            return (
+              <button
+                key={tab.key}
+                className={`customer-activity-tab-btn${activeTab === tab.key ? ' active' : ''}`}
+                onClick={() => setActiveTab(tab.key)}
+                title={tooltip}
+              >
+                <span className="tab-icon">{tab.icon}</span>
+                <span className="tab-label">{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
       <div className="customer-activity-content">
@@ -359,12 +393,19 @@ export default function Activity({ currentUser }) {
                       {activeTab === 'complete' && (
                         <td>
                           <button
-                            className="view-details-btn" style={{background:'#1a3665',color:'#fff',border:'none',borderRadius:'8px',padding:'0.5rem 1.5rem',fontWeight:600,cursor:'pointer'}}
+                            className="customer-activity-view-details-btn"
                             onClick={() => setViewDetailsId(activity.id)}
                           >
                             View Details
                           </button>
-                          
+                          {reviewedByBookingId[activity.id] === false && (
+                            <button
+                              className="customer-activity-submit-review-btn"
+                              onClick={() => { setCurrentBill(activity); setShowFeedbackModal(true); }}
+                            >
+                              Review
+                            </button>
+                          )}
                         </td>
                       )}
                       {activeTab === 'cancel' && (
