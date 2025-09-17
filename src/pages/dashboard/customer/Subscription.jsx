@@ -5,7 +5,6 @@ import './Subscription.css';
 
 const TABS = [
   { key: 'pending', label: 'Pending', icon: <FaClock /> },
-  { key: 'waiting', label: 'Waiting', icon: <FaSpinner /> },
   { key: 'process', label: 'Processing', icon: <FaSpinner /> },
   { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
 ];
@@ -29,30 +28,65 @@ export default function Subscription({ currentUser }) {
   });
 
   // Fetch bookings from API
-  const fetchPlans = React.useCallback(() => {
+  const fetchPlans = React.useCallback(async () => {
     if (!currentUser?.user_id) return;
     
     setLoading(true);
     setApiError(null);
-    let status = activeTab;
-    // Map tab to API status
-    if (status === 'waiting') status = 'waiting';
-    else if (status === 'pending') status = 'pending';
-    else if (status === 'process') status = 'process';
-    else if (status === 'cancel') status = 'cancel';
     
-    const url = `http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?status=${status}&user_id=${currentUser.user_id}`;
-    fetch(url, { credentials: 'include' })
-      .then(res => res.json())
-      .then(result => {
+    try {
+      let allPlans = [];
+      
+      if (activeTab === 'pending') {
+        // For pending tab, fetch both 'pending' and 'waiting' subscriptions
+        const pendingUrl = `http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?status=pending&user_id=${currentUser.user_id}`;
+        const waitingUrl = `http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?status=waiting&user_id=${currentUser.user_id}`;
+        
+        const [pendingRes, waitingRes] = await Promise.all([
+          fetch(pendingUrl, { credentials: 'include' }),
+          fetch(waitingUrl, { credentials: 'include' })
+        ]);
+        
+        const [pendingResult, waitingResult] = await Promise.all([
+          pendingRes.json(),
+          waitingRes.json()
+        ]);
+        
+        const pendingPlans = pendingResult.status === 'success' ? pendingResult.data || [] : [];
+        const waitingPlans = waitingResult.status === 'success' ? waitingResult.data || [] : [];
+        
+        // Convert waiting plans to show as pending for customer display
+        const convertedWaitingPlans = waitingPlans.map(plan => ({
+          ...plan,
+          subbooking_status: 'pending'
+        }));
+        
+        allPlans = [...pendingPlans, ...convertedWaitingPlans];
+      } else {
+        // For other tabs, fetch normally
+        let status = activeTab;
+        if (status === 'process') status = 'process';
+        else if (status === 'cancel') status = 'cancel';
+        
+        const url = `http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?status=${status}&user_id=${currentUser.user_id}`;
+        const res = await fetch(url, { credentials: 'include' });
+        const result = await res.json();
+        
         if (result.status === 'success') {
-          setPlans(result.data || []);
+          allPlans = result.data || [];
         } else {
           setApiError(result.message || 'Failed to fetch subscriptions.');
+          setLoading(false);
+          return;
         }
-        setLoading(false);
-      })
-      .catch(() => { setApiError('Error fetching subscriptions.'); setLoading(false); });
+      }
+      
+      setPlans(allPlans);
+      setLoading(false);
+    } catch (error) {
+      setApiError('Error fetching subscriptions.');
+      setLoading(false);
+    }
   }, [activeTab, currentUser]);
 
   React.useEffect(() => { fetchPlans(); }, [fetchPlans]);
@@ -150,7 +184,7 @@ export default function Subscription({ currentUser }) {
   };
 
   const filteredPlans = plans.filter((plan) => {
-    if (['pending', 'waiting', 'process', 'cancel'].includes(activeTab)) {
+    if (['pending', 'process', 'cancel'].includes(activeTab)) {
       return plan.subbooking_status === activeTab;
     }
     return plan.subbooking_status === activeTab;
