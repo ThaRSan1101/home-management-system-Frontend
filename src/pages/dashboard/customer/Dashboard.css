@@ -81,34 +81,253 @@
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(26,54,101,0.08);
-  padding: 1.1rem 1.2rem;
+  padding: 1.5rem;
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  transition: box-shadow 0.2s, transform 0.2s;
+  gap: 1.5rem;
+}
+
+.customer-appointment-card:hover {
+  box-shadow: 0 4px 16px rgba(26,54,101,0.12);
+  transform: translateY(-1px);
+}
+
+.customer-appointment-main {
+  flex: 1;
+}
+
+.customer-appointment-service {
+  margin-bottom: 0.8rem;
+}
+
+.customer-appointment-service strong {
+  font-size: 1.1rem;
+  color: #1a3665;
+  display: block;
+  margin-bottom: 0.3rem;
 }
 
 .customer-appointment-date {
-  color: #888;
-  font-size: 0.98rem;
-  margin-left: 0.5rem;
+  color: #666;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
-.customer-appointment-status {
-  font-weight: 700;
-  padding: 0.3rem 1.1rem;
-  border-radius: 8px;
-  font-size: 0.98rem;
+.customer-appointment-table {
+  margin-top: 0.8rem;
+  width: 100%;
 }
 
-.customer-appointment-status.customer-confirmed {
-  background: #e6eafd;
+.customer-appointment-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.customer-appointment-cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.customer-detail-label {
+  font-weight: 600;
   color: #1a3665;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.customer-appointment-status.customer-pending {
-  background: #fff7e6;
-  color: #eab308;
+.customer-detail-value {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.customer-detail-value.status-pending {
+  background: #1a3665;
+  color: white;
+  padding: 0.15rem 0.4rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* Responsive table layout */
+@media (max-width: 768px) {
+  .customer-appointment-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .customer-appointment-card {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .customer-appointment-actions {
+    align-items: center;
+    min-width: auto;
+  }
+}
+
+.customer-appointment-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 120px;
+}
+
+.customer-appointment-buttons {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.customer-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.customer-btn-secondary {
+  background: #f8f9fa;
+  color: #1a3665;
+  border: 1px solid #e9ecef;
+}
+
+.customer-btn-secondary:hover {
+  background: #e9ecef;
+  color: #0d2847;
+}
+
+.customer-btn-danger {
+  background: #dc3545;
+  color: white;
+}
+
+.customer-btn-danger:hover {
+  background: #c82333;
+}
+
+.customer-btn-primary {
+  background: #1a3665;
+  color: white;
+}
+
+.customer-btn-primary:hover {
+  background: #0d2847;
+}
+
+.customer-empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 12px;
+}
+
+.customer-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.customer-empty-text strong {
+  display: block;
+  font-size: 1.2rem;
+  color: #1a3665;
+  margin-bottom: 0.5rem;
+}
+
+.customer-empty-text p {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.customer-book-service-btn {
+  background: #1a3665;
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.customer-book-service-btn:hover {
+  background: #0d2847;
+}
+
+
+/* Loading and Error States */
+.customer-loading-state {
+  text-align: center;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.customer-loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e9ecef;
+  border-top: 2px solid #1a3665;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.customer-error-state {
+  text-align: center;
+  padding: 2rem;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 12px;
+  color: #721c24;
+}
+
+.customer-error-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.customer-error-text strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.customer-error-text p {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 
 .customer-dashboard-welcome-msg {
