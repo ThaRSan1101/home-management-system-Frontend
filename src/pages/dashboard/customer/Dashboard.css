@@ -240,13 +240,12 @@
   background: #f8f9fa;
   border: 2px dashed #dee2e6;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
 }
 
-.customer-empty-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  opacity: 0.6;
-}
 
 .customer-empty-text strong {
   display: block;
