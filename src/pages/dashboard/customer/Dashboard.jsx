@@ -191,11 +191,10 @@ const Dashboard = () => {
           </div>
         ) : upcoming.length === 0 ? (
           <div className="customer-appointment-card customer-empty-state">
-            <div className="customer-empty-icon">📅</div>
             <div className="customer-empty-text">
               <strong>No upcoming appointments</strong>
               <p>You don't have any scheduled appointments at the moment.</p>
-              <button className="customer-book-service-btn" onClick={() => window.location.href = '/services'}>
+              <button className="customer-book-service-btn" onClick={() => window.location.href = '/customer/dashboard/service'}>
                 Book a Service
               </button>
             </div>
