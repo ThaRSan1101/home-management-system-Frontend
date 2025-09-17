@@ -403,7 +403,7 @@ export default function Activity({ currentUser }) {
                               className="customer-activity-submit-review-btn"
                               onClick={() => { setCurrentBill(activity); setShowFeedbackModal(true); }}
                             >
-                              Submit Review
+                              Review
                             </button>
                           )}
                         </td>

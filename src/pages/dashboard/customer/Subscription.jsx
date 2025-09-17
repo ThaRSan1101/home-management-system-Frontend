@@ -215,6 +215,11 @@ export default function Subscription({ currentUser }) {
     return plan.subbooking_status === activeTab;
   });
 
+  // Check if all cancelled subscriptions have been reviewed
+  const hasUnreviewedCancelledPlans = activeTab === 'cancel' && filteredPlans.some(plan => 
+    subReviewedById[plan.subbook_id] === false
+  );
+
   return (
     <div className="customer-dashboard-subscription-super">
   <h2 style={{ margin: '0rem 0 1.5rem 0rem', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center'}}>Package Booking</h2>
@@ -256,14 +261,18 @@ export default function Subscription({ currentUser }) {
                 <th>Address</th>
                 <th>Phone</th>
                 {activeTab === 'cancel' && <th>Cancel Reason</th>}
-                {activeTab === 'cancel' && <th>Action</th>}
+                {activeTab === 'cancel' && hasUnreviewedCancelledPlans && <th>Action</th>}
                 {(activeTab === 'pending' || activeTab === 'process') && <th>Action</th>}
               </tr>
             </thead>
             <tbody>
               {filteredPlans.length === 0 ? (
                 <tr>
-                  <td colSpan={activeTab === 'cancel' ? 8 : ((activeTab === 'pending' || activeTab === 'process') ? 8 : 7)} style={{textAlign:'center',color:'#888',padding:'2rem 0'}}>
+                  <td colSpan={
+                    activeTab === 'cancel' 
+                      ? (hasUnreviewedCancelledPlans ? 9 : 8)  // Cancel Reason + possibly Action column
+                      : ((activeTab === 'pending' || activeTab === 'process') ? 8 : 7)
+                  } style={{textAlign:'center',color:'#888',padding:'2rem 0'}}>
                     No subscriptions found.
                   </td>
                 </tr>
@@ -278,7 +287,7 @@ export default function Subscription({ currentUser }) {
                     <td>{plan.sub_address}</td>
                     <td>{plan.phoneNo}</td>
                     {activeTab === 'cancel' && <td>{plan.cancel_reason || '-'}</td>}
-                    {activeTab === 'cancel' && (
+                    {activeTab === 'cancel' && hasUnreviewedCancelledPlans && (
                       <td>
                         {subReviewedById[plan.subbook_id] === false && (
                           <button

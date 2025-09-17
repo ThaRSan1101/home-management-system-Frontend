@@ -259,6 +259,7 @@
   text-align: left;
   font-size: 1.05rem;
   border-bottom: 1.5px solid #f1f5f9;
+  white-space: nowrap;
 }
 .customer-activity-table th {
   color: #1a3665;
@@ -270,6 +271,11 @@
 }
 .customer-activity-table tr:last-child td {
   border-bottom: none;
+}
+
+/* Ensure action buttons stay on the same line */
+.customer-activity-table td:last-child {
+  white-space: nowrap;
 }
 .customer-activity-status-badge {
   font-size: 0.98rem;
@@ -602,7 +608,7 @@
   transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
   box-shadow: 0 2px 8px rgba(26,54,101,0.08);
   outline: none;
-  margin: 0 0.2rem;
+  margin: 0 0.3rem 0 0;
   display: inline-block;
 }
 .customer-activity-view-details-btn:hover,
@@ -625,7 +631,7 @@
   transition: background 0.18s, color 0.18s, box-shadow 0.18s;
   box-shadow: 0 2px 8px rgba(26,54,101,0.10);
   outline: none;
-  margin: 0 0.2rem;
+  margin: 0 0 0 0.3rem;
   display: inline-block;
 }
 .customer-activity-submit-review-btn:hover,
