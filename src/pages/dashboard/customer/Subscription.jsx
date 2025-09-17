@@ -5,9 +5,7 @@ import './Subscription.css';
 
 const TABS = [
   { key: 'pending', label: 'Pending', icon: <FaClock /> },
-  { key: 'waiting', label: 'Waiting', icon: <FaSpinner /> },
   { key: 'process', label: 'Processing', icon: <FaSpinner /> },
-  { key: 'complete', label: 'Complete', icon: <FaCheckCircle /> },
   { key: 'cancel', label: 'Cancel', icon: <FaTimesCircle /> },
 ];
 
@@ -29,66 +27,69 @@ export default function Subscription({ currentUser }) {
     feedback: ''
   });
 
-  // View Details modal states
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState(null);
-  const [reviewStatus, setReviewStatus] = useState(null); // null, 'loading', 'exists', 'not-exists'
-
   // Fetch bookings from API
-  const fetchPlans = React.useCallback(() => {
+  const fetchPlans = React.useCallback(async () => {
     if (!currentUser?.user_id) return;
     
     setLoading(true);
     setApiError(null);
-    let status = activeTab;
-    // Map tab to API status
-    if (status === 'waiting') status = 'waiting';
-    else if (status === 'pending') status = 'pending';
-    else if (status === 'process') status = 'process';
-    else if (status === 'complete') status = 'complete';
-    else if (status === 'cancel') status = 'cancel';
     
-    const url = `http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?status=${status}&user_id=${currentUser.user_id}`;
-    fetch(url, { credentials: 'include' })
-      .then(res => res.json())
-      .then(result => {
+    try {
+      let allPlans = [];
+      
+      if (activeTab === 'pending') {
+        // For pending tab, fetch both 'pending' and 'waiting' subscriptions
+        const pendingUrl = `http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?status=pending&user_id=${currentUser.user_id}`;
+        const waitingUrl = `http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?status=waiting&user_id=${currentUser.user_id}`;
+        
+        const [pendingRes, waitingRes] = await Promise.all([
+          fetch(pendingUrl, { credentials: 'include' }),
+          fetch(waitingUrl, { credentials: 'include' })
+        ]);
+        
+        const [pendingResult, waitingResult] = await Promise.all([
+          pendingRes.json(),
+          waitingRes.json()
+        ]);
+        
+        const pendingPlans = pendingResult.status === 'success' ? pendingResult.data || [] : [];
+        const waitingPlans = waitingResult.status === 'success' ? waitingResult.data || [] : [];
+        
+        // Convert waiting plans to show as pending for customer display
+        const convertedWaitingPlans = waitingPlans.map(plan => ({
+          ...plan,
+          subbooking_status: 'pending'
+        }));
+        
+        allPlans = [...pendingPlans, ...convertedWaitingPlans];
+      } else {
+        // For other tabs, fetch normally
+        let status = activeTab;
+        if (status === 'process') status = 'process';
+        else if (status === 'cancel') status = 'cancel';
+        
+        const url = `http://localhost/project-root/backend/home-management-system-Backend/api/subscription_booking.php?status=${status}&user_id=${currentUser.user_id}`;
+        const res = await fetch(url, { credentials: 'include' });
+        const result = await res.json();
+        
         if (result.status === 'success') {
-          setPlans(result.data || []);
+          allPlans = result.data || [];
         } else {
           setApiError(result.message || 'Failed to fetch subscriptions.');
+          setLoading(false);
+          return;
         }
-        setLoading(false);
-      })
-      .catch(() => { setApiError('Error fetching subscriptions.'); setLoading(false); });
+      }
+      
+      setPlans(allPlans);
+      setLoading(false);
+    } catch (error) {
+      setApiError('Error fetching subscriptions.');
+      setLoading(false);
+    }
   }, [activeTab, currentUser]);
 
   React.useEffect(() => { fetchPlans(); }, [fetchPlans]);
-
-  // Check if review already exists for a subscription
-  const checkReviewStatus = async (subbook_id) => {
-    setReviewStatus('loading');
-    try {
-      const response = await fetch(`http://localhost/project-root/backend/home-management-system-Backend/api/subscription_review.php?check_review=1&subbook_id=${subbook_id}`, {
-        credentials: 'include'
-      });
-      const result = await response.json();
-      if (result.status === 'success') {
-        setReviewStatus(result.exists ? 'exists' : 'not-exists');
-      } else {
-        setReviewStatus('not-exists'); // Default to allowing review on error
-      }
-    } catch (error) {
-      setReviewStatus('not-exists'); // Default to allowing review on error
-    }
-  };
-
-  const handleViewDetails = (plan) => {
-    setSelectedPlan(plan);
-    setShowDetailsModal(true);
-    if (plan.subbooking_status === 'complete') {
-      checkReviewStatus(plan.subbook_id);
-    }
-  };
 
   const handleUnsubscribe = (id) => {
     setUnsubscribeModalId(id);
@@ -183,7 +184,7 @@ export default function Subscription({ currentUser }) {
   };
 
   const filteredPlans = plans.filter((plan) => {
-    if (['pending', 'waiting', 'process', 'cancel'].includes(activeTab)) {
+    if (['pending', 'process', 'cancel'].includes(activeTab)) {
       return plan.subbooking_status === activeTab;
     }
     return plan.subbooking_status === activeTab;
@@ -191,7 +192,7 @@ export default function Subscription({ currentUser }) {
 
   return (
     <div className="customer-dashboard-subscription-super">
-      <h2 style={{ margin: '0rem 0 1.5rem 0rem', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center'}}>Subscription Booking</h2>
+  <h2 style={{ margin: '0rem 0 1.5rem 0rem', color: '#1a3665', fontSize: '2.5rem', fontWeight: '600', textAlign: 'center'}}>Package Booking</h2>
       <div className="customer-subscription-tabs-bg">
         <div className="customer-subscription-tabs">
           {TABS.map((tab) => (
@@ -223,13 +224,13 @@ export default function Subscription({ currentUser }) {
                 <th>Address</th>
                 <th>Phone</th>
                 {activeTab === 'cancel' && <th>Cancel Reason</th>}
-                {(activeTab === 'pending' || activeTab === 'process' || activeTab === 'complete') && <th>Action</th>}
+                {(activeTab === 'pending' || activeTab === 'process') && <th>Action</th>}
               </tr>
             </thead>
             <tbody>
               {filteredPlans.length === 0 ? (
                 <tr>
-                  <td colSpan={activeTab === 'cancel' ? 8 : ((activeTab === 'pending' || activeTab === 'process' || activeTab === 'complete') ? 8 : 7)} style={{textAlign:'center',color:'#888',padding:'2rem 0'}}>
+                  <td colSpan={activeTab === 'cancel' ? 8 : ((activeTab === 'pending' || activeTab === 'process') ? 8 : 7)} style={{textAlign:'center',color:'#888',padding:'2rem 0'}}>
                     No subscriptions found.
                   </td>
                 </tr>
@@ -263,17 +264,6 @@ export default function Subscription({ currentUser }) {
                           style={{background: '#16305a', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer'}}
                         >
                           Unsubscribe
-                        </button>
-                      </td>
-                    )}
-                    {activeTab === 'complete' && (
-                      <td>
-                        <button
-                          className="customer-subscription-view-details-btn"
-                          onClick={() => handleViewDetails(plan)}
-                          style={{background: '#16305a', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer'}}
-                        >
-                          View Details
                         </button>
                       </td>
                     )}
@@ -313,75 +303,6 @@ export default function Subscription({ currentUser }) {
                 disabled={loading || !unsubscribeReason.trim()}
               >
                 {loading ? 'Cancelling...' : 'Confirm Cancel'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* View Details Modal */}
-      {showDetailsModal && selectedPlan && (
-        <div className="customer-modal-overlay" style={{position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000}}>
-          <div className="customer-modal" style={{background: 'white', padding: '2rem', borderRadius: '8px', width: '90%', maxWidth: '500px'}}>
-            <h3>Subscription Details</h3>
-            <div style={{marginBottom: '1.5rem'}}>
-              <p><strong>Plan:</strong> {selectedPlan.plan_name || selectedPlan.category}</p>
-              <p><strong>Customer:</strong> {selectedPlan.customer_name}</p>
-              <p><strong>Booking Date:</strong> {new Date(selectedPlan.subbooking_date).toLocaleDateString()}</p>
-              <p><strong>Service Date:</strong> {selectedPlan.sub_date}</p>
-              <p><strong>Time:</strong> {selectedPlan.sub_time}</p>
-              <p><strong>Address:</strong> {selectedPlan.sub_address}</p>
-              <p><strong>Phone:</strong> {selectedPlan.phoneNo}</p>
-              <p><strong>Amount:</strong> ${selectedPlan.amount}</p>
-            </div>
-            
-            {selectedPlan.subbooking_status === 'complete' && (
-              <div style={{marginBottom: '1.5rem', padding: '1rem', background: '#f8f9fa', borderRadius: '4px', borderLeft: '4px solid #28a745'}}>
-                <h4 style={{margin: '0 0 1rem 0', color: '#155724'}}>Service Review</h4>
-                {reviewStatus === 'loading' && (
-                  <p style={{color: '#666', fontStyle: 'italic'}}>Checking review status...</p>
-                )}
-                {reviewStatus === 'exists' && (
-                  <p style={{color: '#155724', fontWeight: '500'}}>✓ Review already sent</p>
-                )}
-                {reviewStatus === 'not-exists' && (
-                  <button
-                    onClick={() => {
-                      setReviewData({
-                        subbook_id: selectedPlan.subbook_id,
-                        plan_name: selectedPlan.plan_name || selectedPlan.category,
-                        provider_name: selectedPlan.provider_name || 'Provider',
-                        amount: selectedPlan.amount
-                      });
-                      setShowDetailsModal(false);
-                      setShowReviewModal(true);
-                    }}
-                    style={{
-                      background: '#28a745',
-                      color: 'white',
-                      border: 'none',
-                      padding: '0.5rem 1rem',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontWeight: '500'
-                    }}
-                  >
-                    Send Review
-                  </button>
-                )}
-              </div>
-            )}
-            
-            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-              <button
-                onClick={() => {
-                  setShowDetailsModal(false);
-                  setSelectedPlan(null);
-                  setReviewStatus(null);
-                }}
-                style={{padding: '0.5rem 1rem', border: '1px solid #ddd', background: 'white', borderRadius: '4px', cursor: 'pointer'}}
-              >
-                Close
               </button>
             </div>
           </div>
