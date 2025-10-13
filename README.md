@@ -104,7 +104,15 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 ---
 
-If you want, I can add a `.env.example` file and update the axios config to use `import.meta.env.VITE_API_BASE_URL`. Would you like me to make those changes?
+Add a `.env.example` with `VITE_API_BASE_URL` so teammates know what to configure. Ensure axios (or fetch) reads `import.meta.env.VITE_API_BASE_URL` for the base URL.
+
+## Deployment
+
+The frontend is deployed on Vercel:
+
+- Live site: [home-management-system-frontend.vercel.app](https://home-management-system-frontend.vercel.app)
+
+This is a static frontend that expects a backend API. In Vercel, set the `VITE_API_BASE_URL` environment variable in Project Settings → Environment Variables to point to your production API (for example `https://api.example.com`).
 
 ## Full-stack quickstart (if you're viewing only the frontend)
 
@@ -132,3 +140,7 @@ npm run dev
 
 From the frontend folder the backend is located at: `..\..\backend\home-management-system-Backend`.
 If you're browsing a single folder on GitHub, look for the sibling folder named `backend/home-management-system-Backend` in the parent repository to find the backend code and documentation.
+
+---
+
+
