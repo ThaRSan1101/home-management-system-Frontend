@@ -67,30 +67,11 @@ const Login = () => {
     if (!validateForm()) return;
 
     try {
-      // Frontend-only shortcut for hosted-frontend scenario
-      const email = formData.email.trim().toLowerCase();
-      const password = formData.password;
-      if (email === 'adminservicehub@gmail.com' && password === 'Admin@01') {
-        toast.success('Welcome, Admin');
-        navigate('/admin/dashboard', { replace: true });
-        return;
-      }
-      if (email === 'servicehub@gmail.com' && password === 'Customer@01') {
-        toast.success('Welcome, Customer');
-        navigate('/customer/dashboard/home', { replace: true });
-        return;
-      }
-      if (email === 'providerservice@gmail.com' && password === 'Provider@01') {
-        toast.success('Welcome, Provider');
-        navigate('/provider/dashboard', { replace: true });
-        return;
-      }
-
       const response = await axios.post(
         'http://localhost/project-root/backend/home-management-system-Backend/api/login.php',
         {
-          email: email,
-          password: password,
+          email: formData.email.trim().toLowerCase(),
+          password: formData.password,
         },
         {
           withCredentials: true,
